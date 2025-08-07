@@ -156,10 +156,7 @@ var map = {
 		"(rsc)/./src/app/not-found.tsx"
 	],
 	"./page.mdx": [
-		"(rsc)/./src/app/page.mdx",
-		"vendor-chunks/next",
-		"vendor-chunks/@swc",
-		"_rsc_src_app_page_mdx"
+		"(rsc)/./src/app/page.mdx"
 	],
 	"./pagination/page.mdx": [
 		"(rsc)/./src/app/pagination/page.mdx",
@@ -177,8 +174,6 @@ var map = {
 	],
 	"./sdks/page.mdx": [
 		"(rsc)/./src/app/sdks/page.mdx",
-		"vendor-chunks/next",
-		"vendor-chunks/@swc",
 		"_rsc_src_app_sdks_page_mdx"
 	],
 	"./services/page.mdx": [
@@ -1030,7 +1025,7 @@ module.exports = require("next/dist/server/app-render/dynamic-access-async-stora
 
 /***/ }),
 
-/***/ "../app-render/work-async-storage.external":
+/***/ "./work-async-storage.external":
 /*!*****************************************************************************!*\
   !*** external "next/dist/server/app-render/work-async-storage.external.js" ***!
   \*****************************************************************************/
@@ -1191,7 +1186,7 @@ module.exports = require("worker_threads");
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/@swc","vendor-chunks/framer-motion","vendor-chunks/motion-dom","vendor-chunks/@algolia","vendor-chunks/@headlessui","vendor-chunks/@react-aria","vendor-chunks/picomatch","vendor-chunks/fast-glob","vendor-chunks/@nodelib","vendor-chunks/braces","vendor-chunks/react-highlight-words","vendor-chunks/micromatch","vendor-chunks/motion-utils","vendor-chunks/to-regex-range","vendor-chunks/fill-range","vendor-chunks/next-themes","vendor-chunks/fastq","vendor-chunks/is-glob","vendor-chunks/merge2","vendor-chunks/zustand","vendor-chunks/@react-stately","vendor-chunks/run-parallel","vendor-chunks/clsx","vendor-chunks/reusify","vendor-chunks/is-extglob","vendor-chunks/is-number","vendor-chunks/queue-microtask"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fpage&page=%2Fpage&appPaths=%2Fpage&pagePath=private-next-app-dir%2Fpage.mdx&appDir=%2FUsers%2Fkylemcgraw%2FDocuments%2FGitHub%2Fportfoliov2%2Fsrc%2Fapp&pageExtensions=js&pageExtensions=jsx&pageExtensions=ts&pageExtensions=tsx&pageExtensions=mdx&rootDir=%2FUsers%2Fkylemcgraw%2FDocuments%2FGitHub%2Fportfoliov2&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/framer-motion","vendor-chunks/motion-dom","vendor-chunks/@headlessui","vendor-chunks/@algolia","vendor-chunks/motion-utils","vendor-chunks/fast-glob","vendor-chunks/@nodelib","vendor-chunks/@react-aria","vendor-chunks/braces","vendor-chunks/@swc","vendor-chunks/picomatch","vendor-chunks/zustand","vendor-chunks/clsx","vendor-chunks/next-themes","vendor-chunks/@react-stately","vendor-chunks/to-regex-range","vendor-chunks/run-parallel","vendor-chunks/reusify","vendor-chunks/queue-microtask","vendor-chunks/micromatch","vendor-chunks/merge2","vendor-chunks/is-number","vendor-chunks/is-glob","vendor-chunks/is-extglob","vendor-chunks/fill-range","vendor-chunks/fastq","vendor-chunks/react-highlight-words"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fpage&page=%2Fpage&appPaths=%2Fpage&pagePath=private-next-app-dir%2Fpage.mdx&appDir=%2FUsers%2Fkylemcgraw%2FDocuments%2FGitHub%2Fportfoliov2%2Fsrc%2Fapp&pageExtensions=js&pageExtensions=jsx&pageExtensions=ts&pageExtensions=tsx&pageExtensions=mdx&rootDir=%2FUsers%2Fkylemcgraw%2FDocuments%2FGitHub%2Fportfoliov2&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!")));
 module.exports = __webpack_exports__;
 
 })();
