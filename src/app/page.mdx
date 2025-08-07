@@ -1,43 +1,31 @@
-import { Guides } from '@/components/Guides'
-import { Resources } from '@/components/Resources'
-import { HeroPattern } from '@/components/HeroPattern'
+import { Timeline } from '@/components/Timeline'
+import { LogoCloud } from '@/components/LogoCloud'
+import { Hero } from '@/components/Hero'
 
 export const metadata = {
-  title: 'API Documentation',
+  title: 'Kyle McGraw - Product Owner & UX Designer',
   description:
-    'Learn everything there is to know about the Protocol API and integrate Protocol into your product.',
+    'Experienced Product Owner, UX Designer, and Business Analyst helping companies build better digital products through user-centered design and strategic thinking.',
 }
 
 export const sections = [
-  { title: 'Guides', id: 'guides' },
-  { title: 'Resources', id: 'resources' },
+  { title: 'What I Do', id: 'what-i-do' },
+  { title: 'My Clients', id: 'my-clients' },
+  { title: 'My Journey', id: 'my-journey' },
 ]
 
-<HeroPattern />
+<Hero />
 
-# API Documentation
+## What I Do
 
-Use the Protocol API to access contacts, conversations, group messages, and more and seamlessly integrate your product into the workflows of dozens of devoted Protocol users. {{ className: 'lead' }}
-
-<div className="not-prose mt-6 mb-16 flex gap-3">
-  <Button href="/quickstart" arrow="right">
-    <>Quickstart</>
-  </Button>
-  <Button href="/sdks" variant="outline">
-    <>Explore SDKs</>
-  </Button>
-</div>
-
-## Getting started {{ anchor: false }}
-
-To get started, create a new application in your [developer settings](#), then read about how to make requests for the resources you need to access using our HTTP APIs or dedicated client SDKs. When your integration is ready to go live, publish it to our [integrations directory](#) to reach the Protocol community. {{ className: 'lead' }}
+I specialize in transforming complex business requirements into intuitive user experiences. From conducting user research and creating wireframes to defining product roadmaps and leading cross-functional teams, I ensure every project delivers real value to both users and stakeholders. {{ className: 'lead' }}
 
 <div className="not-prose">
-  <Button href="/sdks" variant="text" arrow="right">
-    <>Get your API key</>
+  <Button href="/services" variant="text" arrow="right">
+    <>Explore Services</>
   </Button>
 </div>
 
-<Guides />
+<LogoCloud />
 
-<Resources />
+<Timeline />

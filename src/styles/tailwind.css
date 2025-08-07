@@ -57,4 +57,19 @@
   [inert] ::-webkit-scrollbar {
     display: none;
   }
+  
+  /* Super Buttery Timeline Bob Animation with Overshoot */
+  @keyframes timeline-bob {
+    0% { transform: translateY(-50%) scale(1.2); }
+    30% { transform: translateY(-50%) scale(1.4); }
+    60% { transform: translateY(-50%) scale(1.1); }
+    80% { transform: translateY(-50%) scale(1.25); }
+    100% { transform: translateY(-50%) scale(1.2); }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    [style*="timeline-bob"] {
+      animation: none !important;
+    }
+  }
 }

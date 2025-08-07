@@ -234,25 +234,19 @@ function NavigationGroup({
 
 export const navigation: Array<NavGroup> = [
   {
-    title: 'Guides',
+    title: 'Who is Kyle McGraw',
     links: [
-      { title: 'Introduction', href: '/' },
-      { title: 'Quickstart', href: '/quickstart' },
-      { title: 'SDKs', href: '/sdks' },
-      { title: 'Authentication', href: '/authentication' },
-      { title: 'Pagination', href: '/pagination' },
-      { title: 'Errors', href: '/errors' },
-      { title: 'Webhooks', href: '/webhooks' },
+      { title: 'About', href: '/' },
+      { title: 'Services', href: '/services' },
     ],
   },
   {
-    title: 'Resources',
+    title: 'Case Studies',
     links: [
-      { title: 'Contacts', href: '/contacts' },
-      { title: 'Conversations', href: '/conversations' },
-      { title: 'Messages', href: '/messages' },
-      { title: 'Groups', href: '/groups' },
-      { title: 'Attachments', href: '/attachments' },
+      { title: 'E-commerce Platform', href: '/case-studies/ecommerce' },
+      { title: 'FinTech Mobile App', href: '/case-studies/fintech' },
+      { title: 'SaaS Dashboard', href: '/case-studies/saas' },
+      { title: 'Healthcare Portal', href: '/case-studies/healthcare' },
     ],
   },
 ]
@@ -261,9 +255,9 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
   return (
     <nav {...props}>
       <ul role="list">
-        <TopLevelNavItem href="/">My Projects</TopLevelNavItem>
-        <TopLevelNavItem href="#">My Skills</TopLevelNavItem>
-        <TopLevelNavItem href="#">LinkedIn</TopLevelNavItem>
+        <TopLevelNavItem href="/">Portfolio</TopLevelNavItem>
+        <TopLevelNavItem href="/contact">Contact</TopLevelNavItem>
+        <TopLevelNavItem href="https://linkedin.com/in/kylemcgraw">LinkedIn</TopLevelNavItem>
         {navigation.map((group, groupIndex) => (
           <NavigationGroup
             key={group.title}
@@ -272,8 +266,8 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
           />
         ))}
         <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-          <Button href="#" variant="filled" className="w-full">
-            Contact Me
+          <Button href="/contact" variant="filled" className="w-full">
+            Let's Work Together
           </Button>
         </li>
       </ul>
