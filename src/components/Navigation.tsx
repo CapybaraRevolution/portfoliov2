@@ -267,7 +267,7 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
         ))}
         <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
           <Button href="/contact" variant="filled" className="w-full">
-            Let's Work Together
+            Let&apos;s Work Together
           </Button>
         </li>
       </ul>

@@ -24,7 +24,7 @@ export function LogoCloud() {
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <h2 className="scroll-mt-24 mb-4" id="my-clients">My Clients</h2>
           <p className="lead mb-12">
-            I've had the privilege of working with innovative companies across industries, 
+            I&apos;ve had the privilege of working with innovative companies across industries, 
             from early-stage startups to established enterprises.
           </p>
           
@@ -56,7 +56,7 @@ export function LogoCloud() {
               href="/contact" 
               className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition text-emerald-500 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-500"
             >
-              Let's work together →
+              Let&apos;s work together →
             </a>
           </div>
         </div>

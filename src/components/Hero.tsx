@@ -49,14 +49,14 @@ export function Hero() {
               Who Am I?
             </h1>
             <p className="mt-8 text-lg font-medium text-pretty text-zinc-600 dark:text-zinc-300 sm:text-xl/8">
-              My name is Kyle McGraw, and I'm a Product Owner & UX Designer. I help companies build better digital products through user-centered design, strategic thinking, and data-driven decision making.
+              My name is Kyle McGraw, and I&apos;m a Product Owner & UX Designer. I help companies build better digital products through user-centered design, strategic thinking, and data-driven decision making.
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <Button href="/case-studies/ecommerce" variant="filled">
                 View My Work
               </Button>
               <Button href="/contact" variant="outline">
-                Let's Connect
+                Let&apos;s Connect
               </Button>
             </div>
           </div>
