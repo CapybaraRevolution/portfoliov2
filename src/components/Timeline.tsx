@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/Button'
+import { Heading } from '@/components/Heading'
 
 interface TimelineNode {
   id: string
@@ -287,9 +288,7 @@ export function Timeline() {
       <div className="relative">
         {/* Section Header */}
         <div className="mb-16">
-          <h2 className="scroll-mt-24" id="my-journey">
-            My Journey
-          </h2>
+          <Heading id="my-journey">My Journey</Heading>
           <p className="text-zinc-600 dark:text-zinc-400 max-w-3xl mb-8">
             A decade of building user-centered solutions across industries, 
             from startups to enterprise clients. Each role shaped my approach 

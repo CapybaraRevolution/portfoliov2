@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { Heading } from '@/components/Heading'
 
 // Import client logos
 import jigsawLogo from '@/images/logos/Jixaw-Technologies_Logo.png'
@@ -19,31 +20,29 @@ export function LogoCloud() {
   ]
 
   return (
-    <section className="py-16">
-      <div className="mx-auto max-w-7xl">
+    <section>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
-          <h2 className="scroll-mt-24 mb-4" id="my-clients">My Clients</h2>
+          <Heading id="my-clients">My Clients</Heading>
           <p className="lead mb-12">
             I&apos;ve had the privilege of working with innovative companies across industries, 
             from early-stage startups to established enterprises.
           </p>
           
-          <div className="mx-auto grid grid-cols-2 items-center gap-x-8 gap-y-10 sm:grid-cols-3 sm:gap-x-10 lg:mx-0 lg:grid-cols-6">
+          <div className="-mx-6 grid grid-cols-2 gap-0.5 overflow-hidden sm:mx-0 sm:rounded-2xl md:grid-cols-3">
             {clients.map((client) => (
               <div
                 key={client.name}
-                className="group col-span-1 flex items-center justify-center"
+                className="group bg-white/5 p-8 sm:p-10 dark:bg-white/10 transition-all duration-300 hover:bg-white/10 dark:hover:bg-white/15"
                 title={client.name}
               >
-                <div className="relative">
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    width={120}
-                    height={60}
-                    className="max-h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:scale-110"
-                  />
-                </div>
+                <Image
+                  src={client.logo}
+                  alt={client.name}
+                  width={158}
+                  height={64}
+                  className="max-h-16 w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 group-hover:scale-105"
+                />
               </div>
             ))}
           </div>

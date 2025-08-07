@@ -237,6 +237,7 @@ export const navigation: Array<NavGroup> = [
     title: 'Who is Kyle McGraw',
     links: [
       { title: 'About', href: '/' },
+      { title: 'Portfolio', href: '/portfolio' },
       { title: 'Services', href: '/services' },
     ],
   },
@@ -255,7 +256,7 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
   return (
     <nav {...props}>
       <ul role="list">
-        <TopLevelNavItem href="/">Portfolio</TopLevelNavItem>
+        <TopLevelNavItem href="/portfolio">Portfolio</TopLevelNavItem>
         <TopLevelNavItem href="/contact">Contact</TopLevelNavItem>
         <TopLevelNavItem href="https://linkedin.com/in/kylemcgraw">LinkedIn</TopLevelNavItem>
         {navigation.map((group, groupIndex) => (
