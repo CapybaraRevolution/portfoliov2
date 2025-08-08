@@ -29,10 +29,13 @@ export function NavigationChip({
   }
 
   return (
-    <Menu as="div" className="relative inline-block">
+    <Menu as="div" className="relative inline-block group">
+      {/* Hover glow effect */}
+      <div className="absolute -inset-1 rounded-md transition-all duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-emerald-500/5 to-blue-500/5 blur-sm" />
+      
       <MenuButton
         className={clsx(
-          'inline-flex items-center gap-x-1 rounded-md border border-zinc-300 bg-transparent text-zinc-700 font-medium transition-all duration-200 hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-emerald-500 dark:hover:text-emerald-400',
+          'relative z-10 inline-flex items-center gap-x-1 rounded-md border border-zinc-300 bg-transparent text-zinc-700 font-medium transition-all duration-200 hover:border-emerald-300 hover:text-emerald-700 hover:ring-1 hover:ring-emerald-300/25 hover:shadow-sm hover:shadow-emerald-500/10 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-emerald-500 dark:hover:text-emerald-400 dark:hover:ring-emerald-500/25 dark:hover:shadow-emerald-500/10',
           // Size variants
           size === 'sm' ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm',
           className
