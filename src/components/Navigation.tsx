@@ -237,9 +237,9 @@ export const navigation: Array<NavGroup> = [
     title: 'Who is Kyle McGraw',
     links: [
       { title: 'About', href: '/' },
-      { title: 'Portfolio', href: '/portfolio' },
       { title: 'Services', href: '/services' },
       { title: 'Process', href: '/process' },
+      { title: 'Portfolio', href: '/portfolio' },
     ],
   },
   {

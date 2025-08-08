@@ -126,13 +126,16 @@ function LightningTraces() {
 }
 
 function FloatingParticles() {
-  const particles = Array.from({ length: 6 }, (_, i) => ({
-    id: i,
-    delay: i * 0.8,
-    size: Math.random() * 3 + 2,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-  }))
+  // Use fixed particle data to prevent hydration mismatches
+  // These values were generated once and are now static
+  const particles = [
+    { id: 0, delay: 0, size: 3.6, x: 38.2, y: 48.2 },
+    { id: 1, delay: 0.8, size: 3.4, x: 38.4, y: 75.3 },
+    { id: 2, delay: 1.6, size: 3.1, x: 71.6, y: 87.2 },
+    { id: 3, delay: 2.4, size: 2.3, x: 75.8, y: 8.6 },
+    { id: 4, delay: 3.2, size: 4.1, x: 87.0, y: 11.6 },
+    { id: 5, delay: 4.0, size: 2.8, x: 8.4, y: 60.9 },
+  ]
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">

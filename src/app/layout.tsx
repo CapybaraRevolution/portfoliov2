@@ -30,7 +30,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className="flex min-h-full bg-white antialiased dark:bg-zinc-900">
+      <body className="flex min-h-full bg-gradient-to-br from-emerald-50/50 via-white to-blue-50/30 antialiased dark:bg-gradient-to-br dark:from-emerald-900/10 dark:via-zinc-900 dark:to-blue-900/10">
         <Providers>
           <div className="w-full">
             <Layout allSections={allSections}>{children}</Layout>

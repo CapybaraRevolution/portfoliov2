@@ -212,7 +212,7 @@ export function PortfolioGrid() {
 
       {/* Projects Grid */}
       {filteredProjects.length > 0 ? (
-        <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
+        <ul role="list" className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-2 xl:gap-x-12">
           {filteredProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

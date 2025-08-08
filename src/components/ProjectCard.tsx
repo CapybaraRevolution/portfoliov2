@@ -35,9 +35,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const colors = categoryColors[project.category]
 
   return (
-    <li className="overflow-hidden rounded-xl outline outline-zinc-200 dark:outline-zinc-700 hover:outline-zinc-300 dark:hover:outline-zinc-600 transition-colors">
+    <li className="relative rounded-xl outline outline-zinc-200 dark:outline-zinc-700 hover:outline-zinc-300 dark:hover:outline-zinc-600 transition-colors">
       {/* Header - similar to client card header */}
-      <div className="flex items-center gap-x-4 border-b border-zinc-900/5 dark:border-zinc-100/5 bg-zinc-50 dark:bg-zinc-800/50 p-6">
+      <div className="flex items-center gap-x-4 border-b border-zinc-900/5 dark:border-zinc-100/5 bg-zinc-50 dark:bg-zinc-800/50 p-6 rounded-t-xl">
         <div className="text-sm/6 font-medium text-zinc-900 dark:text-white flex-1">
           {project.title}
         </div>
@@ -73,7 +73,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </div>
       
       {/* Content - using definition list structure */}
-      <dl className="-my-3 divide-y divide-zinc-100 dark:divide-zinc-700 px-6 py-4 text-sm/6">
+      <dl className="-my-3 divide-y divide-zinc-100 dark:divide-zinc-700 px-6 py-4 text-sm/6 rounded-b-xl bg-white dark:bg-zinc-900">
         {/* Client */}
         {project.client && (
           <div className="flex justify-between gap-x-4 py-3">
