@@ -8,9 +8,12 @@ export const sections = [
 ]
 
 import { PortfolioGrid } from '@/components/PortfolioGrid'
+import { Suspense } from 'react'
 
 # Portfolio
 
 Explore case studies showcasing user-centered design, strategic thinking, and measurable business impact across industries. {{ className: 'lead' }}
 
-<PortfolioGrid />
+<Suspense fallback={<div className="flex justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div></div>}>
+  <PortfolioGrid />
+</Suspense>
