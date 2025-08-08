@@ -25,7 +25,7 @@ export function PortfolioGrid() {
     aiAccelerated
   )
   
-  const activeFiltersCount = selectedSkills.size + (aiAccelerated ? 1 : 0)
+  const activeFiltersCount = selectedSkills.size + (aiAccelerated ? 1 : 0) + (activeCategory !== 'All' ? 1 : 0)
 
   // Initialize from URL params
   useEffect(() => {
@@ -114,40 +114,30 @@ export function PortfolioGrid() {
     <div className="not-prose">
       {/* Filter Header */}
       <div className="mb-8">
-        {/* Primary discipline chips + AI toggle */}
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          {disciplines.map((discipline) => (
-            <FilterChip
-              key={discipline}
-              label={discipline}
-              active={activeCategory === discipline}
-              onClick={() => handleCategoryChange(discipline)}
-            />
-          ))}
-          
-          <AIToggle 
-            checked={aiAccelerated}
-            onChange={handleAIToggle}
-          />
-        </div>
-
         {/* Filter Disclosure */}
         <Disclosure as="section" aria-labelledby="filter-heading">
           <div className="flex items-center justify-between">
-            <DisclosureButton className="group flex items-center font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
-              <FunnelIcon
-                aria-hidden="true"
-                className="mr-2 h-5 w-5 flex-none text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-300"
+            <div className="flex items-center gap-4">
+              <DisclosureButton className="group flex items-center font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+                <FunnelIcon
+                  aria-hidden="true"
+                  className="mr-2 h-5 w-5 flex-none text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-300"
+                />
+                • More filters
+                {activeFiltersCount > 0 && (
+                  <span className="ml-2 rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </DisclosureButton>
+              
+              <AIToggle 
+                checked={aiAccelerated}
+                onChange={handleAIToggle}
               />
-              • More filters
-              {activeFiltersCount > 0 && (
-                <span className="ml-2 rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </DisclosureButton>
+            </div>
             
-            {(selectedSkills.size > 0 || aiAccelerated) && (
+            {(selectedSkills.size > 0 || aiAccelerated || activeCategory !== 'All') && (
               <button
                 onClick={clearAllFilters}
                 className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
@@ -158,9 +148,26 @@ export function PortfolioGrid() {
           </div>
 
           <DisclosurePanel className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6">
-            <div>
-              <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-4">Filter by skill</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="space-y-6">
+              {/* Discipline Filters */}
+              <div>
+                <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-4">Filter by discipline</h3>
+                <div className="flex flex-wrap gap-2">
+                  {disciplines.map((discipline) => (
+                    <FilterChip
+                      key={discipline}
+                      label={discipline}
+                      active={activeCategory === discipline}
+                      onClick={() => handleCategoryChange(discipline)}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              {/* Skills Filters */}
+              <div>
+                <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-4">Filter by skill</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {Object.entries(skillGroups).map(([groupName, skills]) => (
                   <div key={groupName} className="space-y-3">
                     <h4 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide">
@@ -179,6 +186,7 @@ export function PortfolioGrid() {
                     </div>
                   </div>
                 ))}
+                </div>
               </div>
             </div>
           </DisclosurePanel>

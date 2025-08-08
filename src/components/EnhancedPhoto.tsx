@@ -35,6 +35,7 @@ function ElectricalPattern({
           width={32}
           height={32}
           x="50%"
+          y="50%"
           className="absolute inset-x-0 inset-y-[-20%] h-[140%] w-full skew-y-[-12deg] fill-emerald-500/10 stroke-emerald-500/20 dark:fill-emerald-400/5 dark:stroke-emerald-400/10"
           squares={[
             [1, 1], [3, 2], [2, 4], [4, 3], [0, 2], [2, 0], [4, 1], [1, 3]
