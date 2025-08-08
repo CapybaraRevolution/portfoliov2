@@ -58,6 +58,7 @@ function ElectricalPattern({
           width={16}
           height={16}
           x="50%"
+          y="50%"
           className="absolute inset-x-0 inset-y-[-10%] h-[120%] w-full fill-white/20 stroke-white/40 dark:fill-emerald-400/20 dark:stroke-emerald-400/30"
           squares={[
             [2, 1], [1, 2], [3, 3], [0, 1], [2, 3], [1, 0], [3, 2], [0, 3]
