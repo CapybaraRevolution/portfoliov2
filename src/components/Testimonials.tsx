@@ -33,7 +33,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
   return (
     <figure className="mx-auto max-w-2xl border-l-4 border-emerald-500 pl-6">
       <blockquote className="text-lg/8 font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-xl/9">
-        <p>"{testimonial.content}"</p>
+        <p>&ldquo;{testimonial.content}&rdquo;</p>
       </blockquote>
       <figcaption className="mt-8 flex items-center gap-x-4">
         <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 text-white font-bold text-lg">
