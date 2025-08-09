@@ -107,7 +107,23 @@ const drawerContent = {
   
   // Step 5 - Launch & Optimization
   'Instrumentation': {
-    overview: `I don't guess; I instrument. Before (or immediately after) release, I wire up the critical events and state we need to see: sign-up start/finish, paywall views, plan selection, purchase completion, error surfaces, and user intent signals (search, filter, save). I also tag UX states—empty, loading, and error—so we can separate "no demand" from "bad experience."
+    overview: `## Executive Summary
+**One-liner:** I wire up the events, funnels, and baselines that turn opinions into a ranked list of opportunities.
+
+**What I do**
+• Map the critical path (e.g., signup → onboarding → purchase) and tag each step.
+• Standardize event names + properties; add guardrails/alerts for KPI drift.
+• Establish baselines for conversion, time-on-task, and drop-offs per step.
+
+**Outcome**
+• We can see exactly *where* users struggle and *how much* it costs.
+
+**Quick stat:** Baseline checkout completion: **42.3%** · Shipping step drop-off: **37%**
+
+---
+
+## Overview
+I don't guess; I instrument. Before (or immediately after) release, I wire up the critical events and state we need to see: sign-up start/finish, paywall views, plan selection, purchase completion, error surfaces, and user intent signals (search, filter, save). I also tag UX states—empty, loading, and error—so we can separate "no demand" from "bad experience."
 
 **What I set up**
 • **Events & properties:** consistent names, lower-snake-case, versioned.
@@ -141,7 +157,23 @@ const drawerContent = {
 • Drop-off at "Shipping": –32% vs baseline`
   },
   'Experimentation': {
-    overview: `I design small, falsifiable experiments that answer one question at a time. Every test has a clear hypothesis, a primary decision metric, guardrails (SRM, runtime, and stop conditions), and a plan for what we'll ship if the variant wins—or what we'll learn if it doesn't.
+    overview: `## Executive Summary
+**One-liner:** I run small, falsifiable tests to de-risk decisions and compound gains.
+
+**How I test**
+• Clear hypothesis: *Changing X for Y audience moves Z metric by N%*.
+• Guardrails: SRM checks, runtime & sample size targets, stop conditions.
+• Decision rules agreed up-front (ship/revert/iterate).
+
+**Outcome**
+• Faster learning, safer rollouts, less roadmap thrash.
+
+**Quick stat:** "Secure CTA" variant: **+5.9%** checkout completion (p<0.05).
+
+---
+
+## Overview
+I design small, falsifiable experiments that answer one question at a time. Every test has a clear hypothesis, a primary decision metric, guardrails (SRM, runtime, and stop conditions), and a plan for what we'll ship if the variant wins—or what we'll learn if it doesn't.
 
 **How I run tests**
 • **Hypothesis:** "Changing X for Y audience will move Z metric by N%."
@@ -163,7 +195,23 @@ const drawerContent = {
 • **Decision rule:** Ship if +3% uplift (p<0.05); else revert + test address-autocomplete next.`
   },
   'Performance & Quality': {
-    overview: `Speed and stability are UX. I track Core Web Vitals (LCP, INP, CLS), accessibility defects, broken flows, and top error surfaces. We fix the things users feel first and bake guardrails into CI so regressions don't creep back in.
+    overview: `## Executive Summary
+**One-liner:** Speed, accessibility, and stability are UX; I monitor and harden them in CI.
+
+**What I monitor**
+• **CWV p75:** LCP < 2.5s, INP < 200ms, CLS < 0.1 (mobile first).
+• Accessibility checks: focus order, roles, contrast, SR announcements.
+• Reliability signals: error rate, dead-end screens, retry loops.
+
+**Outcome**
+• Faster pages, fewer support tickets, higher conversion.
+
+**Quick stat:** Mobile LCP p75 **1.8s** · INP p75 **180ms** · Error rate **0.27%**.
+
+---
+
+## Overview
+Speed and stability are UX. I track Core Web Vitals (LCP, INP, CLS), accessibility defects, broken flows, and top error surfaces. We fix the things users feel first and bake guardrails into CI so regressions don't creep back in.
 
 **What I monitor**
 • **CWV (p75):** LCP < 2.5s, INP < 200ms, CLS < 0.1 (mobile first).
@@ -189,7 +237,23 @@ const drawerContent = {
 • Contrast: buttons raised from 3.3:1 → 4.8:1`
   },
   'Continuous Improvement': {
-    overview: `Insights only matter if they change the backlog. I convert findings into tickets, score with RICE, prune every sprint, and keep a living "impact log" so the team can see how small wins compound over time.
+    overview: `## Executive Summary
+**One-liner:** Insights become a prioritized backlog; we prune weekly and ship polish every sprint.
+
+**How I operationalize**
+• Convert findings → tickets with evidence links.
+• Score with **RICE**, bundle quick wins, and publish an **impact log**.
+• Close the loop: before/after metrics attached to each ticket.
+
+**Outcome**
+• Momentum stays high and work concentrates where it moves the needle.
+
+**Quick stat:** Address form simplification → **–23%** step drop-off, **+11%** task speed.
+
+---
+
+## Overview
+Insights only matter if they change the backlog. I convert findings into tickets, score with RICE, prune every sprint, and keep a living "impact log" so the team can see how small wins compound over time.
 
 **Operating cadence**
 • **Weekly triage:** Convert insights → tickets; link evidence.
