@@ -763,14 +763,14 @@ function Step1Layout({
       </div>
 
       {/* Drawer */}
-      {isDrawerOpen && selectedDrawer && drawerContent[selectedDrawer as keyof typeof drawerContent] && (
+      {isDrawerOpen && selectedDrawer && (
         <SideDrawer
           open={isDrawerOpen}
           onClose={onDrawerClose}
           title={selectedDrawer}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent].overview}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent].whyItMatters}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent].sample}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || ''}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: '', text: '' }}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || ''}
         />
       )}
     </div>
@@ -805,7 +805,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               
               <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
               <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                Cuts 40%+ of "nice-to-have" items before Sprint 1; gives stakeholders a plan they trust.
+                Cuts 40%+ of &ldquo;nice-to-have&rdquo; items before Sprint 1; gives stakeholders a plan they trust.
               </p>
               
               <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
@@ -1059,15 +1059,15 @@ function Step3Layout({
         ))}
       </div>
 
-      {/* Side Drawer */}
-      {selectedDrawer && drawerContent[selectedDrawer as keyof typeof drawerContent] && (
+      {/* Drawer */}
+      {isDrawerOpen && selectedDrawer && (
         <SideDrawer
           open={isDrawerOpen}
           onClose={onDrawerClose}
           title={selectedDrawer}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent].overview}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent].whyItMatters}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent].sample}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || ''}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: '', text: '' }}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || ''}
         />
       )}
     </div>
