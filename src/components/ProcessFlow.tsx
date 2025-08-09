@@ -81,28 +81,142 @@ const processSteps: ProcessStep[] = [
 const drawerContent = {
   // Step 3 - Design & Prototyping
   'Wireframes': {
-    overview: 'Low-fidelity layouts that map user flows and define content hierarchy before visual design begins.',
+    overview: `## Executive Summary
+**One-liner:** I map flows and layouts in low-fi so we can argue about the right problems before pixels get precious.
+
+**What I do**
+• Frame the task to be solved; capture constraints and success criteria.
+• Sketch alt flows (happy, edge, error, empty, loading).
+• Use a mathematical spacing grid developers can implement 1:1.
+
+**Outcome**
+• Shared mental model of the experience and a faster path to "right".
+
+**Quick stat:** Avg. review/decision time: **<48h** · Rework in hi-fi: **–35%**
+
+---
+
+## Why wireframes?
+Fast iteration, clear trade-offs, cheap mistakes.
+
+**Artifacts**
+• Task flow diagram, screen skeletons, copy blocks, spacing tokens.
+
+**Definition of ready**
+• Flows signed off, edge states captured, event hooks planned.`,
     whyItMatters: { 
-      stat: '67%', 
-      text: 'faster design iteration when wireframes are tested early' 
+      stat: 'Shared mental model of the experience and a faster path to "right".', 
+      text: 'Fast iteration, clear trade-offs, cheap mistakes. Average review/decision time under 48 hours with 35% less rework in hi-fi.' 
     },
-    sample: 'Interactive wireframe gallery'
+    sample: `**Task flow diagram example**
+
+1. **Happy path:** Landing → Sign up → Email verify → Onboarding → Dashboard
+2. **Edge cases:** Email bounce, slow verify, skip onboarding
+3. **Error states:** Invalid email, network fail, timeout
+4. **Loading states:** Form submit, email send, verify check
+5. **Empty states:** No data, first-time user, cleared cache
+
+**Spacing tokens**
+• **Base unit:** 4px grid system
+• **Vertical rhythm:** 16px, 24px, 32px, 48px
+• **Container widths:** 320px, 768px, 1024px, 1280px`
   },
   'Click-through Prototype': {
-    overview: 'Interactive Figma prototypes that simulate the real experience for stakeholder buy-in and user testing.',
+    overview: `## Executive Summary
+**One-liner:** I turn the flow into an interactive prototype so we can test intent, comprehension, and friction—before we write code.
+
+**What I do**
+• Link primary tasks end-to-end; add realistic content and timing.
+• Tag success/failure questions for user tests.
+• Version variants behind named flags to A/B in research.
+
+**Outcome**
+• Evidence on what to ship now vs. explore later.
+
+**Quick stat:** Task success in pilot test: **92%** · Time-on-task: **–28%**
+
+---
+
+## Test plan
+5–8 users, think-aloud + task-based, decision metric pre-set.
+
+**What we look for**
+• Hesitation, backtracking, dead-ends, copy clarity.
+
+**Exit criteria**
+• ≥90% task success **or** blockers logged to backlog.`,
     whyItMatters: { 
-      stat: '3x', 
-      text: 'more effective user feedback compared to static designs' 
+      stat: 'Evidence on what to ship now vs. explore later.', 
+      text: 'Task success rate of 92% in pilot tests with 28% reduction in time-on-task through interactive validation before development.' 
     },
-    sample: 'Live prototype demo'
+    sample: `**Live prototype demo link**
+*Try the checkout flow →*
+
+**Research questions tagged**
+• Can users find the "Apply coupon" field?
+• Do they understand the shipping timeline?
+• Where do they get confused in address entry?
+• Is the payment method selection clear?
+
+**Variants tested**
+• **A:** Single-page checkout
+• **B:** Multi-step with progress bar
+• **C:** Accordion-style sections
+
+**Success metrics**
+• Task completion: **92%** (target: ≥90%)
+• Average time: **3.2 min** (28% faster than baseline)
+• Error recovery: **89%** found correction path`
   },
   'Design System': {
-    overview: 'Token-based component library ensuring visual consistency and faster developer handoff.',
+    overview: `## Executive Summary
+**One-liner:** I codify decisions into tokens and components so design and dev move as one.
+
+**What I do**
+• Define tokens (color, type, spacing, radius, motion) with semantic names.
+• Build composable components (Button, Field, Card, Modal) with states.
+• Provide code-ready specs + accessibility patterns.
+
+**Outcome**
+• Faster shipping, visual parity, fewer regressions.
+
+**Quick stat:** Reuse on new features: **80%** components · Parity Figma→Prod: **98%**
+
+---
+
+## Documentation includes
+• Usage rules, do/don't, props, a11y notes, event hooks.
+
+**Governance**
+• Change proposals, versioning, deprecation policy.`,
     whyItMatters: { 
-      stat: '40%', 
-      text: 'reduction in design-dev QA cycles with systematic approach' 
+      stat: 'Faster shipping, visual parity, fewer regressions.', 
+      text: '80% component reuse on new features with 98% visual parity between Figma and production through systematic token-based design.' 
     },
-    sample: 'Component library showcase'
+    sample: `**Core tokens**
+\`\`\`css
+/* Colors */
+--color-primary-500: #10b981;
+--color-gray-50: #f9fafb;
+--color-gray-900: #111827;
+
+/* Typography */
+--font-size-sm: 0.875rem;
+--font-weight-medium: 500;
+--line-height-relaxed: 1.625;
+
+/* Spacing */
+--space-4: 1rem;
+--space-6: 1.5rem;
+--space-8: 2rem;
+\`\`\`
+
+**Component example: Button**
+• **Variants:** Primary, Secondary, Ghost, Danger
+• **Sizes:** SM (32px), MD (40px), LG (48px)
+• **States:** Default, Hover, Active, Disabled, Loading
+• **Props:** size, variant, disabled, loading, icon, children
+• **A11y:** Focus ring, keyboard navigation, screen reader support`
   },
   
   // Step 5 - Launch & Optimization
@@ -703,36 +817,372 @@ function Step3Layout({
   )
 }
 
-// Step 4: PM Dashboard layout with accordion panels
+// Step 4: Implementation Support Dashboard
 function Step4Layout({ step }: { step: ProcessStep }) {
+  const [activeTab, setActiveTab] = useState('Daily Design QA')
+  const [selectedTask, setSelectedTask] = useState<any>(null)
+  const [isTaskDrawerOpen, setIsTaskDrawerOpen] = useState(false)
+  
+  const tabs = ['Daily Design QA', 'Dev Handoff', 'Bug Smash Friday']
+  
+  // Sample KPIs data
+  const sprintKPIs = [
+    {
+      key: 'design_qa_pass_rate',
+      label: 'Design QA pass rate',
+      value: '96%',
+      target: '≥95%',
+      delta: '+2pp',
+      tooltip: '% of UI checks that meet spec on first try (layout, tokens, states, a11y).',
+      trending: 'up'
+    },
+    {
+      key: 'avg_tickets_closed',
+      label: 'Avg tickets closed/sprint',
+      value: '38',
+      target: '35+',
+      delta: '+4',
+      tooltip: 'Rolling average tickets completed per sprint over last 3 sprints.',
+      trending: 'up'
+    },
+    {
+      key: 'figma_prod_parity',
+      label: 'Figma→Prod parity',
+      value: '98%',
+      target: '≥95%',
+      delta: '—',
+      tooltip: 'Visual match across tokens, spacing grid, variants. Snapshots generated from design tokens.',
+      trending: 'stable'
+    },
+    {
+      key: 'a11y_defects',
+      label: 'A11y open defects',
+      value: 'P0: 0 · P1: 2',
+      target: 'P0: 0',
+      delta: '—',
+      tooltip: 'Open accessibility defects by priority level.',
+      trending: 'stable'
+    },
+    {
+      key: 'release_confidence',
+      label: 'Release confidence',
+      value: '88/100',
+      target: '≥85',
+      delta: '+5',
+      tooltip: 'Composite score: tests passing, parity, unresolved severity, and perf guardrails.',
+      trending: 'up'
+    }
+  ]
+  
+  // Sample tasks data
+  const sampleTasks = [
+    {
+      id: 1,
+      title: 'Create Onboarding Flow',
+      ticketId: 'PR #234',
+      area: 'Navigation',
+      owner: { id: 1, name: 'Sarah Chen', avatar: 'SC' },
+      status: 'Completed',
+      severity: 'P1',
+      updatedAt: '2h ago',
+      links: { spec: '#', pr: '#', bug: null },
+      acceptance: ['User can complete signup flow', 'Email verification works', 'Onboarding steps are intuitive'],
+      screenshots: ['onboarding-1.png', 'onboarding-2.png'],
+      tests: ['Unit tests pass', 'E2E flow tested', 'A11y compliance verified'],
+      analyticsHooks: ['track_signup_start', 'track_step_completion', 'track_signup_success'],
+      dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Analytics instrumented']
+    },
+    {
+      id: 2,
+      title: 'Refactor Button Tokens',
+      ticketId: 'PR #235',
+      area: 'DS',
+      owner: { id: 2, name: 'Marcus Rodriguez', avatar: 'MR' },
+      status: 'In QA',
+      severity: 'P2',
+      updatedAt: '45m ago',
+      links: { spec: '#', pr: '#', bug: null }
+    },
+    {
+      id: 3,
+      title: 'Fix Modal Focus Trap',
+      ticketId: 'PR #236',
+      area: 'A11y',
+      owner: { id: 3, name: 'Alex Kim', avatar: 'AK' },
+      status: 'Fix Needed',
+      severity: 'P1',
+      updatedAt: '1d ago',
+      links: { spec: '#', pr: '#', bug: '#' }
+    },
+    {
+      id: 4,
+      title: 'Design System Docs',
+      ticketId: 'PR #237',
+      area: 'DS',
+      owner: { id: 4, name: 'Elena Vasquez', avatar: 'EV' },
+      status: 'Completed',
+      severity: 'P3',
+      updatedAt: '3h ago',
+      links: { spec: '#', pr: '#', bug: null }
+    },
+    {
+      id: 5,
+      title: 'Mobile Nav Polish',
+      ticketId: 'PR #238',
+      area: 'Navigation',
+      owner: { id: 5, name: 'Jordan Park', avatar: 'JP' },
+      status: 'In QA',
+      severity: 'P2',
+      updatedAt: '1d ago',
+      links: { spec: '#', pr: '#', bug: null }
+    }
+  ]
+  
   const accordionItems = [
     {
       title: 'Sprint Planning & Backlog Grooming',
-      content: 'Weekly ceremonies where we break down user stories, estimate effort, and sequence work based on dependencies and business impact. I facilitate these sessions to ensure design and technical constraints are surfaced early.'
+      content: 'RICE scoring, dependency mapping. Weekly ceremonies where we break down user stories, estimate effort, and sequence work based on dependencies and business impact. I facilitate these sessions to ensure design and technical constraints are surfaced early.'
     },
     {
       title: 'Daily Design QA & Handoff Reviews',
-      content: 'Every feature gets a design QA pass before and after implementation. I pair with engineers to review Figma specs, validate component usage, and ensure accessibility standards are met throughout the development cycle.'
+      content: 'Pixel parity checks, copy QA, a11y. Every feature gets a design QA pass before and after implementation. I pair with engineers to review Figma specs, validate component usage, and ensure accessibility standards are met throughout the development cycle.'
     },
     {
       title: 'Cross-functional Risk Assessment',
-      content: 'I maintain a running risk log that tracks potential blockers, technical debt implications, and scope creep. This includes monitoring for design system breaking changes and coordinating with stakeholders when trade-offs are needed.'
+      content: 'Perf budgets, analytics hooks, error paths. I maintain a running risk log that tracks potential blockers, technical debt implications, and scope creep. This includes monitoring for design system breaking changes and coordinating with stakeholders when trade-offs are needed.'
     }
   ]
+  
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Completed':
+        return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+      case 'In QA':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+      case 'Fix Needed':
+        return 'bg-rose-100 text-rose-800 dark:bg-rose-900/20 dark:text-rose-400'
+      case 'Blocked':
+        return 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400'
+      default:
+        return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300'
+    }
+  }
+  
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case 'P0':
+        return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+      case 'P1':
+        return 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400'
+      case 'P2':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
+      default:
+        return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300'
+    }
+  }
 
   return (
     <div className="space-y-8">
       {/* Intro paragraph */}
-      <p className="text-lg text-zinc-700 dark:text-zinc-300">{step.description}</p>
+      <p className="text-lg text-zinc-700 dark:text-zinc-300">
+        Design isn&apos;t done at hand-off. I pair with engineers and QA to ship pixel-perfect, test-covered increments—fast.
+      </p>
       
-      {/* PM Dashboard */}
-      <PMDashboard />
+      {/* Tab strip */}
+      <div className="border-b border-zinc-200 dark:border-zinc-700">
+        <nav className="-mb-px flex space-x-8">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === tab
+                  ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                  : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300 dark:text-zinc-400 dark:hover:text-zinc-300'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
+      </div>
       
-      {/* Accordion Panel */}
+      {/* Sprint header card */}
+      <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Sprint 47: Mobile Polish & A11y</h3>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
+                Active
+              </span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">3 days remaining</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* KPIs Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {sprintKPIs.map((kpi) => (
+            <div key={kpi.key} className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-sm font-medium text-zinc-900 dark:text-white">{kpi.label}</p>
+                <div className="flex items-center">
+                  {kpi.trending === 'up' && (
+                    <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                  )}
+                  {kpi.delta !== '—' && (
+                    <span className={`text-xs font-medium ml-1 ${kpi.trending === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500'}`}>
+                      {kpi.delta}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <p className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{kpi.value}</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">Target: {kpi.target}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Latest tasks table */}
+      <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+        <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Latest Tasks</h3>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
+            <thead className="bg-zinc-50 dark:bg-zinc-700">
+              <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Task / Ticket
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Area
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Owner
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Severity
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Updated
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-700">
+              {sampleTasks.map((task) => (
+                <tr 
+                  key={task.id} 
+                  className="hover:bg-zinc-50 dark:hover:bg-zinc-700 cursor-pointer"
+                  onClick={() => {
+                    setSelectedTask(task)
+                    setIsTaskDrawerOpen(true)
+                  }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div className="text-sm font-medium text-zinc-900 dark:text-white">{task.title}</div>
+                      <div className="text-sm text-zinc-500 dark:text-zinc-400">{task.ticketId}</div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm text-zinc-900 dark:text-white">{task.area}</span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-8 w-8">
+                        <div className="h-8 w-8 rounded-full bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center">
+                          <span className="text-xs font-medium text-emerald-800 dark:text-emerald-400">{task.owner.avatar}</span>
+                        </div>
+                      </div>
+                      <div className="ml-3">
+                        <div className="text-sm font-medium text-zinc-900 dark:text-white">{task.owner.name}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(task.status)}`}>
+                      {task.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getSeverityColor(task.severity)}`}>
+                      {task.severity}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
+                    {task.updatedAt}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
+                    <div className="flex space-x-2">
+                      <a href={task.links.pr} className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">PR</a>
+                      <a href={task.links.spec} className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">Spec</a>
+                      {task.links.bug && (
+                        <a href={task.links.bug} className="text-rose-600 hover:text-rose-700 dark:text-rose-400">Bug</a>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      {/* How I Support Implementation accordions */}
       <div className="mt-12">
         <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6">How I Support Implementation</h3>
         <AccordionPanel items={accordionItems} />
+        
+        {/* Skill chips */}
+        <div className="flex flex-wrap gap-2 mt-6">
+          {['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Instrumentation'].map((skill) => (
+            <span
+              key={skill}
+              className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
       </div>
+      
+      {/* Task Detail Drawer */}
+      {selectedTask && (
+        <SideDrawer
+          open={isTaskDrawerOpen}
+          onClose={() => setIsTaskDrawerOpen(false)}
+          title={selectedTask.title}
+          overview={selectedTask.acceptance ? `## Acceptance Criteria
+${selectedTask.acceptance.map((criteria: string) => `• ${criteria}`).join('\n')}
+
+## Test Cases
+${selectedTask.tests ? selectedTask.tests.map((test: string) => `• ${test}`).join('\n') : 'Tests pending'}
+
+## Analytics Hooks
+${selectedTask.analyticsHooks ? selectedTask.analyticsHooks.map((hook: string) => `• ${hook}`).join('\n') : 'No analytics hooks'}` : 'Task details loading...'}
+          whyItMatters={{ 
+            stat: `${selectedTask.severity} priority · ${selectedTask.area}`, 
+            text: `Owned by ${selectedTask.owner.name} · Last updated ${selectedTask.updatedAt}` 
+          }}
+          sampleContent={selectedTask.dodChecklist ? `## Definition of Done
+${selectedTask.dodChecklist.map((item: string) => `• ${item}`).join('\n')}
+
+**Screenshots:** ${selectedTask.screenshots ? selectedTask.screenshots.length : 0} attached
+**Links:** [Pull Request](${selectedTask.links.pr}) · [Specification](${selectedTask.links.spec})${selectedTask.links.bug ? ` · [Bug Report](${selectedTask.links.bug})` : ''}` : 'Definition of Done checklist pending...'}
+        />
+      )}
     </div>
   )
 }

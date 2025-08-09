@@ -2,6 +2,7 @@
 
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { formatText } from '@/lib/textFormatter'
 
 interface SideDrawerProps {
   open: boolean
@@ -57,10 +58,12 @@ export function SideDrawer({
                 <div className="relative mt-6 flex-1 px-4 sm:px-6">
                   {/* Overview Section */}
                   <div className="mb-8">
-                    <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Overview</h3>
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                      {overview}
-                    </p>
+                    <div 
+                      className="prose prose-sm prose-zinc dark:prose-invert max-w-none prose-headings:text-zinc-900 dark:prose-headings:text-white prose-p:text-zinc-600 dark:prose-p:text-zinc-400 prose-code:bg-zinc-100 dark:prose-code:bg-zinc-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-zinc-100 dark:prose-pre:bg-zinc-800 prose-ul:list-disc prose-ul:ml-4 prose-li:my-1"
+                      dangerouslySetInnerHTML={{ 
+                        __html: formatText(overview)
+                      }}
+                    />
                   </div>
 
                   {/* Why it matters Section */}
@@ -81,16 +84,12 @@ export function SideDrawer({
                   {/* Sample Section */}
                   <div className="mb-8">
                     <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Sample</h3>
-                    <div className="bg-zinc-100 dark:bg-zinc-800 rounded-lg h-48 mb-4 flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-zinc-200 dark:bg-zinc-700 rounded-lg mb-3 mx-auto flex items-center justify-center">
-                          <svg className="w-8 h-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                        <p className="text-sm text-zinc-500 dark:text-zinc-400">{sampleContent}</p>
-                      </div>
-                    </div>
+                    <div 
+                      className="prose prose-sm prose-zinc dark:prose-invert max-w-none prose-headings:text-zinc-900 dark:prose-headings:text-white prose-p:text-zinc-600 dark:prose-p:text-zinc-400 prose-code:bg-zinc-100 dark:prose-code:bg-zinc-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-zinc-100 dark:prose-pre:bg-zinc-800 prose-pre:text-sm prose-ul:list-disc prose-ul:ml-4 prose-li:my-1 bg-zinc-50 dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700 mb-4"
+                      dangerouslySetInnerHTML={{ 
+                        __html: formatText(sampleContent)
+                      }}
+                    />
                     <a
                       href="/portfolio"
                       className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
