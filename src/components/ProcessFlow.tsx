@@ -79,6 +79,7 @@ const processSteps: ProcessStep[] = [
 ]
 
 const drawerContent = {
+  // Step 3 - Design & Prototyping
   'Wireframes': {
     overview: 'Low-fidelity layouts that map user flows and define content hierarchy before visual design begins.',
     whyItMatters: { 
@@ -102,6 +103,114 @@ const drawerContent = {
       text: 'reduction in design-dev QA cycles with systematic approach' 
     },
     sample: 'Component library showcase'
+  },
+  
+  // Step 5 - Launch & Optimization
+  'Instrumentation': {
+    overview: `I don't guess; I instrument. Before (or immediately after) release, I wire up the critical events and state we need to see: sign-up start/finish, paywall views, plan selection, purchase completion, error surfaces, and user intent signals (search, filter, save). I also tag UX states—empty, loading, and error—so we can separate "no demand" from "bad experience."
+
+**What I set up**
+• **Events & properties:** consistent names, lower-snake-case, versioned.
+• **Funnels:** tasks users must complete (e.g., "Checkout").
+• **Baseline metrics:** conversion, drop-off by step, time-to-complete, repeat usage.
+• **Alerts:** threshold-based pings to Slack/Email when a KPI moves outside bounds.
+• **Dashboards:** exec view (outcomes) + team view (leading indicators).`,
+    whyItMatters: { 
+      stat: 'Design debates evaporate when we can **see** where users fall out.', 
+      text: 'Instrumentation turns opinions into a ranked list of opportunities, unlocks targeted experiments, and lets us measure the compounding effect of many small fixes.' 
+    },
+    sample: `**Core event schema (example)**
+\`\`\`json
+{
+  "event": "checkout_step_viewed",
+  "properties": {
+    "step": "shipping",
+    "device": "mobile",
+    "ab_variant": "B",
+    "country": "CA",
+    "session_cwv_lcp_ms": 1750
+  },
+  "user_id": "hash_abc123",
+  "timestamp": "2025-08-07T18:22:15Z"
+}
+\`\`\`
+
+**Starter KPIs**
+• Checkout completion (14-day rolling): +5.9%
+• Mobile LCP p75: 1.8s, INP p75: 180ms
+• Drop-off at "Shipping": –32% vs baseline`
+  },
+  'Experimentation': {
+    overview: `I design small, falsifiable experiments that answer one question at a time. Every test has a clear hypothesis, a primary decision metric, guardrails (SRM, runtime, and stop conditions), and a plan for what we'll ship if the variant wins—or what we'll learn if it doesn't.
+
+**How I run tests**
+• **Hypothesis:** "Changing X for Y audience will move Z metric by N%."
+• **Design:** A/B for copy/layout; multivariate sparingly; feature flags for safe rollout.
+• **Power:** Minimum detectable effect (MDE) set up-front; sample size & runtime calculator.
+• **Quality:** SRM checks, outlier handling, novelty & day-of-week effects.
+• **Decision:** Pre-registered rules (e.g., ship if p<0.05 and uplift ≥ +3%, else iterate).`,
+    whyItMatters: { 
+      stat: 'High-tempo', 
+      text: 'cadence of safe experiments produces compounding gains—and protects the roadmap from "big bet" detours based on hunches.' 
+    },
+    sample: `**Experiment card**
+• **Name:** Checkout copy—confidence nudges
+• **Hypothesis:** Reframing the CTA ("Complete order securely") will increase checkout completion by ≥ +3% on mobile.
+• **Variants:** Control / CTA-Secure
+• **Primary metric:** Checkout completion
+• **Guardrails:** Bounce rate, INP p75
+• **Status:** Running (day 5 of 10)
+• **Decision rule:** Ship if +3% uplift (p<0.05); else revert + test address-autocomplete next.`
+  },
+  'Performance & Quality': {
+    overview: `Speed and stability are UX. I track Core Web Vitals (LCP, INP, CLS), accessibility defects, broken flows, and top error surfaces. We fix the things users feel first and bake guardrails into CI so regressions don't creep back in.
+
+**What I monitor**
+• **CWV (p75):** LCP < 2.5s, INP < 200ms, CLS < 0.1 (mobile first).
+• **A11y:** Focus management, color contrast, semantic roles, screen-reader paths.
+• **Reliability:** Error rate, retry loops, dead-end screens, empty-state recovery.
+• **Release hygiene:** Pixel parity (Figma → Prod), visual regression snapshots.`,
+    whyItMatters: { 
+      stat: 'Fast, stable interfaces convert better, rank better', 
+      text: 'and reduce support costs. Performance wins often unlock conversion wins "for free."' 
+    },
+    sample: `**Mini metric table (last 14 days)**
+
+| Metric | p75 | Δ vs prev |
+|--------|-----|-----------|
+| LCP (mobile) | 1.8s | –0.4s |
+| INP (mobile) | 180ms | –35ms |
+| CLS (mobile) | 0.06 | –0.03 |
+| Error rate | 0.27% | –0.11pp |
+
+**A11y fixes shipped**
+• Focus trap for modal + keyboard escape
+• Tooltip: aria-describedby + hover/keyboard parity
+• Contrast: buttons raised from 3.3:1 → 4.8:1`
+  },
+  'Continuous Improvement': {
+    overview: `Insights only matter if they change the backlog. I convert findings into tickets, score with RICE, prune every sprint, and keep a living "impact log" so the team can see how small wins compound over time.
+
+**Operating cadence**
+• **Weekly triage:** Convert insights → tickets; link evidence.
+• **Prioritise:** RICE scoring; guard against pet projects.
+• **Ship:** Bundle small fixes into "UX polish" increments.
+• **Log impact:** Before/after metrics captured on each ticket.`,
+    whyItMatters: { 
+      stat: 'This closes the loop:', 
+      text: 'measure → learn → improve. It keeps momentum high and ensures we spend time where it actually moves the needle.' 
+    },
+    sample: `**Backlog (RICE-scored)**
+1. **Shorten address form (mobile)** — RICE 68
+   Insight: 40% drop-off at shipping; plan: 3-field version + autocomplete.
+2. **Product card image size** — RICE 41
+   Insight: Slow LCP on PLP; plan: next-gen format + lazy-load.
+3. **Password show/hide** — RICE 24
+   Insight: High error rate on create-account.
+
+**Impact log extract**
+• Address form redesign → –23% step drop-off; +11% task speed.
+• Image optimisation → –350ms LCP; +2.4% PLP → PDP click-through.`
   }
 }
 
@@ -207,7 +316,13 @@ function StepContent({
       case 4:
         return <Step4Layout step={step} />
       case 5:
-        return <Step5Layout step={step} />
+        return <Step5Layout 
+          step={step} 
+          selectedDrawer={selectedDrawer}
+          isDrawerOpen={isDrawerOpen}
+          onCardClick={onCardClick}
+          onDrawerClose={onDrawerClose}
+        />
       default:
         return <DefaultLayout step={step} />
     }
@@ -559,11 +674,64 @@ function Step4Layout({ step }: { step: ProcessStep }) {
 }
 
 // Step 5: KPI dashboard layout
-function Step5Layout({ step }: { step: ProcessStep }) {
+function Step5Layout({ 
+  step, 
+  selectedDrawer, 
+  isDrawerOpen, 
+  onCardClick, 
+  onDrawerClose 
+}: { 
+  step: ProcessStep
+  selectedDrawer: string | null
+  isDrawerOpen: boolean
+  onCardClick: (title: string) => void
+  onDrawerClose: () => void
+}) {
+
+  const cards = [
+    {
+      title: 'Instrumentation',
+      description: 'Events, funnels, and dashboards',
+      icon: (
+        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Experimentation',
+      description: 'A/B tests and feature flags',
+      icon: (
+        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Performance & Quality',
+      description: 'Core Web Vitals and A11y',
+      icon: (
+        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Continuous Improvement',
+      description: 'RICE scoring and impact logs',
+      icon: (
+        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      )
+    }
+  ]
+
   return (
     <div>
       <p className="text-lg text-zinc-700 dark:text-zinc-300 mb-8">{step.description}</p>
       
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 text-center">
           <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">+28%</div>
@@ -580,6 +748,46 @@ function Step5Layout({ step }: { step: ProcessStep }) {
           <div className="text-sm text-zinc-600 dark:text-zinc-400">User sentiment</div>
         </div>
       </div>
+
+      {/* Interactive Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {cards.map((card) => (
+          <button
+            key={card.title}
+            onClick={() => onCardClick(card.title)}
+            className="group relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-6 text-left transition-all hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-500/10"
+          >
+            <div className="flex items-start gap-4">
+              <div className="rounded-lg bg-zinc-100 dark:bg-zinc-700 p-3 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20 transition-colors">
+                {card.icon}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  {card.title}
+                </h3>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                  {card.description}
+                </p>
+              </div>
+              <svg className="w-5 h-5 text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </button>
+        ))}
+      </div>
+      
+      {/* Drawer */}
+      {isDrawerOpen && selectedDrawer && (
+        <SideDrawer
+          open={isDrawerOpen}
+          onClose={onDrawerClose}
+          title={selectedDrawer}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || ''}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: '', text: '' }}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || ''}
+        />
+      )}
     </div>
   )
 }
