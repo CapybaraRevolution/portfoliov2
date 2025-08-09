@@ -1,12 +1,24 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useRef, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
 import { SideDrawer } from '@/components/SideDrawer'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
+import { ProcessCard } from '@/components/ProcessCard'
+import { UsersIcon } from '@/components/icons/UsersIcon'
+import { UserIcon } from '@/components/icons/UserIcon'
+import { MagnifyingGlassIcon } from '@/components/icons/MagnifyingGlassIcon'
+import { CogIcon } from '@/components/icons/CogIcon'
+import { DocumentIcon } from '@/components/icons/DocumentIcon'
+import { CursorClickIcon } from '@/components/icons/CursorClickIcon'
+import { ShapesIcon } from '@/components/icons/ShapesIcon'
+import { ChartBarIcon } from '@/components/icons/ChartBarIcon'
+import { FlaskIcon } from '@/components/icons/FlaskIcon'
+import { BoltIcon } from '@/components/icons/BoltIcon'
+import { ArrowPathIcon } from '@/components/icons/ArrowPathIcon'
 
 interface ProcessStep {
   id: number
@@ -79,6 +91,190 @@ const processSteps: ProcessStep[] = [
 ]
 
 const drawerContent = {
+  // Step 1 - Discovery & Strategy
+  'Stakeholder Alignment': {
+    overview: `## Executive Summary
+**One-liner:** Align goals, metrics, and decision paths so delivery moves faster.
+
+**Why it matters**
+Great products die from misalignment, not bad ideas. Alignment creates a shared definition of "done," success metrics, and decision velocity.
+
+**What I do**
+• 45–60 min workshops to surface goals, non-goals, constraints, and assumptions
+• Map decision-makers/influencers; capture RACI & escalation paths
+• Define a north-star metric plus 2–3 guardrails
+• Spin up a living decision log to avoid re-debates
+• Timebox risks/unknowns into research spikes
+
+**Outputs & artifacts**
+• Alignment brief (goals, non-goals, guardrails, risks/assumptions)
+• RACI + stakeholder map
+• Success metrics and checkpoint cadence
+• Kickoff deck (concise, reusable)
+
+**Signals of success**
+• Every stakeholder can state the same primary goal & metric
+• Fewer blocked tickets; faster approvals in sprint 1–2
+• Decisions referenced instead of re-argued
+
+**Helpful inputs** Org chart, owners, current OKRs, prior strategy docs  
+**Tools** FigJam/Miro, Notion/Confluence, Loom`,
+    whyItMatters: { 
+      stat: 'Every stakeholder can state the same primary goal & metric', 
+      text: 'Fewer blocked tickets; faster approvals in sprint 1–2. Decisions referenced instead of re-argued.' 
+    },
+    sample: `**Workshop Agenda (45-60 min)**
+1. **Goals & Non-goals** (15 min) - What are we trying to achieve and explicitly NOT trying to achieve?
+2. **Success metrics** (15 min) - How will we know we've succeeded? What's our north star?
+3. **Constraints & assumptions** (10 min) - What can't we change? What are we assuming?
+4. **RACI mapping** (10 min) - Who's responsible, accountable, consulted, informed?
+5. **Decision framework** (5 min) - How do we make decisions and escalate when stuck?
+
+**Sample Output - Alignment Brief**
+• **Goal:** Increase checkout completion by 15% in Q2
+• **Non-goals:** Redesigning the entire cart experience
+• **North-star metric:** Checkout completion rate
+• **Guardrails:** Don't break mobile performance, maintain accessibility
+• **Key assumption:** Users abandon due to too many form fields
+• **Decision maker:** Product Manager (final call), Engineer Lead (feasibility), Designer (UX)`
+  },
+  'Persona & Journey Mapping': {
+    overview: `## Executive Summary
+**One-liner:** Turn anecdotes into patterns we can design for—and measure.
+
+**Why it matters**
+Personas and journeys turn scattered anecdotes into patterns we can design for—and measure.
+
+**What I do**
+• Tight interview script; 5–7 interviews to reach pattern clarity
+• Mine tickets & analytics for top tasks and friction points
+• Lightweight personas (needs, contexts, JTBD)
+• End-to-end journey with key moments and drop-offs
+• Pain-point heatmap tied to experiment ideas
+
+**Outputs & artifacts**
+• Personas (goals, contexts, constraints)
+• Journey map with stages, emotions, and per-stage metrics
+• JTBD statements and opportunity backlog
+
+**Signals of success**
+• Team can name the top 3 user goals and top 3 frictions
+• At least 5 instrumented events align to journey stages
+• First AB/test queue agreed and scheduled
+
+**Helpful inputs** GA4/Amplitude access, helpdesk exports, prior research  
+**Tools** Figma/FigJam, Dovetail/Notion, GA4/Amplitude`,
+    whyItMatters: { 
+      stat: 'Team can name the top 3 user goals and top 3 frictions', 
+      text: 'At least 5 instrumented events align to journey stages with first A/B test queue agreed and scheduled.' 
+    },
+    sample: `**Sample Persona: Sarah - SaaS Buyer**
+• **Role:** VP of Operations at 100-person company
+• **Goals:** Find tools that integrate with existing stack, minimize training time
+• **Contexts:** Evaluating during Q4 budget planning, needs approval from IT and Finance
+• **Jobs to be done:** "Help me evaluate if this tool will work with our Salesforce setup"
+• **Constraints:** 30-day evaluation window, limited time for demos
+
+**Journey Stage: Evaluation**
+• **Emotion:** Cautiously optimistic but pressed for time
+• **Actions:** Reviews pricing, checks integrations, schedules demo
+• **Drop-off points:** Complex pricing page (40% exit), integration unclear
+• **Instrumentation:** evaluation_started, pricing_viewed, demo_requested, integration_checked`
+  },
+  'Competitive Analysis': {
+    overview: `## Executive Summary
+**One-liner:** Reach parity where it's table-stakes and differentiate where it matters.
+
+**Why it matters**
+We must reach parity where it's table-stakes and differentiate where it matters.
+
+**What I do**
+• Select 5–8 relevant competitors and analogs
+• Heuristic evaluation of onboarding, IA, search, checkout/flows
+• Feature gap matrix (parity vs differentiator vs deprioritize)
+• Screenshot tear-downs of good patterns & cautionary examples
+• Note technical patterns (auth, pricing, performance hints)
+
+**Outputs & artifacts**
+• Feature gap matrix with impact/effort notes
+• Screens + commentary library
+• "Parity plan" and "Differentiator bets" list
+
+**Signals of success**
+• Clear list of table-stakes for MVP
+• 2–3 differentiators tied to measurable outcomes
+
+**Helpful inputs** Target positioning, segments, price bands  
+**Tools** Heuristic checklists, PageSpeed/Lighthouse, Wayback`,
+    whyItMatters: { 
+      stat: 'Clear list of table-stakes for MVP', 
+      text: '2–3 differentiators tied to measurable outcomes, helping focus effort where it returns value.' 
+    },
+    sample: `**Feature Gap Matrix Sample**
+| Feature | Competitor A | Competitor B | Us | Priority |
+|---------|-------------|-------------|-------|----------|
+| Single sign-on | ✅ | ✅ | ❌ | Parity (P0) |
+| Mobile app | ✅ | ❌ | ❌ | Differentiator (P1) |
+| API webhooks | ✅ | ✅ | ✅ | Parity (Done) |
+| Real-time collab | ❌ | ✅ | ❌ | Differentiator (P2) |
+
+**Differentiator Bets:**
+1. **Mobile-first experience** - None of our competitors have a polished mobile app
+2. **One-click integrations** - Current solutions require developer setup
+3. **Proactive insights** - Others are reactive; we can predict and prevent issues`
+  },
+  'System Analysis': {
+    overview: `## Executive Summary
+**One-liner:** Map constraints, quick wins, and integration risk before we design.
+
+**Why it matters**
+Design lives inside systems. Mapping current vs future reveals constraints, quick wins, and integration risk.
+
+**What I do**
+• Current-state context diagram (domains, data stores, auth, services)
+• Identify coupling points, rate-limits, permission edges, vendor risks
+• Review analytics pipeline & event taxonomy; spot blind spots
+• Draft future-state deltas and a low-risk migration path
+• List "fast-forward" wins the team can ship immediately
+
+**Outputs & artifacts**
+• Current/Future system diagram (C4-ish, lightweight)
+• Glossary + constraints doc (what we must honor)
+• Tracking plan (events, properties, IDs)
+• Quick-wins list with owners and effort
+
+**Signals of success**
+• Fewer "unknowns" entering sprint planning
+• Events instrumented for Step 5 measurement
+• Reduced rework from overlooked constraints
+
+**Helpful inputs** High-level architecture, API docs, data dictionary, tracking snippets  
+**Tools** Excalidraw/Lucidchart, Postman, GA4/Amplitude, Notion`,
+    whyItMatters: { 
+      stat: 'Fewer "unknowns" entering sprint planning', 
+      text: 'Events instrumented for measurement with reduced rework from overlooked constraints.' 
+    },
+    sample: `**System Context Diagram**
+\`\`\`
+[User Auth] → [API Gateway] → [Core App]
+     ↓              ↓             ↓
+[Identity Provider] [Rate Limiter] [Database]
+                                    ↓
+                              [Analytics Pipeline]
+\`\`\`
+
+**Constraints Document**
+• **Rate limits:** 100 API calls/min per user
+• **Auth:** Must support SAML and OAuth
+• **Data residency:** EU users' data stays in EU
+• **Performance:** P95 response time < 200ms
+
+**Quick Wins Identified**
+1. **Add loading states** - Frontend only, 2-day effort
+2. **Improve error messages** - Copy changes, 1-day effort  
+3. **Cache user preferences** - Backend change, 3-day effort`
+  },
+  
   // Step 3 - Design & Prototyping
   'Wireframes': {
     overview: `## Executive Summary
@@ -220,175 +416,109 @@ Fast iteration, clear trade-offs, cheap mistakes.
   },
   
   // Step 5 - Launch & Optimization
-  'Instrumentation': {
+  'Instrumentation & Metrics': {
     overview: `## Executive Summary
-**One-liner:** I wire up the events, funnels, and baselines that turn opinions into a ranked list of opportunities.
+**One-liner:** Measure what matters from day one.
+
+**Why it matters**
+Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.
 
 **What I do**
-• Map the critical path (e.g., signup → onboarding → purchase) and tag each step.
-• Standardize event names + properties; add guardrails/alerts for KPI drift.
-• Establish baselines for conversion, time-on-task, and drop-offs per step.
+• Define success metrics tied to user outcomes
+• Event schema (names, properties, IDs) and QA checklist
+• Dashboard tiles for adoption, task success, and friction
 
-**Outcome**
-• We can see exactly *where* users struggle and *how much* it costs.
-
-**Quick stat:** Baseline checkout completion: **42.3%** · Shipping step drop-off: **37%**
-
----
-
-## Overview
-I don't guess; I instrument. Before (or immediately after) release, I wire up the critical events and state we need to see: sign-up start/finish, paywall views, plan selection, purchase completion, error surfaces, and user intent signals (search, filter, save). I also tag UX states—empty, loading, and error—so we can separate "no demand" from "bad experience."
-
-**What I set up**
-• **Events & properties:** consistent names, lower-snake-case, versioned.
-• **Funnels:** tasks users must complete (e.g., "Checkout").
-• **Baseline metrics:** conversion, drop-off by step, time-to-complete, repeat usage.
-• **Alerts:** threshold-based pings to Slack/Email when a KPI moves outside bounds.
-• **Dashboards:** exec view (outcomes) + team view (leading indicators).`,
+**Outputs & artifacts** Tracking plan, event QA, dashboard  
+**Signals of success** Clear baselines, reliable trend lines  
+**Tools** GA4/Amplitude, BigQuery (as needed)`,
     whyItMatters: { 
-      stat: 'Design debates evaporate when we can **see** where users fall out.', 
-      text: 'Instrumentation turns opinions into a ranked list of opportunities, unlocks targeted experiments, and lets us measure the compounding effect of many small fixes.' 
+      stat: 'Clear baselines, reliable trend lines', 
+      text: 'Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.' 
     },
-    sample: `**Core event schema (example)**
+    sample: `**Sample Tracking Plan**
 \`\`\`json
 {
-  "event": "checkout_step_viewed",
+  "event": "checkout_step_completed",
   "properties": {
     "step": "shipping",
-    "device": "mobile",
-    "ab_variant": "B",
-    "country": "CA",
-    "session_cwv_lcp_ms": 1750
+    "method": "guest_checkout",
+    "device_type": "mobile",
+    "session_duration_ms": 45000
   },
-  "user_id": "hash_abc123",
-  "timestamp": "2025-08-07T18:22:15Z"
+  "user_id": "user_12345"
 }
 \`\`\`
 
-**Starter KPIs**
-• Checkout completion (14-day rolling): +5.9%
-• Mobile LCP p75: 1.8s, INP p75: 180ms
-• Drop-off at "Shipping": –32% vs baseline`
+**Dashboard KPIs**
+• Checkout completion rate: 67.3% (+2.1pp vs last month)
+• Average time to purchase: 4.2 minutes (-15s vs baseline)
+• Mobile vs desktop completion: 64% vs 71%
+• Top drop-off step: Payment method selection (23% exit)`
   },
-  'Experimentation': {
+  'Experimentation & A/B Testing': {
     overview: `## Executive Summary
-**One-liner:** I run small, falsifiable tests to de-risk decisions and compound gains.
+**One-liner:** Learn fast, ship what works.
 
-**How I test**
-• Clear hypothesis: *Changing X for Y audience moves Z metric by N%*.
-• Guardrails: SRM checks, runtime & sample size targets, stop conditions.
-• Decision rules agreed up-front (ship/revert/iterate).
+**Why it matters**
+AB tests validate assumptions and focus effort where it returns value.
 
-**Outcome**
-• Faster learning, safer rollouts, less roadmap thrash.
+**What I do**
+• Hypothesis framing, sample size and power checks
+• Test design with guardrails and success criteria
+• Result reads and next-step recommendations
 
-**Quick stat:** "Secure CTA" variant: **+5.9%** checkout completion (p<0.05).
-
----
-
-## Overview
-I design small, falsifiable experiments that answer one question at a time. Every test has a clear hypothesis, a primary decision metric, guardrails (SRM, runtime, and stop conditions), and a plan for what we'll ship if the variant wins—or what we'll learn if it doesn't.
-
-**How I run tests**
-• **Hypothesis:** "Changing X for Y audience will move Z metric by N%."
-• **Design:** A/B for copy/layout; multivariate sparingly; feature flags for safe rollout.
-• **Power:** Minimum detectable effect (MDE) set up-front; sample size & runtime calculator.
-• **Quality:** SRM checks, outlier handling, novelty & day-of-week effects.
-• **Decision:** Pre-registered rules (e.g., ship if p<0.05 and uplift ≥ +3%, else iterate).`,
+**Outputs & artifacts** Test briefs, experiment configs, readouts  
+**Signals of success** Statistically valid wins; fewer "maybe" launches  
+**Tools** Optimizely/LaunchDarkly, internal frameworks`,
     whyItMatters: { 
-      stat: 'A high-tempo cadence of safe experiments produces compounding gains—', 
-      text: 'and protects the roadmap from "big bet" detours based on hunches.' 
+      stat: 'Statistically valid wins; fewer "maybe" launches', 
+      text: 'A/B tests validate assumptions and focus effort where it returns measurable value.' 
     },
-    sample: `**Experiment card**
-• **Name:** Checkout copy—confidence nudges
-• **Hypothesis:** Reframing the CTA ("Complete order securely") will increase checkout completion by ≥ +3% on mobile.
-• **Variants:** Control / CTA-Secure
-• **Primary metric:** Checkout completion
-• **Guardrails:** Bounce rate, INP p75
-• **Status:** Running (day 5 of 10)
-• **Decision rule:** Ship if +3% uplift (p<0.05); else revert + test address-autocomplete next.`
-  },
-  'Performance & Quality': {
-    overview: `## Executive Summary
-**One-liner:** Speed, accessibility, and stability are UX; I monitor and harden them in CI.
+    sample: `**Experiment: Checkout CTA Copy**
+• **Hypothesis:** Changing "Place Order" to "Complete Purchase Securely" will increase checkout completion by ≥3% on mobile
+• **Variants:** Control (Place Order) vs Treatment (Complete Purchase Securely)
+• **Sample size:** 10,000 users per variant
+• **Duration:** 14 days
+• **Primary metric:** Checkout completion rate
+• **Guardrails:** Bounce rate ≤5% increase, page load time ≤100ms increase
 
-**What I monitor**
-• **CWV p75:** LCP < 2.5s, INP < 200ms, CLS < 0.1 (mobile first).
-• Accessibility checks: focus order, roles, contrast, SR announcements.
-• Reliability signals: error rate, dead-end screens, retry loops.
-
-**Outcome**
-• Faster pages, fewer support tickets, higher conversion.
-
-**Quick stat:** Mobile LCP p75 **1.8s** · INP p75 **180ms** · Error rate **0.27%**.
-
----
-
-## Overview
-Speed and stability are UX. I track Core Web Vitals (LCP, INP, CLS), accessibility defects, broken flows, and top error surfaces. We fix the things users feel first and bake guardrails into CI so regressions don't creep back in.
-
-**What I monitor**
-• **CWV (p75):** LCP < 2.5s, INP < 200ms, CLS < 0.1 (mobile first).
-• **A11y:** Focus management, color contrast, semantic roles, screen-reader paths.
-• **Reliability:** Error rate, retry loops, dead-end screens, empty-state recovery.
-• **Release hygiene:** Pixel parity (Figma → Prod), visual regression snapshots.`,
-    whyItMatters: { 
-      stat: 'Fast, stable interfaces convert better, rank better,', 
-      text: 'and reduce support costs. Performance wins often unlock conversion wins "for free."' 
-    },
-    sample: `**Mini metric table (last 14 days)**
-
-| Metric | p75 | Δ vs prev |
-|--------|-----|-----------|
-| LCP (mobile) | 1.8s | –0.4s |
-| INP (mobile) | 180ms | –35ms |
-| CLS (mobile) | 0.06 | –0.03 |
-| Error rate | 0.27% | –0.11pp |
-
-**A11y fixes shipped**
-• Focus trap for modal + keyboard escape
-• Tooltip: aria-describedby + hover/keyboard parity
-• Contrast: buttons raised from 3.3:1 → 4.8:1`
+**Results:**
+• Control: 64.2% completion rate
+• Treatment: 67.8% completion rate
+• **Lift:** +3.6pp (p=0.003, statistically significant)
+• **Decision:** Ship treatment to 100% of users`
   },
   'Continuous Improvement': {
     overview: `## Executive Summary
-**One-liner:** Insights become a prioritized backlog; we prune weekly and ship polish every sprint.
+**One-liner:** Close the loop and keep momentum.
 
-**How I operationalize**
-• Convert findings → tickets with evidence links.
-• Score with **RICE**, bundle quick wins, and publish an **impact log**.
-• Close the loop: before/after metrics attached to each ticket.
+**Why it matters**
+We fold learning into the roadmap so wins scale and misses don't repeat.
 
-**Outcome**
-• Momentum stays high and work concentrates where it moves the needle.
+**What I do**
+• Post-launch reviews; backlog grooming with RICE
+• UX debt log and prioritization cadence
+• Quarterly theme updates based on evidence
 
-**Quick stat:** Address form simplification → **–23%** step drop-off, **+11%** task speed.
-
----
-
-## Overview
-Insights only matter if they change the backlog. I convert findings into tickets, score with RICE, prune every sprint, and keep a living "impact log" so the team can see how small wins compound over time.
-
-**Operating cadence**
-• **Weekly triage:** Convert insights → tickets; link evidence.
-• **Prioritise:** RICE scoring; guard against pet projects.
-• **Ship:** Bundle small fixes into "UX polish" increments.
-• **Log impact:** Before/after metrics captured on each ticket.`,
+**Outputs & artifacts** Post-launch report, updated roadmap, UX debt board  
+**Signals of success** Steady metric lift; fewer regressions  
+**Tools** Notion/Jira, RICE scoring, dashboards`,
     whyItMatters: { 
-      stat: 'This closes the loop:', 
-      text: 'measure → learn → improve. It keeps momentum high and ensures we spend time where it actually moves the needle.' 
+      stat: 'Steady metric lift; fewer regressions', 
+      text: 'Learning folds into the roadmap so wins scale and misses don\'t repeat.' 
     },
-    sample: `**Backlog (RICE-scored)**
-1. **Shorten address form (mobile)** — RICE 68
-   Insight: 40% drop-off at shipping; plan: 3-field version + autocomplete.
-2. **Product card image size** — RICE 41
-   Insight: Slow LCP on PLP; plan: next-gen format + lazy-load.
-3. **Password show/hide** — RICE 24
-   Insight: High error rate on create-account.
+    sample: `**RICE-Scored Backlog**
+| Initiative | Reach | Impact | Confidence | Effort | Score |
+|------------|-------|--------|------------|--------|-------|
+| Mobile checkout polish | 8000 | 3 | 80% | 3 weeks | 64 |
+| Payment method icons | 8000 | 2 | 90% | 1 week | 144 |
+| Guest checkout flow | 3000 | 4 | 70% | 4 weeks | 21 |
 
-**Impact log extract**
-• Address form redesign → –23% step drop-off; +11% task speed.
-• Image optimisation → –350ms LCP; +2.4% PLP → PDP click-through.`
+**Monthly Improvement Rhythm**
+• Week 1: Analyze metrics, identify top 3 friction points
+• Week 2: Prioritize fixes using RICE, plan experiments
+• Week 3: Design and implement highest-impact changes
+• Week 4: Launch A/B tests, measure results, update backlog`
   }
 }
 
@@ -480,7 +610,13 @@ function StepContent({
   const getStepLayout = () => {
     switch (step.id) {
       case 1:
-        return <Step1Layout step={step} />
+        return <Step1Layout 
+          step={step} 
+          selectedDrawer={selectedDrawer}
+          isDrawerOpen={isDrawerOpen}
+          onCardClick={onCardClick}
+          onDrawerClose={onDrawerClose}
+        />
       case 2:
         return <Step2Layout step={step} />
       case 3:
@@ -566,79 +702,75 @@ function AnimatedCard({
   )
 }
 
-// Step 1: Bento 2×2 grid layout
-function Step1Layout({ step }: { step: ProcessStep }) {
+// Step 1: Process cards with drawer functionality
+function Step1Layout({ 
+  step, 
+  selectedDrawer, 
+  isDrawerOpen, 
+  onCardClick, 
+  onDrawerClose 
+}: { 
+  step: ProcessStep
+  selectedDrawer: string | null
+  isDrawerOpen: boolean
+  onCardClick: (title: string) => void
+  onDrawerClose: () => void
+}) {
+  const cards = [
+    {
+      title: 'Stakeholder Alignment',
+      subtitle: 'Align goals, metrics, and decision paths so delivery moves faster.',
+      icon: UsersIcon,
+      pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
+    },
+    {
+      title: 'Persona & Journey Mapping',
+      subtitle: 'Turn anecdotes into patterns we can design for—and measure.',
+      icon: UserIcon,
+      pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
+    },
+    {
+      title: 'Competitive Analysis',
+      subtitle: 'Reach parity where it\'s table-stakes and differentiate where it matters.',
+      icon: MagnifyingGlassIcon,
+      pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
+    },
+    {
+      title: 'System Analysis',
+      subtitle: 'Map constraints, quick wins, and integration risk before we design.',
+      icon: CogIcon,
+      pattern: { y: 22, squares: [[0, 1]] as Array<[number, number]> }
+    }
+  ]
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Bento 2x2 Grid */}
-      <div className="lg:col-span-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <AnimatedCard
-            delay={0}
-            title="Stakeholder Alignment"
-            description="In 45-minute discovery workshops we surface hidden assumptions, define a north-star metric, and leave with one shared definition of 'done.'"
-            icon={
-              <div className="bg-emerald-100 dark:bg-emerald-900/30">
-                <svg className="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
-              </div>
-            }
-          />
-          
-          <AnimatedCard
-            delay={0.1}
-            title="Persona & Journey Mapping"
-            description="Interviews, diary studies, and support-ticket sleuthing crystallise who's using the product and where the friction lives."
-            icon={
-              <div className="bg-blue-100 dark:bg-blue-900/30">
-                <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-            }
-          />
-          
-          <AnimatedCard
-            delay={0.2}
-            title="Competitive Analysis"
-            description="A feature-gap matrix shows where we must reach parity and - more importantly - where we can leapfrog."
-            icon={
-              <div className="bg-purple-100 dark:bg-purple-900/30">
-                <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-            }
-          />
-          
-          <AnimatedCard
-            delay={0.3}
-            title="System Analysis"
-            description="Current-vs-future system diagrams expose quick wins and flag costly detours before Sprint 1 even kicks off."
-            icon={
-              <div className="bg-orange-100 dark:bg-orange-900/30">
-                <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
-              </div>
-            }
-          />
-        </div>
-      </div>
+    <div>
+      <p className="text-lg text-zinc-700 dark:text-zinc-300 mb-8">{step.description}</p>
       
-      {/* Why it matters highlight card */}
-      <div className="lg:col-span-1">
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-          <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100 mb-4">Why it matters</h3>
-          <p className="text-sm text-emerald-800 dark:text-emerald-200 mb-4">
-            Teams often build elegant solutions to the wrong problem.
-          </p>
-          <p className="text-sm text-emerald-700 dark:text-emerald-300">
-            A two-week discovery sprint typically saves 4–6 weeks of rework and earns stakeholder trust on day 1.
-          </p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {cards.map((card) => (
+          <ProcessCard
+            key={card.title}
+            title={card.title}
+            subtitle={card.subtitle}
+            icon={card.icon}
+            pattern={card.pattern}
+            onClick={() => onCardClick(card.title)}
+          />
+        ))}
       </div>
+
+      {/* Drawer */}
+      {isDrawerOpen && selectedDrawer && drawerContent[selectedDrawer as keyof typeof drawerContent] && (
+        <SideDrawer
+          open={isDrawerOpen}
+          onClose={onDrawerClose}
+          title={selectedDrawer}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent].overview}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent].whyItMatters}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent].sample}
+        />
+      )}
     </div>
   )
 }
@@ -741,34 +873,24 @@ function Step3Layout({
   onCardClick: (title: string) => void
   onDrawerClose: () => void
 }) {
-
   const cards = [
     {
       title: 'Wireframes',
-      description: 'Low-fi layouts and user flows',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-        </svg>
-      )
+      subtitle: 'Fast, precise structure to align teams and flag risks early.',
+      icon: DocumentIcon,
+      pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Click-through Prototype',
-      description: 'Interactive Figma prototype',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-        </svg>
-      )
+      subtitle: 'Make journeys tangible for decision-makers and test users.',
+      icon: CursorClickIcon,
+      pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Design System',
-      description: 'Token-based component library',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-        </svg>
-      )
+      subtitle: 'Reusable components that speed delivery and keep UX consistent.',
+      icon: ShapesIcon,
+      pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     }
   ]
 
@@ -778,27 +900,14 @@ function Step3Layout({
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {cards.map((card) => (
-          <motion.button
+          <ProcessCard
             key={card.title}
+            title={card.title}
+            subtitle={card.subtitle}
+            icon={card.icon}
+            pattern={card.pattern}
             onClick={() => onCardClick(card.title)}
-            className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 text-left transition-all duration-200 hover:border-emerald-500 dark:hover:border-emerald-400 hover:shadow-lg group"
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <div className="bg-zinc-100 dark:bg-zinc-700 rounded-lg h-32 mb-4 flex items-center justify-center group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20 transition-colors duration-200">
-              <div className="group-hover:text-emerald-500 transition-colors duration-200">
-                {card.icon}
-              </div>
-            </div>
-            <h3 className="font-semibold text-zinc-900 dark:text-white mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">{card.title}</h3>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">{card.description}</p>
-            <div className="mt-3 flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              Learn more
-              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </motion.button>
+          />
         ))}
       </div>
 
@@ -1202,43 +1311,24 @@ function Step5Layout({
   onCardClick: (title: string) => void
   onDrawerClose: () => void
 }) {
-
   const cards = [
     {
-      title: 'Instrumentation',
-      description: 'Events, funnels, and dashboards',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-      )
+      title: 'Instrumentation & Metrics',
+      subtitle: 'Measure what matters from day one.',
+      icon: ChartBarIcon,
+      pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
-      title: 'Experimentation',
-      description: 'A/B tests and feature flags',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-        </svg>
-      )
-    },
-    {
-      title: 'Performance & Quality',
-      description: 'Core Web Vitals and A11y',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      )
+      title: 'Experimentation & A/B Testing',
+      subtitle: 'Learn fast, ship what works.',
+      icon: FlaskIcon,
+      pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Continuous Improvement',
-      description: 'RICE scoring and impact logs',
-      icon: (
-        <svg className="w-12 h-12 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-      )
+      subtitle: 'Close the loop and keep momentum.',
+      icon: ArrowPathIcon,
+      pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     }
   ]
 
@@ -1265,30 +1355,16 @@ function Step5Layout({
       </div>
 
       {/* Interactive Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {cards.map((card) => (
-          <button
+          <ProcessCard
             key={card.title}
+            title={card.title}
+            subtitle={card.subtitle}
+            icon={card.icon}
+            pattern={card.pattern}
             onClick={() => onCardClick(card.title)}
-            className="group relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-6 text-left transition-all hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-lg hover:shadow-emerald-500/10"
-          >
-            <div className="flex items-start gap-4">
-              <div className="rounded-lg bg-zinc-100 dark:bg-zinc-700 p-3 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-900/20 transition-colors">
-                {card.icon}
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                  {card.title}
-                </h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-                  {card.description}
-                </p>
-              </div>
-              <svg className="w-5 h-5 text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </button>
+          />
         ))}
       </div>
       
@@ -1316,23 +1392,46 @@ function DefaultLayout({ step }: { step: ProcessStep }) {
   )
 }
 
-export function ProcessFlow() {
+function ProcessFlowContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [activeStep, setActiveStep] = useState(1)
   
-  // State for Step 3 drawer functionality
+  // State for drawer functionality across all steps
   const [selectedDrawer, setSelectedDrawer] = useState<string | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  // Drawer handlers for Step 3
+  // URL parameter handling
+  useEffect(() => {
+    const panel = searchParams.get('panel')
+    if (panel) {
+      setSelectedDrawer(panel)
+      setIsDrawerOpen(true)
+    } else {
+      setIsDrawerOpen(false)
+      setSelectedDrawer(null)
+    }
+  }, [searchParams])
+
+  // Drawer handlers for all steps
   const handleCardClick = (title: string) => {
     setSelectedDrawer(title)
     setIsDrawerOpen(true)
+    
+    // Update URL with panel parameter
+    const url = new URL(window.location.href)
+    url.searchParams.set('panel', title.toLowerCase().replace(/\s+/g, '-').replace('&', ''))
+    window.history.pushState(null, '', url.toString())
   }
 
   const handleDrawerClose = () => {
     setIsDrawerOpen(false)
     setSelectedDrawer(null)
+    
+    // Remove panel parameter from URL
+    const url = new URL(window.location.href)
+    url.searchParams.delete('panel')
+    window.history.pushState(null, '', url.toString())
   }
 
   // Handle URL hash sync
@@ -1410,5 +1509,13 @@ export function ProcessFlow() {
         </div>
       </div>
     </div>
+  )
+}
+
+export function ProcessFlow() {
+  return (
+    <Suspense fallback={<div className="animate-pulse h-96 bg-zinc-100 dark:bg-zinc-800 rounded-xl" />}>
+      <ProcessFlowContent />
+    </Suspense>
   )
 }
