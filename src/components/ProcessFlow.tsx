@@ -721,7 +721,7 @@ function Step1Layout({
   const cards = [
     {
       title: 'Stakeholder Alignment',
-      subtitle: 'Align goals, measures, and decision paths so delivery moves faster.'
+      subtitle: 'Align goals, measures, and decision paths so delivery moves faster.',
       icon: UsersIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
