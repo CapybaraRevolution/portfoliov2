@@ -24,9 +24,9 @@ export function SideDrawer({
   whyItMatters, 
   sampleContent 
 }: SideDrawerProps) {
-  // Analytics hook (optional)
+  // Close handler
   const handleDrawerClose = () => {
-    // Optional analytics: drawer_closed
+    // Optional tracking: drawer_closed
     onClose()
   }
 

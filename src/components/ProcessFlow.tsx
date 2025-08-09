@@ -96,10 +96,10 @@ const drawerContent = {
   // Step 1 - Discovery & Strategy
   'Stakeholder Alignment': {
     overview: `## Executive Summary
-**One-liner:** Align goals, metrics, and decision paths so delivery moves faster.
+**One-liner:** Align goals, measures, and decision paths so delivery moves faster.
 
 **Why it matters**
-Great products die from misalignment, not bad ideas. Alignment creates a shared definition of "done," success metrics, and decision velocity.
+Great products die from misalignment, not bad ideas. Alignment creates a shared definition of "done," success measures, and decision velocity.
 
 **What I do**
 • 45–60 min workshops to surface goals, non-goals, constraints, and assumptions
@@ -111,7 +111,7 @@ Great products die from misalignment, not bad ideas. Alignment creates a shared 
 **Outputs & artifacts**
 • Alignment brief (goals, non-goals, guardrails, risks/assumptions)
 • RACI + stakeholder map
-• Success metrics and checkpoint cadence
+• Success measures and checkpoint cadence
 • Kickoff deck (concise, reusable)
 
 **Signals of success**
@@ -127,7 +127,7 @@ Great products die from misalignment, not bad ideas. Alignment creates a shared 
     },
     sample: `**Workshop Agenda (45-60 min)**
 1. **Goals & Non-goals** (15 min) - What are we trying to achieve and explicitly NOT trying to achieve?
-2. **Success metrics** (15 min) - How will we know we've succeeded? What's our north star?
+2. **Success measures** (15 min) - How will we know we've succeeded? What's our north star?
 3. **Constraints & assumptions** (10 min) - What can't we change? What are we assuming?
 4. **RACI mapping** (10 min) - Who's responsible, accountable, consulted, informed?
 5. **Decision framework** (5 min) - How do we make decisions and escalate when stuck?
@@ -149,14 +149,14 @@ Personas and journeys turn scattered anecdotes into patterns we can design for�
 
 **What I do**
 • Tight interview script; 5–7 interviews to reach pattern clarity
-• Mine tickets & analytics for top tasks and friction points
+• Mine tickets & usage data for top tasks and friction points
 • Lightweight personas (needs, contexts, JTBD)
 • End-to-end journey with key moments and drop-offs
 • Pain-point heatmap tied to experiment ideas
 
 **Outputs & artifacts**
 • Personas (goals, contexts, constraints)
-• Journey map with stages, emotions, and per-stage metrics
+• Journey map with stages, emotions, and per-stage measures
 • JTBD statements and opportunity backlog
 
 **Signals of success**
@@ -164,8 +164,8 @@ Personas and journeys turn scattered anecdotes into patterns we can design for�
 • At least 5 instrumented events align to journey stages
 • First AB/test queue agreed and scheduled
 
-**Helpful inputs** GA4/Amplitude access, helpdesk exports, prior research  
-**Tools** Figma/FigJam, Dovetail/Notion, GA4/Amplitude`,
+**Helpful inputs** Data platform access, helpdesk exports, prior research  
+**Tools** Figma/FigJam, Dovetail/Notion, data platforms`,
     whyItMatters: { 
       stat: 'Team can name the top 3 user goals and top 3 frictions', 
       text: 'At least 5 instrumented events align to journey stages with first A/B test queue agreed and scheduled.' 
@@ -235,7 +235,7 @@ Design lives inside systems. Mapping current vs future reveals constraints, quic
 **What I do**
 • Current-state context diagram (domains, data stores, auth, services)
 • Identify coupling points, rate-limits, permission edges, vendor risks
-• Review analytics pipeline & event taxonomy; spot blind spots
+• Review data pipeline & event taxonomy; spot blind spots
 • Draft future-state deltas and a low-risk migration path
 • List "fast-forward" wins the team can ship immediately
 
@@ -250,8 +250,8 @@ Design lives inside systems. Mapping current vs future reveals constraints, quic
 • Events instrumented for Step 5 measurement
 • Reduced rework from overlooked constraints
 
-**Helpful inputs** High-level architecture, API docs, data dictionary, tracking snippets  
-**Tools** Excalidraw/Lucidchart, Postman, GA4/Amplitude, Notion`,
+**Helpful inputs** High-level architecture, API docs, data dictionary, event snippets  
+**Tools** Excalidraw/Lucidchart, Postman, data platforms, Notion`,
     whyItMatters: { 
       stat: 'Fewer "unknowns" entering sprint planning', 
       text: 'Events instrumented for measurement with reduced rework from overlooked constraints.' 
@@ -262,7 +262,7 @@ Design lives inside systems. Mapping current vs future reveals constraints, quic
      ↓              ↓             ↓
 [Identity Provider] [Rate Limiter] [Database]
                                     ↓
-                              [Analytics Pipeline]
+                              [Data Pipeline]
 \`\`\`
 
 **Constraints Document**
@@ -361,7 +361,7 @@ Fast iteration, clear trade-offs, cheap mistakes.
 • **B:** Multi-step with progress bar
 • **C:** Accordion-style sections
 
-**Success metrics**
+**Success measures**
 • Task completion: **92%** (target: ≥90%)
 • Average time: **3.2 min** (28% faster than baseline)
 • Error recovery: **89%** found correction path`
@@ -418,7 +418,7 @@ Fast iteration, clear trade-offs, cheap mistakes.
   },
   
   // Step 5 - Launch & Optimization
-  'Instrumentation & Metrics': {
+  'Measurement & Insights': {
     overview: `## Executive Summary
 **One-liner:** Measure what matters from day one.
 
@@ -426,13 +426,13 @@ Fast iteration, clear trade-offs, cheap mistakes.
 Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.
 
 **What I do**
-• Define success metrics tied to user outcomes
+• Define success measures tied to user outcomes
 • Event schema (names, properties, IDs) and QA checklist
 • Dashboard tiles for adoption, task success, and friction
 
 **Outputs & artifacts** Tracking plan, event QA, dashboard  
 **Signals of success** Clear baselines, reliable trend lines  
-**Tools** GA4/Amplitude, BigQuery (as needed)`,
+**Tools** Data platforms, BigQuery (as needed)`,
     whyItMatters: { 
       stat: 'Clear baselines, reliable trend lines', 
       text: 'Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.' 
@@ -503,10 +503,10 @@ We fold learning into the roadmap so wins scale and misses don't repeat.
 • Quarterly theme updates based on evidence
 
 **Outputs & artifacts** Post-launch report, updated roadmap, UX debt board  
-**Signals of success** Steady metric lift; fewer regressions  
+**Signals of success** Steady measure lift; fewer regressions  
 **Tools** Notion/Jira, RICE scoring, dashboards`,
     whyItMatters: { 
-      stat: 'Steady metric lift; fewer regressions', 
+      stat: 'Steady measure lift; fewer regressions', 
       text: 'Learning folds into the roadmap so wins scale and misses don\'t repeat.' 
     },
     sample: `**RICE-Scored Backlog**
@@ -517,7 +517,7 @@ We fold learning into the roadmap so wins scale and misses don't repeat.
 | Guest checkout flow | 3000 | 4 | 70% | 4 weeks | 21 |
 
 **Monthly Improvement Rhythm**
-• Week 1: Analyze metrics, identify top 3 friction points
+• Week 1: Analyze measures, identify top 3 friction points
 • Week 2: Prioritize fixes using RICE, plan experiments
 • Week 3: Design and implement highest-impact changes
 • Week 4: Launch A/B tests, measure results, update backlog`
@@ -721,7 +721,7 @@ function Step1Layout({
   const cards = [
     {
       title: 'Stakeholder Alignment',
-      subtitle: 'Align goals, metrics, and decision paths so delivery moves faster.',
+      subtitle: 'Align goals, measures, and decision paths so delivery moves faster.'
       icon: UsersIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
@@ -1107,8 +1107,8 @@ function Step4Layout({ step }: { step: ProcessStep }) {
     }
   ]
   
-  // Header indicators (secondary metrics)
-  const headerIndicators = {
+  // Header indicators (secondary data)
+  const statusIndicators = {
     releaseConfidence: 88,
     a11yDefects: { p0: 0, p1: 2 }
   }
@@ -1126,8 +1126,8 @@ function Step4Layout({ step }: { step: ProcessStep }) {
       updated: '2h ago',
       acceptance: ['User can complete signup flow', 'Email verification works', 'Onboarding steps are intuitive'],
       tests: ['Unit tests pass', 'E2E flow tested', 'A11y compliance verified'],
-      analyticsHooks: ['track_signup_start', 'track_step_completion', 'track_signup_success'],
-      dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Analytics instrumented']
+      trackingEvents: ['track_signup_start', 'track_step_completion', 'track_signup_success'],
+      dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Event tracking added']
     },
     {
       id: 2,
@@ -1182,7 +1182,7 @@ function Step4Layout({ step }: { step: ProcessStep }) {
     },
     {
       title: 'Cross-functional Risk Assessment',
-      content: 'Perf budgets, analytics hooks, error paths. I maintain a running risk log that tracks potential blockers, technical debt implications, and scope creep. This includes monitoring for design system breaking changes and coordinating with stakeholders when trade-offs are needed.'
+      content: 'Perf budgets, event hooks, error paths. I maintain a running risk log that tracks potential blockers, technical debt implications, and scope creep. This includes monitoring for design system breaking changes and coordinating with stakeholders when trade-offs are needed.'
     }
   ]
   
@@ -1262,23 +1262,23 @@ function Step4Layout({ step }: { step: ProcessStep }) {
           </div>
           <div className="flex flex-wrap gap-2">
             <div className={`order-first flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset sm:order-0 ${
-              headerIndicators.releaseConfidence >= 85 
+              statusIndicators.releaseConfidence >= 85 
                 ? 'bg-emerald-400/10 text-emerald-600 dark:text-emerald-400 ring-emerald-500/30' 
                 : 'bg-zinc-400/10 text-zinc-600 dark:text-zinc-400 ring-zinc-500/30'
             }`}>
-              Release confidence: {headerIndicators.releaseConfidence}/100
+              Release confidence: {statusIndicators.releaseConfidence}/100
             </div>
             <div className={`flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-              headerIndicators.a11yDefects.p0 > 0 
+              statusIndicators.a11yDefects.p0 > 0 
                 ? 'bg-orange-400/10 text-orange-600 dark:text-orange-400 ring-orange-500/30'
                 : 'bg-blue-400/10 text-blue-600 dark:text-blue-400 ring-blue-500/30'
             }`}>
-              A11y: P0:{headerIndicators.a11yDefects.p0}·P1:{headerIndicators.a11yDefects.p1}
+              A11y: P0:{statusIndicators.a11yDefects.p0}·P1:{statusIndicators.a11yDefects.p1}
             </div>
           </div>
         </div>
 
-        {/* Stats */}
+        {/* Performance KPIs */}
         <div className="grid grid-cols-1 border-t border-zinc-200 dark:border-zinc-700 sm:grid-cols-3">
           {mainKPIs.map((stat, statIdx) => (
             <div
@@ -1427,8 +1427,8 @@ ${selectedTask.acceptance.map((criteria: string) => `• ${criteria}`).join('\n'
 ## Test Cases
 ${selectedTask.tests ? selectedTask.tests.map((test: string) => `• ${test}`).join('\n') : 'Tests pending'}
 
-## Analytics Hooks
-${selectedTask.analyticsHooks ? selectedTask.analyticsHooks.map((hook: string) => `• ${hook}`).join('\n') : 'No analytics hooks'}` : 'Task details loading...'}
+## Event Tracking
+${selectedTask.trackingEvents ? selectedTask.trackingEvents.map((hook: string) => `• ${hook}`).join('\n') : 'No tracking events'}` : 'Task details loading...'}
           whyItMatters={{ 
             stat: `${selectedTask.severity} priority · ${selectedTask.area}`, 
             text: `${selectedTask.owner ? `Owned by ${selectedTask.owner}` : 'Unassigned'} · Last updated ${selectedTask.updated}` 
@@ -1462,7 +1462,7 @@ function Step5Layout({
 }) {
   const cards = [
     {
-      title: 'Instrumentation & Metrics',
+      title: 'Measurement & Insights',
       subtitle: 'Measure what matters from day one.',
       icon: ChartBarIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }

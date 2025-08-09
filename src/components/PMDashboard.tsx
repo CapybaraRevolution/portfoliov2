@@ -19,7 +19,7 @@ const pmTabs = [
   { name: 'Bug-Smash Friday', current: false },
 ]
 
-const pmStats = [
+const pmKPIs = [
   { name: 'Design QA pass rate', value: '96%' },
   { name: 'Avg tickets closed per sprint', value: '38' },
   { name: 'Figma → Prod parity score', value: '98%' },
@@ -115,9 +115,9 @@ export function PMDashboard({ className }: PMDashboardProps) {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Performance KPIs */}
       <div className="grid grid-cols-1 border-t border-zinc-200 dark:border-zinc-700 sm:grid-cols-3">
-        {pmStats.map((stat, statIdx) => (
+        {pmKPIs.map((stat, statIdx) => (
           <div
             key={stat.name}
             className={classNames(
