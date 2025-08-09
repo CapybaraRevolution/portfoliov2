@@ -823,118 +823,94 @@ function Step4Layout({ step }: { step: ProcessStep }) {
   const [selectedTask, setSelectedTask] = useState<any>(null)
   const [isTaskDrawerOpen, setIsTaskDrawerOpen] = useState(false)
   
-  const tabs = ['Daily Design QA', 'Dev Handoff', 'Bug Smash Friday']
+  const tabs = ['Daily Design QA', 'Sprint Demo', 'Bug-Smash Friday']
   
-  // Sample KPIs data
-  const sprintKPIs = [
+  // Main KPIs (only 3)
+  const mainKPIs = [
     {
-      key: 'design_qa_pass_rate',
-      label: 'Design QA pass rate',
+      name: 'Design QA pass rate',
       value: '96%',
+      trend: '↗ +2pp',
       target: '≥95%',
-      delta: '+2pp',
-      tooltip: '% of UI checks that meet spec on first try (layout, tokens, states, a11y).',
-      trending: 'up'
+      tooltip: '% of UI checks passing on first review (layout, tokens, states, a11y).'
     },
     {
-      key: 'avg_tickets_closed',
-      label: 'Avg tickets closed/sprint',
+      name: 'Avg tickets closed per sprint', 
       value: '38',
-      target: '35+',
-      delta: '+4',
-      tooltip: 'Rolling average tickets completed per sprint over last 3 sprints.',
-      trending: 'up'
+      trend: '↗ +4',
+      target: '≥35',
+      tooltip: 'Average tickets closed per sprint across the active squad.'
     },
     {
-      key: 'figma_prod_parity',
-      label: 'Figma→Prod parity',
+      name: 'Figma→Prod parity',
       value: '98%',
+      trend: '—',
       target: '≥95%',
-      delta: '—',
-      tooltip: 'Visual match across tokens, spacing grid, variants. Snapshots generated from design tokens.',
-      trending: 'stable'
-    },
-    {
-      key: 'a11y_defects',
-      label: 'A11y open defects',
-      value: 'P0: 0 · P1: 2',
-      target: 'P0: 0',
-      delta: '—',
-      tooltip: 'Open accessibility defects by priority level.',
-      trending: 'stable'
-    },
-    {
-      key: 'release_confidence',
-      label: 'Release confidence',
-      value: '88/100',
-      target: '≥85',
-      delta: '+5',
-      tooltip: 'Composite score: tests passing, parity, unresolved severity, and perf guardrails.',
-      trending: 'up'
+      tooltip: 'Visual parity across tokens, spacing grid, and component variants.'
     }
   ]
+  
+  // Header indicators (secondary metrics)
+  const headerIndicators = {
+    releaseConfidence: 88,
+    a11yDefects: { p0: 0, p1: 2 }
+  }
   
   // Sample tasks data
   const sampleTasks = [
     {
       id: 1,
-      title: 'Create Onboarding Flow',
-      ticketId: 'PR #234',
+      task: 'Create Onboarding Flow',
+      pr: '#234',
       area: 'Navigation',
-      owner: { id: 1, name: 'Sarah Chen', avatar: 'SC' },
+      owner: 'Sarah Chen',
       status: 'Completed',
       severity: 'P1',
-      updatedAt: '2h ago',
-      links: { spec: '#', pr: '#', bug: null },
+      updated: '2h ago',
       acceptance: ['User can complete signup flow', 'Email verification works', 'Onboarding steps are intuitive'],
-      screenshots: ['onboarding-1.png', 'onboarding-2.png'],
       tests: ['Unit tests pass', 'E2E flow tested', 'A11y compliance verified'],
       analyticsHooks: ['track_signup_start', 'track_step_completion', 'track_signup_success'],
       dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Analytics instrumented']
     },
     {
       id: 2,
-      title: 'Refactor Button Tokens',
-      ticketId: 'PR #235',
+      task: 'Refactor Button Tokens',
+      pr: '#235',
       area: 'DS',
-      owner: { id: 2, name: 'Marcus Rodriguez', avatar: 'MR' },
+      owner: 'Marcus Rodriguez',
       status: 'In QA',
       severity: 'P2',
-      updatedAt: '45m ago',
-      links: { spec: '#', pr: '#', bug: null }
+      updated: '45m ago'
     },
     {
       id: 3,
-      title: 'Fix Modal Focus Trap',
-      ticketId: 'PR #236',
+      task: 'Fix Modal Focus Trap',
+      pr: '#236',
       area: 'A11y',
-      owner: { id: 3, name: 'Alex Kim', avatar: 'AK' },
+      owner: 'Alex Kim',
       status: 'Fix Needed',
       severity: 'P1',
-      updatedAt: '1d ago',
-      links: { spec: '#', pr: '#', bug: '#' }
+      updated: '1d ago'
     },
     {
       id: 4,
-      title: 'Design System Docs',
-      ticketId: 'PR #237',
+      task: 'Design System Documentation',
+      pr: '#237',
       area: 'DS',
-      owner: { id: 4, name: 'Elena Vasquez', avatar: 'EV' },
+      owner: null,
       status: 'Completed',
       severity: 'P3',
-      updatedAt: '3h ago',
-      links: { spec: '#', pr: '#', bug: null }
+      updated: '3h ago'
     },
     {
       id: 5,
-      title: 'Mobile Nav Polish',
-      ticketId: 'PR #238',
+      task: 'Mobile Navigation Polish',
+      pr: '#238',
       area: 'Navigation',
-      owner: { id: 5, name: 'Jordan Park', avatar: 'JP' },
+      owner: null,
       status: 'In QA',
       severity: 'P2',
-      updatedAt: '1d ago',
-      links: { spec: '#', pr: '#', bug: null }
+      updated: '1d ago'
     }
   ]
   
@@ -988,155 +964,178 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         Design isn&apos;t done at hand-off. I pair with engineers and QA to ship pixel-perfect, test-covered increments—fast.
       </p>
       
-      {/* Tab strip */}
-      <div className="border-b border-zinc-200 dark:border-zinc-700">
-        <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                activeTab === tab
-                  ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
-                  : 'border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300 dark:text-zinc-400 dark:hover:text-zinc-300'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
+      {/* Implementation Dashboard */}
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
+        {/* Secondary navigation */}
+        <nav className="flex overflow-x-auto border-b border-zinc-200 dark:border-zinc-700 py-4">
+          <ul
+            role="list"
+            className="flex min-w-full flex-none gap-x-6 px-4 text-sm/6 font-semibold text-zinc-600 dark:text-zinc-400 sm:px-6"
+          >
+            {tabs.map((item) => (
+              <li key={item}>
+                <button
+                  onClick={() => setActiveTab(item)}
+                  className={`transition-colors duration-200 ${
+                    activeTab === item 
+                      ? 'text-emerald-600 dark:text-emerald-400' 
+                      : 'hover:text-zinc-900 dark:hover:text-zinc-100'
+                  }`}
+                >
+                  {item}
+                </button>
+              </li>
+            ))}
+          </ul>
         </nav>
-      </div>
-      
-      {/* Sprint header card */}
-      <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700">
-        <div className="flex items-center justify-between mb-6">
+
+        {/* Header */}
+        <div className="flex flex-col items-start justify-between gap-x-8 gap-y-4 px-4 py-4 sm:flex-row sm:items-center sm:px-6">
           <div>
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Sprint 47: Mobile Polish & A11y</h3>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
-                Active
-              </span>
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">3 days remaining</span>
+            <div className="flex items-center gap-x-3">
+              <div className="flex-none rounded-full bg-emerald-400/10 p-1 text-emerald-500 dark:text-emerald-400">
+                <div className="size-2 rounded-full bg-current" />
+              </div>
+              <h1 className="flex gap-x-3 text-base/7">
+                <span className="font-semibold text-zinc-900 dark:text-white">Sprint 47: Mobile Polish & A11y</span>
+              </h1>
+            </div>
+            <p className="mt-2 text-xs/6 text-zinc-500 dark:text-zinc-400">Active · 3 days remaining</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <div className={`order-first flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset sm:order-0 ${
+              headerIndicators.releaseConfidence >= 85 
+                ? 'bg-emerald-400/10 text-emerald-600 dark:text-emerald-400 ring-emerald-500/30' 
+                : 'bg-zinc-400/10 text-zinc-600 dark:text-zinc-400 ring-zinc-500/30'
+            }`}>
+              Release confidence: {headerIndicators.releaseConfidence}/100
+            </div>
+            <div className={`flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+              headerIndicators.a11yDefects.p0 > 0 
+                ? 'bg-orange-400/10 text-orange-600 dark:text-orange-400 ring-orange-500/30'
+                : 'bg-blue-400/10 text-blue-600 dark:text-blue-400 ring-blue-500/30'
+            }`}>
+              A11y: P0:{headerIndicators.a11yDefects.p0}·P1:{headerIndicators.a11yDefects.p1}
             </div>
           </div>
         </div>
-        
-        {/* KPIs Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {sprintKPIs.map((kpi) => (
-            <div key={kpi.key} className="bg-zinc-50 dark:bg-zinc-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-zinc-900 dark:text-white">{kpi.label}</p>
-                <div className="flex items-center">
-                  {kpi.trending === 'up' && (
-                    <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                    </svg>
-                  )}
-                  {kpi.delta !== '—' && (
-                    <span className={`text-xs font-medium ml-1 ${kpi.trending === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-zinc-500'}`}>
-                      {kpi.delta}
-                    </span>
-                  )}
-                </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 border-t border-zinc-200 dark:border-zinc-700 sm:grid-cols-3">
+          {mainKPIs.map((stat, statIdx) => (
+            <div
+              key={stat.name}
+              title={stat.tooltip}
+              className={`border-t border-zinc-200 dark:border-zinc-700 px-4 py-6 sm:px-6 first:border-t-0 ${
+                statIdx === 1 ? 'sm:border-l sm:border-r sm:border-zinc-200 dark:sm:border-zinc-700' : ''
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <p className="text-sm/6 font-medium text-zinc-500 dark:text-zinc-400">{stat.name}</p>
+                <span className={`text-xs font-medium ${
+                  stat.trend === '—' ? 'text-zinc-500 dark:text-zinc-500' :
+                  stat.trend.includes('+') ? 'text-emerald-600 dark:text-emerald-400' :
+                  'text-rose-600 dark:text-rose-400'
+                }`}>
+                  {stat.trend}
+                </span>
               </div>
-              <p className="text-lg font-bold text-zinc-900 dark:text-white mb-1">{kpi.value}</p>
-              <p className="text-xs text-zinc-600 dark:text-zinc-400">Target: {kpi.target}</p>
+              <p className="mt-2 flex items-baseline gap-x-2">
+                <span className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">{stat.value}</span>
+              </p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-500">Target: {stat.target}</p>
             </div>
           ))}
         </div>
-      </div>
-      
-      {/* Latest tasks table */}
-      <div className="bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-        <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Latest Tasks</h3>
-        </div>
-        
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
-            <thead className="bg-zinc-50 dark:bg-zinc-700">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Task / Ticket
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Area
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Owner
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Severity
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Updated
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-700">
-              {sampleTasks.map((task) => (
-                <tr 
-                  key={task.id} 
-                  className="hover:bg-zinc-50 dark:hover:bg-zinc-700 cursor-pointer"
-                  onClick={() => {
-                    setSelectedTask(task)
-                    setIsTaskDrawerOpen(true)
-                  }}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-zinc-900 dark:text-white">{task.title}</div>
-                      <div className="text-sm text-zinc-500 dark:text-zinc-400">{task.ticketId}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-zinc-900 dark:text-white">{task.area}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0 h-8 w-8">
-                        <div className="h-8 w-8 rounded-full bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center">
-                          <span className="text-xs font-medium text-emerald-800 dark:text-emerald-400">{task.owner.avatar}</span>
+
+        {/* Task list */}
+        <div className="border-t border-zinc-200 dark:border-zinc-700 pt-6">
+          <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">Latest tasks</h2>
+          <div className="mt-4 overflow-hidden">
+            <table className="w-full text-left">
+              <colgroup>
+                <col className="w-full sm:w-4/12" />
+                <col className="lg:w-3/12" />
+                <col className="lg:w-2/12" />
+                <col className="lg:w-2/12" />
+                <col className="lg:w-1/12" />
+              </colgroup>
+              <thead className="border-b border-zinc-200 dark:border-zinc-700 text-sm/6 text-zinc-900 dark:text-white">
+                <tr>
+                  <th scope="col" className="py-2 pr-8 pl-4 font-semibold sm:pl-6">
+                    Task
+                  </th>
+                  <th scope="col" className="hidden py-2 pr-8 pl-0 font-semibold md:table-cell">
+                    Area
+                  </th>
+                  <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
+                    Owner
+                  </th>
+                  <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
+                    Status
+                  </th>
+                  <th scope="col" className="hidden py-2 pr-8 pl-0 font-semibold md:table-cell">
+                    Severity
+                  </th>
+                  <th scope="col" className="hidden py-2 pr-4 pl-0 text-right font-semibold sm:table-cell sm:pr-6">
+                    Updated
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
+                {sampleTasks.map((task) => (
+                  <tr 
+                    key={task.id} 
+                    className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer"
+                    onClick={() => {
+                      setSelectedTask(task)
+                      setIsTaskDrawerOpen(true)
+                    }}
+                  >
+                    <td className="py-4 pr-8 pl-4 sm:pl-6">
+                      <div className="flex items-center justify-between">
+                        <div className="font-medium text-sm text-zinc-900 dark:text-white">{task.task}</div>
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                          <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
                         </div>
                       </div>
-                      <div className="ml-3">
-                        <div className="text-sm font-medium text-zinc-900 dark:text-white">{task.owner.name}</div>
+                    </td>
+                    <td className="hidden py-4 pr-8 pl-0 text-sm md:table-cell">
+                      <span className="inline-flex items-center rounded-md bg-zinc-50 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 ring-1 ring-inset ring-zinc-500/10">
+                        {task.area}
+                      </span>
+                    </td>
+                    <td className="py-4 pr-4 pl-0 text-sm">
+                      <div className="text-zinc-900 dark:text-white">{task.owner || 'N/A'}</div>
+                    </td>
+                    <td className="py-4 pr-4 pl-0 text-sm">
+                      <div className="flex items-center gap-x-2">
+                        <div className={`flex-none rounded-full p-1 ${
+                          task.status === 'Completed' ? 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-400/10' :
+                          task.status === 'In QA' ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-400/10' :
+                          task.status === 'Fix Needed' ? 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-400/10' :
+                          'text-zinc-600 bg-zinc-50 dark:text-zinc-400 dark:bg-zinc-400/10'
+                        }`}>
+                          <div className="size-1.5 rounded-full bg-current" />
+                        </div>
+                        <div className="text-zinc-900 dark:text-white">{task.status}</div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(task.status)}`}>
-                      {task.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getSeverityColor(task.severity)}`}>
-                      {task.severity}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
-                    {task.updatedAt}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-zinc-500 dark:text-zinc-400">
-                    <div className="flex space-x-2">
-                      <a href={task.links.pr} className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">PR</a>
-                      <a href={task.links.spec} className="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">Spec</a>
-                      {task.links.bug && (
-                        <a href={task.links.bug} className="text-rose-600 hover:text-rose-700 dark:text-rose-400">Bug</a>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                    <td className="hidden py-4 pr-8 pl-0 text-sm md:table-cell">
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getSeverityColor(task.severity)}`}>
+                        {task.severity}
+                      </span>
+                    </td>
+                    <td className="hidden py-4 pr-4 pl-0 text-right text-sm text-zinc-500 dark:text-zinc-400 sm:table-cell sm:pr-6">
+                      {task.updated}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       
@@ -1163,7 +1162,7 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         <SideDrawer
           open={isTaskDrawerOpen}
           onClose={() => setIsTaskDrawerOpen(false)}
-          title={selectedTask.title}
+          title={selectedTask.task}
           overview={selectedTask.acceptance ? `## Acceptance Criteria
 ${selectedTask.acceptance.map((criteria: string) => `• ${criteria}`).join('\n')}
 
@@ -1174,13 +1173,15 @@ ${selectedTask.tests ? selectedTask.tests.map((test: string) => `• ${test}`).j
 ${selectedTask.analyticsHooks ? selectedTask.analyticsHooks.map((hook: string) => `• ${hook}`).join('\n') : 'No analytics hooks'}` : 'Task details loading...'}
           whyItMatters={{ 
             stat: `${selectedTask.severity} priority · ${selectedTask.area}`, 
-            text: `Owned by ${selectedTask.owner.name} · Last updated ${selectedTask.updatedAt}` 
+            text: `${selectedTask.owner ? `Owned by ${selectedTask.owner}` : 'Unassigned'} · Last updated ${selectedTask.updated}` 
           }}
           sampleContent={selectedTask.dodChecklist ? `## Definition of Done
 ${selectedTask.dodChecklist.map((item: string) => `• ${item}`).join('\n')}
 
-**Screenshots:** ${selectedTask.screenshots ? selectedTask.screenshots.length : 0} attached
-**Links:** [Pull Request](${selectedTask.links.pr}) · [Specification](${selectedTask.links.spec})${selectedTask.links.bug ? ` · [Bug Report](${selectedTask.links.bug})` : ''}` : 'Definition of Done checklist pending...'}
+**Pull Request:** ${selectedTask.pr}
+**Area:** ${selectedTask.area}
+**Status:** ${selectedTask.status}
+**Severity:** ${selectedTask.severity}` : 'Definition of Done checklist pending...'}
         />
       )}
     </div>
