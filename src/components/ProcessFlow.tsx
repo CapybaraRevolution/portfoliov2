@@ -8,6 +8,8 @@ import { SideDrawer } from '@/components/SideDrawer'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
 import { ProcessCard } from '@/components/ProcessCard'
+import { ProcessTabRow } from '@/components/ProcessTabRow'
+import { RICETablePreview, FlowDiagramPreview, MilestoneStripPreview } from '@/components/PreviewThumbnails'
 import { UsersIcon } from '@/components/icons/UsersIcon'
 import { UserIcon } from '@/components/icons/UserIcon'
 import { MagnifyingGlassIcon } from '@/components/icons/MagnifyingGlassIcon'
@@ -775,85 +777,231 @@ function Step1Layout({
   )
 }
 
-// Step 2: Two-column layout
+// Step 2: Planning & Architecture with tabs
 function Step2Layout({ step }: { step: ProcessStep }) {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-      <div>
-        <p className="text-lg text-zinc-700 dark:text-zinc-300 mb-8">{step.description}</p>
-        
-        <div className="space-y-6 mb-8">
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0 w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mt-1">
-              <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
+  const [activeTab, setActiveTab] = useState('Prioritization')
+  
+  const tabs = [
+    { name: 'Prioritization', current: activeTab === 'Prioritization' },
+    { name: 'IA & Flows', current: activeTab === 'IA & Flows' },
+    { name: 'Roadmap & Alignment', current: activeTab === 'Roadmap & Alignment' }
+  ]
+
+  const handleTabChange = (tabName: string) => {
+    setActiveTab(tabName)
+  }
+
+  const getTabContent = () => {
+    switch (activeTab) {
+      case 'Prioritization':
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left column: Content */}
             <div>
-              <h4 className="font-semibold text-zinc-900 dark:text-white mb-1">RICE Prioritisation Matrix</h4>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Reach, Impact, Confidence, Effort scoring trims 40% of the &ldquo;nice-to-have&rdquo; backlog before Sprint 1.</p>
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What it is</h4>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                A crisp backlog refined with RICE scoring so we ship the highest impact work first.
+              </p>
+              
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                Cuts 40%+ of "nice-to-have" items before Sprint 1; gives stakeholders a plan they trust.
+              </p>
+              
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Define scoring criteria with product & engineering</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Score and rank candidate features</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Facilitate trade-off discussions; publish a trimmed, ordered backlog</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Feed outputs into release planning</span>
+                </li>
+              </ul>
+
+              {/* Skill chips */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <NavigationChip skill="Release Planning" size="sm" />
+                <NavigationChip skill="Risk Surfacing" size="sm" />
+                <NavigationChip skill="Competitive Analysis" size="sm" />
+              </div>
+
+              <a
+                href="/portfolio?skills=Release%20Planning"
+                className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
+              >
+                See a prioritization example →
+              </a>
+            </div>
+
+            {/* Right column: Preview */}
+            <div>
+              <RICETablePreview />
+              <div className="mt-4 text-center">
+                <a
+                  href="/portfolio?skills=Release%20Planning"
+                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                >
+                  View sample →
+                </a>
+              </div>
             </div>
           </div>
-          
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0 w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mt-1">
-              <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-semibold text-zinc-900 dark:text-white mb-1">IA Tree & Flow Variants</h4>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Three navigation options tested with real tasks; we keep the winner, ditch the noise.</p>
-            </div>
-          </div>
-          
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0 w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mt-1">
-              <svg className="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-semibold text-zinc-900 dark:text-white mb-1">Sprint Cadence & Risk Log</h4>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">Five-day design/dev sprints, weekly demos, red-flag log owner assigned on day 0.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        )
       
-      <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-8 flex items-center justify-center">
-        {/* Simple sitemap SVG */}
-        <svg viewBox="0 0 400 300" className="w-full h-48 text-zinc-400 dark:text-zinc-500">
-          <g fill="currentColor">
-            {/* Root node */}
-            <rect x="175" y="20" width="50" height="30" rx="4" />
-            <text x="200" y="38" textAnchor="middle" className="text-xs fill-zinc-700 dark:fill-zinc-300">Home</text>
-            
-            {/* Level 1 nodes */}
-            <rect x="75" y="100" width="50" height="30" rx="4" />
-            <text x="100" y="118" textAnchor="middle" className="text-xs fill-zinc-700 dark:fill-zinc-300">About</text>
-            
-            <rect x="175" y="100" width="50" height="30" rx="4" />
-            <text x="200" y="118" textAnchor="middle" className="text-xs fill-zinc-700 dark:fill-zinc-300">Work</text>
-            
-            <rect x="275" y="100" width="50" height="30" rx="4" />
-            <text x="300" y="118" textAnchor="middle" className="text-xs fill-zinc-700 dark:fill-zinc-300">Contact</text>
-            
-            {/* Level 2 nodes */}
-            <rect x="125" y="180" width="50" height="30" rx="4" />
-            <text x="150" y="198" textAnchor="middle" className="text-xs fill-zinc-700 dark:fill-zinc-300">Case 1</text>
-            
-            <rect x="225" y="180" width="50" height="30" rx="4" />
-            <text x="250" y="198" textAnchor="middle" className="text-xs fill-zinc-700 dark:fill-zinc-300">Case 2</text>
-            
-            {/* Connecting lines */}
-            <line x1="200" y1="50" x2="100" y2="100" stroke="currentColor" strokeWidth="1" />
-            <line x1="200" y1="50" x2="200" y2="100" stroke="currentColor" strokeWidth="1" />
-            <line x1="200" y1="50" x2="300" y2="100" stroke="currentColor" strokeWidth="1" />
-            <line x1="200" y1="130" x2="150" y2="180" stroke="currentColor" strokeWidth="1" />
-            <line x1="200" y1="130" x2="250" y2="180" stroke="currentColor" strokeWidth="1" />
-          </g>
-        </svg>
+      case 'IA & Flows':
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left column: Content */}
+            <div>
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What it is</h4>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                Navigation and flow patterns that make sense on first click; multiple IA variants tested quickly.
+              </p>
+              
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                Prevents structural rework later; makes design debt visible early.
+              </p>
+              
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Produce user flow variants for key journeys (happy path + known friction)</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Explore IA trees (3 alternatives minimum); choose the winner with the team</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Document entry points, deep links, and guardrails for edge cases</span>
+                </li>
+              </ul>
+
+              {/* Skill chips */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <NavigationChip skill="User Flows" size="sm" />
+                <NavigationChip skill="Information Architecture" size="sm" />
+                <NavigationChip skill="Roadmapping" size="sm" />
+              </div>
+
+              <a
+                href="/portfolio?skills=User%20Flows"
+                className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
+              >
+                View a flow sample →
+              </a>
+            </div>
+
+            {/* Right column: Preview */}
+            <div>
+              <FlowDiagramPreview />
+              <div className="mt-4 text-center">
+                <a
+                  href="/portfolio?skills=User%20Flows"
+                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                >
+                  View sample →
+                </a>
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'Roadmap & Alignment':
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left column: Content */}
+            <div>
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What it is</h4>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                A realistic path to value—release plan, stakeholder alignment, and a living risk log.
+              </p>
+              
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
+              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
+                Protects timelines; gives leadership confidence; reduces last-minute surprises.
+              </p>
+              
+              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Build a release plan with milestones and dependencies</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Maintain a risk surface (technical, design, operational) with owners & mitigations</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-zinc-700 dark:text-zinc-300">Run weekly alignment touchpoints and demos; capture decisions</span>
+                </li>
+              </ul>
+
+              {/* Skill chips */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <NavigationChip skill="Cross-team Facilitation" size="sm" />
+                <NavigationChip skill="Stakeholder Alignment" size="sm" />
+                <NavigationChip skill="Release Planning" size="sm" />
+              </div>
+
+              <a
+                href="/portfolio?skills=Cross-team%20Facilitation"
+                className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
+              >
+                See a roadmap sample →
+              </a>
+            </div>
+
+            {/* Right column: Preview */}
+            <div>
+              <MilestoneStripPreview />
+              <div className="mt-4 text-center">
+                <a
+                  href="/portfolio?skills=Cross-team%20Facilitation"
+                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
+                >
+                  View sample →
+                </a>
+              </div>
+            </div>
+          </div>
+        )
+
+      default:
+        return null
+    }
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* 1. Intro section (full width) */}
+      <div>
+        <p className="text-lg text-zinc-700 dark:text-zinc-300 mb-8">
+          Insight turns into a blueprint—clear flows, a ruthlessly prioritised backlog, and a timeline everyone can believe.
+        </p>
+      </div>
+
+      {/* 2. Tab row (full width) */}
+      <div>
+        <ProcessTabRow tabs={tabs} onTabChange={handleTabChange} />
+      </div>
+
+      {/* 3. Content panel (full width) */}
+      <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700">
+        {getTabContent()}
       </div>
     </div>
   )
@@ -1065,6 +1213,7 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300'
     }
   }
+
 
   return (
     <div className="space-y-8">
