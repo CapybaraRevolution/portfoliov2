@@ -150,8 +150,8 @@ const drawerContent = {
 • **Quality:** SRM checks, outlier handling, novelty & day-of-week effects.
 • **Decision:** Pre-registered rules (e.g., ship if p<0.05 and uplift ≥ +3%, else iterate).`,
     whyItMatters: { 
-      stat: 'High-tempo', 
-      text: 'cadence of safe experiments produces compounding gains—and protects the roadmap from "big bet" detours based on hunches.' 
+      stat: 'A high-tempo cadence of safe experiments produces compounding gains—', 
+      text: 'and protects the roadmap from "big bet" detours based on hunches.' 
     },
     sample: `**Experiment card**
 • **Name:** Checkout copy—confidence nudges
@@ -171,7 +171,7 @@ const drawerContent = {
 • **Reliability:** Error rate, retry loops, dead-end screens, empty-state recovery.
 • **Release hygiene:** Pixel parity (Figma → Prod), visual regression snapshots.`,
     whyItMatters: { 
-      stat: 'Fast, stable interfaces convert better, rank better', 
+      stat: 'Fast, stable interfaces convert better, rank better,', 
       text: 'and reduce support costs. Performance wins often unlock conversion wins "for free."' 
     },
     sample: `**Mini metric table (last 14 days)**
