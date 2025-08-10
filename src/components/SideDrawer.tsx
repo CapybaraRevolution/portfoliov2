@@ -24,16 +24,23 @@ export function SideDrawer({
   whyItMatters, 
   sampleContent 
 }: SideDrawerProps) {
+  // Close handler
+  const handleDrawerClose = () => {
+    // Optional tracking: drawer_closed
+    onClose()
+  }
+
   return (
-    <Dialog open={open} onClose={onClose} className="relative z-50">
+    <Dialog open={open} onClose={handleDrawerClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/20" />
 
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+          {/* Desktop: right-side tray, Mobile: full-screen */}
+          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-4 sm:pl-10 lg:pl-16">
             <DialogPanel
               transition
-              className="pointer-events-auto w-screen max-w-lg transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700"
+              className="pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700"
             >
               <div className="relative flex h-full flex-col overflow-y-auto bg-white dark:bg-zinc-900 py-6 shadow-xl">
                 <div className="px-4 sm:px-6">
