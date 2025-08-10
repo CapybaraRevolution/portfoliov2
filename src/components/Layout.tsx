@@ -19,11 +19,12 @@ export function Layout({
   allSections: Record<string, Array<Section>>
 }) {
   let pathname = usePathname()
+  let isAboutPage = pathname === '/'
 
   return (
     <ErrorBoundary>
       <SectionProvider sections={allSections[pathname] ?? []}>
-        <div className="h-full lg:ml-72 xl:ml-80">
+        <div className={`h-full lg:ml-72 xl:ml-80 ${isAboutPage ? 'bg-gradient-to-br from-emerald-50/50 via-white to-blue-50/30 bg-no-repeat bg-scroll dark:bg-gradient-to-br dark:from-emerald-900/10 dark:via-zinc-900 dark:to-blue-900/10 dark:bg-no-repeat dark:bg-scroll' : ''}`}>
           <motion.header
             layoutScroll
             className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex"

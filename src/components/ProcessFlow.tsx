@@ -73,7 +73,7 @@ const processSteps: ProcessStep[] = [
     name: 'Implementation Support',
     title: 'Implementation Support',
     description: 'Design isn\'t done at hand-off. I pair with engineers and QA to ship pixel-perfect, test-covered increments.',
-    skills: ['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Instrumentation'],
+    skills: ['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Setup'],
     cta: {
       text: 'Read a sprint report →',
       href: '/portfolio?skills=Cross-team%20Facilitation'
@@ -181,7 +181,7 @@ Personas and journeys turn scattered anecdotes into patterns we can design for�
 • **Emotion:** Cautiously optimistic but pressed for time
 • **Actions:** Reviews pricing, checks integrations, schedules demo
 • **Drop-off points:** Complex pricing page (40% exit), integration unclear
-• **Instrumentation:** evaluation_started, pricing_viewed, demo_requested, integration_checked`
+• **Data Collection:** evaluation_started, pricing_viewed, demo_requested, integration_checked`
   },
   'Competitive Analysis': {
     overview: `## Executive Summary
@@ -418,109 +418,80 @@ Fast iteration, clear trade-offs, cheap mistakes.
   },
   
   // Step 5 - Launch & Optimization
-  'Measurement & Insights': {
-    overview: `## Executive Summary
-**One-liner:** Measure what matters from day one.
+  'Data Collection': {
+    overview: `#### One-liner
+I wire up the events, funnels, and baselines that turn opinions into a ranked list of opportunities.
 
-**Why it matters**
-Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.
+#### What I do
+• Map the critical path (signup → onboarding → purchase) and tag each step.
+• Standardize event names + properties; add alerts for KPI drift.
+• Establish baselines for conversion, time-on-task, and drop-offs per step.
 
-**What I do**
-• Define success measures tied to user outcomes
-• Event schema (names, properties, IDs) and QA checklist
-• Dashboard tiles for adoption, task success, and friction
+#### Outcome
+We can see exactly where users struggle and how much it costs.
 
-**Outputs & artifacts** Tracking plan, event QA, dashboard  
-**Signals of success** Clear baselines, reliable trend lines  
-**Tools** Data platforms, BigQuery (as needed)`,
+#### Overview
+I don't guess; I instrument. Before (or right after) release, I wire up the events we need: sign-up start/finish, paywall views, plan selection, purchase completion, error surfaces, and intent signals (search, filter, save). I also tag empty/loading/error states so we can separate "no demand" from "bad experience."`,
     whyItMatters: { 
-      stat: 'Clear baselines, reliable trend lines', 
-      text: 'Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.' 
+      stat: 'Baseline checkout completion: 42.3% • Shipping step drop-off: 37%', 
+      text: 'Faster learning, safer rollouts, less roadmap thrash.' 
     },
-    sample: `**Sample Tracking Plan**
-\`\`\`json
-{
-  "event": "checkout_step_completed",
-  "properties": {
-    "step": "shipping",
-    "method": "guest_checkout",
-    "device_type": "mobile",
-    "session_duration_ms": 45000
+    sample: `#### Quick stat (sample)
+Baseline checkout completion: 42.3% • Shipping step drop-off: 37%`
   },
-  "user_id": "user_12345"
-}
-\`\`\`
+  'Testing & Optimization': {
+    overview: `#### One-liner
+I run small, falsifiable tests to de-risk decisions and compound gains.
 
-**Dashboard KPIs**
-• Checkout completion rate: 67.3% (+2.1pp vs last month)
-• Average time to purchase: 4.2 minutes (-15s vs baseline)
-• Mobile vs desktop completion: 64% vs 71%
-• Top drop-off step: Payment method selection (23% exit)`
-  },
-  'Experimentation & A/B Testing': {
-    overview: `## Executive Summary
-**One-liner:** Learn fast, ship what works.
+#### How I test
+• Clear hypothesis: changing X for Y audience moves Z metric by N%.
+• Guardrails: SRM checks, sample size/runtime targets, stop conditions.
+• Decision rules agreed up-front (ship/revert/iterate).
 
-**Why it matters**
-AB tests validate assumptions and focus effort where it returns value.
-
-**What I do**
-• Hypothesis framing, sample size and power checks
-• Test design with guardrails and success criteria
-• Result reads and next-step recommendations
-
-**Outputs & artifacts** Test briefs, experiment configs, readouts  
-**Signals of success** Statistically valid wins; fewer "maybe" launches  
-**Tools** Optimizely/LaunchDarkly, internal frameworks`,
+#### Outcome
+Faster learning, safer rollouts, less roadmap thrash.`,
     whyItMatters: { 
-      stat: 'Statistically valid wins; fewer "maybe" launches', 
-      text: 'A/B tests validate assumptions and focus effort where it returns measurable value.' 
+      stat: '"Secure CTA" variant: +5.9% checkout completion (p<0.05)', 
+      text: 'Faster learning, safer rollouts, less roadmap thrash.' 
     },
-    sample: `**Experiment: Checkout CTA Copy**
-• **Hypothesis:** Changing "Place Order" to "Complete Purchase Securely" will increase checkout completion by ≥3% on mobile
-• **Variants:** Control (Place Order) vs Treatment (Complete Purchase Securely)
-• **Sample size:** 10,000 users per variant
-• **Duration:** 14 days
-• **Primary metric:** Checkout completion rate
-• **Guardrails:** Bounce rate ≤5% increase, page load time ≤100ms increase
+    sample: `#### Quick stat (sample)
+"Secure CTA" variant: +5.9% checkout completion (p<0.05).`
+  },
+  'Performance & Quality': {
+    overview: `#### One-liner
+Speed, accessibility, and stability are UX; I monitor and harden them in CI.
 
-**Results:**
-• Control: 64.2% completion rate
-• Treatment: 67.8% completion rate
-• **Lift:** +3.6pp (p=0.003, statistically significant)
-• **Decision:** Ship treatment to 100% of users`
+#### What I monitor
+• CWV p75: LCP < 2.5s, INP < 200ms, CLS < 0.1 (mobile first).
+• A11y checks: focus order, roles, contrast, SR announcements.
+• Reliability: error rate, dead-end screens, retry loops.
+
+#### Outcome
+Faster pages, fewer support tickets, higher conversion.`,
+    whyItMatters: { 
+      stat: 'Mobile LCP p75 1.8s · INP p75 180ms · Error rate 0.27%', 
+      text: 'Faster pages, fewer support tickets, higher conversion.' 
+    },
+    sample: `#### Quick stat (sample)
+Mobile LCP p75 1.8s · INP p75 180ms · Error rate 0.27%`
   },
   'Continuous Improvement': {
-    overview: `## Executive Summary
-**One-liner:** Close the loop and keep momentum.
+    overview: `#### One-liner
+Insights become a prioritized backlog; we prune weekly and ship polish every sprint.
 
-**Why it matters**
-We fold learning into the roadmap so wins scale and misses don't repeat.
+#### How I operationalize
+• Convert findings → tickets with evidence links.
+• Score with RICE; bundle quick wins; maintain an impact log.
+• Close the loop: capture before/after metrics on each ticket.
 
-**What I do**
-• Post-launch reviews; backlog grooming with RICE
-• UX debt log and prioritization cadence
-• Quarterly theme updates based on evidence
-
-**Outputs & artifacts** Post-launch report, updated roadmap, UX debt board  
-**Signals of success** Steady measure lift; fewer regressions  
-**Tools** Notion/Jira, RICE scoring, dashboards`,
+#### Outcome
+Momentum stays high and work concentrates where it moves the needle.`,
     whyItMatters: { 
-      stat: 'Steady measure lift; fewer regressions', 
-      text: 'Learning folds into the roadmap so wins scale and misses don\'t repeat.' 
+      stat: 'Address form simplification → –23% step drop-off, +11% task speed', 
+      text: 'Momentum stays high and work concentrates where it moves the needle.' 
     },
-    sample: `**RICE-Scored Backlog**
-| Initiative | Reach | Impact | Confidence | Effort | Score |
-|------------|-------|--------|------------|--------|-------|
-| Mobile checkout polish | 8000 | 3 | 80% | 3 weeks | 64 |
-| Payment method icons | 8000 | 2 | 90% | 1 week | 144 |
-| Guest checkout flow | 3000 | 4 | 70% | 4 weeks | 21 |
-
-**Monthly Improvement Rhythm**
-• Week 1: Analyze measures, identify top 3 friction points
-• Week 2: Prioritize fixes using RICE, plan experiments
-• Week 3: Design and implement highest-impact changes
-• Week 4: Launch A/B tests, measure results, update backlog`
+    sample: `#### Quick stat (sample)
+Address form simplification → –23% step drop-off, +11% task speed`
   }
 }
 
@@ -1404,7 +1375,7 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         
         {/* Skill chips */}
         <div className="flex flex-wrap gap-2 mt-6">
-          {['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Instrumentation'].map((skill) => (
+          {['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Setup'].map((skill) => (
             <span
               key={skill}
               className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400"
@@ -1462,20 +1433,26 @@ function Step5Layout({
 }) {
   const cards = [
     {
-      title: 'Measurement & Insights',
-      subtitle: 'Measure what matters from day one.',
+      title: 'Data Collection',
+      subtitle: 'Insights from real user behavior.',
       icon: ChartBarIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
-      title: 'Experimentation & A/B Testing',
-      subtitle: 'Learn fast, ship what works.',
+      title: 'Testing & Optimization',
+      subtitle: 'Small tests, big wins.',
       icon: FlaskIcon,
       pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
+      title: 'Performance & Quality',
+      subtitle: 'Fast, stable, accessible.',
+      icon: BoltIcon,
+      pattern: { y: 8, squares: [[1, 1], [2, 2]] as Array<[number, number]> }
+    },
+    {
       title: 'Continuous Improvement',
-      subtitle: 'Close the loop and keep momentum.',
+      subtitle: 'Weekly polish, measurable progress.',
       icon: ArrowPathIcon,
       pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     }
@@ -1550,11 +1527,30 @@ function ProcessFlowContent() {
   const [selectedDrawer, setSelectedDrawer] = useState<string | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
+  // Convert URL parameter back to drawer content key
+  const urlParamToDrawerKey = (param: string): string => {
+    const paramMap: Record<string, string> = {
+      'data-collection': 'Data Collection',
+      'testing-optimization': 'Testing & Optimization',
+      'performance-quality': 'Performance & Quality',
+      'continuous-improvement': 'Continuous Improvement',
+      // Step 1 keys
+      'stakeholder-alignment': 'Stakeholder Alignment',
+      'persona-journey-mapping': 'Persona & Journey Mapping',
+      'competitive-analysis': 'Competitive Analysis',
+      // Step 3 keys  
+      'wireframes': 'Wireframes',
+      'click-through-prototype': 'Click-through Prototype',
+      'design-system': 'Design System'
+    }
+    return paramMap[param] || param
+  }
+
   // URL parameter handling
   useEffect(() => {
     const panel = searchParams.get('panel')
     if (panel) {
-      setSelectedDrawer(panel)
+      setSelectedDrawer(urlParamToDrawerKey(panel))
       setIsDrawerOpen(true)
     } else {
       setIsDrawerOpen(false)

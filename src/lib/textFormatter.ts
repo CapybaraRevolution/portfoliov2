@@ -8,6 +8,7 @@ export function formatText(text: string): string {
   formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
   
   // Handle headers
+  formatted = formatted.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
   formatted = formatted.replace(/^### (.+)$/gm, '<h3>$1</h3>');
   formatted = formatted.replace(/^## (.+)$/gm, '<h2>$1</h2>');
   
