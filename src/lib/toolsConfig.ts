@@ -71,7 +71,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'webflow',
     label: 'Webflow',
-    iconPath: '/images/tools/chrome.svg',
+    iconPath: '/images/tools/webflow.svg',
     category: 'UX',
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Webflow design tool'
