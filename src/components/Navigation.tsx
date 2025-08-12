@@ -263,6 +263,7 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
             target="_blank"
             rel="noopener noreferrer"
             className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            aria-label="View Kyle McGraw's LinkedIn profile"
           >
             LinkedIn
           </a>
@@ -272,20 +273,10 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
             href="/Kyle_McGraw_CV.pdf"
             download
             className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+            aria-label="Download Kyle McGraw's CV"
           >
             Download CV
           </a>
-        </li>
-        <li className="md:hidden">
-          <button
-            onClick={() => {
-              const parts = ['kylemcgraw1993','@','gmail','.com']
-              window.location.href = `mailto:${parts.join('')}`
-            }}
-            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white text-left"
-          >
-            Contact
-          </button>
         </li>
         {navigation.map((group, groupIndex) => (
           <NavigationGroup
@@ -296,7 +287,7 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
         ))}
         <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
           <Button href="/contact" variant="filled" className="w-full">
-            Let&apos;s Work Together
+            Contact
           </Button>
         </li>
       </ul>
