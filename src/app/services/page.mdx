@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Services - Kyle McGraw',
-  description: 'Product Owner, UX Design, and Business Analysis services, plus my proven process and tools for building better digital products.',
+  title: 'Services & Tools - Kyle McGraw',
+  description: 'Product Owner, UX Design, and Business Analysis services powered by proven tools and methodologies for exceptional digital experiences.',
 }
 
 export const sections = [
@@ -9,8 +9,10 @@ export const sections = [
 ]
 
 import { ProcessRedirect } from '@/components/ProcessRedirect'
+import { ToolsGrid } from '@/components/ToolsGrid'
+import { tools } from '@/data/tools'
 
-# Services
+# Services & Tools
 
 <ProcessRedirect />
 
@@ -70,44 +72,13 @@ I offer comprehensive product development services that help companies create ex
 
 ## Tools
 
-The right tools accelerate great work. Here's my current toolkit for delivering exceptional digital products.
+The right tools accelerate great work. Click any tool below to see how I use it in my workflow and which services it supports.
 
-### Design & Prototyping
-- **Figma** - Design, prototyping, and design systems
-- **Principle** - Advanced micro-interactions and animations  
-- **Adobe Creative Suite** - Visual design and asset creation
-- **InVision** - Stakeholder collaboration and feedback
-- **Maze** - Remote usability testing and validation
+<div className="not-prose">
+  <ToolsGrid tools={tools} />
+</div>
 
-### Research & Analytics
-- **UserInterviews** - User research recruitment and management
-- **Hotjar** - Heatmaps and user behavior analysis
-- **Google Analytics** - Web analytics and conversion tracking
-- **Optimal Workshop** - Information architecture and card sorting
-- **UsabilityHub** - First-click testing and preference studies
-
-### Project Management
-- **Jira** - Agile project management and sprint planning
-- **Confluence** - Documentation and team collaboration
-- **Notion** - Strategic planning and knowledge management
-- **Slack** - Team communication and integration hub
-- **Loom** - Async video communication and demos
-
-### Development Collaboration
-- **GitHub** - Version control and developer handoff
-- **Storybook** - Component library documentation
-- **Zeplin** - Design-to-development specifications
-- **Abstract** - Design version control and branching
-- **Optimizely** - A/B testing and feature flagging
-
-### Data & Insights
-- **Amplitude** - Product analytics and user journey analysis
-- **Mixpanel** - Event tracking and funnel optimization
-- **Tableau** - Data visualization and dashboard creation
-- **Airtable** - Data organization and project tracking
-- **Typeform** - User feedback and survey collection
-
-<div className="not-prose mt-8">
+<div className="not-prose mt-12">
   <Button href="/case-studies/ecommerce" arrow="right">
     <>See My Work</>
   </Button>

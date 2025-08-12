@@ -34,6 +34,46 @@ interface ProcessStep {
   }
 }
 
+interface DrawerEntry {
+  overview: string
+  whyItMatters: {
+    stat: string
+    text: string
+  }
+  sample: string
+}
+
+interface ProcessCard {
+  title: string
+  slug: string
+  subtitle: string
+  icon: React.ComponentType<{ className?: string }>
+  pattern: { y: number, squares: Array<[number, number]> }
+}
+
+type DrawerKey = 
+  | 'stakeholder-alignment' 
+  | 'persona-journey-mapping' 
+  | 'competitive-analysis' 
+  | 'system-analysis'
+  | 'wireframes' 
+  | 'clickable-prototypes' 
+  | 'design-systems'
+  | 'instrumentation' 
+  | 'experimentation' 
+  | 'performance-quality' 
+  | 'continuous-improvement'
+
+type DrawerContentMap = Record<DrawerKey, DrawerEntry>
+
+// Convert slug to human-readable title
+function slugToTitle(slug: string): string {
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
 const processSteps: ProcessStep[] = [
   {
     id: 1,
@@ -92,9 +132,9 @@ const processSteps: ProcessStep[] = [
   }
 ]
 
-const drawerContent = {
+const drawerContent: DrawerContentMap = {
   // Step 1 - Discovery & Strategy
-  'Stakeholder Alignment': {
+  'stakeholder-alignment': {
     overview: `## Executive Summary
 **One-liner:** Align goals, measures, and decision paths so delivery moves faster.
 
@@ -140,7 +180,7 @@ Great products die from misalignment, not bad ideas. Alignment creates a shared 
 • **Key assumption:** Users abandon due to too many form fields
 • **Decision maker:** Product Manager (final call), Engineer Lead (feasibility), Designer (UX)`
   },
-  'Persona & Journey Mapping': {
+  'persona-journey-mapping': {
     overview: `## Executive Summary
 **One-liner:** Turn anecdotes into patterns we can design for—and measure.
 
@@ -183,7 +223,7 @@ Personas and journeys turn scattered anecdotes into patterns we can design for�
 • **Drop-off points:** Complex pricing page (40% exit), integration unclear
 • **Instrumentation:** evaluation_started, pricing_viewed, demo_requested, integration_checked`
   },
-  'Competitive Analysis': {
+  'competitive-analysis': {
     overview: `## Executive Summary
 **One-liner:** Reach parity where it's table-stakes and differentiate where it matters.
 
@@ -225,7 +265,7 @@ We must reach parity where it's table-stakes and differentiate where it matters.
 2. **One-click integrations** - Current solutions require developer setup
 3. **Proactive insights** - Others are reactive; we can predict and prevent issues`
   },
-  'System Analysis': {
+  'system-analysis': {
     overview: `## Executive Summary
 **One-liner:** Map constraints, quick wins, and integration risk before we design.
 
@@ -278,7 +318,7 @@ Design lives inside systems. Mapping current vs future reveals constraints, quic
   },
   
   // Step 3 - Design & Prototyping
-  'Wireframes': {
+  'wireframes': {
     overview: `## Executive Summary
 **One-liner:** I map flows and layouts in low-fi so we can argue about the right problems before pixels get precious.
 
@@ -319,7 +359,7 @@ Fast iteration, clear trade-offs, cheap mistakes.
 • **Vertical rhythm:** 16px, 24px, 32px, 48px
 • **Container widths:** 320px, 768px, 1024px, 1280px`
   },
-  'Click-through Prototype': {
+  'clickable-prototypes': {
     overview: `## Executive Summary
 **One-liner:** I turn the flow into an interactive prototype so we can test intent, comprehension, and friction—before we write code.
 
@@ -366,7 +406,7 @@ Fast iteration, clear trade-offs, cheap mistakes.
 • Average time: **3.2 min** (28% faster than baseline)
 • Error recovery: **89%** found correction path`
   },
-  'Design System': {
+  'design-systems': {
     overview: `## Executive Summary
 **One-liner:** I codify decisions into tokens and components so design and dev move as one.
 
@@ -418,7 +458,7 @@ Fast iteration, clear trade-offs, cheap mistakes.
   },
   
   // Step 5 - Launch & Optimization
-  'Measurement & Insights': {
+  'instrumentation': {
     overview: `## Executive Summary
 **One-liner:** Measure what matters from day one.
 
@@ -457,7 +497,7 @@ Decisions beat hunches. Clean events and dashboards let the team see cause → e
 • Mobile vs desktop completion: 64% vs 71%
 • Top drop-off step: Payment method selection (23% exit)`
   },
-  'Experimentation & A/B Testing': {
+  'experimentation': {
     overview: `## Executive Summary
 **One-liner:** Learn fast, ship what works.
 
@@ -490,7 +530,7 @@ AB tests validate assumptions and focus effort where it returns value.
 • **Lift:** +3.6pp (p=0.003, statistically significant)
 • **Decision:** Ship treatment to 100% of users`
   },
-  'Continuous Improvement': {
+  'continuous-improvement': {
     overview: `## Executive Summary
 **One-liner:** Close the loop and keep momentum.
 
@@ -521,6 +561,41 @@ We fold learning into the roadmap so wins scale and misses don't repeat.
 • Week 2: Prioritize fixes using RICE, plan experiments
 • Week 3: Design and implement highest-impact changes
 • Week 4: Launch A/B tests, measure results, update backlog`
+  },
+  'performance-quality': {
+    overview: `## Executive Summary
+**One-liner:** Speed, accessibility, and stability are UX; I monitor and harden them in CI.
+
+**Why it matters**
+Performance is UX. Users abandon slow sites, and accessibility gaps exclude users. Core Web Vitals affect SEO and conversion directly.
+
+**What I do**
+• Set performance budgets and add CI checks
+• Implement accessibility testing in pipelines
+• Monitor error rates, Core Web Vitals, and uptime
+• Create quality gates that prevent regression
+
+**Outputs & artifacts** Performance dashboard, CI quality gates, accessibility audit  
+**Signals of success** ≥95% Core Web Vitals pass, <1% error rate, WCAG AA compliance  
+**Tools** Lighthouse CI, axe-core, Sentry, DataDog`,
+    whyItMatters: { 
+      stat: '≥95% Core Web Vitals pass, <1% error rate', 
+      text: 'Performance is UX - users abandon slow sites, and accessibility gaps exclude users directly.' 
+    },
+    sample: `**Performance Budget Dashboard**
+| Metric | Target | Current | Status |
+|--------|--------|---------|--------|
+| LCP | ≤2.5s | 2.1s | ✅ Pass |
+| FID | ≤100ms | 85ms | ✅ Pass |
+| CLS | ≤0.1 | 0.08 | ✅ Pass |
+| Bundle size | ≤250KB | 223KB | ✅ Pass |
+
+**Accessibility Checklist**
+• Color contrast ratio ≥4.5:1
+• All interactive elements keyboard accessible
+• Form labels and error messages clear
+• Images have alt text, videos have captions
+• Focus indicators visible and consistent`
   }
 }
 
@@ -606,7 +681,7 @@ function StepContent({
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
-  onCardClick: (title: string) => void
+  onCardClick: (slug: string) => void
   onDrawerClose: () => void
 }) {
   const getStepLayout = () => {
@@ -715,30 +790,34 @@ function Step1Layout({
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
-  onCardClick: (title: string) => void
+  onCardClick: (slug: string) => void
   onDrawerClose: () => void
 }) {
-  const cards = [
+  const cards: ProcessCard[] = [
     {
       title: 'Stakeholder Alignment',
+      slug: 'stakeholder-alignment',
       subtitle: 'Align goals, measures, and decision paths so delivery moves faster.',
       icon: UsersIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Persona & Journey Mapping',
+      slug: 'persona-journey-mapping',
       subtitle: 'Turn anecdotes into patterns we can design for—and measure.',
       icon: UserIcon,
       pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Competitive Analysis',
+      slug: 'competitive-analysis',
       subtitle: 'Reach parity where it\'s table-stakes and differentiate where it matters.',
       icon: MagnifyingGlassIcon,
       pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     },
     {
       title: 'System Analysis',
+      slug: 'system-analysis',
       subtitle: 'Map constraints, quick wins, and integration risk before we design.',
       icon: CogIcon,
       pattern: { y: 22, squares: [[0, 1]] as Array<[number, number]> }
@@ -757,7 +836,7 @@ function Step1Layout({
             subtitle={card.subtitle}
             icon={card.icon}
             pattern={card.pattern}
-            onClick={() => onCardClick(card.title)}
+            onClick={() => onCardClick(card.slug)}
           />
         ))}
       </div>
@@ -767,10 +846,10 @@ function Step1Layout({
         <SideDrawer
           open={isDrawerOpen}
           onClose={onDrawerClose}
-          title={selectedDrawer}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || ''}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: '', text: '' }}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || ''}
+          title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
         />
       )}
     </div>
@@ -1018,24 +1097,27 @@ function Step3Layout({
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
-  onCardClick: (title: string) => void
+  onCardClick: (slug: string) => void
   onDrawerClose: () => void
 }) {
-  const cards = [
+  const cards: ProcessCard[] = [
     {
       title: 'Wireframes',
+      slug: 'wireframes',
       subtitle: 'Fast, precise structure to align teams and flag risks early.',
       icon: DocumentIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
-      title: 'Click-through Prototype',
+      title: 'Clickable Prototypes',
+      slug: 'clickable-prototypes',
       subtitle: 'Make journeys tangible for decision-makers and test users.',
       icon: CursorClickIcon,
       pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
-      title: 'Design System',
+      title: 'Design Systems',
+      slug: 'design-systems',
       subtitle: 'Reusable components that speed delivery and keep UX consistent.',
       icon: ShapesIcon,
       pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
@@ -1054,7 +1136,7 @@ function Step3Layout({
             subtitle={card.subtitle}
             icon={card.icon}
             pattern={card.pattern}
-            onClick={() => onCardClick(card.title)}
+            onClick={() => onCardClick(card.slug)}
           />
         ))}
       </div>
@@ -1064,10 +1146,10 @@ function Step3Layout({
         <SideDrawer
           open={isDrawerOpen}
           onClose={onDrawerClose}
-          title={selectedDrawer}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || ''}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: '', text: '' }}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || ''}
+          title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
         />
       )}
     </div>
@@ -1126,8 +1208,8 @@ function Step4Layout({ step }: { step: ProcessStep }) {
       updated: '2h ago',
       acceptance: ['User can complete signup flow', 'Email verification works', 'Onboarding steps are intuitive'],
       tests: ['Unit tests pass', 'E2E flow tested', 'A11y compliance verified'],
-      trackingEvents: ['track_signup_start', 'track_step_completion', 'track_signup_success'],
-      dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Event tracking added']
+      instrumentationHooks: ['log_signup_start', 'log_step_completion', 'log_signup_success'],
+      dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Data hooks added']
     },
     {
       id: 2,
@@ -1427,8 +1509,8 @@ ${selectedTask.acceptance.map((criteria: string) => `• ${criteria}`).join('\n'
 ## Test Cases
 ${selectedTask.tests ? selectedTask.tests.map((test: string) => `• ${test}`).join('\n') : 'Tests pending'}
 
-## Event Tracking
-${selectedTask.trackingEvents ? selectedTask.trackingEvents.map((hook: string) => `• ${hook}`).join('\n') : 'No tracking events'}` : 'Task details loading...'}
+## Data Hooks
+${selectedTask.instrumentationHooks ? selectedTask.instrumentationHooks.map((hook: string) => `• ${hook}`).join('\n') : 'No data hooks'}` : 'Task details loading...'}
           whyItMatters={{ 
             stat: `${selectedTask.severity} priority · ${selectedTask.area}`, 
             text: `${selectedTask.owner ? `Owned by ${selectedTask.owner}` : 'Unassigned'} · Last updated ${selectedTask.updated}` 
@@ -1457,25 +1539,35 @@ function Step5Layout({
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
-  onCardClick: (title: string) => void
+  onCardClick: (slug: string) => void
   onDrawerClose: () => void
 }) {
-  const cards = [
+  const cards: ProcessCard[] = [
     {
-      title: 'Measurement & Insights',
-      subtitle: 'Measure what matters from day one.',
+      title: 'Instrumentation',
+      slug: 'instrumentation',
+      subtitle: 'Wire up events, funnels, and baselines to measure what matters.',
       icon: ChartBarIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
-      title: 'Experimentation & A/B Testing',
-      subtitle: 'Learn fast, ship what works.',
+      title: 'Experimentation',
+      slug: 'experimentation',
+      subtitle: 'Run small, falsifiable tests to de-risk decisions.',
       icon: FlaskIcon,
       pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
+      title: 'Performance & Quality',
+      slug: 'performance-quality',
+      subtitle: 'Monitor speed, accessibility, and stability in CI.',
+      icon: BoltIcon,
+      pattern: { y: 8, squares: [[1, 2], [2, 4]] as Array<[number, number]> }
+    },
+    {
       title: 'Continuous Improvement',
-      subtitle: 'Close the loop and keep momentum.',
+      slug: 'continuous-improvement',
+      subtitle: 'Turn insights into a prioritized backlog, prune and ship weekly.',
       icon: ArrowPathIcon,
       pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     }
@@ -1504,7 +1596,7 @@ function Step5Layout({
       </div>
 
       {/* Interactive Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
         {cards.map((card) => (
           <ProcessCard
             key={card.title}
@@ -1512,7 +1604,7 @@ function Step5Layout({
             subtitle={card.subtitle}
             icon={card.icon}
             pattern={card.pattern}
-            onClick={() => onCardClick(card.title)}
+            onClick={() => onCardClick(card.slug)}
           />
         ))}
       </div>
@@ -1522,10 +1614,10 @@ function Step5Layout({
         <SideDrawer
           open={isDrawerOpen}
           onClose={onDrawerClose}
-          title={selectedDrawer}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || ''}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: '', text: '' }}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || ''}
+          title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
+          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
+          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
+          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
         />
       )}
     </div>
@@ -1564,12 +1656,22 @@ function ProcessFlowContent() {
 
   // Drawer handlers for all steps
   const handleCardClick = (title: string) => {
+    console.log('[DEBUG] Available drawerContent keys:', Object.keys(drawerContent))
+    console.log('[DEBUG] Card clicked with title:', title)
+    
+    const contentExists = !!drawerContent[title as keyof typeof drawerContent]
+    console.log('[DEBUG] Content exists for title:', contentExists)
+    
+    if (!contentExists) {
+      console.warn(`[DRAWER] Missing content for slug: "${title}". Available slugs:`, Object.keys(drawerContent))
+    }
+    
     setSelectedDrawer(title)
     setIsDrawerOpen(true)
     
     // Update URL with panel parameter
     const url = new URL(window.location.href)
-    url.searchParams.set('panel', title.toLowerCase().replace(/\s+/g, '-').replace('&', ''))
+    url.searchParams.set('panel', title) // title is now a slug, already kebab-case
     window.history.pushState(null, '', url.toString())
   }
 
