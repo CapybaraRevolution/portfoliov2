@@ -257,9 +257,36 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
   return (
     <nav {...props}>
       <ul role="list">
-        <TopLevelNavItem href="/portfolio">Portfolio</TopLevelNavItem>
-        <TopLevelNavItem href="/contact">Contact</TopLevelNavItem>
-        <TopLevelNavItem href="https://linkedin.com/in/kylemcgraw">LinkedIn</TopLevelNavItem>
+        <li className="md:hidden">
+          <a
+            href="https://www.linkedin.com/in/kyleryanmcgraw/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+          >
+            LinkedIn
+          </a>
+        </li>
+        <li className="md:hidden">
+          <a
+            href="/Kyle_McGraw_CV.pdf"
+            download
+            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+          >
+            Download CV
+          </a>
+        </li>
+        <li className="md:hidden">
+          <button
+            onClick={() => {
+              const parts = ['kylemcgraw1993','@','gmail','.com']
+              window.location.href = `mailto:${parts.join('')}`
+            }}
+            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white text-left"
+          >
+            Contact
+          </button>
+        </li>
         {navigation.map((group, groupIndex) => (
           <NavigationGroup
             key={group.title}
