@@ -83,7 +83,7 @@ export const Header = forwardRef<
           <ul role="list" className="flex items-center gap-8">
             <li>
               <a
-                href="https://linkedin.com/in/kylemcgraw1993"
+                href="https://www.linkedin.com/in/kyleryanmcgraw/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm/5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
@@ -91,18 +91,6 @@ export const Header = forwardRef<
               >
                 LinkedIn
               </a>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  const parts = ['kylemcgraw1993','@','gmail','.com']
-                  window.location.href = `mailto:${parts.join('')}`
-                }}
-                className="text-sm/5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                aria-label="Email Kyle McGraw"
-              >
-                Contact
-              </button>
             </li>
             <li>
               <a

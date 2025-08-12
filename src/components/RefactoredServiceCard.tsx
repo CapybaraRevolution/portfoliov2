@@ -11,6 +11,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { GridPattern } from '@/components/GridPattern'
 import { ToolChip } from '@/components/ToolChip'
 import { Chip } from '@/components/ui/Chip'
+import { NavigationChip } from '@/components/NavigationChip'
 import { type Service } from '@/data/services'
 import { getToolsForService } from '@/lib/toolsConfig'
 
@@ -138,15 +139,11 @@ export function RefactoredServiceCard({ service }: RefactoredServiceCardProps) {
         <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Related skills</h4>
         <div className="flex flex-wrap gap-2">
           {service.relatedSkills.map((skill) => (
-            <Chip
+            <NavigationChip
               key={skill.label}
-              variant="outline"
+              skill={skill.label}
               size="sm"
-              as="a"
-              href={skill.href}
-            >
-              {skill.label}
-            </Chip>
+            />
           ))}
         </div>
       </div>
