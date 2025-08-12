@@ -110,12 +110,7 @@ export const Header = forwardRef<
           <ThemeToggle />
         </div>
         <div className="hidden min-[416px]:contents">
-          <Button 
-            onClick={() => {
-              const parts = ['kylemcgraw1993','@','gmail','.com']
-              window.location.href = `mailto:${parts.join('')}`
-            }}
-          >
+          <Button href="/contact">
             Contact
           </Button>
         </div>

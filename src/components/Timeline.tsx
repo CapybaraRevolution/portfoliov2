@@ -67,7 +67,7 @@ const timelineData: TimelineNode[] = [
     title: 'UX Lead',
     company: 'Navigator Games',
     period: '2021–2023',
-    description: 'Built UX pipeline and analytics instrumentation; faster releases and cleaner handoffs.',
+    description: 'Built UX pipeline and data instrumentation; faster releases and cleaner handoffs.',
     link: '/services',
     linkText: 'View project(s)'
   },
@@ -76,7 +76,7 @@ const timelineData: TimelineNode[] = [
     title: 'Forward Focus',
     company: '',
     period: '2025→',
-    description: 'AI-first product ops: research synthesis, IA variants, analytics-by-default, model-backed UX.',
+    description: 'AI-first product ops: research synthesis, IA variants, instrumentation-by-default, model-backed UX.',
     link: '/services#my-process',
     linkText: 'Process → AI Assists'
   }

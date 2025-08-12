@@ -10,6 +10,7 @@ import { FlaskIcon } from '@/components/icons/FlaskIcon'
 import { ChatBubbleIcon } from '@/components/icons/ChatBubbleIcon'
 import { PackageIcon } from '@/components/icons/PackageIcon'
 import { FolderIcon } from '@/components/icons/FolderIcon'
+import { ShapesIcon } from '@/components/icons/ShapesIcon'
 
 const iconMap = {
   'DocumentIcon': DocumentIcon,
@@ -24,6 +25,7 @@ const iconMap = {
   'ChatBubbleIcon': ChatBubbleIcon,
   'PackageIcon': PackageIcon,
   'FolderIcon': FolderIcon,
+  'ShapesIcon': ShapesIcon,
 } as const
 
 export function getIcon(iconName: string): React.ComponentType<{ className?: string }> {

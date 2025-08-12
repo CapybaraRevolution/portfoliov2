@@ -83,9 +83,14 @@ export function ProcessCard({ title, subtitle, icon, pattern, onClick }: Process
     mouseY.set(clientY - top)
   }
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onClick()
+  }
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       onMouseMove={onMouseMove}
       className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 w-full text-left"
     >

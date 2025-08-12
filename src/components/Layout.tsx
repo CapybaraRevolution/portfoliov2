@@ -10,6 +10,7 @@ import { Logo } from '@/components/Logo'
 import { Navigation } from '@/components/Navigation'
 import { SectionProvider, type Section } from '@/components/SectionProvider'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { AboutHeroBg } from '@/components/AboutHeroBg'
 
 export function Layout({
   children,
@@ -19,8 +20,10 @@ export function Layout({
   allSections: Record<string, Array<Section>>
 }) {
   let pathname = usePathname()
+  let isAboutPage = pathname === '/'
+  let isContactPage = pathname === '/contact'
 
-  return (
+  const LayoutContent = () => (
     <ErrorBoundary>
       <SectionProvider sections={allSections[pathname] ?? []}>
         <div className="h-full lg:ml-72 xl:ml-80">
@@ -51,5 +54,13 @@ export function Layout({
         </div>
       </SectionProvider>
     </ErrorBoundary>
+  )
+
+  return isAboutPage || isContactPage ? (
+    <AboutHeroBg>
+      <LayoutContent />
+    </AboutHeroBg>
+  ) : (
+    <LayoutContent />
   )
 }
