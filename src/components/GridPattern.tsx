@@ -27,7 +27,7 @@ export function GridPattern({
           x={x}
           y={y}
         >
-          <path d={`M.5 ${height}V.5H${width}`} fill="none" stroke="currentColor" strokeWidth="1" />
+          <path d={`M.5 ${height}V.5H${width}`} fill="none" />
         </pattern>
       </defs>
       <rect
@@ -46,7 +46,6 @@ export function GridPattern({
               height={height + 1}
               x={x * width}
               y={y * height}
-              fill="currentColor"
             />
           ))}
         </svg>
