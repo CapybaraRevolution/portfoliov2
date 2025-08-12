@@ -77,7 +77,7 @@ export const projects: Project[] = [
   {
     id: 'fintech-mobile-app',
     title: 'FinTech Mobile App',
-    description: 'Comprehensive audit and clickable prototypes that helped secure funding by clearly demonstrating product vision to investors.',
+    description: 'Comprehensive audit and clickable prototypes to secure funding by clarifying product vision to investors.',
     category: 'Strategy',
     skills: [
       'Product Vision',
@@ -87,9 +87,9 @@ export const projects: Project[] = [
       'Market Research',
       'Risk Surfacing'
     ],
-    ai: false,
+    ai: true,
     href: '/case-studies/fintech',
-    client: 'Breeze Mortgage Hub',
+    client: 'Confidential',
     timeline: '2024–Present',
     status: 'ongoing'
   },
@@ -114,18 +114,19 @@ export const projects: Project[] = [
   {
     id: 'healthcare-portal',
     title: 'Healthcare Portal',
-    description: 'Modular patterns for hierarchical content with accessible system design and scalable information architecture.',
+    description: 'Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.',
     category: 'UX',
     skills: [
+      'User Research',
+      'Service Design',
+      'Data Visualization',
       'Design Systems',
       'Accessibility',
-      'Wireframing',
-      'Stakeholder Alignment',
-      'Opportunity Framing'
+      'Wireframing'
     ],
-    ai: false,
+    ai: true,
     href: '/case-studies/healthcare',
-    client: 'Cornell SC Johnson College of Business',
+    client: 'Confidential',
     timeline: '2023–2024',
     status: 'completed'
   },

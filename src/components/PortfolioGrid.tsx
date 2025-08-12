@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { FunnelIcon } from '@heroicons/react/20/solid'
 import { projects, filterProjects, disciplines, skillGroups } from '@/data/projects'
-import { ProjectCard } from '@/components/ProjectCard'
+import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
 import { FilterChip } from '@/components/FilterChip'
 import { AIToggle } from '@/components/AIToggle'
 
@@ -212,11 +212,11 @@ export function PortfolioGrid() {
 
       {/* Projects Grid */}
       {filteredProjects.length > 0 ? (
-        <ul role="list" className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-2 xl:gap-x-12">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-2 xl:gap-x-12">
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <RefactoredProjectCard key={project.id} project={project} />
           ))}
-        </ul>
+        </div>
       ) : (
         <div className="text-center py-12">
           <div className="max-w-sm mx-auto">
