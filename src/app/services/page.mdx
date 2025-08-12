@@ -5,80 +5,25 @@ export const metadata = {
 
 export const sections = [
   { title: 'Services I Provide', id: 'services-i-provide' },
-  { title: 'Tools', id: 'tools' },
 ]
 
 import { ProcessRedirect } from '@/components/ProcessRedirect'
-import { ToolsGrid } from '@/components/ToolsGrid'
-import { tools } from '@/data/tools'
+import { RefactoredServicesGrid } from '@/components/RefactoredServicesGrid'
+import { Button } from '@/components/Button'
 
 # Services & Tools
 
 <ProcessRedirect />
 
-I offer comprehensive product development services that help companies create exceptional digital experiences. From initial strategy to final implementation, I ensure your product meets both user needs and business objectives.
+I offer comprehensive product development services that help companies create exceptional digital experiences. From strategic planning to detailed implementation, each service leverages proven tools and methodologies.
 
 ## Services I Provide
 
-### Product Owner Services
-
-**Strategic Product Planning**
-- Product roadmap development and prioritization
-- Feature specification and user story creation
-- Stakeholder alignment and communication
-- Agile/Scrum team leadership
-- Product metrics and KPI definition
-
-**Cross-functional Leadership**
-- Coordinate between design, development, and business teams
-- Sprint planning and backlog management
-- Release planning and go-to-market strategy
-- Risk assessment and mitigation planning
-
-### UX Design Services
-
-**User Research & Strategy**
-- User interviews and usability testing
-- Persona development and user journey mapping
-- Competitive analysis and market research
-- Information architecture and site mapping
-
-**Design & Prototyping**
-- Wireframing and low-fidelity prototypes
-- High-fidelity UI design and interactive prototypes
-- Design system development and documentation
-- Mobile-first and responsive design
-
-### Business Analysis Services
-
-**Requirements Analysis**
-- Business process mapping and optimization
-- Functional and non-functional requirements gathering
-- Gap analysis and solution recommendations
-- Technical documentation and specifications
-
-**Data & Analytics**
-- KPI definition and measurement frameworks
-- User behavior analysis and insights
-- A/B testing strategy and implementation
-- ROI analysis and business case development
-
-### Industries I Serve
-
-- **E-commerce & Retail** - Conversion optimization, checkout flows, inventory management
-- **FinTech** - Compliance-focused designs, complex data visualization, security UX
-- **Healthcare** - HIPAA-compliant interfaces, patient portals, clinical workflows
-- **SaaS & Enterprise** - Dashboard design, onboarding flows, admin interfaces
-
-## Tools
-
-The right tools accelerate great work. Click any tool below to see how I use it in my workflow and which services it supports.
-
-<div className="not-prose">
-  <ToolsGrid tools={tools} />
+<div className="not-prose my-12">
+  <RefactoredServicesGrid />
 </div>
 
-<div className="not-prose mt-12">
+<div className="not-prose mt-12 text-center">
   <Button href="/case-studies/ecommerce" arrow="right">
     <>See My Work</>
   </Button>

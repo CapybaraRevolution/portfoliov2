@@ -20,8 +20,8 @@ export function LogoCloud() {
   ]
 
   return (
-    <section>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+    <section className="mt-20">
+      <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <Heading id="my-clients">My Clients</Heading>
           <p className="lead mb-12">
