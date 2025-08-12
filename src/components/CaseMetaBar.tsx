@@ -47,19 +47,18 @@ export function CaseMetaBar({ caseStudy, className }: CaseMetaBarProps) {
 
         {/* Actions cluster */}
         <div className="flex flex-wrap gap-3 lg:flex-nowrap">
-          <Button href="/work/overview" variant="outline" size="sm">
+          <Button href="/work/overview" variant="outline">
             Back to work
           </Button>
           {nextCase && (
             <Button 
               href={`/case-studies/${nextCase.slug}`} 
-              variant="outline" 
-              size="sm"
+              variant="outline"
             >
               Next case study
             </Button>
           )}
-          <Button href="/contact" variant="filled" size="sm">
+          <Button href="/contact" variant="filled">
             Contact Kyle
           </Button>
         </div>
