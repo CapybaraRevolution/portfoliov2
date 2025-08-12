@@ -10,10 +10,9 @@ import { useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { GridPattern } from '@/components/GridPattern'
 import { ToolChip } from '@/components/ToolChip'
-import { Tag } from '@/components/Tag'
+import { Chip } from '@/components/ui/Chip'
 import { type Service } from '@/data/services'
 import { getToolsForService } from '@/lib/toolsConfig'
-import { serviceCategoryColors } from '@/lib/serviceTokens'
 
 interface RefactoredServiceCardProps {
   service: Service
@@ -64,16 +63,14 @@ function ServiceCardPattern({
 }
 
 function CategoryTag({ category }: { category: Service['category'] }) {
-  const colors = serviceCategoryColors[category]
-  
   return (
-    <div 
-      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${colors.bg} ${colors.text} ${colors.border}`}
-      role="status"
-      aria-label={`Service category: ${category}`}
+    <Chip
+      variant="filled"
+      size="sm"
+      category={category}
     >
       {category}
-    </div>
+    </Chip>
   )
 }
 
@@ -141,14 +138,15 @@ export function RefactoredServiceCard({ service }: RefactoredServiceCardProps) {
         <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Related skills</h4>
         <div className="flex flex-wrap gap-2">
           {service.relatedSkills.map((skill) => (
-            <a
+            <Chip
               key={skill.label}
+              variant="outline"
+              size="sm"
+              as="a"
               href={skill.href}
-              className="inline-flex items-center rounded-md border border-zinc-300 bg-transparent px-3 py-1.5 text-sm font-medium text-zinc-700 transition-all duration-200 hover:scale-105 hover:border-emerald-300 hover:text-emerald-700 active:scale-95 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-emerald-500 dark:hover:text-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
-              aria-label={`View ${skill.label} related content`}
             >
               {skill.label}
-            </a>
+            </Chip>
           ))}
         </div>
       </div>

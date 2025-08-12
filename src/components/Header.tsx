@@ -81,9 +81,39 @@ export const Header = forwardRef<
       <div className="flex items-center gap-5">
         <nav className="hidden md:block">
           <ul role="list" className="flex items-center gap-8">
-            <TopLevelNavItem href="/">API</TopLevelNavItem>
-            <TopLevelNavItem href="#">Documentation</TopLevelNavItem>
-            <TopLevelNavItem href="#">Support</TopLevelNavItem>
+            <li>
+              <a
+                href="https://linkedin.com/in/kylemcgraw1993"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm/5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                aria-label="View Kyle McGraw's LinkedIn profile"
+              >
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  const parts = ['kylemcgraw1993','@','gmail','.com']
+                  window.location.href = `mailto:${parts.join('')}`
+                }}
+                className="text-sm/5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                aria-label="Email Kyle McGraw"
+              >
+                Contact
+              </button>
+            </li>
+            <li>
+              <a
+                href="/Kyle_McGraw_CV.pdf"
+                download
+                className="text-sm/5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                aria-label="Download Kyle McGraw's CV"
+              >
+                Download CV
+              </a>
+            </li>
           </ul>
         </nav>
         <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />
@@ -92,7 +122,14 @@ export const Header = forwardRef<
           <ThemeToggle />
         </div>
         <div className="hidden min-[416px]:contents">
-          <Button href="#">Sign in</Button>
+          <Button 
+            onClick={() => {
+              const parts = ['kylemcgraw1993','@','gmail','.com']
+              window.location.href = `mailto:${parts.join('')}`
+            }}
+          >
+            Contact
+          </Button>
         </div>
       </div>
     </motion.div>

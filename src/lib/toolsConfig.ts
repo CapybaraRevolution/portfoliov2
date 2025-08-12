@@ -37,7 +37,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'airtable',
     label: 'Airtable',
-    iconPath: '/images/tools/airtable.svg',
+    iconPath: '/images/tools/trello.svg',
     category: 'PM',
     serviceRefs: ['requirements-analysis'],
     a11yAlt: 'Airtable database tool'
@@ -63,7 +63,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'principle',
     label: 'Principle',
-    iconPath: '/images/tools/principle.svg',
+    iconPath: '/images/tools/adobe_after_effects.svg',
     category: 'UX', 
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Principle animation tool'
@@ -71,7 +71,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'webflow',
     label: 'Webflow',
-    iconPath: '/images/tools/webflow.svg',
+    iconPath: '/images/tools/chrome.svg',
     category: 'UX',
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Webflow design tool'
@@ -81,7 +81,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'userinterviews',
     label: 'UserInterviews',
-    iconPath: '/images/tools/userinterviews.svg',
+    iconPath: '/images/tools/zoom.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'UserInterviews research tool'
@@ -89,7 +89,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'typeform',
     label: 'Typeform',
-    iconPath: '/images/tools/typeform.svg', 
+    iconPath: '/images/tools/google docs.svg', 
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Typeform survey tool'
@@ -97,7 +97,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'hotjar',
     label: 'Hotjar',
-    iconPath: '/images/tools/hotjar.svg',
+    iconPath: '/images/tools/google.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Hotjar analytics tool'
@@ -113,7 +113,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'maze',
     label: 'Maze', 
-    iconPath: '/images/tools/maze.svg',
+    iconPath: '/images/tools/github.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Maze testing tool'
