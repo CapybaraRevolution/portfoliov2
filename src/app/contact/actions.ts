@@ -84,7 +84,7 @@ Submitted via kylemcgraw.com contact form
 
     // Send email using Resend
     const { data, error } = await resend!.emails.send({
-      from: 'Portfolio Contact Form <noreply@kylemcgraw.com>',
+      from: 'Portfolio Contact Form <onboarding@resend.dev>',
       to: ['kylemcgraw1993@gmail.com'],
       replyTo: formData.email,
       subject: emailSubject,

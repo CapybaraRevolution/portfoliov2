@@ -234,21 +234,21 @@ function NavigationGroup({
 
 export const navigation: Array<NavGroup> = [
   {
-    title: 'Who is Kyle McGraw',
+    title: 'About Kyle McGraw',
     links: [
       { title: 'About', href: '/' },
       { title: 'Services', href: '/services' },
       { title: 'Process', href: '/process' },
-      { title: 'Portfolio', href: '/portfolio' },
     ],
   },
   {
-    title: 'Case Studies',
+    title: 'Work',
     links: [
-      { title: 'E-commerce Platform', href: '/case-studies/ecommerce' },
+      { title: 'Overview', href: '/work/overview' },
       { title: 'FinTech Mobile App', href: '/case-studies/fintech' },
-      { title: 'SaaS Dashboard', href: '/case-studies/saas' },
       { title: 'Healthcare Portal', href: '/case-studies/healthcare' },
+      { title: 'E-commerce Platform', href: '/case-studies/ecommerce' },
+      { title: 'SaaS Dashboard', href: '/case-studies/saas' },
     ],
   },
 ]

@@ -4,14 +4,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 
-// Category color system for chips
-const CATEGORY_COLORS = {
-  PM: 'bg-sky-500/15 text-sky-300 ring-1 ring-sky-500/30',
-  UX: 'bg-violet-500/15 text-violet-300 ring-1 ring-violet-500/30',
-  BA: 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30',
-  AI: 'bg-gradient-to-r from-pink-500/20 via-amber-500/20 to-cyan-500/20 text-cyan-200 ring-1 ring-cyan-400/30',
-  DS: 'bg-purple-500/15 text-purple-300 ring-1 ring-purple-500/30'
-} as const
+import { CATEGORY_COLORS } from './CategoryBadge'
 
 interface ChipProps {
   children: React.ReactNode
@@ -48,7 +41,7 @@ export function Chip({
 }: ChipProps) {
   const baseClasses = clsx(
     'inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200',
-    'focus:outline-none focus:ring-2 focus:ring-emerald-500/50',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50',
     // Size variants
     size === 'sm' ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm',
     className

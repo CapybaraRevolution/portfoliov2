@@ -71,7 +71,7 @@ export function PortfolioGrid() {
     }
     
     const paramString = params.toString()
-    const newUrl = paramString ? `?${paramString}` : '/portfolio'
+    const newUrl = paramString ? `?${paramString}` : '/work/overview'
     router.push(newUrl, { scroll: false })
   }
 
@@ -100,7 +100,7 @@ export function PortfolioGrid() {
     setActiveCategory('All')
     setSelectedSkills(new Set())
     setAiAccelerated(false)
-    router.push('/portfolio', { scroll: false })
+    router.push('/work/overview', { scroll: false })
   }
 
   const removeSkill = (skill: string) => {

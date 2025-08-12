@@ -17,7 +17,7 @@ export function NavigationChip({
   const router = useRouter()
 
   const handleViewProjects = () => {
-    router.push(`/portfolio?skills=${encodeURIComponent(skill)}`)
+    router.push(`/work/overview?skills=${encodeURIComponent(skill)}`)
   }
 
   const handleViewProcess = () => {

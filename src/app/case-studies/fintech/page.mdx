@@ -1,36 +1,78 @@
+import { CaseMetaBar } from '@/components/CaseMetaBar'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+
 export const metadata = {
   title: 'FinTech Mobile App - Case Study',
-  description: 'Designing a secure and intuitive mobile banking experience that increased user engagement by 45% and reduced support tickets by 32%.',
+  description: 'Comprehensive audit and clickable prototypes to secure funding by clarifying product vision to investors.',
 }
 
-# FinTech Mobile App Design
+export default function FinTechCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('fintech')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
 
-A complete mobile banking application redesign focused on security, usability, and regulatory compliance that transformed the user experience and business metrics.
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-12">
+      <CaseMetaBar caseStudy={caseStudy} />
+      
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Project Overview</h2>
 
-## Project Overview
+        <p><strong>The Challenge</strong><br />
+        Breeze Mortgage Hub needed to secure Series A funding but lacked a cohesive product vision. Investors couldn't understand the value proposition from scattered wireframes and documentation.</p>
 
-**Client**: Mid-market financial services company  
-**Timeline**: 8 months (January - August 2024)  
-**Role**: Product Designer & UX Strategist  
-**Team**: 3 developers, 1 security specialist, 1 compliance officer
+        <p><strong>The Solution</strong><br />
+        I led a comprehensive UX audit and created interactive prototypes that clearly communicated the product strategy to stakeholders and investors.</p>
 
-**Challenge**
-The existing mobile app had poor user adoption (23% monthly active users) and high abandonment rates during onboarding (67%). Users complained about complex authentication flows and difficulty finding key features.
+        <hr />
 
-## Coming Soon
+        <h2>Process & Approach</h2>
 
-This case study is currently being documented. It will include:
+        <h3>Discovery Phase</h3>
+        <ul>
+          <li>Stakeholder interviews with 8 team members</li>
+          <li>Competitive analysis of 12 fintech apps</li>
+          <li>User journey mapping across 5 key flows</li>
+          <li>Technical constraint documentation</li>
+        </ul>
 
-- **User Research**: Security-focused user interviews and behavioral analysis
-- **Design Process**: Wireframes, prototypes, and usability testing results  
-- **Compliance Considerations**: Meeting financial regulatory requirements
-- **Results**: Engagement metrics, adoption rates, and user satisfaction scores
+        <h3>Design Phase</h3>
+        <ul>
+          <li>Information architecture restructuring</li>
+          <li>High-fidelity prototype creation</li>
+          <li>Design system foundations</li>
+          <li>Investor presentation deck</li>
+        </ul>
 
-<div className="not-prose mt-8 flex gap-3">
-  <Button href="/case-studies/ecommerce" arrow="right">
-    <>View E-commerce Case Study</>
-  </Button>
-  <Button href="/contact" variant="outline">
-    <>Discuss Your FinTech Project</>
-  </Button>
-</div>
+        <hr />
+
+        <h2>Key Results</h2>
+
+        <ul>
+          <li><strong>Funding Secured</strong>: $2.3M Series A round</li>
+          <li><strong>Investor Interest</strong>: +180% meeting requests</li>
+          <li><strong>Time to Clarity</strong>: 3 weeks from concept to prototype</li>
+        </ul>
+
+        <hr />
+
+        <h2>Coming Soon</h2>
+
+        <p>This case study is currently being expanded with detailed process documentation, including:</p>
+
+        <ul>
+          <li><strong>Interactive Prototypes</strong>: Full clickable demos and design rationale</li>
+          <li><strong>Design System</strong>: Component library and usage guidelines</li>
+          <li><strong>Investor Feedback</strong>: Detailed insights from funding presentations</li>
+          <li><strong>Technical Implementation</strong>: Development handoff and execution details</li>
+        </ul>
+
+        <blockquote>
+          <p><strong>Key Insight</strong>: Investors need to see and feel the product experience, not just read about it. Interactive prototypes were 10x more effective than static presentations.</p>
+        </blockquote>
+      </div>
+    </div>
+  )
+}

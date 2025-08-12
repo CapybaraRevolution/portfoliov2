@@ -597,25 +597,10 @@ function ContactForm() {
             variant="secondary"
             className={`relative px-8 py-3 transition-all duration-500 transform ${
               !isFormValid 
-                ? 'bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400 cursor-not-allowed border border-zinc-300 dark:border-zinc-600' 
+                ? 'bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-600' 
                 : 'bg-emerald-50/80 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 hover:border-emerald-400 dark:hover:border-emerald-400/70 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-400/20'
             }`}
             disabled={isSubmitting}
-            onClick={!isFormValid ? (e) => {
-              e.preventDefault()
-              setShowSubmitErrors(true)
-              setTouched({
-                name: true,
-                email: true,
-                project: true,
-                timeline: true,
-                budget: true,
-                engagement: true,
-                company: touched.company || false,
-                website: touched.website || false,
-                success: touched.success || false,
-              })
-            } : undefined}
           >
             <span className={`relative z-10 transition-all duration-300 font-medium ${isFormValid ? 'text-emerald-700 dark:text-emerald-300' : ''}`}>
               {isSubmitting ? (

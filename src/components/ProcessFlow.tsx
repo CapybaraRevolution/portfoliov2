@@ -83,7 +83,7 @@ const processSteps: ProcessStep[] = [
     skills: ['User Interviews', 'Stakeholder Alignment', 'Market Research', 'Competitive Analysis', 'Opportunity Framing'],
     cta: {
       text: 'See a real discovery charter →',
-      href: '/portfolio?skills=Product%20Vision'
+      href: '/work/overview?skills=Product%20Vision'
     }
   },
   {
@@ -94,7 +94,7 @@ const processSteps: ProcessStep[] = [
     skills: ['Roadmapping', 'Information Architecture', 'User Flows', 'Release Planning', 'Risk Surfacing'],
     cta: {
       text: 'View a roadmap sample →',
-      href: '/portfolio?skills=Roadmapping'
+      href: '/work/overview?skills=Roadmapping'
     }
   },
   {
@@ -105,7 +105,7 @@ const processSteps: ProcessStep[] = [
     skills: ['Wireframing', 'Prototyping', 'Design Systems', 'Accessibility', 'A/B Testing'],
     cta: {
       text: 'Test a live prototype →',
-      href: '/portfolio?skills=Prototyping'
+      href: '/work/overview?skills=Prototyping'
     }
   },
   {
@@ -116,7 +116,7 @@ const processSteps: ProcessStep[] = [
     skills: ['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Instrumentation'],
     cta: {
       text: 'Read a sprint report →',
-      href: '/portfolio?skills=Cross-team%20Facilitation'
+      href: '/work/overview?skills=Cross-team%20Facilitation'
     }
   },
   {
@@ -127,7 +127,7 @@ const processSteps: ProcessStep[] = [
     skills: ['KPI Dashboards', 'Funnel Analysis', 'Conversion Optimisation', 'AI Prompt Design'],
     cta: {
       text: 'See optimisation case study →',
-      href: '/portfolio?skills=Funnel%20Analysis'
+      href: '/work/overview?skills=Funnel%20Analysis'
     }
   }
 ]
@@ -915,7 +915,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               </div>
 
               <a
-                href="/portfolio?skills=Release%20Planning"
+                href="/work/overview?skills=Release%20Planning"
                 className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
               >
                 See a prioritization example →
@@ -927,7 +927,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               <RICETablePreview />
               <div className="mt-4 text-center">
                 <a
-                  href="/portfolio?skills=Release%20Planning"
+                  href="/work/overview?skills=Release%20Planning"
                   className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
                 >
                   View sample →
@@ -976,7 +976,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               </div>
 
               <a
-                href="/portfolio?skills=User%20Flows"
+                href="/work/overview?skills=User%20Flows"
                 className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
               >
                 View a flow sample →
@@ -988,7 +988,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               <FlowDiagramPreview />
               <div className="mt-4 text-center">
                 <a
-                  href="/portfolio?skills=User%20Flows"
+                  href="/work/overview?skills=User%20Flows"
                   className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
                 >
                   View sample →
@@ -1037,7 +1037,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               </div>
 
               <a
-                href="/portfolio?skills=Cross-team%20Facilitation"
+                href="/work/overview?skills=Cross-team%20Facilitation"
                 className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
               >
                 See a roadmap sample →
@@ -1049,7 +1049,7 @@ function Step2Layout({ step }: { step: ProcessStep }) {
               <MilestoneStripPreview />
               <div className="mt-4 text-center">
                 <a
-                  href="/portfolio?skills=Cross-team%20Facilitation"
+                  href="/work/overview?skills=Cross-team%20Facilitation"
                   className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
                 >
                   View sample →

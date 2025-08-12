@@ -23,12 +23,12 @@ export const services: Service[] = [
     blurb: 'Product roadmaps and stakeholder alignment that translate business goals into actionable development plans.',
     toolSlugs: ['jira', 'confluence', 'notion', 'loom'],
     relatedSkills: [
-      { label: 'Roadmapping', href: '/portfolio?tag=roadmapping' },
-      { label: 'Backlog Grooming', href: '/portfolio?tag=backlog-grooming' },
-      { label: 'Release Planning', href: '/portfolio?tag=release-planning' }
+      { label: 'Roadmapping', href: '/work/overview?tag=roadmapping' },
+      { label: 'Backlog Grooming', href: '/work/overview?tag=backlog-grooming' },
+      { label: 'Release Planning', href: '/work/overview?tag=release-planning' }
     ],
     processLink: '/process#step-2',
-    portfolioLink: '/portfolio?tag=product-planning',
+    portfolioLink: '/work/overview?tag=product-planning',
     expandedDetails: 'Deep dive into feature prioritization, cross-functional coordination, and agile methodology implementation with measurable outcomes.'
   },
   {
@@ -40,10 +40,10 @@ export const services: Service[] = [
     relatedSkills: [
       { label: 'User Interviews', href: '/process?panel=user-interviews' },
       { label: 'Journey Mapping', href: '/process?panel=persona-journey-mapping' },
-      { label: 'Competitive Analysis', href: '/portfolio?tag=competitive-analysis' }
+      { label: 'Competitive Analysis', href: '/work/overview?tag=competitive-analysis' }
     ],
     processLink: '/process#step-1', 
-    portfolioLink: '/portfolio?tag=user-research',
+    portfolioLink: '/work/overview?tag=user-research',
     expandedDetails: 'Comprehensive user testing, persona development, and competitive analysis with actionable insights and recommendations.'
   },
   {
@@ -58,7 +58,7 @@ export const services: Service[] = [
       { label: 'Design Systems', href: '/process?panel=design-systems' }
     ],
     processLink: '/process#step-3',
-    portfolioLink: '/portfolio?tag=design',
+    portfolioLink: '/work/overview?tag=design',
     expandedDetails: 'High-fidelity prototypes, design system documentation, and developer handoff with pixel-perfect specifications.'
   },
   {
@@ -68,12 +68,12 @@ export const services: Service[] = [
     blurb: 'Technical requirements gathering that bridges stakeholder needs with development feasibility.',
     toolSlugs: ['confluence', 'notion', 'airtable'],
     relatedSkills: [
-      { label: 'Requirements', href: '/portfolio?tag=requirements' },
+      { label: 'Requirements', href: '/work/overview?tag=requirements' },
       { label: 'IA Map', href: '/process?panel=ia-map' },
-      { label: 'Risk Surfacing', href: '/portfolio?tag=risk-analysis' }
+      { label: 'Risk Surfacing', href: '/work/overview?tag=risk-analysis' }
     ],
     processLink: '/process#step-2',
-    portfolioLink: '/portfolio?tag=business-analysis',
+    portfolioLink: '/work/overview?tag=business-analysis',
     expandedDetails: 'Business process mapping, functional specifications, and risk assessment with clear implementation guidance.'
   }
 ]
