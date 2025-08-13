@@ -5,6 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
 import { SideDrawer } from '@/components/SideDrawer'
+import { ComponentDrawer } from '@/components/ComponentDrawer'
+import { StakeholderAlignment } from '@/app/process/(components)/drawers/StakeholderAlignment'
+import { PersonaJourneyMapping } from '@/app/process/(components)/drawers/PersonaJourneyMapping'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
 import { ProcessCard } from '@/components/ProcessCard'
@@ -843,14 +846,32 @@ function Step1Layout({
 
       {/* Drawer */}
       {isDrawerOpen && selectedDrawer && (
-        <SideDrawer
-          open={isDrawerOpen}
-          onClose={onDrawerClose}
-          title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
-        />
+        selectedDrawer === 'stakeholder-alignment' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Stakeholder Alignment"
+          >
+            <StakeholderAlignment />
+          </ComponentDrawer>
+        ) : selectedDrawer === 'persona-journey-mapping' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Persona & Journey Mapping"
+          >
+            <PersonaJourneyMapping />
+          </ComponentDrawer>
+        ) : (
+          <SideDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
+            overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
+            whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
+            sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
+          />
+        )
       )}
     </div>
   )
