@@ -24,7 +24,7 @@ const categoryColors = {
     text: 'text-emerald-700 dark:text-emerald-300',
     ring: 'ring-emerald-600/20 dark:ring-emerald-400/30'
   },
-  'Business Analysis': {
+  'BA': {
     bg: 'bg-orange-50 dark:bg-orange-900/20',
     text: 'text-orange-700 dark:text-orange-300',
     ring: 'ring-orange-600/20 dark:ring-orange-400/30'

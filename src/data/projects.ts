@@ -2,7 +2,7 @@ export interface Project {
   id: string
   title: string
   description: string
-  category: 'UX' | 'Strategy' | 'PM' | 'Business Analysis'
+  category: 'UX' | 'Strategy' | 'PM' | 'BA'
   skills: string[]
   ai: boolean
   image?: string

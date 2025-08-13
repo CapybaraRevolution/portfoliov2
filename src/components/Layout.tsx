@@ -10,7 +10,7 @@ import { Logo } from '@/components/Logo'
 import { Navigation } from '@/components/Navigation'
 import { SectionProvider, type Section } from '@/components/SectionProvider'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { AboutHeroBg } from '@/components/AboutHeroBg'
+import { HeroPattern } from '@/components/HeroPattern'
 
 export function Layout({
   children,
@@ -57,9 +57,10 @@ export function Layout({
   )
 
   return isAboutPage || isContactPage ? (
-    <AboutHeroBg>
+    <div className="relative">
+      <HeroPattern />
       <LayoutContent />
-    </AboutHeroBg>
+    </div>
   ) : (
     <LayoutContent />
   )
