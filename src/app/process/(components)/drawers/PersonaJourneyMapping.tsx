@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Chip } from '@/components/ui/Chip'
 import { ToolPill } from '@/components/ui/ToolPill'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
@@ -62,7 +63,7 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
       document.removeEventListener('keydown', handleKeyboard)
       document.body.style.overflow = 'unset'
     }
-  }, [lightboxOpen])
+  }, [lightboxOpen, nextLightboxImage, prevLightboxImage, closeLightbox])
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % personas.length)
@@ -104,7 +105,7 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
                 Team can name the top 3 user goals & top 3 frictions
               </h3>
               <p className="text-emerald-800 dark:text-emerald-200">
-                Design with the end user in mind. Clear personas and journeys turn scattered anecdotes into evidence we can design against—so teams agree on who we're serving, what they're trying to do, and how we'll measure progress.
+                Design with the end user in mind. Clear personas and journeys turn scattered anecdotes into evidence we can design against—so teams agree on who we&apos;re serving, what they&apos;re trying to do, and how we&apos;ll measure progress.
               </p>
             </div>
             
@@ -212,7 +213,7 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
             </div>
             <div>
               <span className="font-medium text-zinc-900 dark:text-white">Jobs to be done:</span>
-              <span className="text-zinc-700 dark:text-zinc-300 ml-2">"Help me evaluate if this tool will work with our Salesforce setup."</span>
+              <span className="text-zinc-700 dark:text-zinc-300 ml-2">&quot;Help me evaluate if this tool will work with our Salesforce setup.&quot;</span>
             </div>
             <div>
               <span className="font-medium text-zinc-900 dark:text-white">Constraints:</span>
@@ -261,10 +262,11 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
                         className="w-full bg-white dark:bg-zinc-800 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors group"
                       >
                         <div className="aspect-video bg-zinc-100 dark:bg-zinc-700 overflow-hidden relative">
-                          <img 
+                          <Image 
                             src={persona.image} 
                             alt={`Persona example ${index + 1}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-200"
                           />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
                             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full">
@@ -388,12 +390,16 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
             )}
 
             {/* Main image */}
-            <img
-              src={personas[lightboxIndex].image}
-              alt={`Persona example ${lightboxIndex + 1} (enlarged)`}
-              className="max-w-full max-h-full object-contain shadow-2xl"
-              onClick={closeLightbox}
-            />
+            <div className="relative max-w-full max-h-full" onClick={closeLightbox}>
+              <Image
+                src={personas[lightboxIndex].image}
+                alt={`Persona example ${lightboxIndex + 1} (enlarged)`}
+                width={1200}
+                height={800}
+                className="max-w-full max-h-full object-contain shadow-2xl"
+                priority
+              />
+            </div>
 
             {/* Image counter */}
             {personas.length > 1 && (

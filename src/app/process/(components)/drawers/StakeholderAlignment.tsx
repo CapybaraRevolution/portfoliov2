@@ -40,7 +40,7 @@ export function StakeholderAlignment({ className }: StakeholderAlignmentProps) {
                 Great products die from misalignment, not bad ideas.
               </h3>
               <p className="text-emerald-800 dark:text-emerald-200">
-                Alignment creates a shared definition of "done," success measures, and decision velocity.
+                Alignment creates a shared definition of &quot;done,&quot; success measures, and decision velocity.
               </p>
             </div>
             
@@ -208,7 +208,7 @@ export function StakeholderAlignment({ className }: StakeholderAlignmentProps) {
               </div>
               <div>
                 <span className="font-medium text-zinc-900 dark:text-white">Guardrails:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Don't break mobile performance; maintain accessibility</span>
+                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Don&apos;t break mobile performance; maintain accessibility</span>
               </div>
               <div>
                 <span className="font-medium text-zinc-900 dark:text-white">Key assumption:</span>
