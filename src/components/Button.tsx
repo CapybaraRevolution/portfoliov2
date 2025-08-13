@@ -75,11 +75,12 @@ export function Button({
   }
 
   // Check if href is external
-  const isExternal = props.href.startsWith('http://') || props.href.startsWith('https://') || props.href.startsWith('mailto:')
+  const hrefString = typeof props.href === 'string' ? props.href : props.href.toString()
+  const isExternal = hrefString.startsWith('http://') || hrefString.startsWith('https://') || hrefString.startsWith('mailto:')
   
   if (isExternal) {
     return (
-      <a className={className} target="_blank" rel="noopener noreferrer" {...props}>
+      <a className={className} href={hrefString} target="_blank" rel="noopener noreferrer">
         {inner}
       </a>
     )
