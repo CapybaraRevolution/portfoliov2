@@ -254,7 +254,7 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
       {/* Lightbox */}
       {lightboxOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="relative max-w-6xl max-h-[90vh] w-full h-full flex items-center justify-center p-4">
+          <div className="relative w-full h-full flex items-center justify-center p-4">
             {/* Close button */}
             <button
               onClick={closeLightbox}
@@ -266,30 +266,30 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
               </svg>
             </button>
 
-            {/* Previous button */}
+            {/* Previous button - positioned outside the image area */}
             {personas.length > 1 && (
               <button
                 onClick={prevLightboxImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
                 aria-label="Previous image"
               >
                 <ChevronLeftIcon className="w-6 h-6" />
               </button>
             )}
 
-            {/* Next button */}
+            {/* Next button - positioned outside the image area */}
             {personas.length > 1 && (
               <button
                 onClick={nextLightboxImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
                 aria-label="Next image"
               >
                 <ChevronRightIcon className="w-6 h-6" />
               </button>
             )}
 
-            {/* Main image */}
-            <div className="relative max-w-full max-h-full" onClick={closeLightbox}>
+            {/* Main image container with proper spacing for arrows */}
+            <div className="relative max-w-[calc(100vw-120px)] max-h-[calc(100vh-120px)] mx-auto" onClick={closeLightbox}>
               <Image
                 src={personas[lightboxIndex].image}
                 alt={`Persona example ${lightboxIndex + 1} (enlarged)`}
