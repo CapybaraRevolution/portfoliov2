@@ -32,33 +32,18 @@ export function StakeholderAlignment({ className }: StakeholderAlignmentProps) {
 
       {/* Why it matters - Feature card with gradient */}
       <div className="mb-8">
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left: Bold statement */}
-            <div className="lg:col-span-2">
-              <h3 className="text-lg font-bold text-emerald-900 dark:text-emerald-100 mb-3">
-                Great products die from misalignment, not bad ideas.
-              </h3>
-              <p className="text-emerald-800 dark:text-emerald-200">
-                Alignment creates a shared definition of &quot;done,&quot; success measures, and decision velocity.
-              </p>
-            </div>
-            
-            {/* Right: Small stat list */}
-            <div className="space-y-3">
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></div>
-                <span className="text-emerald-800 dark:text-emerald-200 font-medium">Fewer blocked tickets</span>
-              </div>
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></div>
-                <span className="text-emerald-800 dark:text-emerald-200 font-medium">Faster approvals in early sprints</span>
-              </div>
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></div>
-                <span className="text-emerald-800 dark:text-emerald-200 font-medium">Decisions referenced instead of re-argued</span>
-              </div>
-            </div>
+        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 text-center max-w-4xl mx-auto">
+            <h3 className="text-2xl lg:text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-6 leading-tight">
+              Great products die from misalignment, not bad ideas.
+            </h3>
+            <p className="text-lg text-emerald-800 dark:text-emerald-200 leading-relaxed">
+              Alignment creates a shared definition of &quot;done,&quot; success measures, and decision velocity.
+            </p>
           </div>
         </div>
       </div>

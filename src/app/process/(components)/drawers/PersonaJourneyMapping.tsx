@@ -88,25 +88,18 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
 
       {/* Why it matters - Feature card with gradient */}
       <div className="mb-8">
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left: Bold statement */}
-            <div className="lg:col-span-2">
-              <h3 className="text-lg font-bold text-emerald-900 dark:text-emerald-100 mb-3">
-                Team can name the top 3 user goals & top 3 frictions
-              </h3>
-              <p className="text-emerald-800 dark:text-emerald-200">
-                Design with the end user in mind. Clear personas and journeys turn scattered anecdotes into evidence we can design against—so teams agree on who we&apos;re serving, what they&apos;re trying to do, and how we&apos;ll measure progress.
-              </p>
-            </div>
-            
-            {/* Right: Small stat list */}
-            <div className="space-y-3">
-              <div className="flex items-center text-sm">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></div>
-                <span className="text-emerald-800 dark:text-emerald-200 font-medium">≥ 5 instrumented events align to journey stages</span>
-              </div>
-            </div>
+        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 text-center max-w-4xl mx-auto">
+            <h3 className="text-2xl lg:text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-6 leading-tight">
+              Team can name the top 3 user goals & top 3 frictions
+            </h3>
+            <p className="text-lg text-emerald-800 dark:text-emerald-200 leading-relaxed">
+              Design with the end user in mind. Clear personas and journeys turn scattered anecdotes into evidence we can design against—so teams agree on who we&apos;re serving, what they&apos;re trying to do, and how we&apos;ll measure progress.
+            </p>
           </div>
         </div>
       </div>
