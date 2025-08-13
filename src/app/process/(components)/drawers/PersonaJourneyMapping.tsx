@@ -270,10 +270,10 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
             {personas.length > 1 && (
               <button
                 onClick={prevLightboxImage}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                className="absolute left-8 top-1/2 -translate-y-1/2 z-20 p-4 bg-black/70 hover:bg-black/80 text-white rounded-full transition-colors shadow-lg"
                 aria-label="Previous image"
               >
-                <ChevronLeftIcon className="w-6 h-6" />
+                <ChevronLeftIcon className="w-8 h-8" />
               </button>
             )}
 
@@ -281,15 +281,15 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
             {personas.length > 1 && (
               <button
                 onClick={nextLightboxImage}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+                className="absolute right-8 top-1/2 -translate-y-1/2 z-20 p-4 bg-black/70 hover:bg-black/80 text-white rounded-full transition-colors shadow-lg"
                 aria-label="Next image"
               >
-                <ChevronRightIcon className="w-6 h-6" />
+                <ChevronRightIcon className="w-8 h-8" />
               </button>
             )}
 
-            {/* Main image container with proper spacing for arrows */}
-            <div className="relative max-w-[calc(100vw-120px)] max-h-[calc(100vh-120px)] mx-auto" onClick={closeLightbox}>
+            {/* Main image container with much wider spacing for arrows */}
+            <div className="relative max-w-[calc(100vw-200px)] max-h-[calc(100vh-120px)] mx-auto" onClick={closeLightbox}>
               <Image
                 src={personas[lightboxIndex].image}
                 alt={`Persona example ${lightboxIndex + 1} (enlarged)`}
