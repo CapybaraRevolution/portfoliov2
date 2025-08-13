@@ -8,6 +8,8 @@ import { SideDrawer } from '@/components/SideDrawer'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
 import { StakeholderAlignment } from '@/app/process/(components)/drawers/StakeholderAlignment'
 import { PersonaJourneyMapping } from '@/app/process/(components)/drawers/PersonaJourneyMapping'
+import { CompetitiveAnalysis } from '@/app/process/(components)/drawers/CompetitiveAnalysis'
+import { SystemAnalysis } from '@/app/process/(components)/drawers/SystemAnalysis'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
 import { ProcessCard } from '@/components/ProcessCard'
@@ -862,6 +864,22 @@ function Step1Layout({
           >
             <PersonaJourneyMapping />
           </ComponentDrawer>
+        ) : selectedDrawer === 'competitive-analysis' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Competitive Analysis"
+          >
+            <CompetitiveAnalysis />
+          </ComponentDrawer>
+        ) : selectedDrawer === 'system-analysis' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="System Analysis"
+          >
+            <SystemAnalysis />
+          </ComponentDrawer>
         ) : (
           <SideDrawer
             open={isDrawerOpen}
@@ -1505,17 +1523,6 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6">How I Support Implementation</h3>
         <AccordionPanel items={accordionItems} />
         
-        {/* Skill chips */}
-        <div className="flex flex-wrap gap-2 mt-6">
-          {['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Instrumentation'].map((skill) => (
-            <span
-              key={skill}
-              className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
       </div>
       
       {/* Task Detail Drawer */}
@@ -1722,13 +1729,12 @@ function ProcessFlowContent() {
 
   const handleStepClick = (stepId: number) => {
     setActiveStep(stepId)
-    window.history.pushState(null, '', `#step-${stepId}`)
     
-    // Smooth scroll to top of content
-    const element = document.getElementById('step-content')
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    // Update URL without causing a jump
+    window.history.replaceState(null, '', `#step-${stepId}`)
+    
+    // Maintain scroll position by scrolling to top smoothly
+    window.scrollTo({ top: 0, behavior: 'instant' })
   }
 
   const currentStep = processSteps.find(step => step.id === activeStep) || processSteps[0]

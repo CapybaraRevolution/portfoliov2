@@ -74,6 +74,17 @@ export function Button({
     )
   }
 
+  // Check if href is external
+  const isExternal = props.href.startsWith('http://') || props.href.startsWith('https://') || props.href.startsWith('mailto:')
+  
+  if (isExternal) {
+    return (
+      <a className={className} target="_blank" rel="noopener noreferrer" {...props}>
+        {inner}
+      </a>
+    )
+  }
+
   return (
     <Link className={className} {...props}>
       {inner}

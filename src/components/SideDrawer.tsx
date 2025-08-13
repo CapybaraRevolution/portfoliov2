@@ -42,7 +42,7 @@ export function SideDrawer({
               transition
               className="pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700"
             >
-              <div className="relative flex h-full flex-col overflow-y-auto bg-white dark:bg-zinc-900 py-6 shadow-xl">
+              <div className="relative flex h-full flex-col overflow-y-auto bg-white dark:bg-zinc-900/92 py-6 shadow-xl shadow-black/20 dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-white/10 dark:drop-shadow-[0_0_24px_rgba(255,255,255,0.06)] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-4 before:bg-gradient-to-r before:from-white/8 before:to-transparent before:pointer-events-none before:content-[''] dark:before:block before:hidden">
                 <div className="px-4 sm:px-6">
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-base font-semibold text-zinc-900 dark:text-white">

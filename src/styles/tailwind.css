@@ -103,12 +103,67 @@
     100% { opacity: 0; stroke-dashoffset: -100; }
   }
   
+  /* Delightful Filter Reveal Animations */
+  @keyframes slideDown {
+    0% { 
+      opacity: 0; 
+      transform: translateY(-10px); 
+      max-height: 0;
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0); 
+      max-height: 1000px;
+    }
+  }
+  
+  @keyframes emeraldWaveReveal {
+    0% { 
+      transform: translateX(-100%); 
+    }
+    100% { 
+      transform: translateX(100%); 
+    }
+  }
+  
+  @keyframes nodeActivation {
+    0% { 
+      opacity: 0; 
+      transform: translateY(8px) scale(0.98);
+    }
+    40% {
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+    }
+    70% {
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.1);
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0) scale(1);
+      box-shadow: 0 0 0px rgba(16, 185, 129, 0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    0% { 
+      opacity: 0; 
+      transform: translateY(20px) scale(0.95);
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0) scale(1);
+    }
+  }
+  
   @media (prefers-reduced-motion: reduce) {
     [style*="timeline-bob"], 
     [style*="photo-breathe"],
     [style*="electrical-sparkle"],
     [style*="aura-pulse"],
-    [style*="lightning-trace"] {
+    [style*="lightning-trace"],
+    [style*="slideDown"],
+    [style*="emeraldWaveReveal"],
+    [style*="fadeInUp"] {
       animation: none !important;
     }
   }
