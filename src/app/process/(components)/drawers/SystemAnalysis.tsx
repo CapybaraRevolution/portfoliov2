@@ -57,7 +57,7 @@ export function SystemAnalysis({ className }: SystemAnalysisProps) {
           Executive Summary
         </h2>
         <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-          Surface constraints, opportunities, and low-risk paths so we design what's feasible and impactful.
+          Surface constraints, opportunities, and low-risk paths so we design what&apos;s feasible and impactful.
         </p>
       </div>
 
@@ -137,7 +137,7 @@ export function SystemAnalysis({ className }: SystemAnalysisProps) {
         <ul className="space-y-3 pl-6">
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Fewer "unknowns" entering sprint planning.</span>
+            <span className="text-zinc-700 dark:text-zinc-300">Fewer &quot;unknowns&quot; entering sprint planning.</span>
           </li>
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>

@@ -25,7 +25,7 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
           Executive Summary
         </h2>
         <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-          One-liner: Reach parity where it's table-stakes—and differentiate where it matters.
+          One-liner: Reach parity where it’s table‑stakes — and differentiate where it matters.
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
           Why it matters
         </h2>
         <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-          Customers judge us against what they already use. Per Jakob's Law, users spend most of their time on other products and expect familiar patterns here. Let's meet expectations where it's standard, and invest in differentiation where it moves outcomes.
+          Customers judge us against what they already use. Per Jakob’s Law, users spend most of their time on other products and expect familiar patterns here. Let’s meet expectations where it’s standard, and invest in differentiation where it moves outcomes.
         </p>
         <a
           href="https://www.nngroup.com/videos/jakobs-law-internet-ux/"
@@ -43,7 +43,7 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
           rel="noopener noreferrer"
           className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 underline"
         >
-          Jakob's Law on NN/g
+          Jakob’s Law on NN/g
         </a>
       </div>
 
@@ -88,11 +88,11 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
           </li>
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Opportunity list: quick wins, medium bets, and "prove it" ideas.</span>
+            <span className="text-zinc-700 dark:text-zinc-300">Opportunity list: quick wins, medium bets, and “prove it” ideas.</span>
           </li>
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Measurement & research plan: what to instrument and how we'll validate impact.</span>
+            <span className="text-zinc-700 dark:text-zinc-300">Measurement & research plan: what to instrument and how we’ll validate impact.</span>
           </li>
         </ul>
       </div>
@@ -105,7 +105,7 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
         <ul className="space-y-3 pl-6">
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Shared understanding of table-stakes for MVP/next release.</span>
+            <span className="text-zinc-700 dark:text-zinc-300">Shared understanding of table‑stakes for MVP/next release.</span>
           </li>
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
