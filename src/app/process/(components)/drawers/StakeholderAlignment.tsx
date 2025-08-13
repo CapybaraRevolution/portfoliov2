@@ -37,11 +37,11 @@ export function StakeholderAlignment({ className }: StakeholderAlignmentProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           
           {/* Content */}
-          <div className="relative z-10 text-center max-w-4xl mx-auto">
-            <h3 className="text-2xl lg:text-3xl font-bold text-emerald-900 dark:text-emerald-100 mb-6 leading-tight">
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
               Great products die from misalignment, not bad ideas.
             </h3>
-            <p className="text-lg text-emerald-800 dark:text-emerald-200 leading-relaxed">
+            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
               Alignment creates a shared definition of &quot;done,&quot; success measures, and decision velocity.
             </p>
           </div>
