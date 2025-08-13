@@ -104,8 +104,8 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
           
           {/* Content */}
           <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Can the team can name the top 3 user goals & top 3 frictions?
+            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed italic">
+              Every Member of Our Team Should Know the Top 3 User Goals
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
               Design with the end user in mind. Clear personas and journeys turn scattered anecdotes into evidence we can design against—so teams agree on who we&apos;re serving, what they&apos;re trying to do, and how we&apos;ll measure progress.
@@ -172,7 +172,7 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
         <ul className="space-y-3 pl-6">
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Can the team can name the top 3 user goals and top 3 frictions</span>
+            <span className="text-zinc-700 dark:text-zinc-300">Team can name the top 3 user goals and top 3 frictions</span>
           </li>
           <li className="flex items-start">
             <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
