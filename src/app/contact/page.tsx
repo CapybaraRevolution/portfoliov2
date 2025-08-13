@@ -14,17 +14,7 @@ import {
 import { submitContactForm, type FormData } from './actions'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
-
-// Analytics helper
-function trackEvent(eventName: string, category: string = 'engagement', label: string = 'contact_page') {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', eventName, {
-      event_category: category,
-      event_label: label
-    })
-  }
-  console.log(`Analytics: ${eventName}`)
-}
+import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
 
 // Metadata will be handled by layout.tsx or moved to a separate file
 
@@ -346,8 +336,8 @@ function ContactForm() {
         setWarnings({})
         setShowSubmitErrors(false)
         
-        // Analytics event
-        trackEvent('contact_form_submitted')
+        // Track form submission with detailed analytics
+        trackContactFormSubmission(formData)
       }
     } catch (error) {
       setSubmitResult({

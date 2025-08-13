@@ -1,8 +1,10 @@
 import glob from 'fast-glob'
 import { type Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/react'
 
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
+import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { type Section } from '@/components/SectionProvider'
 
 import '@/styles/tailwind.css'
@@ -36,6 +38,8 @@ export default async function RootLayout({
             <Layout allSections={allSections}>{children}</Layout>
           </div>
         </Providers>
+        <Analytics />
+        <GoogleAnalytics />
       </body>
     </html>
   )

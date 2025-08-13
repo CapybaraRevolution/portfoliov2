@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Chip } from '@/components/ui/Chip'
 import { ToolPill } from '@/components/ui/ToolPill'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import { trackProcessDrawerOpen, trackEvent } from '@/components/GoogleAnalytics'
 
 interface PersonaJourneyMappingProps {
   className?: string
@@ -13,6 +14,11 @@ interface PersonaJourneyMappingProps {
 export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  
+  // Track drawer open on mount
+  useEffect(() => {
+    trackProcessDrawerOpen('Persona & Journey Mapping')
+  }, [])
   
   // Persona images
   const personas = [
@@ -24,6 +30,10 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
   const openLightbox = (index: number) => {
     setLightboxIndex(index)
     setLightboxOpen(true)
+    trackEvent('persona_example_viewed', {
+      persona_index: index + 1,
+      process_step: 'Persona & Journey Mapping'
+    })
   }
 
   const closeLightbox = () => {
@@ -232,6 +242,11 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
           <a
             href="/case-studies/fintech"
             className="inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
+            onClick={() => trackEvent('case_study_link_clicked', {
+              case_study: 'fintech',
+              source: 'process_drawer',
+              process_step: 'Persona & Journey Mapping'
+            })}
           >
             Open case study →
           </a>
