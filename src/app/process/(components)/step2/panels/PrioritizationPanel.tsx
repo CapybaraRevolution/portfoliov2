@@ -11,10 +11,10 @@ function HomeScreenDemo() {
           </svg>
         </div>
         <h3 className="text-lg font-medium text-zinc-900 dark:text-white">
-          Home Screen Demo
+          Prioritization Interface
         </h3>
         <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-xs">
-          Kyle's prioritization interface will be inserted here
+          Kyle&apos;s dashboard interface will be integrated here
         </p>
       </div>
     </div>
@@ -42,7 +42,7 @@ export function PrioritizationPanel() {
             Why it matters
           </h2>
           <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4">
-            Without clear prioritization, teams waste time building features that don't move key metrics. A systematic approach ensures we're always working on the highest-value opportunities and can defend our roadmap decisions with data.
+            Without clear prioritization, teams waste time building features that don&apos;t move key metrics. A systematic approach ensures we&apos;re always working on the highest-value opportunities and can defend our roadmap decisions with data.
           </p>
           <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4 border border-emerald-200 dark:border-emerald-800">
             <p className="text-sm text-emerald-800 dark:text-emerald-200">
