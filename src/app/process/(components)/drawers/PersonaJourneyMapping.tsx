@@ -11,7 +11,6 @@ interface PersonaJourneyMappingProps {
 }
 
 export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps) {
-  const [currentSlide, setCurrentSlide] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   
@@ -64,14 +63,6 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
       document.body.style.overflow = 'unset'
     }
   }, [lightboxOpen, nextLightboxImage, prevLightboxImage, closeLightbox])
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % personas.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + personas.length) % personas.length)
-  }
 
   return (
     <div className={className}>
@@ -187,131 +178,39 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
         </ul>
       </div>
 
-      {/* Sample - Persona details and carousel */}
+      {/* Sample - Persona image gallery */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
           Sample
         </h2>
         
-        {/* Sample Persona Card */}
-        <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700 mb-6">
-          <h3 className="font-semibold text-zinc-900 dark:text-white mb-4">
-            Sample Persona: Sarah — SaaS Buyer
-          </h3>
-          <div className="space-y-3 text-sm">
-            <div>
-              <span className="font-medium text-zinc-900 dark:text-white">Role:</span>
-              <span className="text-zinc-700 dark:text-zinc-300 ml-2">VP of Operations at 100-person company</span>
-            </div>
-            <div>
-              <span className="font-medium text-zinc-900 dark:text-white">Goals:</span>
-              <span className="text-zinc-700 dark:text-zinc-300 ml-2">Find tools that integrate with existing stack; minimize training time</span>
-            </div>
-            <div>
-              <span className="font-medium text-zinc-900 dark:text-white">Contexts:</span>
-              <span className="text-zinc-700 dark:text-zinc-300 ml-2">Evaluating during Q4 budget planning; needs approval from IT & Finance</span>
-            </div>
-            <div>
-              <span className="font-medium text-zinc-900 dark:text-white">Jobs to be done:</span>
-              <span className="text-zinc-700 dark:text-zinc-300 ml-2">&quot;Help me evaluate if this tool will work with our Salesforce setup.&quot;</span>
-            </div>
-            <div>
-              <span className="font-medium text-zinc-900 dark:text-white">Constraints:</span>
-              <span className="text-zinc-700 dark:text-zinc-300 ml-2">30-day evaluation window; limited time for demos</span>
-            </div>
-          </div>
+        {/* Persona Image Gallery */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h3 className="font-medium text-zinc-900 dark:text-white mb-4">Persona Examples</h3>
           
-          <div className="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
-            <h4 className="font-medium text-zinc-900 dark:text-white mb-3">Journey Stage: Evaluation</h4>
-            <div className="space-y-2 text-sm">
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Emotion:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Cautiously optimistic but pressed for time</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Actions:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Reviews pricing, checks integrations, schedules demo</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Drop-off points:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Complex pricing page; integration unclear</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Instrumentation:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">evaluation_started, pricing_viewed, demo_requested, integration_checked</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Persona Image Carousel */}
-        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="font-medium text-zinc-900 dark:text-white mb-3">Persona Gallery</h4>
-          <div className="relative">
-            {/* Carousel Container */}
-            <div className="overflow-hidden rounded-lg">
-              <div 
-                className="flex transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          {/* Grid layout for personas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {personas.map((persona, index) => (
+              <button
+                key={index}
+                onClick={() => openLightbox(index)}
+                className="bg-white dark:bg-zinc-800 rounded-lg p-3 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors group"
               >
-                {personas.map((persona, index) => (
-                  <div key={index} className="w-full flex-shrink-0 lg:w-1/2">
-                    <div className="mx-2">
-                      <button
-                        onClick={() => openLightbox(index)}
-                        className="w-full bg-white dark:bg-zinc-800 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors group"
-                      >
-                        <div className="aspect-video bg-zinc-100 dark:bg-zinc-700 overflow-hidden relative">
-                          <Image 
-                            src={persona.image} 
-                            alt={`Persona example ${index + 1}`}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-200"
-                          />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full">
-                              Click to enlarge
-                            </div>
-                          </div>
-                        </div>
-                      </button>
+                <div className="aspect-video bg-zinc-100 dark:bg-zinc-700 overflow-hidden relative">
+                  <Image 
+                    src={persona.image} 
+                    alt={`Persona example ${index + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-200"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-xs font-medium bg-black/50 px-2 py-1 rounded-full">
+                      Click to enlarge
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Navigation Buttons */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white dark:bg-zinc-800 p-2 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
-              aria-label="Previous persona"
-            >
-              <ChevronLeftIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white dark:bg-zinc-800 p-2 rounded-full shadow-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors"
-              aria-label="Next persona"
-            >
-              <ChevronRightIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
-            </button>
-            
-            {/* Dots Indicator */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {personas.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentSlide 
-                      ? 'bg-emerald-600 dark:bg-emerald-400' 
-                      : 'bg-zinc-300 dark:bg-zinc-600'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
       </div>
