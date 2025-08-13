@@ -72,7 +72,7 @@ export function PortfolioGrid() {
     
     const paramString = params.toString()
     const newUrl = paramString ? `?${paramString}` : '/work/overview'
-    router.push(newUrl, { scroll: false })
+    router.replace(newUrl, { scroll: false })
   }
 
   const handleCategoryChange = (category: string) => {
@@ -100,7 +100,8 @@ export function PortfolioGrid() {
     setActiveCategory('All')
     setSelectedSkills(new Set())
     setAiAccelerated(false)
-    router.push('/work/overview', { scroll: false })
+    setFiltersOpen(false)
+    router.replace('/work/overview', { scroll: false })
   }
 
   const removeSkill = (skill: string) => {
@@ -151,19 +152,6 @@ export function PortfolioGrid() {
             </div>
             
             <div className="flex items-center gap-4">
-              {filtersOpen && (
-                <button
-                  onClick={() => setFiltersOpen(false)}
-                  className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 animate-pulse"
-                  style={{
-                    animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    animationDelay: '2s',
-                    textShadow: '0 0 8px rgba(156, 163, 175, 0.3), 0 0 12px rgba(156, 163, 175, 0.15)'
-                  }}
-                >
-                  Collapse filters
-                </button>
-              )}
               {(selectedSkills.size > 0 || aiAccelerated || activeCategory !== 'All') && (
                 <button
                   onClick={clearAllFilters}
@@ -248,6 +236,26 @@ export function PortfolioGrid() {
                   ))}
                   </div>
                 </div>
+                
+                {/* Collapse Filters Button */}
+                {filtersOpen && (
+                  <div className="flex justify-center pt-4">
+                    <button
+                      onClick={() => setFiltersOpen(false)}
+                      className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 animate-pulse"
+                      style={{
+                        animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        animationDelay: '2s',
+                        textShadow: '0 0 8px rgba(156, 163, 175, 0.3), 0 0 12px rgba(156, 163, 175, 0.15)'
+                      }}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
+                      Collapse filters
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
