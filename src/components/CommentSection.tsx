@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { formatDistanceToNow } from 'date-fns'
+import { ChatBubbleLeftEllipsisIcon } from '@heroicons/react/20/solid'
 
 interface Comment {
   id: string
@@ -12,6 +13,37 @@ interface Comment {
 
 interface CommentSectionProps {
   itemId: string
+}
+
+// Generate initials from name
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
+
+// Generate a consistent color based on name
+function getInitialsColor(name: string): string {
+  const colors = [
+    'bg-emerald-500',
+    'bg-blue-500', 
+    'bg-purple-500',
+    'bg-pink-500',
+    'bg-indigo-500',
+    'bg-teal-500',
+    'bg-orange-500',
+    'bg-cyan-500'
+  ]
+  
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  
+  return colors[Math.abs(hash) % colors.length]
 }
 
 export function CommentSection({ itemId }: CommentSectionProps) {
@@ -130,9 +162,9 @@ export function CommentSection({ itemId }: CommentSectionProps) {
         </form>
       </div>
 
-      {/* Comments List */}
+      {/* Comments Feed */}
       <div>
-        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-6">
           Comments ({comments.length})
         </h3>
         
@@ -146,30 +178,52 @@ export function CommentSection({ itemId }: CommentSectionProps) {
         ) : comments.length === 0 ? (
           <div className="text-center py-8">
             <div className="text-zinc-500 dark:text-zinc-400">
-              <svg className="mx-auto h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
+              <ChatBubbleLeftEllipsisIcon className="mx-auto h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
               <p className="text-sm">No comments yet.</p>
               <p className="text-xs mt-1">Be the first to share your thoughts!</p>
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
-            {comments.map((comment) => (
-              <div key={comment.id} className="border-l-2 border-emerald-500 pl-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="font-medium text-zinc-900 dark:text-white">
-                    {comment.author}
+          <div className="flow-root">
+            <ul role="list" className="-mb-8">
+              {comments.map((comment, commentIdx) => (
+                <li key={comment.id}>
+                  <div className="relative pb-8">
+                    {commentIdx !== comments.length - 1 ? (
+                      <span 
+                        aria-hidden="true" 
+                        className="absolute top-5 left-5 -ml-px h-full w-0.5 bg-zinc-200 dark:bg-zinc-700" 
+                      />
+                    ) : null}
+                    <div className="relative flex items-start space-x-3">
+                      <div className="relative">
+                        <div className={`flex size-10 items-center justify-center rounded-full text-white text-sm font-medium ring-4 ring-white dark:ring-zinc-900 ${getInitialsColor(comment.author)}`}>
+                          {getInitials(comment.author)}
+                        </div>
+                        <span className="absolute -right-1 -bottom-0.5 rounded-tl bg-white dark:bg-zinc-900 px-0.5 py-px">
+                          <ChatBubbleLeftEllipsisIcon aria-hidden="true" className="size-4 text-zinc-400 dark:text-zinc-500" />
+                        </span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div>
+                          <div className="text-sm">
+                            <span className="font-medium text-zinc-900 dark:text-white">
+                              {comment.author}
+                            </span>
+                          </div>
+                          <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+                            Commented {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+                          </p>
+                        </div>
+                        <div className="mt-2 text-sm text-zinc-700 dark:text-zinc-300">
+                          <p className="whitespace-pre-wrap">{comment.content}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
-                  </div>
-                </div>
-                <div className="text-sm text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap">
-                  {comment.content}
-                </div>
-              </div>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>

@@ -5,10 +5,10 @@ let comments: { [key: string]: any[] } = {}
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { itemId: string } }
+  { params }: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const { itemId } = params
+    const { itemId } = await params
     const itemComments = comments[itemId] || []
     
     return NextResponse.json({
@@ -26,10 +26,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { itemId: string } }
+  { params }: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const { itemId } = params
+    const { itemId } = await params
     const body = await request.json()
     const { author, content } = body
 
@@ -72,10 +72,10 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { itemId: string } }
+  { params }: { params: Promise<{ itemId: string }> }
 ) {
   try {
-    const { itemId } = params
+    const { itemId } = await params
     const { searchParams } = new URL(request.url)
     const commentId = searchParams.get('commentId')
 
