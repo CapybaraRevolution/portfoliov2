@@ -31,7 +31,7 @@ export async function POST(
   try {
     const { itemId } = await params
     const body = await request.json()
-    const { author, content } = body
+    const { author, content, mood } = body
 
     // Basic validation
     if (!author?.trim() || !content?.trim()) {
@@ -46,6 +46,7 @@ export async function POST(
       id: Date.now().toString(),
       author: author.trim(),
       content: content.trim(),
+      mood: mood || null,
       created_at: new Date().toISOString(),
     }
 
