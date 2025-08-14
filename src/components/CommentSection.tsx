@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { 
   ChatBubbleLeftEllipsisIcon,
@@ -79,12 +79,7 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showCaptcha, setShowCaptcha] = useState(false)
 
-  // Load comments when component mounts
-  useEffect(() => {
-    loadComments()
-  }, [itemId])
-
-  const loadComments = async () => {
+  const loadComments = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(`/api/comments/${itemId}`)
@@ -97,7 +92,12 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [itemId])
+
+  // Load comments when component mounts
+  useEffect(() => {
+    loadComments()
+  }, [loadComments])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

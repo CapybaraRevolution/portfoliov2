@@ -116,7 +116,7 @@ export function CaptchaModal({
                     Preview of your comment:
                   </p>
                   <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                    <p className="whitespace-pre-wrap break-words">"{commentContent}"</p>
+                    <p className="whitespace-pre-wrap break-words">&ldquo;{commentContent}&rdquo;</p>
                   </div>
                 </div>
               </div>
@@ -148,8 +148,6 @@ export function CaptchaModal({
                 onSuccess={handleTurnstileSuccess}
                 onError={handleTurnstileError}
                 onExpire={() => setTurnstileToken(null)}
-                theme="auto"
-                size="normal"
               />
             </div>
 

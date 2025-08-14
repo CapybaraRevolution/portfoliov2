@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import * as DOMPurify from 'isomorphic-dompurify'
+import DOMPurify from 'isomorphic-dompurify'
 import { supabase, type Comment, type CommentInsert } from '@/lib/supabase'
 
 // Fallback in-memory storage if Supabase is not configured
@@ -115,10 +115,11 @@ function validateAndSanitizeInput(author: string, content: string) {
   }
   
   // Sanitize HTML content
-  const sanitizedAuthor = DOMPurify.sanitize(trimmedAuthor, { ALLOWED_TAGS: [] })
+  const sanitizedAuthor = DOMPurify.sanitize(trimmedAuthor, { 
+    ALLOWED_TAGS: []
+  })
   const sanitizedContent = DOMPurify.sanitize(trimmedContent, { 
     ALLOWED_TAGS: [],
-    STRIP_COMMENTS: true,
     FORBID_ATTR: ['style', 'onclick', 'onload', 'onerror']
   })
   
@@ -282,19 +283,19 @@ export async function POST(
       comments[itemId].unshift(newComment)
 
       // Remove clientId from response for privacy
-      const responseComment = { ...newComment }
-      delete responseComment.clientId
+      const responseComment = {
+        id: newComment.id,
+        author: newComment.author,
+        content: newComment.content,
+        mood: newComment.mood,
+        created_at: newComment.created_at
+      }
       
       return NextResponse.json({
         success: true,
         comment: responseComment,
       })
     }
-
-    return NextResponse.json({
-      success: true,
-      comment: responseComment,
-    })
   } catch (error) {
     console.error('Error creating comment:', error)
     return NextResponse.json(
