@@ -12,6 +12,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/20/solid'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { CaptchaModal } from './CaptchaModal'
 
 interface Comment {
   id: string
@@ -23,6 +24,7 @@ interface Comment {
 
 interface CommentSectionProps {
   itemId: string
+  onCaptchaRequired?: () => Promise<boolean>
 }
 
 const moods = [
@@ -69,13 +71,13 @@ function getInitialsColor(name: string): string {
   return colors[Math.abs(hash) % colors.length]
 }
 
-export function CommentSection({ itemId }: CommentSectionProps) {
+export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>([])
   const [newComment, setNewComment] = useState('')
-  const [author, setAuthor] = useState('')
   const [selectedMood, setSelectedMood] = useState(moods[5]) // Default to "I feel nothing"
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showCaptcha, setShowCaptcha] = useState(false)
 
   // Load comments when component mounts
   useEffect(() => {
@@ -99,9 +101,15 @@ export function CommentSection({ itemId }: CommentSectionProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newComment.trim() || !author.trim()) return
+    if (!newComment.trim()) return
 
+    // Show captcha modal for all comments
+    setShowCaptcha(true)
+  }
+
+  const handleCaptchaVerified = async (authorName: string, turnstileToken: string) => {
     setIsSubmitting(true)
+    
     try {
       const response = await fetch(`/api/comments/${itemId}`, {
         method: 'POST',
@@ -109,9 +117,10 @@ export function CommentSection({ itemId }: CommentSectionProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          author: author.trim(),
+          author: authorName,
           content: newComment.trim(),
           mood: selectedMood.value,
+          turnstileToken: turnstileToken,
         }),
       })
 
@@ -119,13 +128,16 @@ export function CommentSection({ itemId }: CommentSectionProps) {
         const data = await response.json()
         setComments(prev => [data.comment, ...prev])
         setNewComment('')
-        // Keep author name for convenience
+        setShowCaptcha(false)
+        // Reset mood to default
+        setSelectedMood(moods[5])
       } else {
-        throw new Error('Failed to submit comment')
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to submit comment')
       }
     } catch (error) {
-      console.error('Failed to submit comment:', error)
-      alert('Failed to submit comment. Please try again.')
+      // Re-throw error to be handled by CaptchaModal
+      throw error
     } finally {
       setIsSubmitting(false)
     }
@@ -218,30 +230,12 @@ export function CommentSection({ itemId }: CommentSectionProps) {
           Add a Comment
         </h3>
         
-        {/* Name Input */}
-        <div className="mb-4">
-          <label 
-            htmlFor="author" 
-            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
-          >
-            Your Name
-          </label>
-          <input
-            type="text"
-            id="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Enter your name"
-            className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm placeholder-zinc-400 dark:placeholder-zinc-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-            required
-          />
-        </div>
 
         {/* Comment Composer */}
         <div className="flex items-start space-x-4">
           <div className="shrink-0">
-            <div className={`inline-block size-10 rounded-full text-white text-sm font-medium flex items-center justify-center ${author ? getInitialsColor(author) : 'bg-zinc-400'}`}>
-              {author ? getInitials(author) : '?'}
+            <div className="flex size-10 rounded-full bg-emerald-500 text-white items-center justify-center">
+              <ChatBubbleLeftEllipsisIcon className="size-5" />
             </div>
           </div>
           <div className="min-w-0 flex-1">
@@ -258,6 +252,7 @@ export function CommentSection({ itemId }: CommentSectionProps) {
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Add your comment..."
                   className="block w-full resize-none bg-transparent px-3 py-1.5 text-base text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:placeholder:text-zinc-400 focus:outline-none sm:text-sm/6"
+                  maxLength={2000}
                   required
                 />
 
@@ -329,10 +324,10 @@ export function CommentSection({ itemId }: CommentSectionProps) {
                 <div className="shrink-0">
                   <button
                     type="submit"
-                    disabled={isSubmitting || !newComment.trim() || !author.trim()}
+                    disabled={isSubmitting || !newComment.trim()}
                     className="inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
-                    {isSubmitting ? 'Posting...' : 'Post'}
+                    Post Comment
                   </button>
                 </div>
               </div>
@@ -340,6 +335,15 @@ export function CommentSection({ itemId }: CommentSectionProps) {
           </div>
         </div>
       </div>
+
+      {/* Captcha Modal */}
+      <CaptchaModal
+        open={showCaptcha}
+        onClose={() => setShowCaptcha(false)}
+        onVerified={handleCaptchaVerified}
+        commentContent={newComment}
+        isSubmitting={isSubmitting}
+      />
     </div>
   )
 }

@@ -12,6 +12,7 @@ interface ComponentDrawerProps {
   children: React.ReactNode
   enableComments?: boolean
   itemId?: string
+  onCaptchaRequired?: () => Promise<boolean>
 }
 
 export function ComponentDrawer({ 
@@ -20,7 +21,8 @@ export function ComponentDrawer({
   title, 
   children,
   enableComments = true,
-  itemId
+  itemId,
+  onCaptchaRequired
 }: ComponentDrawerProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'comments'>('overview')
   const [touchStart, setTouchStart] = useState<number | null>(null)
@@ -116,7 +118,10 @@ export function ComponentDrawer({
                     children
                   ) : (
                     enableComments && itemId && (
-                      <CommentSection itemId={itemId} />
+                      <CommentSection 
+                        itemId={itemId} 
+                        onCaptchaRequired={onCaptchaRequired}
+                      />
                     )
                   )}
                 </div>
