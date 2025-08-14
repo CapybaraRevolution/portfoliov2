@@ -1015,7 +1015,9 @@ function PrioritizationPanel() {
 
   // Function to get color based on current fill percentage
   const getProgressColor = (currentPercentage: number) => {
-    if (currentPercentage >= 78) {
+    if (currentPercentage >= 90) {
+      return 'bg-gradient-to-r from-emerald-500 to-emerald-400'
+    } else if (currentPercentage >= 78) {
       return 'bg-gradient-to-r from-emerald-500 to-emerald-400'
     } else if (currentPercentage >= 65) {
       return 'bg-gradient-to-r from-yellow-500 to-yellow-400'
@@ -1079,7 +1081,7 @@ function PrioritizationPanel() {
       projectName: 'Technical Debt Items',
       teamName: 'Engineering',
       status: 'offline',
-      statusText: 'Needs scoring',
+      statusText: '8h ago',
       description: 'Awaiting prioritization',
       environment: 'Preview',
       riceScore: 62,
@@ -1198,7 +1200,10 @@ function PrioritizationPanel() {
                     className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore)}`}
                     style={{
                       width: isLoaded ? `${deployment.riceScore}%` : '0%',
-                      transitionDelay: `${index * 150}ms`
+                      transitionDelay: `${index * 150}ms`,
+                      ...(deployment.riceScore >= 90 && {
+                        animation: 'progress-glow-pulse 4s ease-in-out infinite'
+                      })
                     }}
                   />
                 </div>

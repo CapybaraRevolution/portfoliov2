@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useRef } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { formatText } from '@/lib/textFormatter'
@@ -24,10 +25,35 @@ export function SideDrawer({
   whyItMatters, 
   sampleContent 
 }: SideDrawerProps) {
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+
   // Close handler
   const handleDrawerClose = () => {
     // Optional tracking: drawer_closed
     onClose()
+  }
+
+  // Touch handlers for swipe-to-close
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isRightSwipe = distance < -50 // Swipe right threshold
+    
+    if (isRightSwipe) {
+      handleDrawerClose()
+    }
   }
 
   return (
@@ -39,8 +65,12 @@ export function SideDrawer({
           {/* Desktop: right-side tray, Mobile: full-screen */}
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-4 sm:pl-10 lg:pl-16">
             <DialogPanel
+              ref={panelRef}
               transition
               className="pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               <div className="relative flex h-full flex-col overflow-y-auto bg-white dark:bg-zinc-900 py-6 shadow-xl shadow-black/20 dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-white/10 dark:drop-shadow-[0_0_24px_rgba(255,255,255,0.06)]">
                 <div className="px-4 sm:px-6">
