@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
+import { AdminProvider } from '@/contexts/AdminContext'
 import { type Section } from '@/components/SectionProvider'
 
 import '@/styles/tailwind.css'
@@ -34,9 +35,11 @@ export default async function RootLayout({
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className="flex min-h-full bg-white antialiased dark:bg-zinc-900">
         <Providers>
-          <div className="w-full">
-            <Layout allSections={allSections}>{children}</Layout>
-          </div>
+          <AdminProvider>
+            <div className="w-full">
+              <Layout allSections={allSections}>{children}</Layout>
+            </div>
+          </AdminProvider>
         </Providers>
         <Analytics />
         <GoogleAnalytics />

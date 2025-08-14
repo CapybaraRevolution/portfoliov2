@@ -10,9 +10,11 @@ import {
   HandThumbUpIcon,
   HeartIcon,
   XMarkIcon,
+  TrashIcon,
 } from '@heroicons/react/20/solid'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { CaptchaModal } from './CaptchaModal'
+import { useAdmin } from '@/contexts/AdminContext'
 
 interface Comment {
   id: string
@@ -78,6 +80,8 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showCaptcha, setShowCaptcha] = useState(false)
+  const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null)
+  const { isAdmin } = useAdmin()
 
   const loadComments = useCallback(async () => {
     setIsLoading(true)
@@ -140,6 +144,32 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
       throw error
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!window.confirm('Are you sure you want to delete this comment?')) {
+      return
+    }
+
+    setDeletingCommentId(commentId)
+    try {
+      const response = await fetch(`/api/comments/${itemId}?commentId=${commentId}`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        // Remove comment from local state
+        setComments(prev => prev.filter(comment => comment.id !== commentId))
+      } else {
+        const errorData = await response.json()
+        alert(`Failed to delete comment: ${errorData.error}`)
+      }
+    } catch (error) {
+      console.error('Failed to delete comment:', error)
+      alert('Failed to delete comment. Please try again.')
+    } finally {
+      setDeletingCommentId(null)
     }
   }
 
@@ -215,6 +245,22 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
                           <p className="whitespace-pre-wrap">{comment.content}</p>
                         </div>
                       </div>
+                      {isAdmin && (
+                        <div className="flex items-center">
+                          <button
+                            onClick={() => handleDeleteComment(comment.id)}
+                            disabled={deletingCommentId === comment.id}
+                            className="p-1 text-red-400 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 disabled:opacity-50"
+                            title="Delete comment"
+                          >
+                            {deletingCommentId === comment.id ? (
+                              <div className="animate-spin size-4 border-2 border-red-400 border-t-transparent rounded-full" />
+                            ) : (
+                              <TrashIcon className="size-4" />
+                            )}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </li>
@@ -344,6 +390,7 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
         commentContent={newComment}
         isSubmitting={isSubmitting}
       />
+
     </div>
   )
 }
