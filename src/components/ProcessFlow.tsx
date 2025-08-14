@@ -1014,7 +1014,12 @@ function PrioritizationPanel() {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   // Function to get color based on current fill percentage
-  const getProgressColor = (currentPercentage: number) => {
+  const getProgressColor = (currentPercentage: number, projectName?: string) => {
+    // Use orange for tech debt items regardless of score
+    if (projectName?.toLowerCase().includes('technical debt')) {
+      return 'bg-gradient-to-r from-orange-500 to-orange-400'
+    }
+    
     if (currentPercentage >= 90) {
       return 'bg-gradient-to-r from-emerald-500 to-emerald-400'
     } else if (currentPercentage >= 78) {
@@ -1056,46 +1061,169 @@ function PrioritizationPanel() {
     {
       id: 1,
       href: '#',
-      projectName: 'User Stories Backlog',
+      projectName: 'Why We Prioritize',
       teamName: 'Product Team',
       status: 'online',
       statusText: 'Updated 30m ago',
-      description: 'RICE scored and prioritized',
+      description: 'Shared rules for turning discovery into a focused plan.',
       environment: 'Production',
-      riceScore: 94,
+      riceScore: 92,
+      drawerContent: {
+        oneLiner: 'Focus beats volume. Prioritization turns a long wish list into the next best set of bets.',
+        whyItMatters: 'Without rules, the roadmap drifts. Clear priorities reduce thrash, accelerate decisions, and keep us building what moves the metric.',
+        whatWeDo: [
+          'Set decision principles (customer value first, measurable outcomes, time-to-learning).',
+          'Define a cadence (bi-weekly triage, monthly re-score, quarterly planning).',
+          'Publish a single source backlog (opportunities, experiments, tech debt).',
+          'Make trade-offs explicit (what we say "no" to, and why).'
+        ],
+        inputs: 'Persona & Journey insights • System constraints & quick wins • Competitive parity/differentiators • Business goals/OKRs.',
+        deliverables: [
+          'Prioritization policy (one page).',
+          'Shared backlog taxonomy (Initiative → Epic → Opportunity/Story).',
+          'Decision RACI & DRI.'
+        ],
+        signalsOfSuccess: [
+          'Stakeholders can explain why top 10 items are top 10.',
+          'Fewer reopen/pend requests after planning.',
+          'Lead time from idea → decision shrinks.'
+        ],
+        tools: 'Notion/Confluence, Jira/Linear, FigJam/Miro.'
+      }
     },
     {
       id: 2,
       href: '#',
-      projectName: 'Feature Roadmap Q2',
-      teamName: 'Product Team', 
+      projectName: 'How We Prioritize (RICE + Risk)',
+      teamName: 'Product Team, Data',
       status: 'online',
       statusText: 'Updated 1h ago',
-      description: 'Quarterly planning cycle',
+      description: 'Scoring framework with thresholds, tie-breakers, and review cadence.',
       environment: 'Production',
-      riceScore: 87,
+      riceScore: 89,
+      drawerContent: {
+        oneLiner: 'Score what matters, then sanity-check with risk and constraints.',
+        whyItMatters: 'A lightweight, transparent model prevents the loudest voice from setting the roadmap.',
+        whatWeDo: [
+          'Score each opportunity with RICE:',
+          'Reach (people/week or /month)',
+          'Impact (0.25 / 0.5 / 1 / 2 / 3) on the target metric',
+          'Confidence (0–100%)',
+          'Effort (person-weeks)',
+          'Score = (Reach × Impact × Confidence) ÷ Effort',
+          'Apply a Risk/Readiness modifier (+/− 10–20%) for dependency risk, compliance, or system limits.',
+          'Normalize to 0–100 for display.',
+          'Tie-breakers: strategic fit with OKRs, time-to-learning, and customer commitments.',
+          'Re-score monthly; freeze scores one week before quarterly planning.'
+        ],
+        inputs: 'Event data & funnels • Research evidence & severity of friction • System constraints from Step 1 • Business commitments.',
+        deliverables: [
+          'RICE scorecard (Notion/Sheet) + thresholds (e.g., ship if ≥ 65).',
+          'Comments log (assumptions behind Reach/Impact/Confidence).',
+          '"Now / Next / Later" migration on the roadmap.'
+        ],
+        signalsOfSuccess: [
+          'Scores correlate with post-ship outcomes (retention, activation, conversion).',
+          'Less debate time; more execution time.',
+          'New ideas get a decision within 10 business days.'
+        ],
+        tools: 'Amplitude/Mixpanel/GA4, Notion/Sheets, Jira/Linear.',
+        sampleTemplate: 'Columns: ID • Title • Epic • Reach (units) • Impact (0.25–3) • Confidence (%) • Effort (pw) • Risk adj (%) • RICE (0–100) • DRI • Status.\nThresholds: Ship ≥65, Research/Refine 45–64, Archive <45.'
+      }
     },
     {
       id: 3,
       href: '#',
-      projectName: 'Technical Debt Items',
-      teamName: 'Engineering',
-      status: 'offline',
-      statusText: '8h ago',
-      description: 'Awaiting prioritization',
-      environment: 'Preview',
-      riceScore: 62,
+      projectName: 'Opportunity Backlog (from Step 1)',
+      teamName: 'Product Team, Design, Research',
+      status: 'online',
+      statusText: 'Updated 1h ago',
+      description: 'Curated list of opportunities sourced from personas, journeys, system analysis, and competitive gaps.',
+      environment: 'Production',
+      riceScore: 87,
+      drawerContent: {
+        oneLiner: 'A single, deduped list of problems and bets sourced from discovery.',
+        whyItMatters: 'Scattered ideas = duplicate effort. One backlog creates clarity and prevents lost insights.',
+        whatWeDo: [
+          'Convert research notes into opportunities (problem statements, evidence, metric).',
+          'Merge duplicates; link to personas, journey stages, and competitive references.',
+          'Attach preliminary RICE and owner.',
+          'Flag dependencies (system, compliance, data gaps).'
+        ],
+        inputs: 'Persona/Journey frictions • Competitive gaps • Quick wins from System Analysis • Support tickets & sales notes.',
+        deliverables: [
+          'Opportunity register with tags: Persona, Journey Stage, Metric, Epic, Risk.',
+          'Top 20 prioritized list with DRI and next step (design spike, data check, prototype, etc.).'
+        ],
+        signalsOfSuccess: [
+          'No "ideas in the ether"—everything visible, tagged, and owned.',
+          'Fewer one-off docs; more linked artifacts.'
+        ],
+        tools: 'Notion/Backlog tool, FigJam/Miro for mapping.'
+      }
     },
     {
       id: 4,
       href: '#',
-      projectName: 'UX Research Insights',
+      projectName: 'Technical Debt Triage',
+      teamName: 'Engineering',
+      status: 'online',
+      statusText: 'Updated 8h ago',
+      description: 'Reliability, performance, and developer-velocity fixes ranked alongside features.',
+      environment: 'Production',
+      riceScore: 80,
+      drawerContent: {
+        oneLiner: 'Protect reliability and velocity by triaging debt alongside features.',
+        whyItMatters: 'Invisible debt slows everything. Making it visible—and comparable—keeps the product fast and safe.',
+        whatWeDo: [
+          'Intake debt with severity (S1–S4) and blast radius.',
+          'Score with ICE (Impact, Confidence, Effort) or WSJF where flow efficiency matters.',
+          'Map to customer impact (perf, accessibility, reliability) and developer impact (build time, flake rate).',
+          'Set SLAs for Sev-1/2; schedule recurring "debt sprints" or rolling capacity (e.g., 20%).'
+        ],
+        inputs: 'SLO/SLA breaches, performance traces, error budgets, developer feedback.',
+        deliverables: [
+          'Debt backlog with severity, score, owner, mitigation, and ETA.',
+          'Quarterly "keep the lights fast" plan (perf, a11y, stability objectives).'
+        ],
+        signalsOfSuccess: [
+          'P95 latency & error rates trend down.',
+          'Build times and flaky test rate trend down.',
+          'Fewer incidents tied to known debt.'
+        ],
+        tools: 'Jira/Linear, Sentry/New Relic, Lighthouse/PageSpeed, Playwright/Cypress CI.'
+      }
+    },
+    {
+      id: 5,
+      href: '#',
+      projectName: 'UX Research Insights Intake',
       teamName: 'Design',
       status: 'online',
       statusText: 'Updated 2d ago',
-      description: 'User feedback analysis',
+      description: 'Repeatable way to capture, de-duplicate, and convert insights into opportunities.',
       environment: 'Production',
-      riceScore: 73,
+      riceScore: 76,
+      drawerContent: {
+        oneLiner: 'A crisp path from observation → insight → opportunity.',
+        whyItMatters: 'If insights don\'t enter the system, they don\'t shape the roadmap.',
+        whatWeDo: [
+          'Intake form: What we saw, where, who, evidence (clip/screenshot), suspected metric, severity.',
+          'De-duplicate, tag to persona/journey stage, and link to existing opportunities.',
+          'Weekly triage: convert to opportunity or archive with reason.',
+          'Close loop with submitter.'
+        ],
+        inputs: 'Interviews, usability tests, analytics anomalies, support themes.',
+        deliverables: [
+          'Insight log, conversion rate to opportunities, top recurring themes.',
+          '"Open questions" list to feed future research.'
+        ],
+        signalsOfSuccess: [
+          'Time from insight → decision shrinks.',
+          'Higher % of roadmap items traceable to user evidence.'
+        ],
+        tools: 'Typeform/Google Forms, Notion, Dovetail, Loom.'
+      }
     },
   ]
 
@@ -1197,7 +1325,7 @@ function PrioritizationPanel() {
                 </div>
                 <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2.5 shadow-inner">
                   <div 
-                    className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore)}`}
+                    className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
                     style={{
                       width: isLoaded ? `${deployment.riceScore}%` : '0%',
                       transitionDelay: `${index * 150}ms`,
@@ -1219,54 +1347,111 @@ function PrioritizationPanel() {
         onClose={() => setDrawerOpen(false)}
         title={selectedDeployment?.projectName || 'Project Details'}
       >
-        {selectedDeployment && (
-          <div className="space-y-6">
+        {selectedDeployment && selectedDeployment.drawerContent && (
+          <div className="space-y-8">
+            {/* One-liner */}
             <div>
-              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
                 {selectedDeployment.projectName}
               </h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-                {selectedDeployment.description}
+              <p className="text-base text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
+                {selectedDeployment.drawerContent.oneLiner}
               </p>
-              
-              <div className="grid grid-cols-2 gap-4 text-sm">
+            </div>
+
+            {/* Why it matters */}
+            <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+              <h4 className="text-sm font-medium text-emerald-900 dark:text-emerald-100 mb-3">Why it matters</h4>
+              <p className="text-sm text-emerald-800 dark:text-emerald-200">
+                {selectedDeployment.drawerContent.whyItMatters}
+              </p>
+            </div>
+
+            {/* What we do */}
+            <div>
+              <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">What we do</h4>
+              <ul className="space-y-2">
+                {selectedDeployment.drawerContent.whatWeDo.map((item: string, index: number) => (
+                  <li key={index} className="text-sm text-zinc-600 dark:text-zinc-400 flex items-start">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 mr-3 flex-shrink-0"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Inputs */}
+            <div>
+              <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Inputs</h4>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                {selectedDeployment.drawerContent.inputs}
+              </p>
+            </div>
+
+            {/* Deliverables */}
+            <div>
+              <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Deliverables</h4>
+              <ul className="space-y-2">
+                {selectedDeployment.drawerContent.deliverables.map((item: string, index: number) => (
+                  <li key={index} className="text-sm text-zinc-600 dark:text-zinc-400 flex items-start">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 mr-3 flex-shrink-0"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Signals of success */}
+            <div>
+              <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Signals of success</h4>
+              <ul className="space-y-2">
+                {selectedDeployment.drawerContent.signalsOfSuccess.map((item: string, index: number) => (
+                  <li key={index} className="text-sm text-zinc-600 dark:text-zinc-400 flex items-start">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2 mr-3 flex-shrink-0"></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Tools */}
+            <div>
+              <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Tools</h4>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                {selectedDeployment.drawerContent.tools}
+              </p>
+            </div>
+
+            {/* Sample/Template (if available) */}
+            {selectedDeployment.drawerContent.sampleTemplate && (
+              <div>
+                <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Sample / Template</h4>
+                <div className="bg-zinc-50 dark:bg-zinc-900 rounded-lg p-4 border border-zinc-200 dark:border-zinc-700">
+                  <pre className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap font-mono">
+                    {selectedDeployment.drawerContent.sampleTemplate}
+                  </pre>
+                </div>
+              </div>
+            )}
+
+            {/* Metadata */}
+            <div className="pt-4 border-t border-zinc-200 dark:border-zinc-700">
+              <div className="grid grid-cols-2 gap-4 text-xs">
                 <div>
                   <span className="font-medium text-zinc-700 dark:text-zinc-300">Team:</span>
                   <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.teamName}</span>
                 </div>
                 <div>
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Environment:</span>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Status:</span>
                   <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.environment}</span>
                 </div>
                 <div>
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">RICE Score:</span>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Priority Score:</span>
                   <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.riceScore}/100</span>
                 </div>
                 <div>
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Status:</span>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Updated:</span>
                   <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.statusText}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-medium text-zinc-900 dark:text-white mb-3">RICE Breakdown</h4>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Reach</span>
-                  <span className="text-sm font-medium text-zinc-900 dark:text-white">High</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Impact</span>
-                  <span className="text-sm font-medium text-zinc-900 dark:text-white">High</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Confidence</span>
-                  <span className="text-sm font-medium text-zinc-900 dark:text-white">Medium</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Effort</span>
-                  <span className="text-sm font-medium text-zinc-900 dark:text-white">Low</span>
                 </div>
               </div>
             </div>
