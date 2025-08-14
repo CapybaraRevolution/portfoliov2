@@ -895,7 +895,7 @@ function Step1Layout({
   )
 }
 
-// Step 2: Planning & Architecture with tabs
+// Step 2: Planning & Architecture Application Shell
 function Step2Layout({ step }: { step: ProcessStep }) {
   const [activeTab, setActiveTab] = useState('Prioritization')
   
@@ -909,217 +909,733 @@ function Step2Layout({ step }: { step: ProcessStep }) {
     setActiveTab(tabName)
   }
 
-  const getTabContent = () => {
+  const renderTabContent = () => {
     switch (activeTab) {
       case 'Prioritization':
-        return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left column: Content */}
-            <div>
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What it is</h4>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                A crisp backlog refined with RICE scoring so we ship the highest impact work first.
-              </p>
-              
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                Cuts 40%+ of &ldquo;nice-to-have&rdquo; items before Sprint 1; gives stakeholders a plan they trust.
-              </p>
-              
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Define scoring criteria with product & engineering</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Score and rank candidate features</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Facilitate trade-off discussions; publish a trimmed, ordered backlog</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Feed outputs into release planning</span>
-                </li>
-              </ul>
-
-              {/* Skill chips */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                <NavigationChip skill="Release Planning" size="sm" />
-                <NavigationChip skill="Risk Surfacing" size="sm" />
-                <NavigationChip skill="Competitive Analysis" size="sm" />
-              </div>
-
-              <a
-                href="/work/overview?skills=Release%20Planning"
-                className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-              >
-                See a prioritization example →
-              </a>
-            </div>
-
-            {/* Right column: Preview */}
-            <div>
-              <RICETablePreview />
-              <div className="mt-4 text-center">
-                <a
-                  href="/work/overview?skills=Release%20Planning"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
-                >
-                  View sample →
-                </a>
-              </div>
-            </div>
-          </div>
-        )
-      
+        return <PrioritizationPanel />
       case 'IA & Flows':
-        return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left column: Content */}
-            <div>
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What it is</h4>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                Navigation and flow patterns that make sense on first click; multiple IA variants tested quickly.
-              </p>
-              
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                Prevents structural rework later; makes design debt visible early.
-              </p>
-              
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Produce user flow variants for key journeys (happy path + known friction)</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Explore IA trees (3 alternatives minimum); choose the winner with the team</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Document entry points, deep links, and guardrails for edge cases</span>
-                </li>
-              </ul>
-
-              {/* Skill chips */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                <NavigationChip skill="User Flows" size="sm" />
-                <NavigationChip skill="Information Architecture" size="sm" />
-                <NavigationChip skill="Roadmapping" size="sm" />
-              </div>
-
-              <a
-                href="/work/overview?skills=User%20Flows"
-                className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-              >
-                View a flow sample →
-              </a>
-            </div>
-
-            {/* Right column: Preview */}
-            <div>
-              <FlowDiagramPreview />
-              <div className="mt-4 text-center">
-                <a
-                  href="/work/overview?skills=User%20Flows"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
-                >
-                  View sample →
-                </a>
-              </div>
-            </div>
-          </div>
-        )
-
+        return <IAFlowsPanel />
       case 'Roadmap & Alignment':
-        return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left column: Content */}
-            <div>
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What it is</h4>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                A realistic path to value—release plan, stakeholder alignment, and a living risk log.
-              </p>
-              
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Why it matters</h4>
-              <p className="text-zinc-700 dark:text-zinc-300 mb-6">
-                Protects timelines; gives leadership confidence; reduces last-minute surprises.
-              </p>
-              
-              <h4 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">What I do</h4>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Build a release plan with milestones and dependencies</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Maintain a risk surface (technical, design, operational) with owners & mitigations</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-zinc-700 dark:text-zinc-300">Run weekly alignment touchpoints and demos; capture decisions</span>
-                </li>
-              </ul>
-
-              {/* Skill chips */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                <NavigationChip skill="Cross-team Facilitation" size="sm" />
-                <NavigationChip skill="Stakeholder Alignment" size="sm" />
-                <NavigationChip skill="Release Planning" size="sm" />
-              </div>
-
-              <a
-                href="/work/overview?skills=Cross-team%20Facilitation"
-                className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-              >
-                See a roadmap sample →
-              </a>
-            </div>
-
-            {/* Right column: Preview */}
-            <div>
-              <MilestoneStripPreview />
-              <div className="mt-4 text-center">
-                <a
-                  href="/work/overview?skills=Cross-team%20Facilitation"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400"
-                >
-                  View sample →
-                </a>
-              </div>
-            </div>
-          </div>
-        )
-
+        return <RoadmapPanel />
       default:
-        return null
+        return <PrioritizationPanel />
     }
   }
 
   return (
     <div className="space-y-8">
-      {/* 1. Intro section (full width) */}
+      {/* Intro section */}
       <div>
         <p className="text-lg text-zinc-700 dark:text-zinc-300 mb-8">
-          Insight turns into a blueprint—clear flows, a ruthlessly prioritised backlog, and a timeline everyone can believe.
+          {step.description}
         </p>
       </div>
 
-      {/* 2. Tab row (full width) */}
-      <div>
-        <ProcessTabRow tabs={tabs} onTabChange={handleTabChange} />
+      {/* Application Shell */}
+      <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        {/* Top Navigation */}
+        <nav className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
+          <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <div className="flex items-center">
+                <div className="shrink-0">
+                  <img
+                    alt="Kyle McGraw"
+                    src="/favicon.ico"
+                    className="size-8"
+                  />
+                </div>
+                <div className="hidden md:block">
+                  <div className="ml-10 flex items-baseline space-x-4">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab.name}
+                        onClick={() => handleTabChange(tab.name)}
+                        aria-current={tab.current ? 'page' : undefined}
+                        className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                          tab.current
+                            ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
+                            : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100'
+                        }`}
+                      >
+                        {tab.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div className="md:hidden border-t border-zinc-200 dark:border-zinc-700">
+            <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.name}
+                  onClick={() => handleTabChange(tab.name)}
+                  aria-current={tab.current ? 'page' : undefined}
+                  className={`block rounded-md px-3 py-2 text-base font-medium w-full text-left transition-colors ${
+                    tab.current 
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' 
+                      : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100'
+                  }`}
+                >
+                  {tab.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </nav>
+
+        {/* Header */}
+        <header className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
+          <div className="w-full px-4 py-6 sm:px-6 lg:px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              {activeTab}
+            </h1>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="bg-white dark:bg-zinc-900">
+          {renderTabContent()}
+        </main>
+      </div>
+    </div>
+  )
+}
+
+// Panel Components
+function PrioritizationPanel() {
+  const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  // Function to get color based on current fill percentage
+  const getProgressColor = (currentPercentage: number) => {
+    if (currentPercentage >= 78) {
+      return 'bg-gradient-to-r from-emerald-500 to-emerald-400'
+    } else if (currentPercentage >= 65) {
+      return 'bg-gradient-to-r from-yellow-500 to-yellow-400'
+    } else if (currentPercentage >= 50) {
+      return 'bg-gradient-to-r from-orange-500 to-orange-400'
+    } else {
+      return 'bg-gradient-to-r from-red-500 to-red-400'
+    }
+  }
+
+  // Trigger animations on component mount
+  useEffect(() => {
+    setIsLoaded(false)
+    const timer = setTimeout(() => setIsLoaded(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Function to trigger cascading animation
+  const handleSortChange = async () => {
+    setIsAnimating(true)
+    
+    // Cards slide out animation
+    await new Promise(resolve => setTimeout(resolve, 200))
+    
+    // Cards slide in animation with stagger
+    setTimeout(() => setIsAnimating(false), 100)
+  }
+
+  // Function to handle opening drawer
+  const handleDeploymentClick = (deployment: any) => {
+    setSelectedDeployment(deployment)
+    setDrawerOpen(true)
+  }
+
+  const deployments = [
+    {
+      id: 1,
+      href: '#',
+      projectName: 'User Stories Backlog',
+      teamName: 'Product Team',
+      status: 'online',
+      statusText: 'Updated 30m ago',
+      description: 'RICE scored and prioritized',
+      environment: 'Production',
+      riceScore: 94,
+    },
+    {
+      id: 2,
+      href: '#',
+      projectName: 'Feature Roadmap Q2',
+      teamName: 'Product Team', 
+      status: 'online',
+      statusText: 'Updated 1h ago',
+      description: 'Quarterly planning cycle',
+      environment: 'Production',
+      riceScore: 87,
+    },
+    {
+      id: 3,
+      href: '#',
+      projectName: 'Technical Debt Items',
+      teamName: 'Engineering',
+      status: 'offline',
+      statusText: 'Needs scoring',
+      description: 'Awaiting prioritization',
+      environment: 'Preview',
+      riceScore: 62,
+    },
+    {
+      id: 4,
+      href: '#',
+      projectName: 'UX Research Insights',
+      teamName: 'Design',
+      status: 'online',
+      statusText: 'Updated 2d ago',
+      description: 'User feedback analysis',
+      environment: 'Production',
+      riceScore: 73,
+    },
+  ]
+
+
+  const statuses = {
+    offline: 'text-zinc-500 bg-zinc-100/10 dark:text-zinc-400 dark:bg-zinc-400/10',
+    online: 'text-emerald-500 bg-emerald-100/10 dark:text-emerald-400 dark:bg-emerald-400/10',
+    error: 'text-rose-500 bg-rose-100/10 dark:text-rose-400 dark:bg-rose-400/10',
+  }
+
+  const environments = {
+    Preview: 'text-zinc-400 bg-zinc-100/10 ring-zinc-400/20 dark:text-zinc-400 dark:bg-zinc-400/10 dark:ring-zinc-400/20',
+    Production: 'text-emerald-600 bg-emerald-100/10 ring-emerald-500/30 dark:text-emerald-400 dark:bg-emerald-400/10 dark:ring-emerald-400/30',
+  }
+
+  return (
+    <div className="space-y-0">
+      {/* Header */}
+      <header className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700 px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50">
+        <h1 className="text-lg font-semibold text-zinc-900 dark:text-white">Prioritization Queue</h1>
+        
+        {/* Sort dropdown */}
+        <select 
+          onChange={handleSortChange}
+          className="text-sm font-medium text-zinc-900 dark:text-white bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 rounded-lg px-3 py-2 shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+        >
+          <option>Sort by RICE Score</option>
+          <option>Sort by Impact</option>
+          <option>Sort by Effort</option>
+          <option>Sort by Date</option>
+        </select>
+      </header>
+
+      {/* Clean priority queue - full width list */}
+      <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
+        {deployments.map((deployment, index) => (
+          <div 
+            key={deployment.id} 
+            className={`relative px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
+              !isLoaded 
+                ? 'transform translate-y-12 opacity-0' 
+                : 'transform translate-y-0 opacity-100'
+            }`}
+            style={{
+              transitionDelay: !isLoaded ? '0ms' : `${index * 75}ms`
+            }}
+            onClick={() => handleDeploymentClick(deployment)}
+          >
+            {/* Main content layout */}
+            <div className="flex items-start justify-between gap-x-6">
+              {/* Left side with aligned content */}
+              <div className="flex items-start gap-x-4">
+                {/* Status indicator */}
+                <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
+                  <div className="size-2 rounded-full bg-current" />
+                </div>
+                
+                {/* Content column */}
+                <div className="flex-auto">
+                  {/* Top row: Title and team badge */}
+                  <div className="flex items-center gap-x-3">
+                    <p className="text-base font-semibold text-zinc-900 dark:text-white">
+                      {deployment.projectName}
+                    </p>
+                    <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                      {deployment.teamName}
+                    </span>
+                  </div>
+                  
+                  {/* Second row: Status text */}
+                  <div className="mt-1 ml-0.5">
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">{deployment.statusText}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right side */}
+              <div className="flex flex-none items-center gap-x-4">
+                {/* Environment badge */}
+                <div
+                  className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
+                >
+                  {deployment.environment}
+                </div>
+                
+                {/* Arrow */}
+                <svg className="size-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Progress bar row - aligned with text */}
+            <div className="mt-4">
+              <div className="ml-10 mr-8">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 ml-0.5">Priority Score</span>
+                  <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
+                </div>
+                <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2.5 shadow-inner">
+                  <div 
+                    className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore)}`}
+                    style={{
+                      width: isLoaded ? `${deployment.riceScore}%` : '0%',
+                      transitionDelay: `${index * 150}ms`
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* 3. Content panel (full width) */}
-      <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700">
-        {getTabContent()}
+      {/* Side Drawer */}
+      <ComponentDrawer 
+        open={drawerOpen} 
+        onClose={() => setDrawerOpen(false)}
+        title={selectedDeployment?.projectName || 'Project Details'}
+      >
+        {selectedDeployment && (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+                {selectedDeployment.projectName}
+              </h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                {selectedDeployment.description}
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Team:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.teamName}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Environment:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.environment}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">RICE Score:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.riceScore}/100</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Status:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedDeployment.statusText}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-zinc-900 dark:text-white mb-3">RICE Breakdown</h4>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Reach</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-white">High</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Impact</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-white">High</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Confidence</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-white">Medium</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">Effort</span>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-white">Low</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </ComponentDrawer>
+    </div>
+  )
+}
+
+function IAFlowsPanel() {
+  const [currentStep, setCurrentStep] = useState('01')
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [selectedProject, setSelectedProject] = useState<any>(null)
+
+  // Trigger animations on component mount
+  useEffect(() => {
+    setIsLoaded(false)
+    const timer = setTimeout(() => setIsLoaded(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const steps = [
+    { id: '01', name: 'User Research', href: '#', status: 'complete' },
+    { id: '02', name: 'Journey Mapping', href: '#', status: 'current' },
+    { id: '03', name: 'Flow Design', href: '#', status: 'upcoming' },
+  ]
+
+  // Project data that changes based on step
+  const projectsByStep = {
+    '01': [
+      {
+        id: 1,
+        name: 'User Interview Analysis',
+        href: '#',
+        status: 'Complete',
+        createdBy: 'Kyle McGraw',
+        dueDate: 'March 17, 2023',
+        dueDateTime: '2023-03-17T00:00Z',
+      },
+      {
+        id: 2,
+        name: 'Persona Development',
+        href: '#',
+        status: 'Complete',
+        createdBy: 'UX Researcher',
+        dueDate: 'March 20, 2023',
+        dueDateTime: '2023-03-20T00:00Z',
+      },
+      {
+        id: 3,
+        name: 'User Pain Points Mapping',
+        href: '#',
+        status: 'In progress',
+        createdBy: 'Design Team',
+        dueDate: 'March 25, 2023',
+        dueDateTime: '2023-03-25T00:00Z',
+      },
+    ],
+    '02': [
+      {
+        id: 4,
+        name: 'Customer Journey Maps',
+        href: '#',
+        status: 'In progress',
+        createdBy: 'Kyle McGraw',
+        dueDate: 'April 5, 2023',
+        dueDateTime: '2023-04-05T00:00Z',
+      },
+      {
+        id: 5,
+        name: 'Touchpoint Analysis',
+        href: '#',
+        status: 'In progress',
+        createdBy: 'Product Manager',
+        dueDate: 'April 8, 2023',
+        dueDateTime: '2023-04-08T00:00Z',
+      },
+      {
+        id: 6,
+        name: 'Service Blueprint',
+        href: '#',
+        status: 'Complete',
+        createdBy: 'Service Designer',
+        dueDate: 'April 1, 2023',
+        dueDateTime: '2023-04-01T00:00Z',
+      },
+    ],
+    '03': [
+      {
+        id: 7,
+        name: 'Information Architecture',
+        href: '#',
+        status: 'In progress',
+        createdBy: 'Kyle McGraw',
+        dueDate: 'April 15, 2023',
+        dueDateTime: '2023-04-15T00:00Z',
+      },
+      {
+        id: 8,
+        name: 'User Flow Diagrams',
+        href: '#',
+        status: 'In progress',
+        createdBy: 'UX Designer',
+        dueDate: 'April 18, 2023',
+        dueDateTime: '2023-04-18T00:00Z',
+      },
+      {
+        id: 9,
+        name: 'Task Flow Validation',
+        href: '#',
+        status: 'Complete',
+        createdBy: 'Design Team',
+        dueDate: 'April 12, 2023',
+        dueDateTime: '2023-04-12T00:00Z',
+      },
+    ],
+  }
+
+  const handleStepClick = async (stepId: string) => {
+    if (stepId === currentStep) return
+    
+    setIsAnimating(true)
+    
+    // Cards slide out animation
+    await new Promise(resolve => setTimeout(resolve, 200))
+    
+    setCurrentStep(stepId)
+    
+    // Cards slide in animation with stagger
+    setTimeout(() => setIsAnimating(false), 100)
+  }
+
+  // Calculate step status based on current selection
+  const getStepStatus = (stepId: string) => {
+    if (stepId === currentStep) return 'current'
+    if (stepId < currentStep) return 'complete'
+    return 'upcoming'
+  }
+
+  // Function to handle opening drawer
+  const handleProjectClick = (project: any) => {
+    setSelectedProject(project)
+    setDrawerOpen(true)
+  }
+
+  const currentProjects = projectsByStep[currentStep as keyof typeof projectsByStep] || []
+
+  return (
+    <div className="space-y-0">
+      {/* Progress Stepper */}
+      <div className="px-6 py-6 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50">
+        <nav aria-label="Progress">
+          <ol role="list" className="divide-y divide-zinc-200 dark:divide-zinc-700 rounded-md border border-zinc-200 dark:border-zinc-700 md:flex md:divide-y-0">
+          {steps.map((step, stepIdx) => {
+            const stepStatus = getStepStatus(step.id)
+            return (
+            <li key={step.name} className="relative md:flex md:flex-1">
+              {stepStatus === 'complete' ? (
+                <button 
+                  onClick={() => handleStepClick(step.id)}
+                  className="group flex w-full items-center transition-colors"
+                >
+                  <span className="flex items-center px-6 py-4 text-sm font-medium">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-500 dark:bg-emerald-400 group-hover:bg-emerald-600 dark:group-hover:bg-emerald-300 transition-colors">
+                      <svg className="size-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </span>
+                    <span className="ml-4 text-sm font-medium text-zinc-900 dark:text-white">{step.name}</span>
+                  </span>
+                </button>
+              ) : stepStatus === 'current' ? (
+                <button 
+                  onClick={() => handleStepClick(step.id)}
+                  aria-current="step" 
+                  className="flex w-full items-center px-6 py-4 text-sm font-medium transition-colors"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-blue-600 dark:border-blue-400">
+                    <span className="text-blue-600 dark:text-blue-400 font-medium">{step.id}</span>
+                  </span>
+                  <span className="ml-4 text-sm font-medium text-blue-600 dark:text-blue-400">{step.name}</span>
+                </button>
+              ) : (
+                <button 
+                  onClick={() => handleStepClick(step.id)}
+                  className="group flex w-full items-center px-6 py-4 text-sm font-medium transition-colors"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-zinc-300 dark:border-zinc-600 group-hover:border-white dark:group-hover:border-zinc-300 group-hover:bg-white dark:group-hover:bg-zinc-700 transition-colors">
+                    <span className="text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors">{step.id}</span>
+                  </span>
+                  <span className="ml-4 text-sm font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors">{step.name}</span>
+                </button>
+              )}
+
+              {stepIdx !== steps.length - 1 ? (
+                <div aria-hidden="true" className="absolute top-0 right-0 hidden h-full w-5 md:block">
+                  <svg fill="none" viewBox="0 0 22 80" preserveAspectRatio="none" className="size-full text-zinc-200 dark:text-zinc-700">
+                    <path
+                      d="M0 -2L20 40L0 82"
+                      stroke="currentcolor"
+                      vectorEffect="non-scaling-stroke"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              ) : null}
+            </li>
+            )
+          })}
+        </ol>
+        </nav>
+      </div>
+
+      {/* Project List */}
+      <div className="relative overflow-hidden">
+        <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
+        {currentProjects.map((project, index) => (
+          <div 
+            key={project.id} 
+            className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
+              isAnimating || !isLoaded
+                ? 'transform translate-y-12 opacity-0' 
+                : 'transform translate-y-0 opacity-100'
+            }`}
+            style={{
+              transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
+            }}
+            onClick={() => handleProjectClick(project)}
+          >
+            <div className="flex items-center justify-between gap-x-6">
+              <div className="min-w-0 flex-auto">
+                <div className="flex items-center gap-x-3">
+                  <p className="text-base font-semibold text-zinc-900 dark:text-white">{project.name}</p>
+                  {project.status === 'In progress' ? (
+                    <span className="inline-flex items-center rounded-md bg-amber-100 dark:bg-amber-900/20 px-2 py-1 text-xs font-medium text-amber-600 dark:text-amber-400 ring-1 ring-inset ring-amber-500/20 dark:ring-amber-400/20">
+                      {project.status}
+                    </span>
+                  ) : null}
+                  {project.status === 'Complete' ? (
+                    <span className="inline-flex items-center rounded-md bg-emerald-100 dark:bg-emerald-900/20 px-2 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20 dark:ring-emerald-400/20">
+                      {project.status}
+                    </span>
+                  ) : null}
+                </div>
+                <div className="mt-1 flex items-center gap-x-3 text-sm text-zinc-600 dark:text-zinc-400">
+                  <p>Due on <time dateTime={project.dueDateTime}>{project.dueDate}</time></p>
+                  <span className="text-zinc-400">•</span>
+                  <p>Created by {project.createdBy}</p>
+                </div>
+              </div>
+              <div className="flex flex-none items-center gap-x-4">
+                <button className="rounded-md bg-zinc-100 dark:bg-zinc-700 px-3 py-1.5 text-sm font-semibold text-zinc-900 dark:text-white ring-1 ring-inset ring-zinc-300 dark:ring-zinc-600 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors">
+                  View project
+                </button>
+                <svg className="size-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        ))}
+        </div>
+      </div>
+
+      {/* Side Drawer */}
+      <ComponentDrawer 
+        open={drawerOpen} 
+        onClose={() => setDrawerOpen(false)}
+        title={selectedProject?.name || 'Project Details'}
+      >
+        {selectedProject && (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+                {selectedProject.name}
+              </h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+                Project details and deliverables for {steps.find(s => s.id === currentStep)?.name} phase.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Created by:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedProject.createdBy}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Status:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedProject.status}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Due Date:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{selectedProject.dueDate}</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-700 dark:text-zinc-300">Phase:</span>
+                  <span className="ml-2 text-zinc-600 dark:text-zinc-400">{steps.find(s => s.id === currentStep)?.name}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-zinc-900 dark:text-white mb-3">Project Overview</h4>
+              <div className="space-y-3">
+                <div>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Objectives:</span>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                    Understanding user needs and behaviors to inform design decisions for the {selectedProject.name.toLowerCase()} initiative.
+                  </p>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Key Deliverables:</span>
+                  <ul className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 list-disc list-inside space-y-1">
+                    <li>Research synthesis report</li>
+                    <li>User journey documentation</li>
+                    <li>Design recommendations</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </ComponentDrawer>
+    </div>
+  )
+}
+
+function RoadmapPanel() {
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800">
+        {/* Icon */}
+        <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center mb-6">
+          <svg className="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+
+        {/* Content */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100">
+            Coming Next: Roadmap & Alignment
+          </h2>
+          <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
+            Visual roadmap components and alignment checklist tools are in development. This panel will include timeline views, stakeholder alignment matrices, and dependency tracking.
+          </p>
+          
+          {/* Feature Preview */}
+          <div className="mt-6 space-y-3">
+            <h3 className="text-sm font-medium text-emerald-900 dark:text-emerald-100">
+              Planned Features:
+            </h3>
+            <ul className="space-y-2 text-sm text-emerald-800 dark:text-emerald-200">
+              <li className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></div>
+                Interactive timeline visualization
+              </li>
+              <li className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></div>
+                Stakeholder alignment checklist
+              </li>
+              <li className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></div>
+                Dependency mapping tools
+              </li>
+              <li className="flex items-center">
+                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3"></div>
+                Resource allocation views
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   )
