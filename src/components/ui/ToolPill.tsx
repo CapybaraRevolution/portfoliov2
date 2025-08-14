@@ -22,6 +22,9 @@ export function ToolPill({
 
   // Generate letter avatar from name
   const getInitials = (name: string) => {
+    if (!name || typeof name !== 'string') {
+      return 'XX' // Fallback for undefined/null names
+    }
     return name
       .split(' ')
       .map(word => word[0])

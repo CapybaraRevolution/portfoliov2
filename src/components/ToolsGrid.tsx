@@ -57,6 +57,9 @@ export function ToolsGrid({ tools }: ToolsGridProps) {
 
   // Convert slug to human-readable title
   function slugToTitle(slug: string): string {
+    if (!slug || typeof slug !== 'string') {
+      return 'Unknown Title' // Fallback for undefined/null slugs
+    }
     return slug
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -134,7 +137,7 @@ export function ToolsGrid({ tools }: ToolsGridProps) {
             text: currentTool ? 'This tool is part of my core workflow for delivering great products.' : 'This tool content needs to be configured.'
           }}
           sampleContent={currentTool ? 
-            `**Related services:**\n${currentTool.relatedServices.map(service => `• [${service.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}](/services#${service})`).join('\n')}\n\n**Related skills:**\n${currentTool.chips.map(chip => `• [${chip.label}](${chip.href})`).join('\n')}` :
+            `**Related services:**\n${currentTool.relatedServices.map(service => `• [${service && typeof service === 'string' ? service.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : 'Unknown Service'}](/services#${service})`).join('\n')}\n\n**Related skills:**\n${currentTool.chips.map(chip => `• [${chip.label}](${chip.href})`).join('\n')}` :
             `**Missing tool links**\n\nChips and service connections need to be configured for this tool.`
           }
         />

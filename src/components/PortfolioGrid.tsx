@@ -30,7 +30,8 @@ export function PortfolioGrid() {
   // Initialize from URL params
   useEffect(() => {
     const cat = searchParams.get('cat') || 'All'
-    const skills = searchParams.get('skills')?.split(',').filter(Boolean) || []
+    const skillsParam = searchParams.get('skills')
+    const skills = skillsParam && typeof skillsParam === 'string' ? skillsParam.split(',').filter(Boolean) : []
     const ai = searchParams.get('ai') === '1'
     
     setActiveCategory(cat)

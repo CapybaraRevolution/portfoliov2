@@ -37,7 +37,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
       </blockquote>
       <figcaption className="mt-8 flex items-center gap-x-4">
         <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 text-white font-bold text-lg">
-          {testimonial.author.split(' ').map(n => n[0]).join('')}
+          {testimonial.author && typeof testimonial.author === 'string' ? testimonial.author.split(' ').map(n => n[0]).join('') : 'AN'}
         </div>
         <div className="text-sm/6">
           <div className="font-semibold text-zinc-900 dark:text-white">

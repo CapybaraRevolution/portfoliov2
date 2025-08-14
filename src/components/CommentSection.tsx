@@ -44,6 +44,9 @@ function classNames(...classes: string[]) {
 
 // Generate initials from name
 function getInitials(name: string): string {
+  if (!name || typeof name !== 'string') {
+    return 'AN' // Anonymous fallback
+  }
   return name
     .split(' ')
     .map(word => word[0])
@@ -54,6 +57,9 @@ function getInitials(name: string): string {
 
 // Generate a consistent color based on name
 function getInitialsColor(name: string): string {
+  if (!name || typeof name !== 'string') {
+    return 'bg-zinc-500' // Default fallback color
+  }
   const colors = [
     'bg-emerald-500',
     'bg-blue-500', 
@@ -210,8 +216,8 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
                     ) : null}
                     <div className="relative flex items-start space-x-3">
                       <div className="relative">
-                        <div className={`flex size-10 items-center justify-center rounded-full text-white text-sm font-medium ring-4 ring-white dark:ring-zinc-900 ${getInitialsColor(comment.author)}`}>
-                          {getInitials(comment.author)}
+                        <div className={`flex size-10 items-center justify-center rounded-full text-white text-sm font-medium ring-4 ring-white dark:ring-zinc-900 ${getInitialsColor(comment.author || 'Anonymous')}`}>
+                          {getInitials(comment.author || 'Anonymous')}
                         </div>
                         <span className="absolute -right-1 -bottom-0.5 rounded-tl bg-white dark:bg-zinc-900 px-0.5 py-px">
                           <ChatBubbleLeftEllipsisIcon aria-hidden="true" className="size-4 text-zinc-400 dark:text-zinc-500" />
@@ -221,7 +227,7 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
                         <div>
                           <div className="text-sm">
                             <span className="font-medium text-zinc-900 dark:text-white">
-                              {comment.author}
+                              {comment.author || 'Anonymous'}
                             </span>
                             {comment.mood && (
                               <span className="ml-2">
