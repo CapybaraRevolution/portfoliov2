@@ -853,6 +853,7 @@ function Step1Layout({
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="Stakeholder Alignment"
+            enableComments={false}
           >
             <StakeholderAlignment />
           </ComponentDrawer>
@@ -861,6 +862,7 @@ function Step1Layout({
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="Persona & Journey Mapping"
+            enableComments={false}
           >
             <PersonaJourneyMapping />
           </ComponentDrawer>
@@ -869,6 +871,7 @@ function Step1Layout({
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="Competitive Analysis"
+            enableComments={false}
           >
             <CompetitiveAnalysis />
           </ComponentDrawer>
@@ -877,6 +880,7 @@ function Step1Layout({
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="System Analysis"
+            enableComments={false}
           >
             <SystemAnalysis />
           </ComponentDrawer>
@@ -1346,6 +1350,8 @@ function PrioritizationPanel() {
         open={drawerOpen} 
         onClose={() => setDrawerOpen(false)}
         title={selectedDeployment?.projectName || 'Project Details'}
+        enableComments={true}
+        itemId={selectedDeployment?.projectName?.toLowerCase().replace(/\s+/g, '-')}
       >
         {selectedDeployment && selectedDeployment.drawerContent && (
           <div className="space-y-8">
@@ -1724,6 +1730,7 @@ function IAFlowsPanel() {
         open={drawerOpen} 
         onClose={() => setDrawerOpen(false)}
         title={selectedProject?.name || 'Project Details'}
+        enableComments={false}
       >
         {selectedProject && (
           <div className="space-y-6">

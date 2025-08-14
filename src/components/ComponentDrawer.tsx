@@ -3,20 +3,26 @@
 import { useState, useRef } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { CommentSection } from './CommentSection'
 
 interface ComponentDrawerProps {
   open: boolean
   onClose: () => void
   title: string
   children: React.ReactNode
+  enableComments?: boolean
+  itemId?: string
 }
 
 export function ComponentDrawer({ 
   open, 
   onClose, 
   title, 
-  children
+  children,
+  enableComments = true,
+  itemId
 }: ComponentDrawerProps) {
+  const [activeTab, setActiveTab] = useState<'overview' | 'comments'>('overview')
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -78,8 +84,41 @@ export function ComponentDrawer({
                   </div>
                 </div>
                 
+                {enableComments && (
+                  <div className="px-4 sm:px-6 border-b border-zinc-200 dark:border-zinc-700">
+                    <nav className="flex space-x-8" aria-label="Tabs">
+                      <button
+                        onClick={() => setActiveTab('overview')}
+                        className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                          activeTab === 'overview'
+                            ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                            : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-600'
+                        }`}
+                      >
+                        Overview
+                      </button>
+                      <button
+                        onClick={() => setActiveTab('comments')}
+                        className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                          activeTab === 'comments'
+                            ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                            : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-600'
+                        }`}
+                      >
+                        Comments
+                      </button>
+                    </nav>
+                  </div>
+                )}
+                
                 <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                  {children}
+                  {activeTab === 'overview' ? (
+                    children
+                  ) : (
+                    enableComments && itemId && (
+                      <CommentSection itemId={itemId} />
+                    )
+                  )}
                 </div>
               </div>
             </DialogPanel>
