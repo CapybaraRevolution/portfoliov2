@@ -1049,76 +1049,6 @@ function PrioritizationPanel() {
   // Check if user is on mobile
   const [isMobile, setIsMobile] = useState(false)
   
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768) // md breakpoint
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Trigger animations on component mount
-  useEffect(() => {
-    setIsLoaded(false)
-    const timer = setTimeout(() => {
-      setIsLoaded(true)
-      // On desktop, show all progress bars immediately for cascading effect
-      if (!isMobile) {
-        setVisibleProgressBars(new Set(deployments.map((_, index) => index)))
-      }
-    }, 100)
-    return () => clearTimeout(timer)
-  }, [isMobile, deployments])
-
-  // Intersection Observer for progress bar animations (mobile only)
-  useEffect(() => {
-    if (!isMobile || !isLoaded) return
-    
-    const progressBarElements = document.querySelectorAll('[data-progress-bar]')
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.getAttribute('data-progress-bar') || '0')
-            setVisibleProgressBars(prev => new Set([...prev, index]))
-          }
-        })
-      },
-      {
-        threshold: 0.3, // Trigger when 30% of the progress bar is visible
-        rootMargin: '0px 0px -10% 0px' // Start animation slightly before fully in view
-      }
-    )
-
-    progressBarElements.forEach((element) => {
-      observer.observe(element)
-    })
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [isMobile, isLoaded]) // Re-run when mobile state or table content loads
-
-  // Function to trigger cascading animation
-  const handleSortChange = async () => {
-    setIsAnimating(true)
-    
-    // Cards slide out animation
-    await new Promise(resolve => setTimeout(resolve, 200))
-    
-    // Cards slide in animation with stagger
-    setTimeout(() => setIsAnimating(false), 100)
-  }
-
-  // Function to handle opening drawer
-  const handleDeploymentClick = (deployment: any) => {
-    setSelectedDeployment(deployment)
-    setDrawerOpen(true)
-  }
-
   const deployments = [
     {
       id: 1,
@@ -1288,6 +1218,76 @@ function PrioritizationPanel() {
       }
     },
   ]
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768) // md breakpoint
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Trigger animations on component mount
+  useEffect(() => {
+    setIsLoaded(false)
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+      // On desktop, show all progress bars immediately for cascading effect
+      if (!isMobile) {
+        setVisibleProgressBars(new Set(deployments.map((_, index) => index)))
+      }
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [isMobile, deployments])
+
+  // Intersection Observer for progress bar animations (mobile only)
+  useEffect(() => {
+    if (!isMobile || !isLoaded) return
+    
+    const progressBarElements = document.querySelectorAll('[data-progress-bar]')
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-progress-bar') || '0')
+            setVisibleProgressBars(prev => new Set([...prev, index]))
+          }
+        })
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the progress bar is visible
+        rootMargin: '0px 0px -10% 0px' // Start animation slightly before fully in view
+      }
+    )
+
+    progressBarElements.forEach((element) => {
+      observer.observe(element)
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [isMobile, isLoaded]) // Re-run when mobile state or table content loads
+
+  // Function to trigger cascading animation
+  const handleSortChange = async () => {
+    setIsAnimating(true)
+    
+    // Cards slide out animation
+    await new Promise(resolve => setTimeout(resolve, 200))
+    
+    // Cards slide in animation with stagger
+    setTimeout(() => setIsAnimating(false), 100)
+  }
+
+  // Function to handle opening drawer
+  const handleDeploymentClick = (deployment: any) => {
+    setSelectedDeployment(deployment)
+    setDrawerOpen(true)
+  }
 
 
   const statuses = {
