@@ -1252,9 +1252,9 @@ function PrioritizationPanel() {
   }
 
   return (
-    <div className="space-y-0">
+    <div className="space-y-8">
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700 px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-lg font-semibold text-zinc-900 dark:text-white">Prioritization Queue</h1>
         
         {/* Sort dropdown */}
@@ -1267,90 +1267,82 @@ function PrioritizationPanel() {
           <option>Sort by Effort</option>
           <option>Sort by Date</option>
         </select>
-      </header>
+      </div>
 
-      {/* Priority queue table */}
-      <div className="mt-4">
-        <ScrollableTable>
-          <div className="min-w-[700px] divide-y divide-zinc-200 dark:divide-zinc-700">
-        {deployments.map((deployment, index) => (
-          <div 
-            key={deployment.id} 
-            className={`relative px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
-              !isLoaded 
-                ? 'transform translate-y-12 opacity-0' 
-                : 'transform translate-y-0 opacity-100'
-            }`}
-            style={{
-              transitionDelay: !isLoaded ? '0ms' : `${index * 75}ms`
-            }}
-            onClick={() => handleDeploymentClick(deployment)}
-          >
-            {/* Table-like row layout */}
-            <div className="grid grid-cols-12 gap-4 items-center"
-                 style={{ minWidth: '700px' }}>
-              {/* Status Column */}
-              <div className="col-span-1 flex justify-center">
-                <div className={`rounded-full p-1.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
-                  <div className="size-2 rounded-full bg-current" />
+      {/* Priority queue cards with horizontal scroll */}
+      <ScrollableTable>
+        <div className="flex gap-6" style={{ minWidth: 'max-content' }}>
+          {deployments.map((deployment, index) => (
+            <div 
+              key={deployment.id}
+              className={`bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 p-6 cursor-pointer hover:shadow-lg dark:hover:shadow-2xl transition-all duration-500 ease-out group ${
+                isAnimating || !isLoaded
+                  ? 'transform translate-y-12 opacity-0' 
+                  : 'transform translate-y-0 opacity-100'
+              }`}
+              style={{
+                transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`,
+                minWidth: '320px',
+                maxWidth: '400px'
+              }}
+              onClick={() => handleDeploymentClick(deployment)}
+            >
+              {/* Status and Environment */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${statuses[deployment.status as keyof typeof statuses]}`}>
+                    <div className="size-2 rounded-full bg-current" />
+                  </div>
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">{deployment.statusText}</span>
                 </div>
-              </div>
-
-              {/* Project Name Column */}
-              <div className="col-span-5">
-                <p className="text-base font-semibold text-zinc-900 dark:text-white truncate">
-                  {deployment.projectName}
-                </p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 truncate">{deployment.statusText}</p>
-              </div>
-
-              {/* Team Column */}
-              <div className="col-span-2">
-                <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                  {deployment.teamName}
-                </span>
-              </div>
-
-              {/* Environment Column */}
-              <div className="col-span-2">
                 <div
-                  className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
+                  className={`rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
                 >
                   {deployment.environment}
                 </div>
               </div>
 
-              {/* Score Column */}
-              <div className="col-span-1 text-right">
-                <div className="space-y-1">
-                  <span className="text-sm font-mono text-zinc-900 dark:text-white">{deployment.riceScore}</span>
-                  <div className="w-16 bg-zinc-200 dark:bg-zinc-700 rounded-full h-1.5">
-                    <div 
-                      className={`h-1.5 rounded-full transition-all duration-1000 ease-out ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
-                      style={{
-                        width: isLoaded ? `${deployment.riceScore}%` : '0%',
-                        transitionDelay: `${index * 150}ms`,
-                        ...(deployment.riceScore >= 90 && {
-                          animation: 'progress-glow-pulse 4s ease-in-out infinite'
-                        })
-                      }}
-                    />
-                  </div>
+              {/* Title and Team */}
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  {deployment.projectName}
+                </h3>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">{deployment.description}</p>
+                <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-700 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                  {deployment.teamName}
+                </span>
+              </div>
+
+              {/* Priority Score */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Priority Score</span>
+                  <span className="text-xs font-mono font-semibold text-zinc-900 dark:text-white">{deployment.riceScore}/100</span>
+                </div>
+                <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2 shadow-inner">
+                  <div 
+                    className={`h-2 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
+                    style={{
+                      width: isLoaded ? `${deployment.riceScore}%` : '0%',
+                      transitionDelay: `${index * 150}ms`,
+                      ...(deployment.riceScore >= 90 && {
+                        animation: 'progress-glow-pulse 4s ease-in-out infinite'
+                      })
+                    }}
+                  />
                 </div>
               </div>
 
-              {/* Arrow Column */}
-              <div className="col-span-1 flex justify-center">
+              {/* Arrow indicator */}
+              <div className="flex justify-end mt-4">
                 <svg className="size-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
             </div>
-          </div>
-        ))}
-          </div>
-        </ScrollableTable>
-      </div>
+          ))}
+        </div>
+      </ScrollableTable>
 
       {/* Side Drawer */}
       <ComponentDrawer 
