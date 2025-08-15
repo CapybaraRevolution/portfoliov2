@@ -1330,6 +1330,7 @@ function PrioritizationPanel() {
                 <React.Fragment key={deployment.id}>
                   {/* Main content row */}
                   <tr 
+                    data-main-row={index}
                     className={`group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-500 ease-out cursor-pointer ${
                       isAnimating || !isLoaded
                         ? 'transform translate-y-12 opacity-0' 
@@ -1339,6 +1340,16 @@ function PrioritizationPanel() {
                       transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
+                    onMouseEnter={() => {
+                      // Add hover class to next sibling (progress bar row)
+                      const nextSibling = document.querySelector(`[data-progress-row="${index}"]`)
+                      if (nextSibling) nextSibling.classList.add('bg-zinc-50', 'dark:bg-zinc-800/50')
+                    }}
+                    onMouseLeave={() => {
+                      // Remove hover class from next sibling
+                      const nextSibling = document.querySelector(`[data-progress-row="${index}"]`)
+                      if (nextSibling) nextSibling.classList.remove('bg-zinc-50', 'dark:bg-zinc-800/50')
+                    }}
                   >
                     {/* Project column */}
                     <td className="py-4 pr-8 pl-4 sm:pl-6" style={{ minWidth: '300px' }}>
@@ -1376,7 +1387,21 @@ function PrioritizationPanel() {
                   </tr>
                   
                   {/* Progress bar sub-row - spans full width */}
-                  <tr className="group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/50 transition-all duration-200 cursor-pointer border-b border-zinc-200 dark:border-zinc-700" onClick={() => handleDeploymentClick(deployment)}>
+                  <tr 
+                    data-progress-row={index}
+                    className="transition-all duration-200 cursor-pointer border-b border-zinc-200 dark:border-zinc-700" 
+                    onClick={() => handleDeploymentClick(deployment)}
+                    onMouseEnter={() => {
+                      // Add hover class to previous sibling (main content row)
+                      const prevSibling = document.querySelector(`[data-main-row="${index}"]`)
+                      if (prevSibling) prevSibling.classList.add('bg-zinc-50', 'dark:bg-zinc-800/50')
+                    }}
+                    onMouseLeave={() => {
+                      // Remove hover class from previous sibling
+                      const prevSibling = document.querySelector(`[data-main-row="${index}"]`)
+                      if (prevSibling) prevSibling.classList.remove('bg-zinc-50', 'dark:bg-zinc-800/50')
+                    }}
+                  >
                     <td colSpan={3} className="pb-4 px-6" style={{ paddingTop: '0px' }}>
                       <div 
                         data-progress-bar={index}
