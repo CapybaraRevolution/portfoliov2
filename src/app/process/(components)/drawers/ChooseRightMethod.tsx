@@ -146,14 +146,14 @@ export function ChooseRightMethod({ className }: ChooseRightMethodProps) {
           Tools
         </h3>
         <div className="flex flex-wrap gap-2">
-          <ToolPill>UserInterviews</ToolPill>
-          <ToolPill>Typeform</ToolPill>
-          <ToolPill>Google Forms</ToolPill>
-          <ToolPill>Maze</ToolPill>
-          <ToolPill>Useberry</ToolPill>
-          <ToolPill>Zoom</ToolPill>
-          <ToolPill>Loom</ToolPill>
-          <ToolPill>FigJam</ToolPill>
+          <ToolPill slug="userinterviews" name="UserInterviews" />
+          <ToolPill slug="typeform" name="Typeform" />
+          <ToolPill slug="google-forms" name="Google Forms" />
+          <ToolPill slug="maze" name="Maze" />
+          <ToolPill slug="useberry" name="Useberry" />
+          <ToolPill slug="zoom" name="Zoom" />
+          <ToolPill slug="loom" name="Loom" />
+          <ToolPill slug="figjam" name="FigJam" />
         </div>
       </div>
 

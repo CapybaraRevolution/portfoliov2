@@ -109,13 +109,13 @@ export function WhatIsUserResearch({ className }: WhatIsUserResearchProps) {
           Tools
         </h3>
         <div className="flex flex-wrap gap-2">
-          <ToolPill>Figma/FigJam</ToolPill>
-          <ToolPill>Typeform</ToolPill>
-          <ToolPill>Google Forms</ToolPill>
-          <ToolPill>UserInterviews</ToolPill>
-          <ToolPill>Calendly</ToolPill>
-          <ToolPill>Notion/Obsidian</ToolPill>
-          <ToolPill>Loom</ToolPill>
+          <ToolPill slug="figma" name="Figma/FigJam" />
+          <ToolPill slug="typeform" name="Typeform" />
+          <ToolPill slug="google-forms" name="Google Forms" />
+          <ToolPill slug="userinterviews" name="UserInterviews" />
+          <ToolPill slug="calendly" name="Calendly" />
+          <ToolPill slug="notion" name="Notion/Obsidian" />
+          <ToolPill slug="loom" name="Loom" />
         </div>
       </div>
 

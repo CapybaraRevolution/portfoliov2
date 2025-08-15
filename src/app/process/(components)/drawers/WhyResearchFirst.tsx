@@ -98,10 +98,10 @@ export function WhyResearchFirst({ className }: WhyResearchFirstProps) {
           Tools
         </h3>
         <div className="flex flex-wrap gap-2">
-          <ToolPill>Notion/Confluence</ToolPill>
-          <ToolPill>Figma</ToolPill>
-          <ToolPill>Amplitude/GA4</ToolPill>
-          <ToolPill>Loom</ToolPill>
+          <ToolPill slug="notion" name="Notion/Confluence" />
+          <ToolPill slug="figma" name="Figma" />
+          <ToolPill slug="amplitude" name="Amplitude/GA4" />
+          <ToolPill slug="loom" name="Loom" />
         </div>
       </div>
 
