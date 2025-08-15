@@ -139,25 +139,25 @@ export function PMDashboard({ className }: PMDashboardProps) {
         <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">Latest tasks</h2>
         <div className="mt-4">
           <ScrollableTable>
-            <table className="w-full text-left min-w-[600px]">
+            <table className="w-full text-left min-w-[700px]">
             <colgroup>
-              <col className="w-full sm:w-4/12" />
-              <col className="lg:w-3/12" />
-              <col className="lg:w-2/12" />
-              <col className="lg:w-3/12" />
+              <col style={{ minWidth: '200px' }} />
+              <col style={{ minWidth: '180px' }} />
+              <col style={{ minWidth: '120px' }} />
+              <col style={{ minWidth: '150px' }} />
             </colgroup>
             <thead className="border-b border-zinc-200 dark:border-zinc-700 text-sm/6 text-zinc-900 dark:text-white">
               <tr>
                 <th scope="col" className="py-2 pr-8 pl-4 font-semibold sm:pl-6">
                   Task
                 </th>
-                <th scope="col" className="hidden py-2 pr-8 pl-0 font-semibold sm:table-cell">
+                <th scope="col" className="py-2 pr-8 pl-0 font-semibold">
                   Commit/PR
                 </th>
                 <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
                   Status
                 </th>
-                <th scope="col" className="hidden py-2 pr-4 pl-0 text-right font-semibold sm:table-cell sm:pr-6">
+                <th scope="col" className="py-2 pr-4 pl-0 text-right font-semibold sm:pr-6">
                   Updated
                 </th>
               </tr>
@@ -178,7 +178,7 @@ export function PMDashboard({ className }: PMDashboardProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="hidden py-4 pr-4 pl-0 sm:table-cell sm:pr-8">
+                  <td className="py-4 pr-4 pl-0 sm:pr-8">
                     <div className="font-mono text-sm text-zinc-500 dark:text-zinc-400">{task.pr}</div>
                   </td>
                   <td className="py-4 pr-4 pl-0 text-sm">
@@ -189,7 +189,7 @@ export function PMDashboard({ className }: PMDashboardProps) {
                       <div className="text-zinc-900 dark:text-white">{task.status}</div>
                     </div>
                   </td>
-                  <td className="hidden py-4 pr-4 pl-0 text-right text-sm text-zinc-500 dark:text-zinc-400 sm:table-cell sm:pr-6">
+                  <td className="py-4 pr-4 pl-0 text-right text-sm text-zinc-500 dark:text-zinc-400 sm:pr-6">
                     {task.duration}
                   </td>
                 </tr>

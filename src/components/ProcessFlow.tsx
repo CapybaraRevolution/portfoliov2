@@ -1836,20 +1836,20 @@ function Step4Layout({ step }: { step: ProcessStep }) {
           <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">Latest tasks</h2>
           <div className="mt-4">
             <ScrollableTable>
-              <table className="w-full text-left min-w-[640px]">
+              <table className="w-full text-left min-w-[800px]">
               <colgroup>
-                <col className="w-full sm:w-4/12" />
-                <col className="lg:w-3/12" />
-                <col className="lg:w-2/12" />
-                <col className="lg:w-2/12" />
-                <col className="lg:w-1/12" />
+                <col style={{ minWidth: '200px' }} />
+                <col style={{ minWidth: '150px' }} />
+                <col style={{ minWidth: '120px' }} />
+                <col style={{ minWidth: '120px' }} />
+                <col style={{ minWidth: '100px' }} />
               </colgroup>
               <thead className="border-b border-zinc-200 dark:border-zinc-700 text-sm/6 text-zinc-900 dark:text-white">
                 <tr>
                   <th scope="col" className="py-2 pr-8 pl-4 font-semibold sm:pl-6">
                     Task
                   </th>
-                  <th scope="col" className="hidden py-2 pr-8 pl-0 font-semibold md:table-cell">
+                  <th scope="col" className="py-2 pr-8 pl-0 font-semibold">
                     Area
                   </th>
                   <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
@@ -1858,10 +1858,10 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                   <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
                     Status
                   </th>
-                  <th scope="col" className="hidden py-2 pr-8 pl-0 font-semibold md:table-cell">
+                  <th scope="col" className="py-2 pr-8 pl-0 font-semibold">
                     Severity
                   </th>
-                  <th scope="col" className="hidden py-2 pr-4 pl-0 text-right font-semibold sm:table-cell sm:pr-6">
+                  <th scope="col" className="py-2 pr-4 pl-0 text-right font-semibold sm:pr-6">
                     Updated
                   </th>
                 </tr>
@@ -1886,7 +1886,7 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                         </div>
                       </div>
                     </td>
-                    <td className="hidden py-4 pr-8 pl-0 text-sm md:table-cell">
+                    <td className="py-4 pr-8 pl-0 text-sm">
                       <span className="inline-flex items-center rounded-md bg-zinc-50 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 ring-1 ring-inset ring-zinc-500/10">
                         {task.area}
                       </span>
@@ -1907,12 +1907,12 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                         <div className="text-zinc-900 dark:text-white">{task.status}</div>
                       </div>
                     </td>
-                    <td className="hidden py-4 pr-8 pl-0 text-sm md:table-cell">
+                    <td className="py-4 pr-8 pl-0 text-sm">
                       <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getSeverityColor(task.severity)}`}>
                         {task.severity}
                       </span>
                     </td>
-                    <td className="hidden py-4 pr-4 pl-0 text-right text-sm text-zinc-500 dark:text-zinc-400 sm:table-cell sm:pr-6">
+                    <td className="py-4 pr-4 pl-0 text-right text-sm text-zinc-500 dark:text-zinc-400 sm:pr-6">
                       {task.updated}
                     </td>
                   </tr>

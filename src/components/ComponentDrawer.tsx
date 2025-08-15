@@ -28,20 +28,34 @@ export function ComponentDrawer({
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState(0)
   const [startX, setStartX] = useState(0)
+  const [startTime, setStartTime] = useState(0)
+  const [lastX, setLastX] = useState(0)
+  const [lastTime, setLastTime] = useState(0)
   const panelRef = useRef<HTMLDivElement>(null)
 
   // Enhanced touch handlers for drag-to-dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
+    const now = Date.now()
+    const x = e.touches[0].clientX
+    
     setIsDragging(true)
-    setStartX(e.touches[0].clientX)
+    setStartX(x)
+    setStartTime(now)
+    setLastX(x)
+    setLastTime(now)
     setDragOffset(0)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDragging) return
     
+    const now = Date.now()
     const currentX = e.touches[0].clientX
     const deltaX = currentX - startX
+    
+    // Update velocity tracking
+    setLastX(currentX)
+    setLastTime(now)
     
     // Only allow dragging to the right (positive deltaX)
     if (deltaX > 0) {
@@ -54,12 +68,26 @@ export function ComponentDrawer({
     
     setIsDragging(false)
     
+    // Calculate velocity (pixels per millisecond)
+    const now = Date.now()
+    const timeDiff = now - lastTime
+    const distance = lastX - startX
+    const velocity = timeDiff > 0 ? distance / timeDiff : 0
+    
     // Get panel width for percentage calculation
     const panelWidth = panelRef.current?.offsetWidth || 400
     const dragPercentage = dragOffset / panelWidth
     
-    // Close if dragged more than 49% or with sufficient velocity
-    if (dragPercentage >= 0.49) {
+    // Close conditions (more lenient):
+    // 1. Dragged more than 30% of width (reduced from 49%)
+    // 2. OR fast swipe to the right (velocity > 0.5 pixels/ms)
+    // 3. OR dragged at least 80px with any decent velocity (> 0.2 pixels/ms)
+    const shouldClose = 
+      dragPercentage >= 0.3 || 
+      velocity > 0.5 ||
+      (dragOffset > 80 && velocity > 0.2)
+    
+    if (shouldClose) {
       onClose()
     } else {
       // Snap back to open
