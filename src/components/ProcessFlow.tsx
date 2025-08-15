@@ -630,7 +630,7 @@ function ProgressTracker({
 
   return (
     <nav aria-label="Progress" className="mb-12">
-      <ol role="list" className="space-y-4 md:flex md:space-y-0 md:space-x-8 overflow-x-auto md:overflow-visible">
+      <ol role="list" className="space-y-4 md:flex md:space-y-0 md:space-x-8">
         {steps.map((step) => (
           <li key={step.id} className="md:flex-1 flex-shrink-0 relative">
             {/* Pulse animation for active step - only on client */}
@@ -1285,9 +1285,9 @@ function PrioritizationPanel() {
             onClick={() => handleDeploymentClick(deployment)}
           >
             {/* Main content layout */}
-            <div className="flex items-start justify-between gap-x-6">
+            <div className="flex items-start justify-between gap-x-3 sm:gap-x-6">
               {/* Left side with aligned content */}
-              <div className="flex items-start gap-x-4">
+              <div className="flex items-start gap-x-2 sm:gap-x-4">
                 {/* Status indicator */}
                 <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
                   <div className="size-2 rounded-full bg-current" />
@@ -1313,7 +1313,7 @@ function PrioritizationPanel() {
               </div>
 
               {/* Right side */}
-              <div className="flex flex-none items-center gap-x-4">
+              <div className="flex flex-none items-center gap-x-2 sm:gap-x-4">
                 {/* Environment badge */}
                 <div
                   className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
@@ -1330,7 +1330,7 @@ function PrioritizationPanel() {
 
             {/* Progress bar row - aligned with text */}
             <div className="mt-4">
-              <div className="ml-10 mr-8">
+              <div className="ml-6 mr-4 sm:ml-10 sm:mr-8">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 ml-0.5">Priority Score</span>
                   <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
@@ -1753,7 +1753,7 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         <nav className="flex overflow-x-auto border-b border-zinc-200 dark:border-zinc-700 py-4">
           <ul
             role="list"
-            className="flex min-w-full flex-none gap-x-6 px-4 text-sm/6 font-semibold text-zinc-600 dark:text-zinc-400 sm:px-6"
+            className="flex gap-x-6 px-4 text-sm/6 font-semibold text-zinc-600 dark:text-zinc-400 sm:px-6"
           >
             {tabs.map((item) => (
               <li key={item}>
