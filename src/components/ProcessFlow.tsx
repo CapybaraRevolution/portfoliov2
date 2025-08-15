@@ -1024,6 +1024,7 @@ function PrioritizationPanel() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [visibleProgressBars, setVisibleProgressBars] = useState<Set<number>>(new Set())
 
   // Function to get color based on current fill percentage
   const getProgressColor = (currentPercentage: number, projectName?: string) => {
@@ -1045,12 +1046,61 @@ function PrioritizationPanel() {
     }
   }
 
+  // Check if user is on mobile
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768) // md breakpoint
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   // Trigger animations on component mount
   useEffect(() => {
     setIsLoaded(false)
-    const timer = setTimeout(() => setIsLoaded(true), 100)
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+      // On desktop, show all progress bars immediately for cascading effect
+      if (!isMobile) {
+        setVisibleProgressBars(new Set(deployments.map((_, index) => index)))
+      }
+    }, 100)
     return () => clearTimeout(timer)
-  }, [])
+  }, [isMobile])
+
+  // Intersection Observer for progress bar animations (mobile only)
+  useEffect(() => {
+    if (!isMobile || !isLoaded) return
+    
+    const progressBarElements = document.querySelectorAll('[data-progress-bar]')
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-progress-bar') || '0')
+            setVisibleProgressBars(prev => new Set([...prev, index]))
+          }
+        })
+      },
+      {
+        threshold: 0.3, // Trigger when 30% of the progress bar is visible
+        rootMargin: '0px 0px -10% 0px' // Start animation slightly before fully in view
+      }
+    )
+
+    progressBarElements.forEach((element) => {
+      observer.observe(element)
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [isMobile, isLoaded]) // Re-run when mobile state or table content loads
 
   // Function to trigger cascading animation
   const handleSortChange = async () => {
@@ -1340,7 +1390,10 @@ function PrioritizationPanel() {
                     </div>
 
                     {/* Progress bar row - below the main content within each item */}
-                    <div className="mt-4 ml-6 mr-4 sm:ml-10 sm:mr-8">
+                    <div 
+                      className="mt-4 ml-6 mr-4 sm:ml-10 sm:mr-8"
+                      data-progress-bar={index}
+                    >
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Priority Score</span>
                         <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
@@ -1349,9 +1402,9 @@ function PrioritizationPanel() {
                         <div 
                           className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
                           style={{
-                            width: isLoaded ? `${deployment.riceScore}%` : '0%',
-                            transitionDelay: `${index * 150}ms`,
-                            ...(deployment.riceScore >= 90 && {
+                            width: (isLoaded && visibleProgressBars.has(index)) ? `${deployment.riceScore}%` : '0%',
+                            transitionDelay: visibleProgressBars.has(index) ? `${index * 100}ms` : '0ms',
+                            ...(deployment.riceScore >= 90 && visibleProgressBars.has(index) && {
                               animation: 'progress-glow-pulse 4s ease-in-out infinite'
                             })
                           }}
