@@ -19,6 +19,8 @@ import { AccordionPanel } from '@/components/AccordionPanel'
 import { ProcessCard } from '@/components/ProcessCard'
 import { ProcessTabRow } from '@/components/ProcessTabRow'
 import { ScrollableTable } from '@/components/ui/ScrollableTable'
+import { TeamTag } from '@/components/ui/TeamTag'
+import { StatusBadge } from '@/components/ui/StatusBadge'
 import { RICETablePreview, FlowDiagramPreview, MilestoneStripPreview } from '@/components/PreviewThumbnails'
 import { UsersIcon } from '@/components/icons/UsersIcon'
 import { UserIcon } from '@/components/icons/UserIcon'
@@ -1026,6 +1028,13 @@ function PrioritizationPanel() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [visibleProgressBars, setVisibleProgressBars] = useState<Set<number>>(new Set())
 
+  // Function to determine status based on progress score
+  const getStatusFromScore = (score: number): 'Draft' | 'In Review' | 'Approved' => {
+    if (score >= 85) return 'Approved'
+    if (score >= 50) return 'In Review'
+    return 'Draft'
+  }
+
   // Function to get color based on current fill percentage
   const getProgressColor = (currentPercentage: number, projectName?: string) => {
     // Use orange for tech debt items regardless of score
@@ -1086,7 +1095,7 @@ function PrioritizationPanel() {
     {
       id: 2,
       href: '#',
-      projectName: 'How We Prioritize (RICE + Risk)',
+      projectName: 'How We Prioritize',
       teamName: 'Product Team, Data',
       status: 'online',
       statusText: 'Updated 1h ago',
@@ -1126,13 +1135,13 @@ function PrioritizationPanel() {
     {
       id: 3,
       href: '#',
-      projectName: 'Opportunity Backlog (from Step 1)',
+      projectName: 'Opportunity Backlog',
       teamName: 'Product Team, Design, Research',
       status: 'online',
       statusText: 'Updated 1h ago',
       description: 'Curated list of opportunities sourced from personas, journeys, system analysis, and competitive gaps.',
       environment: 'Production',
-      riceScore: 87,
+      riceScore: 82,
       drawerContent: {
         oneLiner: 'A single, deduped list of problems and bets sourced from discovery.',
         whyItMatters: 'Scattered ideas = duplicate effort. One backlog creates clarity and prevents lost insights.',
@@ -1163,7 +1172,7 @@ function PrioritizationPanel() {
       statusText: 'Updated 8h ago',
       description: 'Reliability, performance, and developer-velocity fixes ranked alongside features.',
       environment: 'Production',
-      riceScore: 80,
+      riceScore: 72,
       drawerContent: {
         oneLiner: 'Protect reliability and velocity by triaging debt alongside features.',
         whyItMatters: 'Invisible debt slows everything. Making it visible—and comparable—keeps the product fast and safe.',
@@ -1195,7 +1204,7 @@ function PrioritizationPanel() {
       statusText: 'Updated 2d ago',
       description: 'Repeatable way to capture, de-duplicate, and convert insights into opportunities.',
       environment: 'Production',
-      riceScore: 76,
+      riceScore: 42,
       drawerContent: {
         oneLiner: 'A crisp path from observation → insight → opportunity.',
         whyItMatters: 'If insights don\'t enter the system, they don\'t shape the roadmap.',
@@ -1331,7 +1340,7 @@ function PrioritizationPanel() {
                   {/* Main content row */}
                   <tr 
                     data-main-row={index}
-                    className={`group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-500 ease-out cursor-pointer ${
+                    className={`list-item-main group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-200 ease-out cursor-pointer ${
                       isAnimating || !isLoaded
                         ? 'transform translate-y-12 opacity-0' 
                         : 'transform translate-y-0 opacity-100'
@@ -1340,16 +1349,6 @@ function PrioritizationPanel() {
                       transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
-                    onMouseEnter={() => {
-                      // Add hover class to next sibling (progress bar row)
-                      const nextSibling = document.querySelector(`[data-progress-row="${index}"]`)
-                      if (nextSibling) nextSibling.classList.add('bg-zinc-50', 'dark:bg-zinc-800/50')
-                    }}
-                    onMouseLeave={() => {
-                      // Remove hover class from next sibling
-                      const nextSibling = document.querySelector(`[data-progress-row="${index}"]`)
-                      if (nextSibling) nextSibling.classList.remove('bg-zinc-50', 'dark:bg-zinc-800/50')
-                    }}
                   >
                     {/* Project column */}
                     <td className="py-4 pr-8 pl-4 sm:pl-6" style={{ minWidth: '300px' }}>
@@ -1371,40 +1370,35 @@ function PrioritizationPanel() {
                     
                     {/* Team column */}
                     <td className="py-4 pr-4 pl-0 sm:pr-8" style={{ minWidth: '200px' }}>
-                      <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                        {deployment.teamName}
-                      </span>
+                      <div className="flex flex-wrap gap-1">
+                        {deployment.teamName.split(', ').map((team: string, index: number) => {
+                          // Map team names to our standardized TeamTag component
+                          const teamName = team.trim() as 'Engineering' | 'Product Team' | 'Design' | 'QA' | 'Data' | 'Research';
+                          return (
+                            <TeamTag key={index} team={teamName} />
+                          );
+                        })}
+                      </div>
                     </td>
                     
                     {/* Status column */}
                     <td className="py-4 pr-4 pl-0 text-sm sm:pr-6" style={{ minWidth: '120px' }}>
-                      <div
-                        className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
-                      >
-                        {deployment.environment}
-                      </div>
+                      <StatusBadge 
+                        status={getStatusFromScore(deployment.riceScore)} 
+                      />
                     </td>
                   </tr>
                   
                   {/* Progress bar sub-row - spans full width */}
                   <tr 
                     data-progress-row={index}
-                    className="transition-all duration-200 cursor-pointer border-b border-zinc-200 dark:border-zinc-700" 
+                    className="list-item-progress hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-200 ease-out cursor-pointer border-b border-zinc-200 dark:border-zinc-700" 
                     onClick={() => handleDeploymentClick(deployment)}
-                    onMouseEnter={() => {
-                      // Add hover class to previous sibling (main content row)
-                      const prevSibling = document.querySelector(`[data-main-row="${index}"]`)
-                      if (prevSibling) prevSibling.classList.add('bg-zinc-50', 'dark:bg-zinc-800/50')
-                    }}
-                    onMouseLeave={() => {
-                      // Remove hover class from previous sibling
-                      const prevSibling = document.querySelector(`[data-main-row="${index}"]`)
-                      if (prevSibling) prevSibling.classList.remove('bg-zinc-50', 'dark:bg-zinc-800/50')
-                    }}
                   >
                     <td colSpan={3} className="pb-4 px-6" style={{ paddingTop: '0px' }}>
                       <div 
                         data-progress-bar={index}
+                        className="hover:bg-zinc-50/30 dark:hover:bg-zinc-800/30 -m-2 p-2 rounded transition-colors duration-200 ease-out"
                       >
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Priority Score</span>

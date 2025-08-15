@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
+import { TeamTag } from '@/components/ui/TeamTag'
+import { StatusBadge } from '@/components/ui/StatusBadge'
 import { WhatIsUserResearch } from '@/app/process/(components)/drawers/WhatIsUserResearch'
 import { WhyResearchFirst } from '@/app/process/(components)/drawers/WhyResearchFirst'
 import { ChooseRightMethod } from '@/app/process/(components)/drawers/ChooseRightMethod'
@@ -115,7 +117,7 @@ type Row = {
   id: string
   title: string
   subtitle: string
-  dept: 'Product Team' | 'Design' | 'Engineering'
+  dept: 'Product Team' | 'Design' | 'Engineering' | 'QA'
   status: 'Production' | 'Preview' | 'In Progress'
   priority: number
   drawerId: string
@@ -377,66 +379,17 @@ export function IAFlowsPanel() {
             }}
             onClick={() => handleRowClick(row)}
           >
-            <div className="flex items-center justify-between gap-x-6">
-              <div className="min-w-0 flex-auto">
-                <div className="flex items-center gap-x-3 mb-2">
-                  <h3 className="text-base font-semibold text-zinc-900 dark:text-white">{row.title}</h3>
-                  <div className="flex items-center gap-x-2">
-                    {/* Department Chip */}
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-                      row.dept === 'Product Team' 
-                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-blue-600/20 dark:ring-blue-400/20'
-                        : row.dept === 'Design'
-                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 ring-purple-600/20 dark:ring-purple-400/20'
-                        : 'bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 ring-orange-600/20 dark:ring-orange-400/20'
-                    }`}>
-                      {row.dept}
-                    </span>
-                    {/* Status Badge */}
-                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-                      row.status === 'Production' 
-                        ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 ring-emerald-600/20 dark:ring-emerald-400/20'
-                        : row.status === 'Preview'
-                        ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 ring-amber-600/20 dark:ring-amber-400/20'
-                        : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-zinc-600/20 dark:ring-zinc-400/20'
-                    }`}>
-                      {row.status}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
-                  {row.subtitle}
-                </p>
-                {/* Priority Score Bar */}
-                <div className="flex items-center gap-x-3">
-                  <span className="text-xs font-medium text-zinc-900 dark:text-white">Priority:</span>
-                  <div className="flex-1 max-w-32">
-                    <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          row.priority >= 90 
-                            ? 'bg-emerald-500 animate-pulse'
-                            : row.priority >= 80
-                            ? 'bg-blue-500'
-                            : 'bg-zinc-400'
-                        }`}
-                        style={{ width: `${row.priority}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 min-w-[2rem] text-right">
-                    {row.priority}
-                  </span>
+            <div className="flex-auto">
+              <div className="flex items-center gap-x-3 mb-2">
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-white">{row.title}</h3>
+                <div className="flex items-center gap-x-2">
+                  <TeamTag team={row.dept} />
+                  <StatusBadge status={row.status} />
                 </div>
               </div>
-              <div className="flex flex-none items-center gap-x-4">
-                <button className="rounded-md bg-zinc-100 dark:bg-zinc-700 px-3 py-1.5 text-sm font-semibold text-zinc-900 dark:text-white ring-1 ring-inset ring-zinc-300 dark:ring-zinc-600 hover:bg-zinc-200 dark:hover:bg-zinc-600 transition-colors">
-                  View project
-                </button>
-                <svg className="size-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
+                {row.subtitle}
+              </p>
             </div>
           </div>
         ))}
