@@ -53,7 +53,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
         <div>
           <h4 className="text-sm font-medium text-white/90 mb-2">What it is</h4>
           <p className="text-sm text-white/70 leading-relaxed">
-            {service.description}
+            {service.blurb}
           </p>
         </div>
       )
@@ -64,8 +64,8 @@ export function ServiceCard({ service }: ServiceCardProps) {
         <div>
           <h4 className="text-sm font-medium text-white/90 mb-3">Tools I use</h4>
           <div className="flex flex-wrap gap-2">
-            {service.tools.map((tool) => (
-              <ToolChip key={tool.name} name={tool.name} logo={tool.logo} />
+            {service.toolSlugs.map((toolSlug) => (
+              <ToolChip key={toolSlug} name={toolSlug} logo={toolSlug} />
             ))}
           </div>
         </div>
