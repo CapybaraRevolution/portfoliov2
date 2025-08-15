@@ -4,7 +4,7 @@ import { services } from '@/data/services'
 
 export function ServicesGrid() {
   const navigationChips = [
-    'Product Owner',
+    'Product Manager',
     'UX Design', 
     'Business Analysis'
   ]

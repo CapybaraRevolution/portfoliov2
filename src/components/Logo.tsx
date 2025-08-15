@@ -36,7 +36,7 @@ export function Logo({ className }: LogoProps) {
   return (
     <Image
       src={logoSrc}
-      alt="Kyle McGraw - Product Owner"
+      alt="Kyle McGraw - Product Manager"
       width={304}
       height={37}
       className={className || ''}

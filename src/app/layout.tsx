@@ -13,7 +13,7 @@ import '@/styles/tailwind.css'
 export const metadata: Metadata = {
   title: {
     template: '%s - Kyle McGraw',
-    default: 'Kyle McGraw - Product Owner & UX Designer',
+    default: 'Kyle McGraw - Product Manager & UX Designer',
   },
 }
 
