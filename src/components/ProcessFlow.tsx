@@ -1306,12 +1306,11 @@ function PrioritizationPanel() {
       {/* Priority queue table - horizontal scroll like Step 4 */}
       <div>
         <ScrollableTable>
-          <table className="w-full text-left min-w-[800px]">
+          <table className="w-full text-left min-w-[620px]">
             <colgroup>
               <col style={{ minWidth: '300px' }} />
               <col style={{ minWidth: '200px' }} />
               <col style={{ minWidth: '120px' }} />
-              <col style={{ minWidth: '180px' }} />
             </colgroup>
             <thead className="border-b border-zinc-200 dark:border-zinc-700 text-sm/6 text-zinc-900 dark:text-white">
               <tr>
@@ -1321,11 +1320,8 @@ function PrioritizationPanel() {
                 <th scope="col" className="py-2 pr-8 pl-0 font-semibold">
                   Team
                 </th>
-                <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
+                <th scope="col" className="py-2 pr-4 pl-0 font-semibold sm:pr-6">
                   Status
-                </th>
-                <th scope="col" className="py-2 pr-4 pl-0 text-right font-semibold sm:pr-6">
-                  Priority Score
                 </th>
               </tr>
             </thead>
@@ -1343,73 +1339,66 @@ function PrioritizationPanel() {
                   }}
                   onClick={() => handleDeploymentClick(deployment)}
                 >
-                  <td colSpan={4} className="py-4 pr-4 pl-4 sm:pl-6 sm:pr-6">
-                    {/* Main content row */}
-                    <div className="flex items-start justify-between gap-x-3 sm:gap-x-6">
-                      {/* Left side with aligned content */}
-                      <div className="flex items-start gap-x-2 sm:gap-x-4">
-                        {/* Status indicator */}
-                        <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
-                          <div className="size-2 rounded-full bg-current" />
-                        </div>
+                  {/* Project column */}
+                  <td className="py-4 pr-8 pl-4 sm:pl-6" style={{ minWidth: '300px' }}>
+                    <div className="flex items-start gap-x-3">
+                      {/* Status indicator */}
+                      <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
+                        <div className="size-2 rounded-full bg-current" />
+                      </div>
+                      
+                      {/* Project content */}
+                      <div className="flex-auto">
+                        <div className="font-medium text-sm text-zinc-900 dark:text-white">{deployment.projectName}</div>
+                        <div className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{deployment.description}</div>
+                        <div className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">{deployment.statusText}</div>
                         
-                        {/* Content column */}
-                        <div className="flex-auto">
-                          <div className="flex items-center gap-x-3">
-                            <div className="font-medium text-sm text-zinc-900 dark:text-white">{deployment.projectName}</div>
-                            <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                              {deployment.teamName}
-                            </span>
+                        {/* Progress bar within project column */}
+                        <div 
+                          className="mt-3"
+                          data-progress-bar={index}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Priority</span>
+                            <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
                           </div>
-                          <div className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{deployment.description}</div>
-                          <div className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">{deployment.statusText}</div>
+                          <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2 shadow-inner">
+                            <div 
+                              className={`h-2 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
+                              style={{
+                                width: (isLoaded && visibleProgressBars.has(index)) ? `${deployment.riceScore}%` : '0%',
+                                transitionDelay: visibleProgressBars.has(index) ? `${index * 100}ms` : '0ms',
+                                ...(deployment.riceScore >= 90 && visibleProgressBars.has(index) && {
+                                  animation: 'progress-glow-pulse 4s ease-in-out infinite'
+                                })
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
-
-                      {/* Right side */}
-                      <div className="flex flex-none items-center gap-x-2 sm:gap-x-4">
-                        {/* Environment badge */}
-                        <div
-                          className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
-                        >
-                          {deployment.environment}
-                        </div>
-                        
-                        {/* Score */}
-                        <div className="text-sm font-mono font-semibold text-zinc-900 dark:text-white">
-                          {deployment.riceScore}/100
-                        </div>
-                        
-                        {/* Arrow */}
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                          <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
+                      
+                      {/* Arrow (visible on hover) */}
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                        <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </div>
                     </div>
-
-                    {/* Progress bar row - below the main content within each item */}
-                    <div 
-                      className="mt-4 ml-6 mr-4 sm:ml-10 sm:mr-8"
-                      data-progress-bar={index}
+                  </td>
+                  
+                  {/* Team column */}
+                  <td className="py-4 pr-4 pl-0 sm:pr-8" style={{ minWidth: '200px' }}>
+                    <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                      {deployment.teamName}
+                    </span>
+                  </td>
+                  
+                  {/* Status column */}
+                  <td className="py-4 pr-4 pl-0 text-sm sm:pr-6" style={{ minWidth: '120px' }}>
+                    <div
+                      className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
                     >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Priority Score</span>
-                        <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
-                      </div>
-                      <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2.5 shadow-inner">
-                        <div 
-                          className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
-                          style={{
-                            width: (isLoaded && visibleProgressBars.has(index)) ? `${deployment.riceScore}%` : '0%',
-                            transitionDelay: visibleProgressBars.has(index) ? `${index * 100}ms` : '0ms',
-                            ...(deployment.riceScore >= 90 && visibleProgressBars.has(index) && {
-                              animation: 'progress-glow-pulse 4s ease-in-out infinite'
-                            })
-                          }}
-                        />
-                      </div>
+                      {deployment.environment}
                     </div>
                   </td>
                 </tr>
