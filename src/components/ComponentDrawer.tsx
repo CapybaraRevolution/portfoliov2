@@ -78,14 +78,14 @@ export function ComponentDrawer({
     const panelWidth = panelRef.current?.offsetWidth || 400
     const dragPercentage = dragOffset / panelWidth
     
-    // Close conditions (more lenient):
-    // 1. Dragged more than 30% of width (reduced from 49%)
-    // 2. OR fast swipe to the right (velocity > 0.5 pixels/ms)
-    // 3. OR dragged at least 80px with any decent velocity (> 0.2 pixels/ms)
+    // Close conditions (snappier/more responsive):
+    // 1. Dragged more than 25% of width (reduced for easier swipe)
+    // 2. OR fast swipe to the right (velocity > 0.3 pixels/ms - more sensitive)
+    // 3. OR dragged at least 60px with any decent velocity (> 0.15 pixels/ms)
     const shouldClose = 
-      dragPercentage >= 0.3 || 
-      velocity > 0.5 ||
-      (dragOffset > 80 && velocity > 0.2)
+      dragPercentage >= 0.25 || 
+      velocity > 0.3 ||
+      (dragOffset > 60 && velocity > 0.15)
     
     if (shouldClose) {
       onClose()
@@ -117,7 +117,7 @@ export function ComponentDrawer({
               className={`pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform data-closed:translate-x-full ${
                 isDragging 
                   ? 'transition-none' 
-                  : 'transition duration-500 ease-in-out sm:duration-700'
+                  : 'transition duration-300 ease-out'
               }`}
               style={{
                 transform: `translateX(${dragOffset}px)`
