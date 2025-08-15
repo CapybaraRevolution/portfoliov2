@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ScrollableTable } from '@/components/ui/ScrollableTable'
 
 interface PMTask {
   task: string
@@ -136,8 +137,9 @@ export function PMDashboard({ className }: PMDashboardProps) {
       {/* Task list */}
       <div className="border-t border-zinc-200 dark:border-zinc-700 pt-6">
         <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">Latest tasks</h2>
-        <div className="mt-4 overflow-hidden">
-          <table className="w-full text-left">
+        <div className="mt-4">
+          <ScrollableTable>
+            <table className="w-full text-left min-w-[600px]">
             <colgroup>
               <col className="w-full sm:w-4/12" />
               <col className="lg:w-3/12" />
@@ -193,7 +195,8 @@ export function PMDashboard({ className }: PMDashboardProps) {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </ScrollableTable>
         </div>
       </div>
     </div>

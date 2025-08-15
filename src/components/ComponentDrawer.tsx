@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { CommentSection } from './CommentSection'
@@ -25,30 +25,55 @@ export function ComponentDrawer({
   onCaptchaRequired
 }: ComponentDrawerProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'comments'>('overview')
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragOffset, setDragOffset] = useState(0)
+  const [startX, setStartX] = useState(0)
   const panelRef = useRef<HTMLDivElement>(null)
 
-  // Touch handlers for swipe-to-close
+  // Enhanced touch handlers for drag-to-dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
+    setIsDragging(true)
+    setStartX(e.touches[0].clientX)
+    setDragOffset(0)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
+    if (!isDragging) return
+    
+    const currentX = e.touches[0].clientX
+    const deltaX = currentX - startX
+    
+    // Only allow dragging to the right (positive deltaX)
+    if (deltaX > 0) {
+      setDragOffset(deltaX)
+    }
   }
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
+    if (!isDragging) return
     
-    const distance = touchStart - touchEnd
-    const isRightSwipe = distance < -50 // Swipe right threshold
+    setIsDragging(false)
     
-    if (isRightSwipe) {
+    // Get panel width for percentage calculation
+    const panelWidth = panelRef.current?.offsetWidth || 400
+    const dragPercentage = dragOffset / panelWidth
+    
+    // Close if dragged more than 49% or with sufficient velocity
+    if (dragPercentage >= 0.49) {
       onClose()
+    } else {
+      // Snap back to open
+      setDragOffset(0)
     }
   }
+
+  // Reset drag state when drawer closes
+  useEffect(() => {
+    if (!open) {
+      setDragOffset(0)
+      setIsDragging(false)
+    }
+  }, [open])
 
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50">
@@ -61,7 +86,14 @@ export function ComponentDrawer({
             <DialogPanel
               ref={panelRef}
               transition
-              className="pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700"
+              className={`pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform data-closed:translate-x-full ${
+                isDragging 
+                  ? 'transition-none' 
+                  : 'transition duration-500 ease-in-out sm:duration-700'
+              }`}
+              style={{
+                transform: `translateX(${dragOffset}px)`
+              }}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}

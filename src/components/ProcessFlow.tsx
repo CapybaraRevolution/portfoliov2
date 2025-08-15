@@ -18,6 +18,7 @@ import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
 import { ProcessCard } from '@/components/ProcessCard'
 import { ProcessTabRow } from '@/components/ProcessTabRow'
+import { ScrollableTable } from '@/components/ui/ScrollableTable'
 import { RICETablePreview, FlowDiagramPreview, MilestoneStripPreview } from '@/components/PreviewThumbnails'
 import { UsersIcon } from '@/components/icons/UsersIcon'
 import { UserIcon } from '@/components/icons/UserIcon'
@@ -1833,8 +1834,9 @@ function Step4Layout({ step }: { step: ProcessStep }) {
         {/* Task list */}
         <div className="border-t border-zinc-200 dark:border-zinc-700 pt-6">
           <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">Latest tasks</h2>
-          <div className="mt-4 overflow-hidden">
-            <table className="w-full text-left">
+          <div className="mt-4">
+            <ScrollableTable>
+              <table className="w-full text-left min-w-[640px]">
               <colgroup>
                 <col className="w-full sm:w-4/12" />
                 <col className="lg:w-3/12" />
@@ -1916,7 +1918,8 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                   </tr>
                 ))}
               </tbody>
-            </table>
+              </table>
+            </ScrollableTable>
           </div>
         </div>
       </div>

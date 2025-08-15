@@ -1,6 +1,7 @@
 'use client'
 
 import { ToolPill } from '@/components/ui/ToolPill'
+import { ScrollableTable } from '@/components/ui/ScrollableTable'
 
 interface CompetitiveAnalysisProps {
   className?: string
@@ -147,8 +148,8 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
         
         {/* Comparison table */}
         <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700 mb-6">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <ScrollableTable>
+            <table className="w-full text-sm min-w-[700px]">
               <thead>
                 <tr className="border-b border-zinc-200 dark:border-zinc-700">
                   <th className="text-left py-2 text-zinc-900 dark:text-white font-medium">Feature / Pattern</th>
@@ -182,7 +183,7 @@ export function CompetitiveAnalysis({ className }: CompetitiveAnalysisProps) {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </ScrollableTable>
         </div>
 
         {/* Differentiator ideas */}

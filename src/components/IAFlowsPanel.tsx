@@ -326,7 +326,7 @@ export function IAFlowsPanel() {
                       className="flex w-full items-center px-6 py-4 text-sm font-medium transition-colors"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-blue-600 dark:border-blue-400">
-                        <span className="text-blue-600 dark:text-blue-400 font-medium">{step.id}</span>
+                        <span className="text-blue-600 dark:text-blue-400 font-medium">{stepIdx + 1}</span>
                       </span>
                       <span className="ml-4 text-sm font-medium text-blue-600 dark:text-blue-400">{step.name}</span>
                     </button>
@@ -336,7 +336,7 @@ export function IAFlowsPanel() {
                       className="group flex w-full items-center px-6 py-4 text-sm font-medium transition-colors"
                     >
                       <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-zinc-300 dark:border-zinc-600 group-hover:border-white dark:group-hover:border-zinc-300 group-hover:bg-white dark:group-hover:bg-zinc-700 transition-colors">
-                        <span className="text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors">{step.id}</span>
+                        <span className="text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors">{stepIdx + 1}</span>
                       </span>
                       <span className="ml-4 text-sm font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white transition-colors">{step.name}</span>
                     </button>
