@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
@@ -1070,7 +1070,7 @@ function PrioritizationPanel() {
       }
     }, 100)
     return () => clearTimeout(timer)
-  }, [isMobile])
+  }, [isMobile, deployments])
 
   // Intersection Observer for progress bar animations (mobile only)
   useEffect(() => {
