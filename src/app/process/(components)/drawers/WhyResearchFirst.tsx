@@ -57,7 +57,7 @@ export function WhyResearchFirst({ className }: WhyResearchFirstProps) {
         </h3>
         <ul className="space-y-3 text-zinc-700 dark:text-zinc-300">
           <li>• Map risks/opportunities from Step 1 (Stakeholders, Competitive, Systems).</li>
-          <li>• Tie research questions to business outcomes (e.g., "What blocks activation?").</li>
+          <li>• Tie research questions to business outcomes (e.g., &ldquo;What blocks activation?&rdquo;).</li>
           <li>• Instrument the minimum events needed to measure impact in Step 5.</li>
         </ul>
       </div>
@@ -75,7 +75,7 @@ export function WhyResearchFirst({ className }: WhyResearchFirstProps) {
           </div>
           <div className="flex items-center space-x-3">
             <Chip variant="production" size="sm">
-              "If we learn X, we'll do Y" decision table
+              &ldquo;If we learn X, we&apos;ll do Y&rdquo; decision table
             </Chip>
           </div>
         </div>
@@ -87,7 +87,7 @@ export function WhyResearchFirst({ className }: WhyResearchFirstProps) {
           Signals of success
         </h3>
         <ul className="space-y-2 text-zinc-700 dark:text-zinc-300">
-          <li>• Fewer "unknowns" entering sprint planning.</li>
+          <li>• Fewer &ldquo;unknowns&rdquo; entering sprint planning.</li>
           <li>• A small set of decisions unblocked (with owners and timelines).</li>
         </ul>
       </div>

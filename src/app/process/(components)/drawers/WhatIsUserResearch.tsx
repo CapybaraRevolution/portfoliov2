@@ -44,7 +44,7 @@ export function WhatIsUserResearch({ className }: WhatIsUserResearchProps) {
             <ul className="space-y-2 text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
               <li>• Builds empathy and shared language around user goals and constraints.</li>
               <li>• Surfaces hidden friction before expensive design/dev cycles.</li>
-              <li>• Creates a "source of truth" that aligns stakeholders and speeds decisions.</li>
+              <li>• Creates a &ldquo;source of truth&rdquo; that aligns stakeholders and speeds decisions.</li>
             </ul>
           </div>
         </div>
@@ -56,7 +56,7 @@ export function WhatIsUserResearch({ className }: WhatIsUserResearchProps) {
           What I do
         </h3>
         <ul className="space-y-3 text-zinc-700 dark:text-zinc-300">
-          <li>• Clarify the decision we're trying to make and the risks of guessing.</li>
+          <li>• Clarify the decision we&apos;re trying to make and the risks of guessing.</li>
           <li>• Draft a lightweight research plan (objectives, participants, methods, success signals).</li>
           <li>• Recruit a representative slice of users/customers; schedule and consent.</li>
           <li>• Run sessions (scripted but flexible); capture notes and recordings.</li>
@@ -99,7 +99,7 @@ export function WhatIsUserResearch({ className }: WhatIsUserResearchProps) {
         </h3>
         <ul className="space-y-2 text-zinc-700 dark:text-zinc-300">
           <li>• Team can state the top 3 user goals and top 3 frictions in the same words.</li>
-          <li>• Clear hypotheses to validate next (and what we'll stop debating).</li>
+          <li>• Clear hypotheses to validate next (and what we&apos;ll stop debating).</li>
         </ul>
       </div>
 
