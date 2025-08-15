@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense, useMemo } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
@@ -1049,7 +1049,7 @@ function PrioritizationPanel() {
   // Check if user is on mobile
   const [isMobile, setIsMobile] = useState(false)
   
-  const deployments = [
+  const deployments = useMemo(() => [
     {
       id: 1,
       href: '#',
@@ -1217,7 +1217,7 @@ function PrioritizationPanel() {
         tools: 'Typeform/Google Forms, Notion, Dovetail, Loom.'
       }
     },
-  ]
+  ], [])
 
   useEffect(() => {
     const checkMobile = () => {
@@ -1325,7 +1325,7 @@ function PrioritizationPanel() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
+            <tbody>
               {deployments.map((deployment, index) => (
                 <React.Fragment key={deployment.id}>
                   {/* Main content row */}
@@ -1355,12 +1355,6 @@ function PrioritizationPanel() {
                           <div className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">{deployment.statusText}</div>
                         </div>
                         
-                        {/* Arrow (visible on hover) */}
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                          <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
                       </div>
                     </td>
                     
@@ -1382,7 +1376,7 @@ function PrioritizationPanel() {
                   </tr>
                   
                   {/* Progress bar sub-row - spans full width */}
-                  <tr className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                  <tr className="group-hover:bg-zinc-50 dark:group-hover:bg-zinc-800/50 transition-all duration-200 cursor-pointer border-b border-zinc-200 dark:border-zinc-700" onClick={() => handleDeploymentClick(deployment)}>
                     <td colSpan={3} className="pb-4 px-6" style={{ paddingTop: '0px' }}>
                       <div 
                         data-progress-bar={index}
