@@ -69,12 +69,12 @@ export function WhyResearchFirst({ className }: WhyResearchFirstProps) {
         </h3>
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
-            <Chip variant="production" size="sm">
+            <Chip variant="filled" size="sm">
               Risk-to-research matrix (question → method → expected decision)
             </Chip>
           </div>
           <div className="flex items-center space-x-3">
-            <Chip variant="production" size="sm">
+            <Chip variant="filled" size="sm">
               &ldquo;If we learn X, we&apos;ll do Y&rdquo; decision table
             </Chip>
           </div>

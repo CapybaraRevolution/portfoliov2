@@ -70,22 +70,22 @@ export function WhatIsUserResearch({ className }: WhatIsUserResearchProps) {
         </h3>
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
-            <Chip variant="production" size="sm">
+            <Chip variant="filled" size="sm">
               Research plan + screener
             </Chip>
           </div>
           <div className="flex items-center space-x-3">
-            <Chip variant="production" size="sm">
+            <Chip variant="filled" size="sm">
               Interview script(s)
             </Chip>
           </div>
           <div className="flex items-center space-x-3">
-            <Chip variant="production" size="sm">
+            <Chip variant="filled" size="sm">
               Note pack + recordings
             </Chip>
           </div>
           <div className="flex items-center space-x-3">
-            <Chip variant="production" size="sm">
+            <Chip variant="filled" size="sm">
               Quick-read summary of key insights
             </Chip>
           </div>

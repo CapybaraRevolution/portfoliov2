@@ -112,17 +112,17 @@ export function ChooseRightMethod({ className }: ChooseRightMethodProps) {
         </h3>
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
-            <Chip variant="preview" size="sm">
+            <Chip variant="outline" size="sm">
               Method + sample size rationale
             </Chip>
           </div>
           <div className="flex items-center space-x-3">
-            <Chip variant="preview" size="sm">
+            <Chip variant="outline" size="sm">
               Scripts / tasks
             </Chip>
           </div>
           <div className="flex items-center space-x-3">
-            <Chip variant="preview" size="sm">
+            <Chip variant="outline" size="sm">
               Scheduling + consent kit
             </Chip>
           </div>
