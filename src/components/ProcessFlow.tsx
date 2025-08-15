@@ -1269,8 +1269,10 @@ function PrioritizationPanel() {
         </select>
       </header>
 
-      {/* Clean priority queue - full width list */}
-      <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
+      {/* Priority queue table */}
+      <div className="mt-4">
+        <ScrollableTable>
+          <div className="min-w-[700px] divide-y divide-zinc-200 dark:divide-zinc-700">
         {deployments.map((deployment, index) => (
           <div 
             key={deployment.id} 
@@ -1284,73 +1286,70 @@ function PrioritizationPanel() {
             }}
             onClick={() => handleDeploymentClick(deployment)}
           >
-            {/* Main content layout */}
-            <div className="flex items-start justify-between gap-x-3 sm:gap-x-6">
-              {/* Left side with aligned content */}
-              <div className="flex items-start gap-x-2 sm:gap-x-4">
-                {/* Status indicator */}
-                <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
+            {/* Table-like row layout */}
+            <div className="grid grid-cols-12 gap-4 items-center"
+                 style={{ minWidth: '700px' }}>
+              {/* Status Column */}
+              <div className="col-span-1 flex justify-center">
+                <div className={`rounded-full p-1.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
                   <div className="size-2 rounded-full bg-current" />
-                </div>
-                
-                {/* Content column */}
-                <div className="flex-auto">
-                  {/* Top row: Title and team badge */}
-                  <div className="flex items-center gap-x-3">
-                    <p className="text-base font-semibold text-zinc-900 dark:text-white">
-                      {deployment.projectName}
-                    </p>
-                    <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                      {deployment.teamName}
-                    </span>
-                  </div>
-                  
-                  {/* Second row: Status text */}
-                  <div className="mt-1 ml-0.5">
-                    <p className="text-sm text-zinc-600 dark:text-zinc-400">{deployment.statusText}</p>
-                  </div>
                 </div>
               </div>
 
-              {/* Right side */}
-              <div className="flex flex-none items-center gap-x-2 sm:gap-x-4">
-                {/* Environment badge */}
+              {/* Project Name Column */}
+              <div className="col-span-5">
+                <p className="text-base font-semibold text-zinc-900 dark:text-white truncate">
+                  {deployment.projectName}
+                </p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 truncate">{deployment.statusText}</p>
+              </div>
+
+              {/* Team Column */}
+              <div className="col-span-2">
+                <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                  {deployment.teamName}
+                </span>
+              </div>
+
+              {/* Environment Column */}
+              <div className="col-span-2">
                 <div
                   className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
                 >
                   {deployment.environment}
                 </div>
-                
-                {/* Arrow */}
+              </div>
+
+              {/* Score Column */}
+              <div className="col-span-1 text-right">
+                <div className="space-y-1">
+                  <span className="text-sm font-mono text-zinc-900 dark:text-white">{deployment.riceScore}</span>
+                  <div className="w-16 bg-zinc-200 dark:bg-zinc-700 rounded-full h-1.5">
+                    <div 
+                      className={`h-1.5 rounded-full transition-all duration-1000 ease-out ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
+                      style={{
+                        width: isLoaded ? `${deployment.riceScore}%` : '0%',
+                        transitionDelay: `${index * 150}ms`,
+                        ...(deployment.riceScore >= 90 && {
+                          animation: 'progress-glow-pulse 4s ease-in-out infinite'
+                        })
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Arrow Column */}
+              <div className="col-span-1 flex justify-center">
                 <svg className="size-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
             </div>
-
-            {/* Progress bar row - aligned with text */}
-            <div className="mt-4">
-              <div className="ml-6 mr-4 sm:ml-10 sm:mr-8">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 ml-0.5">Priority Score</span>
-                  <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
-                </div>
-                <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2.5 shadow-inner">
-                  <div 
-                    className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
-                    style={{
-                      width: isLoaded ? `${deployment.riceScore}%` : '0%',
-                      transitionDelay: `${index * 150}ms`,
-                      ...(deployment.riceScore >= 90 && {
-                        animation: 'progress-glow-pulse 4s ease-in-out infinite'
-                      })
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
           </div>
         ))}
+          </div>
+        </ScrollableTable>
       </div>
 
       {/* Side Drawer */}
