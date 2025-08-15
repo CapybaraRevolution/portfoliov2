@@ -1331,22 +1331,8 @@ function PrioritizationPanel() {
                   </td>
                   
                   <td className="py-4 pr-4 pl-0 text-right sm:pr-6">
-                    <div className="text-right">
-                      <div className="text-sm font-mono font-semibold text-zinc-900 dark:text-white mb-1">
-                        {deployment.riceScore}/100
-                      </div>
-                      <div className="w-16 bg-zinc-200 dark:bg-zinc-700 rounded-full h-1.5 shadow-inner ml-auto">
-                        <div 
-                          className={`h-1.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
-                          style={{
-                            width: isLoaded ? `${deployment.riceScore}%` : '0%',
-                            transitionDelay: `${index * 150}ms`,
-                            ...(deployment.riceScore >= 90 && {
-                              animation: 'progress-glow-pulse 4s ease-in-out infinite'
-                            })
-                          }}
-                        />
-                      </div>
+                    <div className="text-sm font-mono font-semibold text-zinc-900 dark:text-white">
+                      {deployment.riceScore}/100
                     </div>
                   </td>
                 </tr>
@@ -1356,8 +1342,8 @@ function PrioritizationPanel() {
         </ScrollableTable>
       </div>
 
-      {/* Sticky progress bars outside the table */}
-      <div className="space-y-4">
+      {/* Progress bars directly below table */}
+      <div className="space-y-4 mt-6">
         {deployments.map((deployment, index) => (
           <div 
             key={`progress-${deployment.id}`}

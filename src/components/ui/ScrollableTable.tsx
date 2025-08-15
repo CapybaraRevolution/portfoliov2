@@ -35,31 +35,56 @@ export function ScrollableTable({ children, className = '' }: ScrollableTablePro
     }
   }, [])
 
-  // Touch/mouse handlers for smooth scrolling
-  const handleStart = (clientX: number) => {
+  // Touch/mouse handlers for more deliberate horizontal scrolling
+  const [startY, setStartY] = useState(0)
+  const [initialDirection, setInitialDirection] = useState<'horizontal' | 'vertical' | null>(null)
+
+  const handleStart = (clientX: number, clientY?: number) => {
     setIsDragging(true)
     setStartX(clientX)
+    if (clientY !== undefined) setStartY(clientY)
     setScrollStart(scrollRef.current?.scrollLeft || 0)
+    setInitialDirection(null)
   }
 
-  const handleMove = (clientX: number) => {
+  const handleMove = (clientX: number, clientY?: number) => {
     if (!isDragging || !scrollRef.current) return
     
     const deltaX = startX - clientX
-    scrollRef.current.scrollLeft = scrollStart + deltaX
+    const deltaY = clientY !== undefined ? startY - clientY : 0
+    
+    // Determine initial direction if not set
+    if (initialDirection === null && (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5)) {
+      if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+        setInitialDirection('horizontal')
+      } else {
+        setInitialDirection('vertical')
+        setIsDragging(false) // Stop tracking if it's a vertical gesture
+        return
+      }
+    }
+    
+    // Only apply horizontal scroll if direction is horizontal
+    if (initialDirection === 'horizontal') {
+      scrollRef.current.scrollLeft = scrollStart + deltaX
+    }
   }
 
   const handleEnd = () => {
     setIsDragging(false)
+    setInitialDirection(null)
   }
 
-  // Touch events
+  // Touch events with improved direction detection
   const handleTouchStart = (e: React.TouchEvent) => {
-    handleStart(e.touches[0].clientX)
+    handleStart(e.touches[0].clientX, e.touches[0].clientY)
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    handleMove(e.touches[0].clientX)
+    if (initialDirection === 'horizontal') {
+      e.preventDefault() // Prevent page scroll only for horizontal gestures
+    }
+    handleMove(e.touches[0].clientX, e.touches[0].clientY)
   }
 
   // Mouse events for desktop
