@@ -1293,46 +1293,70 @@ function PrioritizationPanel() {
                   }}
                   onClick={() => handleDeploymentClick(deployment)}
                 >
-                  <td className="py-4 pr-8 pl-4 sm:pl-6">
-                    <div className="flex items-start gap-x-3">
-                      {/* Status indicator */}
-                      <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
-                        <div className="size-2 rounded-full bg-current" />
+                  <td colSpan={4} className="py-4 pr-4 pl-4 sm:pl-6 sm:pr-6">
+                    {/* Main content row */}
+                    <div className="flex items-start justify-between gap-x-3 sm:gap-x-6">
+                      {/* Left side with aligned content */}
+                      <div className="flex items-start gap-x-2 sm:gap-x-4">
+                        {/* Status indicator */}
+                        <div className={`flex-none rounded-full p-1.5 mt-0.5 ${statuses[deployment.status as keyof typeof statuses]}`}>
+                          <div className="size-2 rounded-full bg-current" />
+                        </div>
+                        
+                        {/* Content column */}
+                        <div className="flex-auto">
+                          <div className="flex items-center gap-x-3">
+                            <div className="font-medium text-sm text-zinc-900 dark:text-white">{deployment.projectName}</div>
+                            <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                              {deployment.teamName}
+                            </span>
+                          </div>
+                          <div className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{deployment.description}</div>
+                          <div className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">{deployment.statusText}</div>
+                        </div>
                       </div>
-                      
-                      {/* Content */}
-                      <div className="flex-auto">
-                        <div className="font-medium text-sm text-zinc-900 dark:text-white">{deployment.projectName}</div>
-                        <div className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{deployment.description}</div>
-                        <div className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">{deployment.statusText}</div>
-                      </div>
-                      
-                      {/* Arrow (visible on hover) */}
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                        <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+
+                      {/* Right side */}
+                      <div className="flex flex-none items-center gap-x-2 sm:gap-x-4">
+                        {/* Environment badge */}
+                        <div
+                          className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
+                        >
+                          {deployment.environment}
+                        </div>
+                        
+                        {/* Score */}
+                        <div className="text-sm font-mono font-semibold text-zinc-900 dark:text-white">
+                          {deployment.riceScore}/100
+                        </div>
+                        
+                        {/* Arrow */}
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                          <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                  </td>
-                  
-                  <td className="py-4 pr-4 pl-0 sm:pr-8">
-                    <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                      {deployment.teamName}
-                    </span>
-                  </td>
-                  
-                  <td className="py-4 pr-4 pl-0 text-sm">
-                    <div
-                      className={`rounded-full px-3 py-1 text-xs font-medium ring-1 ring-inset ${environments[deployment.environment as keyof typeof environments]}`}
-                    >
-                      {deployment.environment}
-                    </div>
-                  </td>
-                  
-                  <td className="py-4 pr-4 pl-0 text-right sm:pr-6">
-                    <div className="text-sm font-mono font-semibold text-zinc-900 dark:text-white">
-                      {deployment.riceScore}/100
+
+                    {/* Progress bar row - below the main content within each item */}
+                    <div className="mt-4 ml-6 mr-4 sm:ml-10 sm:mr-8">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Priority Score</span>
+                        <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
+                      </div>
+                      <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2.5 shadow-inner">
+                        <div 
+                          className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
+                          style={{
+                            width: isLoaded ? `${deployment.riceScore}%` : '0%',
+                            transitionDelay: `${index * 150}ms`,
+                            ...(deployment.riceScore >= 90 && {
+                              animation: 'progress-glow-pulse 4s ease-in-out infinite'
+                            })
+                          }}
+                        />
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -1340,40 +1364,6 @@ function PrioritizationPanel() {
             </tbody>
           </table>
         </ScrollableTable>
-      </div>
-
-      {/* Progress bars directly below table */}
-      <div className="space-y-4 mt-6">
-        {deployments.map((deployment, index) => (
-          <div 
-            key={`progress-${deployment.id}`}
-            className={`px-6 py-3 transition-all duration-500 ease-out ${
-              isAnimating || !isLoaded
-                ? 'transform translate-y-12 opacity-0' 
-                : 'transform translate-y-0 opacity-100'
-            }`}
-            style={{
-              transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75 + 200}ms`
-            }}
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">{deployment.projectName}</span>
-              <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{deployment.riceScore}/100</span>
-            </div>
-            <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2.5 shadow-inner">
-              <div 
-                className={`h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm ${getProgressColor(deployment.riceScore, deployment.projectName)}`}
-                style={{
-                  width: isLoaded ? `${deployment.riceScore}%` : '0%',
-                  transitionDelay: `${index * 150 + 300}ms`,
-                  ...(deployment.riceScore >= 90 && {
-                    animation: 'progress-glow-pulse 4s ease-in-out infinite'
-                  })
-                }}
-              />
-            </div>
-          </div>
-        ))}
       </div>
 
       {/* Side Drawer */}

@@ -11,9 +11,6 @@ export function ScrollableTable({ children, className = '' }: ScrollableTablePro
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const [startX, setStartX] = useState(0)
-  const [scrollStart, setScrollStart] = useState(0)
 
   // Check scroll position to show/hide scroll indicators
   const checkScrollPosition = () => {
@@ -34,67 +31,6 @@ export function ScrollableTable({ children, className = '' }: ScrollableTablePro
       return () => element.removeEventListener('scroll', checkScrollPosition)
     }
   }, [])
-
-  // Touch/mouse handlers for more deliberate horizontal scrolling
-  const [startY, setStartY] = useState(0)
-  const [initialDirection, setInitialDirection] = useState<'horizontal' | 'vertical' | null>(null)
-
-  const handleStart = (clientX: number, clientY?: number) => {
-    setIsDragging(true)
-    setStartX(clientX)
-    if (clientY !== undefined) setStartY(clientY)
-    setScrollStart(scrollRef.current?.scrollLeft || 0)
-    setInitialDirection(null)
-  }
-
-  const handleMove = (clientX: number, clientY?: number) => {
-    if (!isDragging || !scrollRef.current) return
-    
-    const deltaX = startX - clientX
-    const deltaY = clientY !== undefined ? startY - clientY : 0
-    
-    // Determine initial direction if not set
-    if (initialDirection === null && (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5)) {
-      if (Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
-        setInitialDirection('horizontal')
-      } else {
-        setInitialDirection('vertical')
-        setIsDragging(false) // Stop tracking if it's a vertical gesture
-        return
-      }
-    }
-    
-    // Only apply horizontal scroll if direction is horizontal
-    if (initialDirection === 'horizontal') {
-      scrollRef.current.scrollLeft = scrollStart + deltaX
-    }
-  }
-
-  const handleEnd = () => {
-    setIsDragging(false)
-    setInitialDirection(null)
-  }
-
-  // Touch events with improved direction detection
-  const handleTouchStart = (e: React.TouchEvent) => {
-    handleStart(e.touches[0].clientX, e.touches[0].clientY)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (initialDirection === 'horizontal') {
-      e.preventDefault() // Prevent page scroll only for horizontal gestures
-    }
-    handleMove(e.touches[0].clientX, e.touches[0].clientY)
-  }
-
-  // Mouse events for desktop
-  const handleMouseDown = (e: React.MouseEvent) => {
-    handleStart(e.clientX)
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    handleMove(e.clientX)
-  }
 
   return (
     <div className="relative">
@@ -123,18 +59,11 @@ export function ScrollableTable({ children, className = '' }: ScrollableTablePro
       {/* Scrollable container */}
       <div
         ref={scrollRef}
-        className={`overflow-x-auto scrollbar-hide touch-pan-x ${className}`}
+        className={`overflow-x-auto scrollbar-hide ${className}`}
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          touchAction: 'pan-x pan-y' // Allow both horizontal and vertical panning
         }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleEnd}
-        onMouseDown={handleMouseDown}
-        onMouseMove={isDragging ? handleMouseMove : undefined}
-        onMouseUp={handleEnd}
-        onMouseLeave={handleEnd}
       >
         {children}
       </div>
@@ -146,9 +75,6 @@ export function ScrollableTable({ children, className = '' }: ScrollableTablePro
         }
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
-        }
-        .touch-pan-x {
-          touch-action: pan-x;
         }
       `}</style>
     </div>
