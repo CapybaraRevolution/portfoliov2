@@ -1383,9 +1383,8 @@ function PrioritizationPanel() {
                   
                   {/* Progress bar sub-row - spans full width */}
                   <tr className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
-                    <td colSpan={3} className="pb-4 pr-4 pl-4 sm:pl-6 sm:pr-6" style={{ paddingTop: '0px' }}>
+                    <td colSpan={3} className="pb-4 px-6" style={{ paddingTop: '0px' }}>
                       <div 
-                        className="ml-6 mr-4 sm:ml-10 sm:mr-8"
                         data-progress-bar={index}
                       >
                         <div className="flex items-center justify-between mb-2">
