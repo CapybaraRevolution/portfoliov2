@@ -6,37 +6,249 @@ import { WhatIsUserResearch } from '@/app/process/(components)/drawers/WhatIsUse
 import { WhyResearchFirst } from '@/app/process/(components)/drawers/WhyResearchFirst'
 import { ChooseRightMethod } from '@/app/process/(components)/drawers/ChooseRightMethod'
 
-interface UserResearchStep {
+// Placeholder drawer content for steps without implemented drawers
+function PlaceholderDrawerContent({ title }: { title?: string }) {
+  return (
+    <div className="space-y-8">
+      {/* H1 */}
+      <div className="mb-6">
+        <div className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-2">
+          Step 2 · IA & Flows · Planning & Architecture
+        </div>
+        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
+          {title || 'Coming Soon'}
+        </h1>
+      </div>
+
+      {/* Executive Summary */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
+          Executive Summary
+        </h2>
+        <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+          Content coming soon. This drawer will follow the same comprehensive format as our user research sections.
+        </p>
+      </div>
+
+      {/* Why it matters - Feature card with gradient */}
+      <div className="mb-8">
+        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
+              Why it matters
+            </h3>
+            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Detailed content for this section will be provided shortly.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* What I do */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+          What I do
+        </h3>
+        <ul className="space-y-3 text-zinc-700 dark:text-zinc-300">
+          <li>• Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+          <li>• Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+          <li>• Ut enim ad minim veniam, quis nostrud exercitation ullamco.</li>
+        </ul>
+      </div>
+
+      {/* Deliverables */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+          Deliverables
+        </h3>
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <span className="inline-flex items-center rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-300 ring-1 ring-inset ring-zinc-600/20 dark:ring-zinc-400/20">
+              Deliverable placeholder
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Signals of success */}
+      <div className="mb-8">
+        <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+          Signals of success
+        </h3>
+        <ul className="space-y-2 text-zinc-700 dark:text-zinc-300">
+          <li>• Success metric placeholder.</li>
+          <li>• Achievement indicator placeholder.</li>
+        </ul>
+      </div>
+
+      {/* CTA */}
+      <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="text-base font-medium text-zinc-900 dark:text-white">
+              Content coming soon
+            </h4>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+              Full content for this section will be added shortly
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface IaStep {
   id: string
   name: string
   href: string
   status: string
 }
 
-const userResearchSteps: UserResearchStep[] = [
+type IaStepType = 'user-research' | 'journey-mapping' | 'flow-design'
+
+type Row = {
+  id: string
+  title: string
+  subtitle: string
+  dept: 'Product Team' | 'Design' | 'Engineering'
+  status: 'Production' | 'Preview' | 'In Progress'
+  priority: number
+  drawerId: string
+  drawerComponent?: React.ComponentType<any>
+  itemId: string
+}
+
+const iaSteps: IaStep[] = [
   {
-    id: '01',
-    name: 'What is user research?',
+    id: 'user-research',
+    name: 'User Research',
     href: '#',
     status: 'complete'
   },
   {
-    id: '02', 
-    name: 'Why research first?',
+    id: 'journey-mapping', 
+    name: 'Journey Mapping',
     href: '#',
     status: 'current'
   },
   {
-    id: '03',
-    name: 'Choose the right method', 
+    id: 'flow-design',
+    name: 'Flow Design', 
     href: '#',
     status: 'upcoming'
   }
 ]
 
+const rowsByStep: Record<IaStepType, Row[]> = {
+  'user-research': [
+    {
+      id: 'ur-what',
+      title: 'What is user research?',
+      subtitle: 'Evidence over guesses—understand how real people perceive, navigate, and use your product.',
+      dept: 'Product Team',
+      status: 'Production',
+      priority: 94,
+      drawerId: 'ur-what',
+      drawerComponent: WhatIsUserResearch,
+      itemId: 'user-research-what'
+    },
+    {
+      id: 'ur-why-first',
+      title: 'Why research first?',
+      subtitle: 'Research reduces rework, de-risks the roadmap, and reveals the 20% of fixes that unlock 80% of value.',
+      dept: 'Product Team',
+      status: 'Production',
+      priority: 92,
+      drawerId: 'ur-why-first',
+      drawerComponent: WhyResearchFirst,
+      itemId: 'user-research-why'
+    },
+    {
+      id: 'ur-methods',
+      title: 'Choose the right method',
+      subtitle: 'Pick interviews, surveys, or usability tests based on the decision you need to make.',
+      dept: 'Design',
+      status: 'Preview',
+      priority: 88,
+      drawerId: 'ur-methods',
+      drawerComponent: ChooseRightMethod,
+      itemId: 'user-research-method'
+    }
+  ],
+  'journey-mapping': [
+    {
+      id: 'jm-personas',
+      title: 'Personas & contexts',
+      subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      dept: 'Product Team',
+      status: 'Production',
+      priority: 85,
+      drawerId: 'jm-personas',
+      itemId: 'journey-mapping-personas'
+    },
+    {
+      id: 'jm-journeys',
+      title: 'Journeys & top frictions',
+      subtitle: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      dept: 'Design',
+      status: 'Production',
+      priority: 82,
+      drawerId: 'jm-journeys',
+      itemId: 'journey-mapping-journeys'
+    },
+    {
+      id: 'jm-decisions',
+      title: 'Turn signals into decisions',
+      subtitle: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
+      dept: 'Product Team',
+      status: 'Preview',
+      priority: 79,
+      drawerId: 'jm-decisions',
+      itemId: 'journey-mapping-decisions'
+    }
+  ],
+  'flow-design': [
+    {
+      id: 'fd-ia',
+      title: 'Information architecture',
+      subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      dept: 'Design',
+      status: 'In Progress',
+      priority: 76,
+      drawerId: 'fd-ia',
+      itemId: 'flow-design-ia'
+    },
+    {
+      id: 'fd-flows',
+      title: 'User flow diagrams',
+      subtitle: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      dept: 'Design',
+      status: 'In Progress',
+      priority: 73,
+      drawerId: 'fd-flows',
+      itemId: 'flow-design-flows'
+    },
+    {
+      id: 'fd-validation',
+      title: 'Task flow validation',
+      subtitle: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
+      dept: 'Design',
+      status: 'Production',
+      priority: 70,
+      drawerId: 'fd-validation',
+      itemId: 'flow-design-validation'
+    }
+  ]
+}
+
 
 export function IAFlowsPanel() {
-  const [currentStep, setCurrentStep] = useState('01')
+  const [currentStep, setCurrentStep] = useState<IaStepType>('user-research')
   const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -50,7 +262,7 @@ export function IAFlowsPanel() {
     return () => clearTimeout(timer)
   }, [])
 
-  const handleStepClick = async (stepId: string) => {
+  const handleStepClick = async (stepId: IaStepType) => {
     if (stepId === currentStep) return
     
     setIsAnimating(true)
@@ -65,92 +277,31 @@ export function IAFlowsPanel() {
   }
 
   // Calculate step status based on current selection
-  const getStepStatus = (stepId: string) => {
+  const getStepStatus = (stepId: IaStepType) => {
+    const stepOrder = ['user-research', 'journey-mapping', 'flow-design']
+    const currentIndex = stepOrder.indexOf(currentStep)
+    const stepIndex = stepOrder.indexOf(stepId)
+    
     if (stepId === currentStep) return 'current'
-    if (stepId < currentStep) return 'complete'
+    if (stepIndex < currentIndex) return 'complete'
     return 'upcoming'
   }
   
   // Function to handle opening drawer
-  const handleProjectClick = (project: any) => {
-    setSelectedDeployment(project)
+  const handleRowClick = (row: Row) => {
+    setSelectedDeployment(row)
     setDrawerOpen(true)
   }
 
-  // Project data that changes based on step
-  const projectsByStep = {
-    '01': [
-      {
-        id: 1,
-        name: 'What is user research?',
-        href: '#',
-        status: 'Complete',
-        createdBy: 'Kyle McGraw',
-        dueDate: 'March 17, 2023',
-        dueDateTime: '2023-03-17T00:00Z',
-        description: 'Evidence over guesses—understand how real people perceive, navigate, and use your product.',
-        drawerComponent: WhatIsUserResearch,
-        itemId: 'user-research-what'
-      }
-    ],
-    '02': [
-      {
-        id: 2,
-        name: 'Why research first?',
-        href: '#',
-        status: 'In progress',
-        createdBy: 'Kyle McGraw',
-        dueDate: 'April 5, 2023',
-        dueDateTime: '2023-04-05T00:00Z',
-        description: 'Research reduces rework, de-risks the roadmap, and reveals the 20% of fixes that unlock 80% of value.',
-        drawerComponent: WhyResearchFirst,
-        itemId: 'user-research-why'
-      }
-    ],
-    '03': [
-      {
-        id: 3,
-        name: 'Choose the right method',
-        href: '#',
-        status: 'In progress',
-        createdBy: 'UX Researcher',
-        dueDate: 'April 15, 2023',
-        dueDateTime: '2023-04-15T00:00Z',
-        description: 'Pick interviews, surveys, or usability tests based on the decision you need to make.',
-        drawerComponent: ChooseRightMethod,
-        itemId: 'user-research-method'
-      }
-    ]
-  }
-
-  const currentProjects = projectsByStep[currentStep as keyof typeof projectsByStep] || []
+  const currentRows = rowsByStep[currentStep] || []
   
   return (
     <div className="space-y-0">
-      {/* Header Section */}
-      <div className="px-6 py-6 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-              Stage 1: User Research
-            </h2>
-            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-              Evidence-based foundations for design decisions
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-medium text-zinc-900 dark:text-white">3 approaches</p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">Production ready</p>
-          </div>
-        </div>
-      </div>
-      
-      
       {/* Progress Stepper */}
       <div className="px-6 py-6 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50">
         <nav aria-label="Progress">
           <ol role="list" className="divide-y divide-zinc-200 dark:divide-zinc-700 rounded-md border border-zinc-200 dark:border-zinc-700 md:flex md:divide-y-0">
-            {userResearchSteps.map((step, stepIdx) => {
+            {iaSteps.map((step, stepIdx) => {
               const stepStatus = getStepStatus(step.id)
               return (
                 <li key={step.name} className="relative md:flex md:flex-1">
@@ -191,7 +342,7 @@ export function IAFlowsPanel() {
                     </button>
                   )}
 
-                  {stepIdx !== userResearchSteps.length - 1 ? (
+                  {stepIdx !== iaSteps.length - 1 ? (
                     <div aria-hidden="true" className="absolute top-0 right-0 hidden h-full w-5 md:block">
                       <svg fill="none" viewBox="0 0 22 80" preserveAspectRatio="none" className="size-full text-zinc-200 dark:text-zinc-700">
                         <path
@@ -210,12 +361,12 @@ export function IAFlowsPanel() {
         </nav>
       </div>
 
-      {/* Project List */}
+      {/* Row List */}
       <div className="relative overflow-hidden">
         <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
-        {currentProjects.map((project, index) => (
+        {currentRows.map((row, index) => (
           <div 
-            key={project.id} 
+            key={row.id} 
             className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
               isAnimating || !isLoaded
                 ? 'transform translate-y-12 opacity-0' 
@@ -224,30 +375,58 @@ export function IAFlowsPanel() {
             style={{
               transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
             }}
-            onClick={() => handleProjectClick(project)}
+            onClick={() => handleRowClick(row)}
           >
             <div className="flex items-center justify-between gap-x-6">
               <div className="min-w-0 flex-auto">
+                <div className="flex items-center gap-x-3 mb-2">
+                  <h3 className="text-base font-semibold text-zinc-900 dark:text-white">{row.title}</h3>
+                  <div className="flex items-center gap-x-2">
+                    {/* Department Chip */}
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                      row.dept === 'Product Team' 
+                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-blue-600/20 dark:ring-blue-400/20'
+                        : row.dept === 'Design'
+                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 ring-purple-600/20 dark:ring-purple-400/20'
+                        : 'bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 ring-orange-600/20 dark:ring-orange-400/20'
+                    }`}>
+                      {row.dept}
+                    </span>
+                    {/* Status Badge */}
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                      row.status === 'Production' 
+                        ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 ring-emerald-600/20 dark:ring-emerald-400/20'
+                        : row.status === 'Preview'
+                        ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 ring-amber-600/20 dark:ring-amber-400/20'
+                        : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-zinc-600/20 dark:ring-zinc-400/20'
+                    }`}>
+                      {row.status}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
+                  {row.subtitle}
+                </p>
+                {/* Priority Score Bar */}
                 <div className="flex items-center gap-x-3">
-                  <p className="text-base font-semibold text-zinc-900 dark:text-white">{project.name}</p>
-                  {project.status === 'In progress' ? (
-                    <span className="inline-flex items-center rounded-md bg-amber-100 dark:bg-amber-900/20 px-2 py-1 text-xs font-medium text-amber-600 dark:text-amber-400 ring-1 ring-inset ring-amber-500/20 dark:ring-amber-400/20">
-                      {project.status}
-                    </span>
-                  ) : null}
-                  {project.status === 'Complete' ? (
-                    <span className="inline-flex items-center rounded-md bg-emerald-100 dark:bg-emerald-900/20 px-2 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20 dark:ring-emerald-400/20">
-                      {project.status}
-                    </span>
-                  ) : null}
-                </div>
-                <div className="mt-1 flex items-center gap-x-3 text-sm text-zinc-600 dark:text-zinc-400">
-                  <p>{project.description}</p>
-                </div>
-                <div className="mt-1 flex items-center gap-x-3 text-sm text-zinc-600 dark:text-zinc-400">
-                  <p>Due on <time dateTime={project.dueDateTime}>{project.dueDate}</time></p>
-                  <span className="text-zinc-400">•</span>
-                  <p>Created by {project.createdBy}</p>
+                  <span className="text-xs font-medium text-zinc-900 dark:text-white">Priority:</span>
+                  <div className="flex-1 max-w-32">
+                    <div className="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          row.priority >= 90 
+                            ? 'bg-emerald-500 animate-pulse'
+                            : row.priority >= 80
+                            ? 'bg-blue-500'
+                            : 'bg-zinc-400'
+                        }`}
+                        style={{ width: `${row.priority}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 min-w-[2rem] text-right">
+                    {row.priority}
+                  </span>
                 </div>
               </div>
               <div className="flex flex-none items-center gap-x-4">
@@ -269,12 +448,14 @@ export function IAFlowsPanel() {
       <ComponentDrawer 
         open={drawerOpen} 
         onClose={() => setDrawerOpen(false)}
-        title={selectedDeployment?.name || 'Project Details'}
+        title={selectedDeployment?.title || 'Project Details'}
         enableComments={true}
         itemId={selectedDeployment?.itemId}
       >
-        {selectedDeployment?.drawerComponent && (
+        {selectedDeployment?.drawerComponent ? (
           <selectedDeployment.drawerComponent />
+        ) : (
+          <PlaceholderDrawerContent title={selectedDeployment?.title} />
         )}
       </ComponentDrawer>
     </div>
