@@ -102,14 +102,14 @@ function PlaceholderDrawerContent({ title }: { title?: string }) {
   )
 }
 
+type IaStepType = 'user-research' | 'journey-mapping' | 'flow-design'
+
 interface IaStep {
-  id: string
+  id: IaStepType
   name: string
   href: string
   status: string
 }
-
-type IaStepType = 'user-research' | 'journey-mapping' | 'flow-design'
 
 type Row = {
   id: string
