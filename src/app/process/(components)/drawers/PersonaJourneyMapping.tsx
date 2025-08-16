@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
@@ -17,6 +18,17 @@ interface PersonaJourneyMappingProps {
 export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMappingProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
+  
+  // Handle client-side mounting for portal
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+  
+  // Debug state changes
+  useEffect(() => {
+    console.log('[DEBUG] Lightbox state changed:', { lightboxOpen, lightboxIndex })
+  }, [lightboxOpen, lightboxIndex])
   
   // Touch state for swipe navigation
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
@@ -36,42 +48,47 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
     { image: '/images/personas/Persona-3.png' },
   ]
 
-  const openLightbox = (index: number) => {
+  const openLightbox = useCallback((index: number) => {
+    console.log('[DEBUG] Opening lightbox with index:', index)
     setLightboxIndex(index)
     setLightboxOpen(true)
     trackEvent('persona_example_viewed', {
       persona_index: index + 1,
       process_step: 'Persona & Journey Mapping'
     })
-  }
+  }, [])
 
-  const closeLightbox = () => {
+  const closeLightbox = useCallback(() => {
+    console.log('[DEBUG] Closing lightbox')
     setLightboxOpen(false)
     setLightboxIndex(0)
-  }
+  }, [])
 
-  const nextLightboxImage = () => {
+  const nextLightboxImage = useCallback(() => {
+    console.log('[DEBUG] Next lightbox image')
     setLightboxIndex((prev) => (prev + 1) % personas.length)
-  }
+  }, [personas.length])
 
-  const prevLightboxImage = () => {
+  const prevLightboxImage = useCallback(() => {
+    console.log('[DEBUG] Previous lightbox image')
     setLightboxIndex((prev) => (prev - 1 + personas.length) % personas.length)
-  }
+  }, [personas.length])
 
   // Touch event handlers for swipe navigation
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    console.log('[DEBUG] Touch start')
     setTouchEndX(null)
     setTouchEndY(null)
     setTouchStartX(e.targetTouches[0].clientX)
     setTouchStartY(e.targetTouches[0].clientY)
-  }
+  }, [])
 
-  const handleTouchMove = (e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     setTouchEndX(e.targetTouches[0].clientX)
     setTouchEndY(e.targetTouches[0].clientY)
-  }
+  }, [])
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     if (!touchStartX || !touchEndX || !touchStartY || !touchEndY) return
     
     const distanceX = touchStartX - touchEndX
@@ -79,6 +96,8 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
     const isLeftSwipe = distanceX > 50
     const isRightSwipe = distanceX < -50
     const isVerticalSwipe = Math.abs(distanceY) > Math.abs(distanceX)
+    
+    console.log('[DEBUG] Touch end:', { distanceX, distanceY, isLeftSwipe, isRightSwipe, isVerticalSwipe })
     
     // Only trigger navigation for horizontal swipes
     if (!isVerticalSwipe) {
@@ -88,12 +107,13 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
         prevLightboxImage()
       }
     }
-  }
+  }, [touchStartX, touchEndX, touchStartY, touchEndY, nextLightboxImage, prevLightboxImage, personas.length])
 
   // Handle keyboard navigation for lightbox
   useEffect(() => {
     const handleKeyboard = (event: KeyboardEvent) => {
       if (lightboxOpen) {
+        console.log('[DEBUG] Keyboard event:', event.key)
         if (event.key === 'Escape') {
           closeLightbox()
         } else if (event.key === 'ArrowRight') {
@@ -105,11 +125,13 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
     }
 
     if (lightboxOpen) {
+      console.log('[DEBUG] Adding keyboard listeners')
       document.addEventListener('keydown', handleKeyboard)
       document.body.style.overflow = 'hidden' // Prevent scrolling
     }
 
     return () => {
+      console.log('[DEBUG] Removing keyboard listeners')
       document.removeEventListener('keydown', handleKeyboard)
       document.body.style.overflow = 'unset'
     }
@@ -210,6 +232,19 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
             Sample
           </h3>
           
+          {/* Test Button */}
+          <div className="mb-4">
+            <button 
+              onClick={() => {
+                console.log('[DEBUG] Test button clicked - opening lightbox with index 0')
+                openLightbox(0)
+              }}
+              className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+            >
+              Test Lightbox (Click to open first persona)
+            </button>
+          </div>
+
           {/* Persona Image Gallery */}
           <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
             <h4 className="font-medium text-zinc-900 dark:text-white mb-4">Persona Examples</h4>
@@ -219,7 +254,10 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
               {personas.map((persona, index) => (
                 <button
                   key={index}
-                  onClick={() => openLightbox(index)}
+                  onClick={() => {
+                    console.log('[DEBUG] Button clicked for persona:', index)
+                    openLightbox(index)
+                  }}
                   className="bg-white dark:bg-zinc-800 rounded-lg p-3 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors group"
                 >
                   <div className="aspect-video bg-zinc-100 dark:bg-zinc-700 overflow-hidden relative">
@@ -228,8 +266,9 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
                       alt={`Persona example ${index + 1}`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-200"
+                      style={{ pointerEvents: 'none' }}
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-xs font-medium bg-black/50 px-2 py-1 rounded-full">
                         Click to enlarge
                       </div>
@@ -243,10 +282,10 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
 
       </DrawerLayout>
 
-      {/* Lightbox */}
-      {lightboxOpen && (
+      {/* Portal-rendered lightbox for full-screen display */}
+      {isMounted && lightboxOpen && createPortal(
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90"
           onClick={closeLightbox}
         >
           <div 
@@ -264,31 +303,31 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
               </svg>
             </button>
 
-            {/* Previous button - positioned outside the image area */}
+            {/* Previous button - positioned for full viewport */}
             {personas.length > 1 && (
               <button
                 onClick={prevLightboxImage}
-                className="absolute left-8 top-1/2 -translate-y-1/2 z-20 p-4 bg-black/70 hover:bg-black/80 text-white rounded-full transition-colors shadow-lg"
+                className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-4 bg-black/70 hover:bg-black/80 text-white rounded-full transition-colors shadow-lg"
                 aria-label="Previous image"
               >
-                <ChevronLeftIcon className="w-8 h-8" />
+                <ChevronLeftIcon className="w-6 h-6 sm:w-8 sm:h-8" />
               </button>
             )}
 
-            {/* Next button - positioned outside the image area */}
+            {/* Next button - positioned for full viewport */}
             {personas.length > 1 && (
               <button
                 onClick={nextLightboxImage}
-                className="absolute right-8 top-1/2 -translate-y-1/2 z-20 p-4 bg-black/70 hover:bg-black/80 text-white rounded-full transition-colors shadow-lg"
+                className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-4 bg-black/70 hover:bg-black/80 text-white rounded-full transition-colors shadow-lg"
                 aria-label="Next image"
               >
-                <ChevronRightIcon className="w-8 h-8" />
+                <ChevronRightIcon className="w-6 h-6 sm:w-8 sm:h-8" />
               </button>
             )}
 
             {/* Main image container with touch/swipe support */}
             <div 
-              className="relative max-w-[calc(100vw-200px)] max-h-[calc(100vh-120px)] mx-auto touch-pan-y"
+              className="relative w-full h-full flex items-center justify-center mx-auto touch-pan-y"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -298,7 +337,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
                 alt={`Persona example ${lightboxIndex + 1} (enlarged)`}
                 width={1200}
                 height={800}
-                className="max-w-full max-h-full object-contain shadow-2xl"
+                className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain shadow-2xl"
                 priority
               />
             </div>
@@ -310,7 +349,8 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
