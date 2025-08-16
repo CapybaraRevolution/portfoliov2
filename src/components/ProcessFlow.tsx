@@ -18,6 +18,9 @@ import { HowWePrioritize } from '@/app/process/(components)/drawers/HowWePriorit
 import { OpportunityBacklog } from '@/app/process/(components)/drawers/OpportunityBacklog'
 import { TechnicalDebtTriage } from '@/app/process/(components)/drawers/TechnicalDebtTriage'
 import { UXResearchInsightsIntake } from '@/app/process/(components)/drawers/UXResearchInsightsIntake'
+import { Wireframes } from '@/app/process/(components)/drawers/Wireframes'
+import { ClickablePrototypes } from '@/app/process/(components)/drawers/ClickablePrototypes'
+import { DesignSystems } from '@/app/process/(components)/drawers/DesignSystems'
 import { IAFlowsPanel } from '@/components/IAFlowsPanel'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
@@ -81,7 +84,18 @@ type DrawerKey =
   | 'performance-quality' 
   | 'continuous-improvement'
 
-type DrawerContentMap = Record<DrawerKey, DrawerEntry>
+// For static content drawers (excludes Step 3 which uses dedicated components)
+type StaticDrawerKey = 
+  | 'stakeholder-alignment' 
+  | 'persona-journey-mapping' 
+  | 'competitive-analysis' 
+  | 'system-analysis'
+  | 'instrumentation' 
+  | 'experimentation' 
+  | 'performance-quality' 
+  | 'continuous-improvement'
+
+type DrawerContentMap = Record<StaticDrawerKey, DrawerEntry>
 
 // Convert slug to human-readable title
 function slugToTitle(slug: string): string {
@@ -337,145 +351,7 @@ Design lives inside systems. Mapping current vs future reveals constraints, quic
 3. **Cache user preferences** - Backend change, 3-day effort`
   },
   
-  // Step 3 - Design & Prototyping
-  'wireframes': {
-    overview: `## Executive Summary
-**One-liner:** I map flows and layouts in low-fi so we can argue about the right problems before pixels get precious.
-
-**What I do**
-• Frame the task to be solved; capture constraints and success criteria.
-• Sketch alt flows (happy, edge, error, empty, loading).
-• Use a mathematical spacing grid developers can implement 1:1.
-
-**Outcome**
-• Shared mental model of the experience and a faster path to "right".
-
-**Quick stat:** Avg. review/decision time: **<48h** · Rework in hi-fi: **–35%**
-
----
-
-## Why wireframes?
-Fast iteration, clear trade-offs, cheap mistakes.
-
-**Artifacts**
-• Task flow diagram, screen skeletons, copy blocks, spacing tokens.
-
-**Definition of ready**
-• Flows signed off, edge states captured, event hooks planned.`,
-    whyItMatters: { 
-      stat: 'Shared mental model of the experience and a faster path to "right".', 
-      text: 'Fast iteration, clear trade-offs, cheap mistakes. Average review/decision time under 48 hours with 35% less rework in hi-fi.' 
-    },
-    sample: `**Task flow diagram example**
-
-1. **Happy path:** Landing → Sign up → Email verify → Onboarding → Dashboard
-2. **Edge cases:** Email bounce, slow verify, skip onboarding
-3. **Error states:** Invalid email, network fail, timeout
-4. **Loading states:** Form submit, email send, verify check
-5. **Empty states:** No data, first-time user, cleared cache
-
-**Spacing tokens**
-• **Base unit:** 4px grid system
-• **Vertical rhythm:** 16px, 24px, 32px, 48px
-• **Container widths:** 320px, 768px, 1024px, 1280px`
-  },
-  'clickable-prototypes': {
-    overview: `## Executive Summary
-**One-liner:** I turn the flow into an interactive prototype so we can test intent, comprehension, and friction—before we write code.
-
-**What I do**
-• Link primary tasks end-to-end; add realistic content and timing.
-• Tag success/failure questions for user tests.
-• Version variants behind named flags to A/B in research.
-
-**Outcome**
-• Evidence on what to ship now vs. explore later.
-
-**Quick stat:** Task success in pilot test: **92%** · Time-on-task: **–28%**
-
----
-
-## Test plan
-5–8 users, think-aloud + task-based, decision metric pre-set.
-
-**What we look for**
-• Hesitation, backtracking, dead-ends, copy clarity.
-
-**Exit criteria**
-• ≥90% task success **or** blockers logged to backlog.`,
-    whyItMatters: { 
-      stat: 'Evidence on what to ship now vs. explore later.', 
-      text: 'Task success rate of 92% in pilot tests with 28% reduction in time-on-task through interactive validation before development.' 
-    },
-    sample: `**Live prototype demo link**
-*Try the checkout flow →*
-
-**Research questions tagged**
-• Can users find the "Apply coupon" field?
-• Do they understand the shipping timeline?
-• Where do they get confused in address entry?
-• Is the payment method selection clear?
-
-**Variants tested**
-• **A:** Single-page checkout
-• **B:** Multi-step with progress bar
-• **C:** Accordion-style sections
-
-**Success measures**
-• Task completion: **92%** (target: ≥90%)
-• Average time: **3.2 min** (28% faster than baseline)
-• Error recovery: **89%** found correction path`
-  },
-  'design-systems': {
-    overview: `## Executive Summary
-**One-liner:** I codify decisions into tokens and components so design and dev move as one.
-
-**What I do**
-• Define tokens (color, type, spacing, radius, motion) with semantic names.
-• Build composable components (Button, Field, Card, Modal) with states.
-• Provide code-ready specs + accessibility patterns.
-
-**Outcome**
-• Faster shipping, visual parity, fewer regressions.
-
-**Quick stat:** Reuse on new features: **80%** components · Parity Figma→Prod: **98%**
-
----
-
-## Documentation includes
-• Usage rules, do/don't, props, a11y notes, event hooks.
-
-**Governance**
-• Change proposals, versioning, deprecation policy.`,
-    whyItMatters: { 
-      stat: 'Faster shipping, visual parity, fewer regressions.', 
-      text: '80% component reuse on new features with 98% visual parity between Figma and production through systematic token-based design.' 
-    },
-    sample: `**Core tokens**
-\`\`\`css
-/* Colors */
---color-primary-500: #10b981;
---color-gray-50: #f9fafb;
---color-gray-900: #111827;
-
-/* Typography */
---font-size-sm: 0.875rem;
---font-weight-medium: 500;
---line-height-relaxed: 1.625;
-
-/* Spacing */
---space-4: 1rem;
---space-6: 1.5rem;
---space-8: 2rem;
-\`\`\`
-
-**Component example: Button**
-• **Variants:** Primary, Secondary, Ghost, Danger
-• **Sizes:** SM (32px), MD (40px), LG (48px)
-• **States:** Default, Hover, Active, Disabled, Loading
-• **Props:** size, variant, disabled, loading, icon, children
-• **A11y:** Focus ring, keyboard navigation, screen reader support`
-  },
+  // Step 3 - Design & Prototyping (now using dedicated components)
   
   // Step 5 - Launch & Optimization
   'instrumentation': {
@@ -1520,7 +1396,7 @@ function RoadmapPanel() {
   )
 }
 
-// Step 3: Interactive card gallery with side drawer
+// Step 3: Interactive card gallery with component drawer
 function Step3Layout({ 
   step, 
   selectedDrawer, 
@@ -1538,25 +1414,39 @@ function Step3Layout({
     {
       title: 'Wireframes',
       slug: 'wireframes',
-      subtitle: 'Fast, precise structure to align teams and flag risks early.',
+      subtitle: 'Structure before polish—fast frames answer "what goes where and why."',
       icon: DocumentIcon,
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Clickable Prototypes',
       slug: 'clickable-prototypes',
-      subtitle: 'Make journeys tangible for decision-makers and test users.',
+      subtitle: 'Make the idea testable in days—click through the real flow, not a slide deck.',
       icon: CursorClickIcon,
       pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Design Systems',
       slug: 'design-systems',
-      subtitle: 'Reusable components that speed delivery and keep UX consistent.',
+      subtitle: 'Reusable parts, shared rules—ship faster with consistent, accessible UI.',
       icon: ShapesIcon,
       pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     }
   ]
+
+  // Render the appropriate drawer component
+  const renderDrawerContent = () => {
+    switch (selectedDrawer) {
+      case 'wireframes':
+        return <Wireframes onClose={onDrawerClose} />
+      case 'clickable-prototypes':
+        return <ClickablePrototypes onClose={onDrawerClose} />
+      case 'design-systems':
+        return <DesignSystems onClose={onDrawerClose} />
+      default:
+        return null
+    }
+  }
 
   return (
     <div>
@@ -1575,16 +1465,15 @@ function Step3Layout({
         ))}
       </div>
 
-      {/* Drawer */}
+      {/* Component Drawer */}
       {isDrawerOpen && selectedDrawer && (
-        <SideDrawer
+        <ComponentDrawer
           open={isDrawerOpen}
           onClose={onDrawerClose}
           title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
-        />
+        >
+          {renderDrawerContent()}
+        </ComponentDrawer>
       )}
     </div>
   )
