@@ -18,6 +18,12 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   
+  // Touch state for swipe navigation
+  const [touchStartX, setTouchStartX] = useState<number | null>(null)
+  const [touchStartY, setTouchStartY] = useState<number | null>(null)
+  const [touchEndX, setTouchEndX] = useState<number | null>(null)
+  const [touchEndY, setTouchEndY] = useState<number | null>(null)
+  
   // Track drawer open on mount
   useEffect(() => {
     trackProcessDrawerOpen('Persona & Journey Mapping')
@@ -50,6 +56,38 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
 
   const prevLightboxImage = () => {
     setLightboxIndex((prev) => (prev - 1 + personas.length) % personas.length)
+  }
+
+  // Touch event handlers for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null)
+    setTouchEndY(null)
+    setTouchStartX(e.targetTouches[0].clientX)
+    setTouchStartY(e.targetTouches[0].clientY)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX)
+    setTouchEndY(e.targetTouches[0].clientY)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX || !touchStartY || !touchEndY) return
+    
+    const distanceX = touchStartX - touchEndX
+    const distanceY = touchStartY - touchEndY
+    const isLeftSwipe = distanceX > 50
+    const isRightSwipe = distanceX < -50
+    const isVerticalSwipe = Math.abs(distanceY) > Math.abs(distanceX)
+    
+    // Only trigger navigation for horizontal swipes
+    if (!isVerticalSwipe) {
+      if (isLeftSwipe && personas.length > 1) {
+        nextLightboxImage()
+      } else if (isRightSwipe && personas.length > 1) {
+        prevLightboxImage()
+      }
+    }
   }
 
   // Handle keyboard navigation for lightbox
@@ -207,8 +245,14 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
 
       {/* Lightbox */}
       {lightboxOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="relative w-full h-full flex items-center justify-center p-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          <div 
+            className="relative w-full h-full flex items-center justify-center p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close button */}
             <button
               onClick={closeLightbox}
@@ -242,8 +286,13 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
               </button>
             )}
 
-            {/* Main image container with much wider spacing for arrows */}
-            <div className="relative max-w-[calc(100vw-200px)] max-h-[calc(100vh-120px)] mx-auto" onClick={closeLightbox}>
+            {/* Main image container with touch/swipe support */}
+            <div 
+              className="relative max-w-[calc(100vw-200px)] max-h-[calc(100vh-120px)] mx-auto touch-pan-y"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <Image
                 src={personas[lightboxIndex].image}
                 alt={`Persona example ${lightboxIndex + 1} (enlarged)`}
