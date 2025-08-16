@@ -71,7 +71,7 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
                 <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div>
                   <p className="text-zinc-900 dark:text-white font-medium">2. Generate opportunities</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "How might we..." statements linked to specific insights</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ &quot;How might we...&quot; statements linked to specific insights</p>
                 </div>
               </div>
             </div>

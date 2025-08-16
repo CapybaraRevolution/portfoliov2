@@ -42,7 +42,7 @@ export function FDTaskValidation({ className, onClose }: FDTaskValidationProps) 
               Test early, fix cheap
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Validating flows before development catches usability issues when they're easy and inexpensive to fix.
+              Validating flows before development catches usability issues when they&apos;re easy and inexpensive to fix.
             </p>
           </div>
         </div>

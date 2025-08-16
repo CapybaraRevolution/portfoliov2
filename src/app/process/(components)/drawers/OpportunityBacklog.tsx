@@ -62,7 +62,7 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
                 <div className="flex-shrink-0 w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
                 <div>
                   <p className="text-zinc-900 dark:text-white font-medium">Initiative (6-12 months)</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "Improve checkout conversion" - tied to OKRs</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ &quot;Improve checkout conversion&quot; - tied to OKRs</p>
                 </div>
               </div>
             </div>
@@ -71,7 +71,7 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
                 <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div>
                   <p className="text-zinc-900 dark:text-white font-medium">Epic (1-3 months)</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "Streamline payment flow" - deliverable scope</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ &quot;Streamline payment flow&quot; - deliverable scope</p>
                 </div>
               </div>
             </div>
@@ -80,7 +80,7 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
                 <div className="flex-shrink-0 w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
                 <div>
                   <p className="text-zinc-900 dark:text-white font-medium">Opportunity/Story (1-2 weeks)</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "Reduce form fields from 12 to 6" - actionable work</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ &quot;Reduce form fields from 12 to 6&quot; - actionable work</p>
                 </div>
               </div>
             </div>

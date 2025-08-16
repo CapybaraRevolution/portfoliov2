@@ -28,22 +28,27 @@ export function ComponentDrawer({
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState(0)
   const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
   const [startTime, setStartTime] = useState(0)
   const [lastX, setLastX] = useState(0)
   const [lastTime, setLastTime] = useState(0)
+  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
   // Enhanced touch handlers for drag-to-dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
     const now = Date.now()
     const x = e.touches[0].clientX
+    const y = e.touches[0].clientY
     
     setIsDragging(true)
     setStartX(x)
+    setStartY(y)
     setStartTime(now)
     setLastX(x)
     setLastTime(now)
     setDragOffset(0)
+    setIsHorizontalSwipe(null) // Reset swipe direction detection
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -51,14 +56,29 @@ export function ComponentDrawer({
     
     const now = Date.now()
     const currentX = e.touches[0].clientX
+    const currentY = e.touches[0].clientY
     const deltaX = currentX - startX
+    const deltaY = currentY - startY
+    
+    // Determine swipe direction on first significant movement (10px threshold)
+    if (isHorizontalSwipe === null && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
+      // Check if swipe is primarily horizontal (angle less than 30 degrees from horizontal)
+      const angle = Math.abs(Math.atan2(deltaY, deltaX) * 180 / Math.PI)
+      setIsHorizontalSwipe(angle < 30 || angle > 150)
+    }
+    
+    // Only handle horizontal swipes, ignore vertical scrolling
+    if (isHorizontalSwipe === false) {
+      setIsDragging(false)
+      return
+    }
     
     // Update velocity tracking
     setLastX(currentX)
     setLastTime(now)
     
-    // Only allow dragging to the right (positive deltaX)
-    if (deltaX > 0) {
+    // Only allow dragging to the right (positive deltaX) and if it's a horizontal swipe
+    if (deltaX > 0 && isHorizontalSwipe) {
       setDragOffset(deltaX)
     }
   }
@@ -78,14 +98,14 @@ export function ComponentDrawer({
     const panelWidth = panelRef.current?.offsetWidth || 400
     const dragPercentage = dragOffset / panelWidth
     
-    // Close conditions (snappier/more responsive):
-    // 1. Dragged more than 25% of width (reduced for easier swipe)
-    // 2. OR fast swipe to the right (velocity > 0.3 pixels/ms - more sensitive)
-    // 3. OR dragged at least 60px with any decent velocity (> 0.15 pixels/ms)
+    // Close conditions (less sensitive to prevent accidental dismissal):
+    // 1. Dragged more than 40% of width (increased threshold)
+    // 2. OR fast swipe to the right (velocity > 0.5 pixels/ms)
+    // 3. OR dragged at least 100px with decent velocity (> 0.25 pixels/ms)
     const shouldClose = 
-      dragPercentage >= 0.25 || 
-      velocity > 0.3 ||
-      (dragOffset > 60 && velocity > 0.15)
+      dragPercentage >= 0.4 || 
+      velocity > 0.5 ||
+      (dragOffset > 100 && velocity > 0.25)
     
     if (shouldClose) {
       onClose()
@@ -100,6 +120,7 @@ export function ComponentDrawer({
     if (!open) {
       setDragOffset(0)
       setIsDragging(false)
+      setIsHorizontalSwipe(null)
     }
   }, [open])
 
