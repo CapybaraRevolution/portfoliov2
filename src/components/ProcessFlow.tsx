@@ -13,6 +13,11 @@ import { SystemAnalysis } from '@/app/process/(components)/drawers/SystemAnalysi
 import { WhatIsUserResearch } from '@/app/process/(components)/drawers/WhatIsUserResearch'
 import { WhyResearchFirst } from '@/app/process/(components)/drawers/WhyResearchFirst'
 import { ChooseRightMethod } from '@/app/process/(components)/drawers/ChooseRightMethod'
+import { WhyWePrioritize } from '@/app/process/(components)/drawers/WhyWePrioritize'
+import { HowWePrioritize } from '@/app/process/(components)/drawers/HowWePrioritize'
+import { OpportunityBacklog } from '@/app/process/(components)/drawers/OpportunityBacklog'
+import { TechnicalDebtTriage } from '@/app/process/(components)/drawers/TechnicalDebtTriage'
+import { UXResearchInsightsIntake } from '@/app/process/(components)/drawers/UXResearchInsightsIntake'
 import { IAFlowsPanel } from '@/components/IAFlowsPanel'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
@@ -863,36 +868,36 @@ function Step1Layout({
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="Stakeholder Alignment"
-            enableComments={false}
+            enableComments={true}
           >
-            <StakeholderAlignment />
+            <StakeholderAlignment onClose={onDrawerClose} />
           </ComponentDrawer>
         ) : selectedDrawer === 'persona-journey-mapping' ? (
           <ComponentDrawer
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="Persona & Journey Mapping"
-            enableComments={false}
+            enableComments={true}
           >
-            <PersonaJourneyMapping />
+            <PersonaJourneyMapping onClose={onDrawerClose} />
           </ComponentDrawer>
         ) : selectedDrawer === 'competitive-analysis' ? (
           <ComponentDrawer
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="Competitive Analysis"
-            enableComments={false}
+            enableComments={true}
           >
-            <CompetitiveAnalysis />
+            <CompetitiveAnalysis onClose={onDrawerClose} />
           </ComponentDrawer>
         ) : selectedDrawer === 'system-analysis' ? (
           <ComponentDrawer
             open={isDrawerOpen}
             onClose={onDrawerClose}
             title="System Analysis"
-            enableComments={false}
+            enableComments={true}
           >
-            <SystemAnalysis />
+            <SystemAnalysis onClose={onDrawerClose} />
           </ComponentDrawer>
         ) : (
           <SideDrawer
@@ -1069,28 +1074,8 @@ function PrioritizationPanel() {
       description: 'Shared rules for turning discovery into a focused plan.',
       environment: 'Production',
       riceScore: 92,
-      drawerContent: {
-        oneLiner: 'Focus beats volume. Prioritization turns a long wish list into the next best set of bets.',
-        whyItMatters: 'Without rules, the roadmap drifts. Clear priorities reduce thrash, accelerate decisions, and keep us building what moves the metric.',
-        whatWeDo: [
-          'Set decision principles (customer value first, measurable outcomes, time-to-learning).',
-          'Define a cadence (bi-weekly triage, monthly re-score, quarterly planning).',
-          'Publish a single source backlog (opportunities, experiments, tech debt).',
-          'Make trade-offs explicit (what we say "no" to, and why).'
-        ],
-        inputs: 'Persona & Journey insights • System constraints & quick wins • Competitive parity/differentiators • Business goals/OKRs.',
-        deliverables: [
-          'Prioritization policy (one page).',
-          'Shared backlog taxonomy (Initiative → Epic → Opportunity/Story).',
-          'Decision RACI & DRI.'
-        ],
-        signalsOfSuccess: [
-          'Stakeholders can explain why top 10 items are top 10.',
-          'Fewer reopen/pend requests after planning.',
-          'Lead time from idea → decision shrinks.'
-        ],
-        tools: 'Notion/Confluence, Jira/Linear, FigJam/Miro.'
-      }
+      drawerComponent: WhyWePrioritize,
+      itemId: 'why-we-prioritize'
     },
     {
       id: 2,
@@ -1102,35 +1087,8 @@ function PrioritizationPanel() {
       description: 'Scoring framework with thresholds, tie-breakers, and review cadence.',
       environment: 'Production',
       riceScore: 89,
-      drawerContent: {
-        oneLiner: 'Score what matters, then sanity-check with risk and constraints.',
-        whyItMatters: 'A lightweight, transparent model prevents the loudest voice from setting the roadmap.',
-        whatWeDo: [
-          'Score each opportunity with RICE:',
-          'Reach (people/week or /month)',
-          'Impact (0.25 / 0.5 / 1 / 2 / 3) on the target metric',
-          'Confidence (0–100%)',
-          'Effort (person-weeks)',
-          'Score = (Reach × Impact × Confidence) ÷ Effort',
-          'Apply a Risk/Readiness modifier (+/− 10–20%) for dependency risk, compliance, or system limits.',
-          'Normalize to 0–100 for display.',
-          'Tie-breakers: strategic fit with OKRs, time-to-learning, and customer commitments.',
-          'Re-score monthly; freeze scores one week before quarterly planning.'
-        ],
-        inputs: 'Event data & funnels • Research evidence & severity of friction • System constraints from Step 1 • Business commitments.',
-        deliverables: [
-          'RICE scorecard (Notion/Sheet) + thresholds (e.g., ship if ≥ 65).',
-          'Comments log (assumptions behind Reach/Impact/Confidence).',
-          '"Now / Next / Later" migration on the roadmap.'
-        ],
-        signalsOfSuccess: [
-          'Scores correlate with post-ship outcomes (retention, activation, conversion).',
-          'Less debate time; more execution time.',
-          'New ideas get a decision within 10 business days.'
-        ],
-        tools: 'Amplitude/Mixpanel/GA4, Notion/Sheets, Jira/Linear.',
-        sampleTemplate: 'Columns: ID • Title • Epic • Reach (units) • Impact (0.25–3) • Confidence (%) • Effort (pw) • Risk adj (%) • RICE (0–100) • DRI • Status.\nThresholds: Ship ≥65, Research/Refine 45–64, Archive <45.'
-      }
+      drawerComponent: HowWePrioritize,
+      itemId: 'how-we-prioritize'
     },
     {
       id: 3,
@@ -1142,26 +1100,8 @@ function PrioritizationPanel() {
       description: 'Curated list of opportunities sourced from personas, journeys, system analysis, and competitive gaps.',
       environment: 'Production',
       riceScore: 82,
-      drawerContent: {
-        oneLiner: 'A single, deduped list of problems and bets sourced from discovery.',
-        whyItMatters: 'Scattered ideas = duplicate effort. One backlog creates clarity and prevents lost insights.',
-        whatWeDo: [
-          'Convert research notes into opportunities (problem statements, evidence, metric).',
-          'Merge duplicates; link to personas, journey stages, and competitive references.',
-          'Attach preliminary RICE and owner.',
-          'Flag dependencies (system, compliance, data gaps).'
-        ],
-        inputs: 'Persona/Journey frictions • Competitive gaps • Quick wins from System Analysis • Support tickets & sales notes.',
-        deliverables: [
-          'Opportunity register with tags: Persona, Journey Stage, Metric, Epic, Risk.',
-          'Top 20 prioritized list with DRI and next step (design spike, data check, prototype, etc.).'
-        ],
-        signalsOfSuccess: [
-          'No "ideas in the ether"—everything visible, tagged, and owned.',
-          'Fewer one-off docs; more linked artifacts.'
-        ],
-        tools: 'Notion/Backlog tool, FigJam/Miro for mapping.'
-      }
+      drawerComponent: OpportunityBacklog,
+      itemId: 'opportunity-backlog'
     },
     {
       id: 4,
@@ -1173,27 +1113,8 @@ function PrioritizationPanel() {
       description: 'Reliability, performance, and developer-velocity fixes ranked alongside features.',
       environment: 'Production',
       riceScore: 72,
-      drawerContent: {
-        oneLiner: 'Protect reliability and velocity by triaging debt alongside features.',
-        whyItMatters: 'Invisible debt slows everything. Making it visible—and comparable—keeps the product fast and safe.',
-        whatWeDo: [
-          'Intake debt with severity (S1–S4) and blast radius.',
-          'Score with ICE (Impact, Confidence, Effort) or WSJF where flow efficiency matters.',
-          'Map to customer impact (perf, accessibility, reliability) and developer impact (build time, flake rate).',
-          'Set SLAs for Sev-1/2; schedule recurring "debt sprints" or rolling capacity (e.g., 20%).'
-        ],
-        inputs: 'SLO/SLA breaches, performance traces, error budgets, developer feedback.',
-        deliverables: [
-          'Debt backlog with severity, score, owner, mitigation, and ETA.',
-          'Quarterly "keep the lights fast" plan (perf, a11y, stability objectives).'
-        ],
-        signalsOfSuccess: [
-          'P95 latency & error rates trend down.',
-          'Build times and flaky test rate trend down.',
-          'Fewer incidents tied to known debt.'
-        ],
-        tools: 'Jira/Linear, Sentry/New Relic, Lighthouse/PageSpeed, Playwright/Cypress CI.'
-      }
+      drawerComponent: TechnicalDebtTriage,
+      itemId: 'technical-debt-triage'
     },
     {
       id: 5,
@@ -1205,26 +1126,8 @@ function PrioritizationPanel() {
       description: 'Repeatable way to capture, de-duplicate, and convert insights into opportunities.',
       environment: 'Production',
       riceScore: 42,
-      drawerContent: {
-        oneLiner: 'A crisp path from observation → insight → opportunity.',
-        whyItMatters: 'If insights don\'t enter the system, they don\'t shape the roadmap.',
-        whatWeDo: [
-          'Intake form: What we saw, where, who, evidence (clip/screenshot), suspected metric, severity.',
-          'De-duplicate, tag to persona/journey stage, and link to existing opportunities.',
-          'Weekly triage: convert to opportunity or archive with reason.',
-          'Close loop with submitter.'
-        ],
-        inputs: 'Interviews, usability tests, analytics anomalies, support themes.',
-        deliverables: [
-          'Insight log, conversion rate to opportunities, top recurring themes.',
-          '"Open questions" list to feed future research.'
-        ],
-        signalsOfSuccess: [
-          'Time from insight → decision shrinks.',
-          'Higher % of roadmap items traceable to user evidence.'
-        ],
-        tools: 'Typeform/Google Forms, Notion, Dovetail, Loom.'
-      }
+      drawerComponent: UXResearchInsightsIntake,
+      itemId: 'ux-research-insights-intake'
     },
   ], [])
 
@@ -1432,9 +1335,12 @@ function PrioritizationPanel() {
         onClose={() => setDrawerOpen(false)}
         title={selectedDeployment?.projectName || 'Project Details'}
         enableComments={true}
-        itemId={selectedDeployment?.projectName?.toLowerCase().replace(/\s+/g, '-')}
+        itemId={selectedDeployment?.itemId}
       >
-        {selectedDeployment && selectedDeployment.drawerContent && (
+        {selectedDeployment?.drawerComponent && (
+          <selectedDeployment.drawerComponent onClose={() => setDrawerOpen(false)} />
+        )}
+        {false && selectedDeployment && selectedDeployment.drawerContent && (
           <div className="space-y-8">
             {/* One-liner */}
             <div>

@@ -2,16 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { DrawerLayout } from '@/components/ui/DrawerLayout'
+import { BulletList } from '@/components/ui/BulletList'
 import { Chip } from '@/components/ui/Chip'
-import { ToolPill } from '@/components/ui/ToolPill'
+import { ToolSection, toolPill } from '@/components/ui/ToolSection'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { trackProcessDrawerOpen, trackEvent } from '@/components/GoogleAnalytics'
 
 interface PersonaJourneyMappingProps {
   className?: string
+  onClose?: () => void
 }
 
-export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps) {
+export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMappingProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   
@@ -74,27 +77,30 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
     }
   }, [lightboxOpen, nextLightboxImage, prevLightboxImage, closeLightbox])
 
+  const tools = (
+    <ToolSection 
+      tools={[
+        toolPill("figma", "Figma / FigJam", "md"),
+        toolPill("google", "Typeform", "md"),
+        toolPill("hotjar", "Hotjar", "md"),
+        toolPill("ga4", "GA4", "md"),
+        toolPill("google", "Maze", "md"),
+        toolPill("notion", "Notion / Dovetail", "md")
+      ]}
+    />
+  )
+
   return (
     <div className={className}>
-      {/* H1: Persona & Journey Mapping */}
-      <div className="mb-6">
-        <div className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-2">
-          Step 1 · Discovery & Strategy
-        </div>
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
-          Persona & Journey Mapping
-        </h1>
-      </div>
-
-      {/* Executive Summary */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
-          Executive Summary
-        </h2>
-        <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-          Turn anecdotes into patterns we can design for—and measure.
-        </p>
-      </div>
+      <DrawerLayout
+        stepText="Step 1 · Discovery & Strategy"
+        title="Persona & Journey Mapping"
+        summary="Turn anecdotes into patterns we can design for—and measure."
+        tools={tools}
+        caseStudyUrl="/case-studies/fintech"
+        enableComments={true}
+        itemId="persona-journey-mapping"
+      >
 
       {/* Why it matters - Feature card with gradient */}
       <div className="mb-8">
@@ -114,150 +120,90 @@ export function PersonaJourneyMapping({ className }: PersonaJourneyMappingProps)
         </div>
       </div>
 
-      {/* What I do */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          What I do
-        </h2>
-        <ul className="space-y-3 pl-6">
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Tight interview script; 5–7 interviews to reach pattern clarity</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Mine tickets & usage data for top tasks and friction points</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Lightweight personas (needs, contexts, JTBD)</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">End-to-end journey with key moments and drop-offs</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Pain-point heatmap tied to experiment ideas</span>
-          </li>
-        </ul>
-      </div>
+        {/* What I do */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I do
+          </h3>
+          <BulletList 
+            color="emerald"
+            items={[
+              "Tight interview script; 5–7 interviews to reach pattern clarity",
+              "Mine tickets & usage data for top tasks and friction points",
+              "Lightweight personas (needs, contexts, JTBD)",
+              "End-to-end journey with key moments and drop-offs",
+              "Pain-point heatmap tied to experiment ideas"
+            ]}
+          />
+        </div>
 
-      {/* Outputs & artifacts */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Outputs & artifacts
-        </h2>
-        <ul className="space-y-3 pl-6">
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Personas (goals, contexts, constraints)</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Journey map with stages, emotions, and per-stage measures</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">JTBD statements and opportunity backlog</span>
-          </li>
-        </ul>
-      </div>
+        {/* Outputs & artifacts */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Outputs & artifacts
+          </h3>
+          <BulletList 
+            color="blue"
+            items={[
+              "Personas (goals, contexts, constraints)",
+              "Journey map with stages, emotions, and per-stage measures",
+              "JTBD statements and opportunity backlog"
+            ]}
+          />
+        </div>
 
-      {/* Signals of success */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Signals of success
-        </h2>
-        <ul className="space-y-3 pl-6">
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Team can name the top 3 user goals and top 3 frictions</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">≥ 5 instrumented events align to journey stages</span>
-          </li>
-        </ul>
-      </div>
+        {/* Signals of success */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Signals of success
+          </h3>
+          <BulletList 
+            color="purple"
+            items={[
+              "Team can name the top 3 user goals and top 3 frictions",
+              "≥ 5 instrumented events align to journey stages"
+            ]}
+          />
+        </div>
 
-      {/* Sample - Persona image gallery */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Sample
-        </h2>
-        
-        {/* Persona Image Gallery */}
-        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h3 className="font-medium text-zinc-900 dark:text-white mb-4">Persona Examples</h3>
+        {/* Sample - Persona image gallery */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Sample
+          </h3>
           
-          {/* Grid layout for personas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {personas.map((persona, index) => (
-              <button
-                key={index}
-                onClick={() => openLightbox(index)}
-                className="bg-white dark:bg-zinc-800 rounded-lg p-3 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors group"
-              >
-                <div className="aspect-video bg-zinc-100 dark:bg-zinc-700 overflow-hidden relative">
-                  <Image 
-                    src={persona.image} 
-                    alt={`Persona example ${index + 1}`}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-200"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-xs font-medium bg-black/50 px-2 py-1 rounded-full">
-                      Click to enlarge
+          {/* Persona Image Gallery */}
+          <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+            <h4 className="font-medium text-zinc-900 dark:text-white mb-4">Persona Examples</h4>
+            
+            {/* Grid layout for personas */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {personas.map((persona, index) => (
+                <button
+                  key={index}
+                  onClick={() => openLightbox(index)}
+                  className="bg-white dark:bg-zinc-800 rounded-lg p-3 border border-zinc-200 dark:border-zinc-700 hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors group"
+                >
+                  <div className="aspect-video bg-zinc-100 dark:bg-zinc-700 overflow-hidden relative">
+                    <Image 
+                      src={persona.image} 
+                      alt={`Persona example ${index + 1}`}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-200"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white text-xs font-medium bg-black/50 px-2 py-1 rounded-full">
+                        Click to enlarge
+                      </div>
                     </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Tools - using ToolPill components */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Tools
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          <ToolPill slug="figma" name="Figma / FigJam" size="md" />
-          <ToolPill slug="google" name="Typeform" size="md" />
-          <ToolPill slug="hotjar" name="Hotjar" size="md" />
-          <ToolPill slug="ga4" name="GA4" size="md" />
-          <ToolPill slug="google" name="Maze" size="md" />
-          <ToolPill slug="notion" name="Notion / Dovetail" size="md" />
-        </div>
-      </div>
-
-      {/* Related - CTA row */}
-      <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Related
-        </h2>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <a
-            href="/case-studies/fintech"
-            className="inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
-            onClick={() => trackEvent('case_study_link_clicked', {
-              case_study: 'fintech',
-              source: 'process_drawer',
-              process_step: 'Persona & Journey Mapping'
-            })}
-          >
-            Open case study →
-          </a>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex items-center justify-center px-4 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium rounded-lg transition-colors"
-          >
-            Back to process overview ↑
-          </button>
-        </div>
-      </div>
+      </DrawerLayout>
 
       {/* Lightbox */}
       {lightboxOpen && (

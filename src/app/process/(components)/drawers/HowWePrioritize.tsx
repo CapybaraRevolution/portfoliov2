@@ -2,26 +2,22 @@
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
-import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 
-interface ChooseRightMethodProps {
+interface HowWePrioritizeProps {
   className?: string
   onClose?: () => void
 }
 
-export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps) {
+export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
   const tools = (
     <ToolSection 
       tools={[
-        toolPill("userinterviews", "UserInterviews"),
-        toolPill("typeform", "Typeform"),
-        toolPill("google-forms", "Google Forms"),
-        toolPill("maze", "Maze"),
-        toolPill("useberry", "Useberry"),
-        toolPill("zoom", "Zoom"),
-        toolPill("loom", "Loom"),
-        toolPill("figjam", "FigJam")
+        toolPill("notion", "Notion", "md"),
+        toolPill("figma", "FigJam", "md"),
+        toolPill("google", "Google Sheets", "md"),
+        genericTool("RICE framework"),
+        genericTool("Value vs Effort matrix")
       ]}
     />
   )
@@ -29,14 +25,14 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
   return (
     <div className={className}>
       <DrawerLayout
-        stepText="Step 2 · IA & Flows · Stage 1: User Research"
-        title="Choose the right method"
-        summary="Match the method to the decision, not the fashion."
+        stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
+        title="How We Prioritize"
+        summary="RICE, impact scoring, and other frameworks to rank opportunities objectively."
         tools={tools}
         caseStudyUrl="/work/overview"
-        caseStudyFilters="skills=UX%20Research"
+        caseStudyFilters="skills=Product%20Strategy"
         enableComments={true}
-        itemId="user-research-method"
+        itemId="how-we-prioritize"
       >
 
         {/* Why it matters - Feature card with gradient */}
@@ -50,23 +46,23 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               Why it matters
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              The wrong method produces confident-sounding noise. The right one answers the question you actually have.
+              Consistent scoring removes bias and politics from roadmap decisions. Teams can focus on execution rather than re-arguing priorities every sprint.
             </p>
           </div>
         </div>
 
-        {/* Method chooser */}
+        {/* Framework comparison */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Method chooser (quick map)
+            Prioritization frameworks
           </h3>
           <div className="space-y-4">
             <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Understand why people behave a certain way</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Semi-structured interviews (5–7)</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">RICE (Reach × Impact × Confidence ÷ Effort)</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Best for feature prioritization with user data</p>
                 </div>
               </div>
             </div>
@@ -74,8 +70,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Measure how many share a behavior/attitude</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Survey with clean branching</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">Value vs Effort Matrix</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Quick visual for stakeholder alignment</p>
                 </div>
               </div>
             </div>
@@ -83,17 +79,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Verify can they do it</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Task-based usability test with success criteria</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-                <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Compare alternatives</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ A/B or multivariate once you have traffic + events</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">Kano Model</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Categorize features by user satisfaction impact</p>
                 </div>
               </div>
             </div>
@@ -108,9 +95,10 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="emerald"
             items={[
-              "Draft scripts and pilots to remove bias.",
-              "Recruit ethically and representatively; incentive appropriately.",
-              "Run and record; timestamp notable moments for fast synthesis later."
+              "Select framework based on team maturity and data availability",
+              "Calibrate scoring with real examples from your domain",
+              "Create templates and train team on consistent application",
+              "Track framework effectiveness and iterate based on outcomes"
             ]}
           />
         </div>
@@ -123,9 +111,10 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="blue"
             items={[
-              "Method + sample size rationale",
-              "Scripts / tasks",
-              "Scheduling + consent kit"
+              "Prioritization framework selection and rationale",
+              "Scoring templates with examples and anchors",
+              "Team training materials and calibration exercises",
+              "Prioritized backlog with scores and rationale"
             ]}
           />
         </div>
@@ -138,8 +127,9 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="purple"
             items={[
-              "Stakeholders agree on the method before any sessions run.",
-              "Sessions yield usable quotes, clips, and task metrics (not just opinions)."
+              "Scoring consistency across team members (< 20% variance)",
+              "Stakeholders can predict priority ranking for new requests",
+              "Time from idea to priority score < 1 week"
             ]}
           />
         </div>

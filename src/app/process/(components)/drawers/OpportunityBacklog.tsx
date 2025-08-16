@@ -2,26 +2,22 @@
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
-import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 
-interface ChooseRightMethodProps {
+interface OpportunityBacklogProps {
   className?: string
   onClose?: () => void
 }
 
-export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps) {
+export function OpportunityBacklog({ className, onClose }: OpportunityBacklogProps) {
   const tools = (
     <ToolSection 
       tools={[
-        toolPill("userinterviews", "UserInterviews"),
-        toolPill("typeform", "Typeform"),
-        toolPill("google-forms", "Google Forms"),
-        toolPill("maze", "Maze"),
-        toolPill("useberry", "Useberry"),
-        toolPill("zoom", "Zoom"),
-        toolPill("loom", "Loom"),
-        toolPill("figjam", "FigJam")
+        toolPill("notion", "Notion", "md"),
+        toolPill("figma", "FigJam", "md"),
+        toolPill("jira", "Jira", "md"),
+        toolPill("asana", "Asana", "md"),
+        genericTool("Roadmap tools")
       ]}
     />
   )
@@ -29,14 +25,14 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
   return (
     <div className={className}>
       <DrawerLayout
-        stepText="Step 2 · IA & Flows · Stage 1: User Research"
-        title="Choose the right method"
-        summary="Match the method to the decision, not the fashion."
+        stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
+        title="Opportunity Backlog"
+        summary="A living taxonomy that turns scattered requests into ranked, actionable work streams."
         tools={tools}
         caseStudyUrl="/work/overview"
-        caseStudyFilters="skills=UX%20Research"
+        caseStudyFilters="skills=Product%20Strategy"
         enableComments={true}
-        itemId="user-research-method"
+        itemId="opportunity-backlog"
       >
 
         {/* Why it matters - Feature card with gradient */}
@@ -50,23 +46,23 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               Why it matters
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              The wrong method produces confident-sounding noise. The right one answers the question you actually have.
+              Without structure, great ideas get lost in Slack threads and meeting notes. A proper backlog captures, categorizes, and connects opportunities to measurable outcomes.
             </p>
           </div>
         </div>
 
-        {/* Method chooser */}
+        {/* Backlog taxonomy */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Method chooser (quick map)
+            Backlog hierarchy
           </h3>
           <div className="space-y-4">
             <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Understand why people behave a certain way</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Semi-structured interviews (5–7)</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">Initiative (6-12 months)</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "Improve checkout conversion" - tied to OKRs</p>
                 </div>
               </div>
             </div>
@@ -74,8 +70,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Measure how many share a behavior/attitude</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Survey with clean branching</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">Epic (1-3 months)</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "Streamline payment flow" - deliverable scope</p>
                 </div>
               </div>
             </div>
@@ -83,17 +79,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Verify can they do it</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Task-based usability test with success criteria</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-                <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Compare alternatives</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ A/B or multivariate once you have traffic + events</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">Opportunity/Story (1-2 weeks)</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "Reduce form fields from 12 to 6" - actionable work</p>
                 </div>
               </div>
             </div>
@@ -108,9 +95,10 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="emerald"
             items={[
-              "Draft scripts and pilots to remove bias.",
-              "Recruit ethically and representatively; incentive appropriately.",
-              "Run and record; timestamp notable moments for fast synthesis later."
+              "Design intake process that captures context and success criteria",
+              "Create templates for consistent opportunity documentation",
+              "Establish tagging system for easy filtering and reporting",
+              "Build connection between backlog items and user research insights"
             ]}
           />
         </div>
@@ -123,9 +111,10 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="blue"
             items={[
-              "Method + sample size rationale",
-              "Scripts / tasks",
-              "Scheduling + consent kit"
+              "Backlog taxonomy and intake templates",
+              "Opportunity documentation standards",
+              "Tagging and filtering system",
+              "Quarterly backlog health reports"
             ]}
           />
         </div>
@@ -138,8 +127,9 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="purple"
             items={[
-              "Stakeholders agree on the method before any sessions run.",
-              "Sessions yield usable quotes, clips, and task metrics (not just opinions)."
+              "Zero ideas lost - everything has a discoverable home",
+              "Sprint planning pulls from backlog 90%+ of the time",
+              "Stakeholders can find and understand any opportunity's status"
             ]}
           />
         </div>

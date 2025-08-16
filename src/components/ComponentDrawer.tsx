@@ -114,7 +114,7 @@ export function ComponentDrawer({
             <DialogPanel
               ref={panelRef}
               transition
-              className={`pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform data-closed:translate-x-full ${
+              className={`pointer-events-auto w-screen max-w-md sm:max-w-lg lg:max-w-xl transform data-closed:translate-x-full relative ${
                 isDragging 
                   ? 'transition-none' 
                   : 'transition duration-300 ease-out'
@@ -126,62 +126,32 @@ export function ComponentDrawer({
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <div className="relative flex h-full flex-col overflow-y-auto bg-white dark:bg-zinc-900 py-6 shadow-xl shadow-black/20 dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-white/10 dark:drop-shadow-[0_0_24px_rgba(255,255,255,0.06)]">
-                <div className="px-4 sm:px-6">
-                  <div className="flex items-start justify-between">
-                    <DialogTitle className="text-base font-semibold text-zinc-900 dark:text-white sr-only">
-                      {title}
-                    </DialogTitle>
-                    <div className="ml-auto flex h-7 items-center">
-                      <button
-                        type="button"
-                        onClick={onClose}
-                        className="relative rounded-md text-zinc-400 hover:text-zinc-500 dark:text-zinc-500 dark:hover:text-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                      >
-                        <span className="absolute -inset-2.5" />
-                        <span className="sr-only">Close panel</span>
-                        <XMarkIcon aria-hidden="true" className="size-6" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+              {/* X Button - Fixed to panel, not scrollable content */}
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 z-30 p-2 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors bg-white dark:bg-zinc-900"
+                aria-label="Close drawer"
+              >
+                <XMarkIcon className="size-5" />
+              </button>
+              
+              <div className="relative flex h-full flex-col overflow-y-auto bg-white dark:bg-zinc-900 shadow-xl shadow-black/20 dark:shadow-2xl dark:shadow-black/50 dark:ring-1 dark:ring-white/10 dark:drop-shadow-[0_0_24px_rgba(255,255,255,0.06)]">
+                {/* Hidden title for accessibility */}
+                <DialogTitle className="sr-only">
+                  {title}
+                </DialogTitle>
                 
-                {enableComments && (
-                  <div className="px-4 sm:px-6 border-b border-zinc-200 dark:border-zinc-700">
-                    <nav className="flex space-x-8" aria-label="Tabs">
-                      <button
-                        onClick={() => setActiveTab('overview')}
-                        className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                          activeTab === 'overview'
-                            ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
-                            : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-600'
-                        }`}
-                      >
-                        Overview
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('comments')}
-                        className={`whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                          activeTab === 'comments'
-                            ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
-                            : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-600'
-                        }`}
-                      >
-                        Comments
-                      </button>
-                    </nav>
-                  </div>
-                )}
-                
-                <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                <div className="relative flex-1">
                   {activeTab === 'overview' ? (
                     children
                   ) : (
                     enableComments && itemId && (
-                      <CommentSection 
-                        itemId={itemId} 
-                        onCaptchaRequired={onCaptchaRequired}
-                      />
+                      <div className="px-4 sm:px-6 py-6">
+                        <CommentSection 
+                          itemId={itemId} 
+                          onCaptchaRequired={onCaptchaRequired}
+                        />
+                      </div>
                     )
                   )}
                 </div>

@@ -1,37 +1,41 @@
 'use client'
 
+import { DrawerLayout } from '@/components/ui/DrawerLayout'
+import { BulletList } from '@/components/ui/BulletList'
 import { Chip } from '@/components/ui/Chip'
-import { ToolPill } from '@/components/ui/ToolPill'
+import { ToolSection, toolPill } from '@/components/ui/ToolSection'
 
 interface StakeholderAlignmentProps {
   className?: string
+  onClose?: () => void
 }
 
-export function StakeholderAlignment({ className }: StakeholderAlignmentProps) {
+export function StakeholderAlignment({ className, onClose }: StakeholderAlignmentProps) {
+  const tools = (
+    <ToolSection 
+      tools={[
+        toolPill("miro", "Miro/FigJam"),
+        toolPill("notion", "Notion"),
+        toolPill("google-docs", "Google Docs"),
+        toolPill("loom", "Loom")
+      ]}
+    />
+  )
+
   return (
     <div className={className}>
-      {/* H1: Stakeholder Alignment */}
-      <div className="mb-6">
-        <div className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mb-2">
-          Step 1 · Discovery & Strategy
-        </div>
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
-          Stakeholder Alignment
-        </h1>
-      </div>
+      <DrawerLayout
+        stepText="Step 1 · Discovery & Strategy"
+        title="Stakeholder Alignment"
+        summary="Align goals, measures, and decision paths so delivery moves faster."
+        tools={tools}
+        caseStudyUrl="/work/overview"
+        caseStudyFilters="skills=Stakeholder%20Alignment"
+        enableComments={true}
+        itemId="stakeholder-alignment"
+      >
 
-      {/* Executive Summary */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
-          Executive Summary
-        </h2>
-        <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-          Align goals, measures, and decision paths so delivery moves faster.
-        </p>
-      </div>
-
-      {/* Why it matters - Feature card with gradient */}
-      <div className="mb-8">
+        {/* Why it matters - Feature card with gradient */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           {/* Subtle glow effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
@@ -42,204 +46,145 @@ export function StakeholderAlignment({ className }: StakeholderAlignmentProps) {
               Great products die from misalignment, not bad ideas.
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Alignment creates a shared definition of &quot;done,&quot; success measures, and decision velocity.
+              Alignment creates a shared definition of "done," success measures, and decision velocity.
             </p>
           </div>
         </div>
-      </div>
 
-      {/* What I do */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          What I do
-        </h2>
-        <ul className="space-y-3 pl-6">
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">45–60-min workshops to surface goals, non-goals, constraints, assumptions</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Map decision-makers & influencers; capture RACI and escalation paths</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Define a north-star metric plus 2–3 guardrails</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Spin up a living decision log to avoid re-debates</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Timebox risks/unknowns into research spikes</span>
-          </li>
-        </ul>
-      </div>
+        {/* What I do */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I do
+          </h3>
+          <BulletList 
+            color="emerald"
+            items={[
+              "45–60-min workshops to surface goals, non-goals, constraints, assumptions",
+              "Map decision-makers & influencers; capture RACI and escalation paths",
+              "Define a north-star metric plus 2–3 guardrails",
+              "Spin up a living decision log to avoid re-debates",
+              "Timebox risks/unknowns into research spikes"
+            ]}
+          />
+        </div>
 
-      {/* Outputs & artifacts */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Outputs & artifacts
-        </h2>
-        <ul className="space-y-3 pl-6">
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Alignment brief (goals, non-goals, guardrails, risks/assumptions)</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">RACI + stakeholder map (tied to user-facing flow areas)</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Success measures & checkpoint cadence</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Kickoff deck (concise, reusable)</span>
-          </li>
-        </ul>
-      </div>
+        {/* Outputs & artifacts */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Outputs & Deliverables
+          </h3>
+          <BulletList 
+            color="blue"
+            items={[
+              "Alignment brief (goals, non-goals, guardrails, risks/assumptions)",
+              "RACI + stakeholder map (tied to user-facing flow areas)",
+              "Success measures & checkpoint cadence",
+              "Kickoff deck (concise, reusable)"
+            ]}
+          />
+        </div>
 
-      {/* Signals of success */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Signals of success
-        </h2>
-        <ul className="space-y-3 pl-6">
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Every stakeholder can state the same primary goal & metric</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Fewer blocked tickets; faster approvals in early sprints</span>
-          </li>
-          <li className="flex items-start">
-            <div className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-            <span className="text-zinc-700 dark:text-zinc-300">Decisions referenced instead of re-argued</span>
-          </li>
-        </ul>
-      </div>
+        {/* Signals of success */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Signals of success
+          </h3>
+          <BulletList 
+            color="purple"
+            items={[
+              "Every stakeholder can state the same primary goal & metric",
+              "Fewer blocked tickets; faster approvals in early sprints",
+              "Decisions referenced instead of re-argued"
+            ]}
+          />
+        </div>
 
-      {/* Sample - Two cards in responsive grid */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Sample
-        </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Card A - Workshop agenda */}
-          <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-            <h3 className="font-semibold text-zinc-900 dark:text-white mb-4">
-              Workshop agenda (45–60 min)
-            </h3>
-            <div className="space-y-3">
-              <div className="flex">
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">1.</span>
-                <div>
-                  <span className="font-medium text-zinc-900 dark:text-white">Goals & Non-goals</span>
-                  <span className="text-zinc-500 dark:text-zinc-400 ml-2">(15m)</span>
+        {/* Sample - Two cards in responsive grid */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Sample
+          </h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Card A - Workshop agenda */}
+            <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+              <h3 className="font-semibold text-zinc-900 dark:text-white mb-4">
+                Workshop agenda (45–60 min)
+              </h3>
+              <div className="space-y-3">
+                <div className="flex">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">1.</span>
+                  <div>
+                    <span className="font-medium text-zinc-900 dark:text-white">Goals & Non-goals</span>
+                    <span className="text-zinc-500 dark:text-zinc-400 ml-2">(15m)</span>
+                  </div>
+                </div>
+                <div className="flex">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">2.</span>
+                  <div>
+                    <span className="font-medium text-zinc-900 dark:text-white">Success measures</span>
+                    <span className="text-zinc-500 dark:text-zinc-400 ml-2">(15m)</span>
+                  </div>
+                </div>
+                <div className="flex">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">3.</span>
+                  <div>
+                    <span className="font-medium text-zinc-900 dark:text-white">Constraints & assumptions</span>
+                    <span className="text-zinc-500 dark:text-zinc-400 ml-2">(10m)</span>
+                  </div>
+                </div>
+                <div className="flex">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">4.</span>
+                  <div>
+                    <span className="font-medium text-zinc-900 dark:text-white">RACI mapping</span>
+                    <span className="text-zinc-500 dark:text-zinc-400 ml-2">(10m)</span>
+                  </div>
+                </div>
+                <div className="flex">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">5.</span>
+                  <div>
+                    <span className="font-medium text-zinc-900 dark:text-white">Decision framework</span>
+                    <span className="text-zinc-500 dark:text-zinc-400 ml-2">(5m)</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex">
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">2.</span>
+            </div>
+
+            {/* Card B - Sample output */}
+            <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+              <h3 className="font-semibold text-zinc-900 dark:text-white mb-4">
+                Sample output: Alignment brief (excerpt)
+              </h3>
+              <div className="space-y-3 text-sm">
                 <div>
-                  <span className="font-medium text-zinc-900 dark:text-white">Success measures</span>
-                  <span className="text-zinc-500 dark:text-zinc-400 ml-2">(15m)</span>
+                  <span className="font-medium text-zinc-900 dark:text-white">Goal:</span>
+                  <span className="text-zinc-700 dark:text-zinc-300 ml-2">Increase checkout completion by 15% in Q2</span>
                 </div>
-              </div>
-              <div className="flex">
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">3.</span>
                 <div>
-                  <span className="font-medium text-zinc-900 dark:text-white">Constraints & assumptions</span>
-                  <span className="text-zinc-500 dark:text-zinc-400 ml-2">(10m)</span>
+                  <span className="font-medium text-zinc-900 dark:text-white">Non-goals:</span>
+                  <span className="text-zinc-700 dark:text-zinc-300 ml-2">Redesigning the entire cart experience</span>
                 </div>
-              </div>
-              <div className="flex">
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">4.</span>
                 <div>
-                  <span className="font-medium text-zinc-900 dark:text-white">RACI mapping</span>
-                  <span className="text-zinc-500 dark:text-zinc-400 ml-2">(10m)</span>
+                  <span className="font-medium text-zinc-900 dark:text-white">North-star metric:</span>
+                  <span className="text-zinc-700 dark:text-zinc-300 ml-2">Checkout completion rate</span>
                 </div>
-              </div>
-              <div className="flex">
-                <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm w-6 flex-shrink-0">5.</span>
                 <div>
-                  <span className="font-medium text-zinc-900 dark:text-white">Decision framework</span>
-                  <span className="text-zinc-500 dark:text-zinc-400 ml-2">(5m)</span>
+                  <span className="font-medium text-zinc-900 dark:text-white">Guardrails:</span>
+                  <span className="text-zinc-700 dark:text-zinc-300 ml-2">Don't break mobile performance; maintain accessibility</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-900 dark:text-white">Key assumption:</span>
+                  <span className="text-zinc-700 dark:text-zinc-300 ml-2">Users abandon due to too many form fields</span>
+                </div>
+                <div>
+                  <span className="font-medium text-zinc-900 dark:text-white">Decision maker:</span>
+                  <span className="text-zinc-700 dark:text-zinc-300 ml-2">PM (final call), Eng Lead (feasibility), Designer (UX)</span>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Card B - Sample output */}
-          <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-            <h3 className="font-semibold text-zinc-900 dark:text-white mb-4">
-              Sample output: Alignment brief (excerpt)
-            </h3>
-            <div className="space-y-3 text-sm">
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Goal:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Increase checkout completion by 15% in Q2</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Non-goals:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Redesigning the entire cart experience</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">North-star metric:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Checkout completion rate</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Guardrails:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Don&apos;t break mobile performance; maintain accessibility</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Key assumption:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">Users abandon due to too many form fields</span>
-              </div>
-              <div>
-                <span className="font-medium text-zinc-900 dark:text-white">Decision maker:</span>
-                <span className="text-zinc-700 dark:text-zinc-300 ml-2">PM (final call), Eng Lead (feasibility), Designer (UX)</span>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
 
-      {/* Tools - using ToolPill components */}
-      <div className="mb-8">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Tools
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          <ToolPill slug="figma" name="FigJam/Miro" size="md" />
-          <ToolPill slug="notion" name="Notion/Confluence" size="md" />
-          <ToolPill slug="loom" name="Loom" size="md" />
-        </div>
-      </div>
-
-      {/* Related - CTA row */}
-      <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
-        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-          Related
-        </h2>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <a
-            href="/work/overview?skills=Stakeholder%20Alignment"
-            className="inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
-          >
-            View case studies →
-          </a>
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="inline-flex items-center justify-center px-4 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium rounded-lg transition-colors"
-          >
-            Back to process overview ↑
-          </button>
-        </div>
-      </div>
+      </DrawerLayout>
     </div>
   )
 }

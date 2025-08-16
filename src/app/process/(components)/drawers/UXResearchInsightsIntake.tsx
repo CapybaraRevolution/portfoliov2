@@ -2,26 +2,22 @@
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
-import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 
-interface ChooseRightMethodProps {
+interface UXResearchInsightsIntakeProps {
   className?: string
   onClose?: () => void
 }
 
-export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps) {
+export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsightsIntakeProps) {
   const tools = (
     <ToolSection 
       tools={[
-        toolPill("userinterviews", "UserInterviews"),
-        toolPill("typeform", "Typeform"),
-        toolPill("google-forms", "Google Forms"),
-        toolPill("maze", "Maze"),
-        toolPill("useberry", "Useberry"),
-        toolPill("zoom", "Zoom"),
-        toolPill("loom", "Loom"),
-        toolPill("figjam", "FigJam")
+        toolPill("notion", "Notion", "md"),
+        toolPill("dovetail", "Dovetail", "md"),
+        toolPill("figma", "FigJam", "md"),
+        toolPill("userinterviews", "UserInterviews", "md"),
+        genericTool("Research repositories")
       ]}
     />
   )
@@ -29,14 +25,14 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
   return (
     <div className={className}>
       <DrawerLayout
-        stepText="Step 2 · IA & Flows · Stage 1: User Research"
-        title="Choose the right method"
-        summary="Match the method to the decision, not the fashion."
+        stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
+        title="UX Research Insights Intake"
+        summary="Transform research findings into prioritized product opportunities with clear success criteria."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=UX%20Research"
         enableComments={true}
-        itemId="user-research-method"
+        itemId="ux-research-insights-intake"
       >
 
         {/* Why it matters - Feature card with gradient */}
@@ -50,23 +46,23 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               Why it matters
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              The wrong method produces confident-sounding noise. The right one answers the question you actually have.
+              Research insights lose impact when they sit in reports. Systematic intake translates findings into scored opportunities that compete fairly in prioritization.
             </p>
           </div>
         </div>
 
-        {/* Method chooser */}
+        {/* Research-to-roadmap flow */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Method chooser (quick map)
+            Research-to-roadmap flow
           </h3>
           <div className="space-y-4">
             <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Understand why people behave a certain way</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Semi-structured interviews (5–7)</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">1. Extract insights</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ User pain points, unmet needs, behavior patterns</p>
                 </div>
               </div>
             </div>
@@ -74,8 +70,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Measure how many share a behavior/attitude</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Survey with clean branching</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">2. Generate opportunities</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ "How might we..." statements linked to specific insights</p>
                 </div>
               </div>
             </div>
@@ -83,8 +79,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Verify can they do it</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Task-based usability test with success criteria</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">3. Score and prioritize</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Apply standard framework with research confidence level</p>
                 </div>
               </div>
             </div>
@@ -92,8 +88,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Compare alternatives</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ A/B or multivariate once you have traffic + events</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">4. Define success criteria</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Measurable outcomes that validate the research hypothesis</p>
                 </div>
               </div>
             </div>
@@ -108,9 +104,10 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="emerald"
             items={[
-              "Draft scripts and pilots to remove bias.",
-              "Recruit ethically and representatively; incentive appropriately.",
-              "Run and record; timestamp notable moments for fast synthesis later."
+              "Create intake templates that capture insight context and confidence",
+              "Facilitate workshops to translate findings into opportunity statements",
+              "Establish scoring criteria that weight research quality and sample size",
+              "Build feedback loops from implementation back to research hypotheses"
             ]}
           />
         </div>
@@ -123,9 +120,10 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="blue"
             items={[
-              "Method + sample size rationale",
-              "Scripts / tasks",
-              "Scheduling + consent kit"
+              "Research insight intake templates and process",
+              "Insight-to-opportunity mapping workshops",
+              "Research-weighted scoring criteria",
+              "Success criteria definitions tied to research goals"
             ]}
           />
         </div>
@@ -138,8 +136,9 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
           <BulletList 
             color="purple"
             items={[
-              "Stakeholders agree on the method before any sessions run.",
-              "Sessions yield usable quotes, clips, and task metrics (not just opinions)."
+              "Research insights become backlog items within 2 weeks of study completion",
+              "Product decisions can be traced back to specific research findings",
+              "Research ROI is measurable through implemented opportunity outcomes"
             ]}
           />
         </div>

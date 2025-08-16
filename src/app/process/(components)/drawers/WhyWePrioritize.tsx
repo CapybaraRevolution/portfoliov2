@@ -2,22 +2,22 @@
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
-import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 
-interface WhyResearchFirstProps {
+interface WhyWePrioritizeProps {
   className?: string
   onClose?: () => void
 }
 
-export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) {
+export function WhyWePrioritize({ className, onClose }: WhyWePrioritizeProps) {
   const tools = (
     <ToolSection 
       tools={[
-        toolPill("notion", "Notion/Confluence"),
-        toolPill("figma", "Figma"),
-        toolPill("amplitude", "Amplitude/GA4"),
-        toolPill("loom", "Loom")
+        toolPill("notion", "Notion", "md"),
+        toolPill("figma", "FigJam", "md"),
+        toolPill("google", "Google Sheets", "md"),
+        genericTool("Prioritization frameworks"),
+        genericTool("OKR tools")
       ]}
     />
   )
@@ -25,14 +25,14 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
   return (
     <div className={className}>
       <DrawerLayout
-        stepText="Step 2 · IA & Flows · Stage 1: User Research"
-        title="Why research first?"
-        summary="Research is the cheapest way to avoid building the wrong thing."
+        stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
+        title="Why We Prioritize"
+        summary="Focus beats volume. Prioritization turns a long wish list into the next best set of bets."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
         enableComments={true}
-        itemId="user-research-why"
+        itemId="why-we-prioritize"
       >
 
         {/* Why it matters - Feature card with gradient */}
@@ -45,21 +45,9 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
               Why it matters
             </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                <>
-                  <strong>Cuts rework:</strong> finding problems on paper or in a prototype is orders of magnitude cheaper than after code ships.
-                </>,
-                <>
-                  <strong>Focuses effort:</strong> clarifies the few moments that drive outcomes (activation, conversion, retention).
-                </>,
-                <>
-                  <strong>De-risks bets:</strong> decisions reference evidence, not the loudest opinion; stakeholder alignment improves.
-                </>
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
+              Without rules, the roadmap drifts. Clear priorities reduce thrash, accelerate decisions, and keep us building what moves the metric.
+            </p>
           </div>
         </div>
 
@@ -71,9 +59,10 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
           <BulletList 
             color="emerald"
             items={[
-              "Map risks/opportunities from Step 1 (Stakeholders, Competitive, Systems).",
-              "Tie research questions to business outcomes (e.g., 'What blocks activation?').",
-              "Instrument the minimum events needed to measure impact in Step 5."
+              "Map business goals to user needs and system constraints",
+              "Create shared scoring criteria (impact, effort, confidence)",
+              "Establish decision-making cadence and DRI ownership",
+              "Build transparent backlog with clear acceptance criteria"
             ]}
           />
         </div>
@@ -86,8 +75,10 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
           <BulletList 
             color="blue"
             items={[
-              "Risk-to-research matrix (question → method → expected decision)",
-              "'If we learn X, we'll do Y' decision table"
+              "Prioritization policy (one page)",
+              "Shared backlog taxonomy (Initiative → Epic → Opportunity/Story)",
+              "Decision RACI & DRI",
+              "Scoring framework with clear criteria"
             ]}
           />
         </div>
@@ -100,8 +91,9 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
           <BulletList 
             color="purple"
             items={[
-              "Fewer 'unknowns' entering sprint planning.",
-              "A small set of decisions unblocked (with owners and timelines)."
+              "Team can explain top 3 priorities and why they rank higher than #4",
+              "< 2 weeks from idea to prioritized backlog placement",
+              "Roadmap changes correlate to new data, not new opinions"
             ]}
           />
         </div>

@@ -11,9 +11,38 @@ import { type Section } from '@/components/SectionProvider'
 import '@/styles/tailwind.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://kylemcgraw.io'),
   title: {
     template: '%s - Kyle McGraw',
     default: 'Kyle McGraw - Product Manager & UX Designer',
+  },
+  description: 'Proven methodology, flexible to your goals. Five phases that turn insight into measurable outcomes.',
+  openGraph: {
+    title: 'Kyle McGraw - Product Manager & UX Designer',
+    description: 'Proven methodology, flexible to your goals. Five phases that turn insight into measurable outcomes.',
+    url: 'https://kylemcgraw.io',
+    siteName: 'Kyle McGraw',
+    images: [
+      {
+        url: '/images/kyle-mcgraw.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Kyle McGraw - Product Manager & UX Designer',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Kyle McGraw - Product Manager & UX Designer',
+    description: 'Proven methodology, flexible to your goals. Five phases that turn insight into measurable outcomes.',
+    images: ['/images/kyle-mcgraw.jpg'],
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 }
 

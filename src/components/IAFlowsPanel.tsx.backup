@@ -2,17 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
-import { TeamTag } from '@/components/ui/TeamTag'
-import { StatusBadge } from '@/components/ui/StatusBadge'
 import { WhatIsUserResearch } from '@/app/process/(components)/drawers/WhatIsUserResearch'
 import { WhyResearchFirst } from '@/app/process/(components)/drawers/WhyResearchFirst'
 import { ChooseRightMethod } from '@/app/process/(components)/drawers/ChooseRightMethod'
-import { JMPersonas } from '@/app/process/(components)/drawers/JMPersonas'
-import { JMJourneys } from '@/app/process/(components)/drawers/JMJourneys'
-import { JMDecisions } from '@/app/process/(components)/drawers/JMDecisions'
-import { FDInformationArchitecture } from '@/app/process/(components)/drawers/FDInformationArchitecture'
-import { FDUserFlows } from '@/app/process/(components)/drawers/FDUserFlows'
-import { FDTaskValidation } from '@/app/process/(components)/drawers/FDTaskValidation'
 
 // Placeholder drawer content for steps without implemented drawers
 function PlaceholderDrawerContent({ title }: { title?: string }) {
@@ -123,7 +115,7 @@ type Row = {
   id: string
   title: string
   subtitle: string
-  dept: 'Product Team' | 'Design' | 'Engineering' | 'QA'
+  dept: 'Product Team' | 'Design' | 'Engineering'
   status: 'Production' | 'Preview' | 'In Progress'
   priority: number
   drawerId: string
@@ -192,34 +184,31 @@ const rowsByStep: Record<IaStepType, Row[]> = {
     {
       id: 'jm-personas',
       title: 'Personas & contexts',
-      subtitle: 'Lightweight personas based on research patterns to guide design decisions.',
+      subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       dept: 'Product Team',
       status: 'Production',
       priority: 85,
       drawerId: 'jm-personas',
-      drawerComponent: JMPersonas,
       itemId: 'journey-mapping-personas'
     },
     {
       id: 'jm-journeys',
       title: 'Journeys & top frictions',
-      subtitle: 'Map the end-to-end experience to identify friction points and optimization opportunities.',
+      subtitle: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       dept: 'Design',
       status: 'Production',
       priority: 82,
       drawerId: 'jm-journeys',
-      drawerComponent: JMJourneys,
       itemId: 'journey-mapping-journeys'
     },
     {
       id: 'jm-decisions',
       title: 'Turn signals into decisions',
-      subtitle: 'Transform journey insights into actionable roadmap priorities with clear success criteria.',
+      subtitle: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
       dept: 'Product Team',
       status: 'Preview',
       priority: 79,
       drawerId: 'jm-decisions',
-      drawerComponent: JMDecisions,
       itemId: 'journey-mapping-decisions'
     }
   ],
@@ -227,34 +216,31 @@ const rowsByStep: Record<IaStepType, Row[]> = {
     {
       id: 'fd-ia',
       title: 'Information architecture',
-      subtitle: 'Organize content and features in a way that matches users\' mental models and supports key tasks.',
+      subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       dept: 'Design',
       status: 'In Progress',
       priority: 76,
       drawerId: 'fd-ia',
-      drawerComponent: FDInformationArchitecture,
       itemId: 'flow-design-ia'
     },
     {
       id: 'fd-flows',
       title: 'User flow diagrams',
-      subtitle: 'Map task paths and decision points to ensure smooth, logical user experiences.',
+      subtitle: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       dept: 'Design',
       status: 'In Progress',
       priority: 73,
       drawerId: 'fd-flows',
-      drawerComponent: FDUserFlows,
       itemId: 'flow-design-flows'
     },
     {
       id: 'fd-validation',
       title: 'Task flow validation',
-      subtitle: 'Test and validate flow designs with real users before development begins.',
+      subtitle: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
       dept: 'Design',
       status: 'Production',
       priority: 70,
       drawerId: 'fd-validation',
-      drawerComponent: FDTaskValidation,
       itemId: 'flow-design-validation'
     }
   ]
@@ -392,16 +378,35 @@ export function IAFlowsPanel() {
             onClick={() => handleRowClick(row)}
           >
             <div className="flex-auto">
-              <div className="flex items-center gap-x-3 mb-2">
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-white">{row.title}</h3>
-                <div className="flex items-center gap-x-2">
-                  <TeamTag team={row.dept} />
-                  <StatusBadge status={row.status} />
+                <div className="flex items-center gap-x-3 mb-2">
+                  <h3 className="text-base font-semibold text-zinc-900 dark:text-white">{row.title}</h3>
+                  <div className="flex items-center gap-x-2">
+                    {/* Department Chip */}
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                      row.dept === 'Product Team' 
+                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-blue-600/20 dark:ring-blue-400/20'
+                        : row.dept === 'Design'
+                        ? 'bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 ring-purple-600/20 dark:ring-purple-400/20'
+                        : 'bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 ring-orange-600/20 dark:ring-orange-400/20'
+                    }`}>
+                      {row.dept}
+                    </span>
+                    {/* Status Badge */}
+                    <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+                      row.status === 'Production' 
+                        ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 ring-emerald-600/20 dark:ring-emerald-400/20'
+                        : row.status === 'Preview'
+                        ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 ring-amber-600/20 dark:ring-amber-400/20'
+                        : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 ring-zinc-600/20 dark:ring-zinc-400/20'
+                    }`}>
+                      {row.status}
+                    </span>
+                  </div>
                 </div>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
+                  {row.subtitle}
+                </p>
               </div>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
-                {row.subtitle}
-              </p>
             </div>
           </div>
         ))}
@@ -418,7 +423,7 @@ export function IAFlowsPanel() {
         itemId={selectedDeployment?.itemId}
       >
         {selectedDeployment?.drawerComponent ? (
-          <selectedDeployment.drawerComponent onClose={() => setDrawerOpen(false)} />
+          <selectedDeployment.drawerComponent />
         ) : (
           <PlaceholderDrawerContent title={selectedDeployment?.title} />
         )}
