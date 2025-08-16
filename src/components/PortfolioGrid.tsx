@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FunnelIcon } from '@heroicons/react/20/solid'
 import { projects, filterProjects, disciplines, skillGroups } from '@/data/projects'
@@ -16,7 +16,13 @@ export function PortfolioGrid() {
   const [activeCategory, setActiveCategory] = useState<string>('All')
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set())
   const [aiAccelerated, setAiAccelerated] = useState<boolean>(false)
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(() => {
+    // Persist filter open state during URL changes
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('portfolio-filters-open') === 'true'
+    }
+    return false
+  })
   
   // Derived state
   const filteredProjects = filterProjects(
@@ -26,6 +32,13 @@ export function PortfolioGrid() {
   )
   
   const activeFiltersCount = selectedSkills.size + (aiAccelerated ? 1 : 0) + (activeCategory !== 'All' ? 1 : 0)
+
+  // Persist filtersOpen state
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('portfolio-filters-open', filtersOpen.toString())
+    }
+  }, [filtersOpen])
 
   // Initialize from URL params
   useEffect(() => {
@@ -40,7 +53,7 @@ export function PortfolioGrid() {
   }, [searchParams])
 
   // Update URL when filters change
-  const updateURL = (updates: {
+  const updateURL = useCallback((updates: {
     category?: string
     skills?: Set<string>
     ai?: boolean
@@ -74,14 +87,14 @@ export function PortfolioGrid() {
     const paramString = params.toString()
     const newUrl = paramString ? `?${paramString}` : '/work/overview'
     router.replace(newUrl, { scroll: false })
-  }
+  }, [searchParams, router])
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category)
     updateURL({ category })
   }
 
-  const handleSkillToggle = (skill: string) => {
+  const handleSkillToggle = useCallback((skill: string) => {
     const newSkills = new Set(selectedSkills)
     if (newSkills.has(skill)) {
       newSkills.delete(skill)
@@ -90,7 +103,7 @@ export function PortfolioGrid() {
     }
     setSelectedSkills(newSkills)
     updateURL({ skills: newSkills })
-  }
+  }, [selectedSkills, updateURL])
 
   const handleAIToggle = (checked: boolean) => {
     setAiAccelerated(checked)
