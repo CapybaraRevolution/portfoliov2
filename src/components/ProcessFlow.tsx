@@ -1244,7 +1244,7 @@ function PrioritizationPanel() {
                   {/* Main content row */}
                   <tr 
                     data-deployment-index={index}
-                    className={`deployment-row-main transition-all duration-200 ease-out cursor-pointer ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''} ${
+                    className={`deployment-row-main cursor-pointer transition-transform transition-opacity duration-200 ease-out ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''} ${
                       isAnimating || !isLoaded
                         ? 'transform translate-y-12 opacity-0' 
                         : 'transform translate-y-0 opacity-100'
@@ -1298,7 +1298,7 @@ function PrioritizationPanel() {
                   {/* Progress bar sub-row - spans full width */}
                   <tr 
                     data-deployment-index={index}
-                    className={`deployment-row-progress transition-all duration-200 ease-out cursor-pointer border-b border-zinc-200 dark:border-zinc-700 ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''}`}
+                    className={`deployment-row-progress cursor-pointer border-b border-zinc-200 dark:border-zinc-700 ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''}`}
                     onClick={() => handleDeploymentClick(deployment)}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
