@@ -1032,6 +1032,7 @@ function PrioritizationPanel() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [visibleProgressBars, setVisibleProgressBars] = useState<Set<number>>(new Set())
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   // Function to determine status based on progress score
   const getStatusFromScore = (score: number): 'Draft' | 'In Review' | 'Approved' => {
@@ -1242,8 +1243,8 @@ function PrioritizationPanel() {
                 <React.Fragment key={deployment.id}>
                   {/* Main content row */}
                   <tr 
-                    data-main-row={index}
-                    className={`list-item-main group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-200 ease-out cursor-pointer ${
+                    data-deployment-index={index}
+                    className={`deployment-row-main transition-all duration-200 ease-out cursor-pointer ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''} ${
                       isAnimating || !isLoaded
                         ? 'transform translate-y-12 opacity-0' 
                         : 'transform translate-y-0 opacity-100'
@@ -1252,6 +1253,8 @@ function PrioritizationPanel() {
                       transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
                     {/* Project column */}
                     <td className="py-4 pr-8 pl-4 sm:pl-6" style={{ minWidth: '300px' }}>
@@ -1294,9 +1297,11 @@ function PrioritizationPanel() {
                   
                   {/* Progress bar sub-row - spans full width */}
                   <tr 
-                    data-progress-row={index}
-                    className="list-item-progress hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all duration-200 ease-out cursor-pointer border-b border-zinc-200 dark:border-zinc-700" 
+                    data-deployment-index={index}
+                    className={`deployment-row-progress transition-all duration-200 ease-out cursor-pointer border-b border-zinc-200 dark:border-zinc-700 ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''}`}
                     onClick={() => handleDeploymentClick(deployment)}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
                     <td colSpan={3} className="pb-4 px-6" style={{ paddingTop: '0px' }}>
                       <div 
