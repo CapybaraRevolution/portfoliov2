@@ -1298,7 +1298,14 @@ function PrioritizationPanel() {
                   {/* Progress bar sub-row - spans full width */}
                   <tr 
                     data-deployment-index={index}
-                    className={`deployment-row-progress cursor-pointer border-b border-zinc-200 dark:border-zinc-700 ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''}`}
+                    className={`deployment-row-progress cursor-pointer transition-transform transition-opacity duration-200 ease-out border-b border-zinc-200 dark:border-zinc-700 ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''} ${
+                      isAnimating || !isLoaded
+                        ? 'transform translate-y-12 opacity-0' 
+                        : 'transform translate-y-0 opacity-100'
+                    }`}
+                    style={{
+                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
+                    }}
                     onClick={() => handleDeploymentClick(deployment)}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
