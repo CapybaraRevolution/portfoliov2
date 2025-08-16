@@ -168,8 +168,12 @@ export function PortfolioGrid() {
             className={`transition-all duration-500 ease-out overflow-hidden ${
               filtersOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
             }`}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6 relative overflow-hidden">
+            <div 
+              className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6 relative overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
               {/* Emerald wave of light effect */}
               {filtersOpen && (
                 <div 
@@ -224,8 +228,11 @@ export function PortfolioGrid() {
                               onClick={(e) => {
                                 e.preventDefault()
                                 e.stopPropagation()
+                                e.nativeEvent?.stopImmediatePropagation?.()
                                 handleSkillToggle(skill)
                               }}
+                              onMouseDown={(e) => e.stopPropagation()}
+                              onMouseUp={(e) => e.stopPropagation()}
                               className={`inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200 text-xs px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
                                 selectedSkills.has(skill)
                                   ? 'border border-emerald-600 text-emerald-800 bg-emerald-200/60 shadow-sm shadow-emerald-500/20 dark:border-emerald-500 dark:text-emerald-100 dark:bg-emerald-400/30 dark:shadow-emerald-400/20'
