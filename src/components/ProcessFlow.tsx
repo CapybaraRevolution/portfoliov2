@@ -21,6 +21,18 @@ import { UXResearchInsightsIntake } from '@/app/process/(components)/drawers/UXR
 import { Wireframes } from '@/app/process/(components)/drawers/Wireframes'
 import { ClickablePrototypes } from '@/app/process/(components)/drawers/ClickablePrototypes'
 import { DesignSystems } from '@/app/process/(components)/drawers/DesignSystems'
+import { SprintPlanningBacklogGrooming } from '@/app/process/(components)/drawers/SprintPlanningBacklogGrooming'
+import { ReleasePlanningCutCandidate } from '@/app/process/(components)/drawers/ReleasePlanningCutCandidate'
+import { DevHandoffPackages } from '@/app/process/(components)/drawers/DevHandoffPackages'
+import { StakeholderDemosAcceptance } from '@/app/process/(components)/drawers/StakeholderDemosAcceptance'
+import { DailyDesignQA } from '@/app/process/(components)/drawers/DailyDesignQA'
+import { FigmaProductParityAudit } from '@/app/process/(components)/drawers/FigmaProductParityAudit'
+import { AccessibilityPerformanceQA } from '@/app/process/(components)/drawers/AccessibilityPerformanceQA'
+import { AnalyticsEventsTrackingSpec } from '@/app/process/(components)/drawers/AnalyticsEventsTrackingSpec'
+import { CrossFunctionalRiskAssessment } from '@/app/process/(components)/drawers/CrossFunctionalRiskAssessment'
+import { ReleaseReadinessReview } from '@/app/process/(components)/drawers/ReleaseReadinessReview'
+import { IncidentRollbackPlan } from '@/app/process/(components)/drawers/IncidentRollbackPlan'
+import { PostReleaseMonitoringBugSmash } from '@/app/process/(components)/drawers/PostReleaseMonitoringBugSmash'
 import { IAFlowsPanel } from '@/components/IAFlowsPanel'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
@@ -41,6 +53,11 @@ import { ChartBarIcon } from '@/components/icons/ChartBarIcon'
 import { FlaskIcon } from '@/components/icons/FlaskIcon'
 import { BoltIcon } from '@/components/icons/BoltIcon'
 import { ArrowPathIcon } from '@/components/icons/ArrowPathIcon'
+import { CalendarIcon } from '@/components/icons/CalendarIcon'
+import { ClipboardIcon } from '@/components/icons/ClipboardIcon'
+import { PackageIcon } from '@/components/icons/PackageIcon'
+import { CheckIcon } from '@/components/icons/CheckIcon'
+import { GridPattern } from '@/components/GridPattern'
 
 interface ProcessStep {
   id: number
@@ -601,7 +618,13 @@ function StepContent({
           onDrawerClose={onDrawerClose}
         />
       case 4:
-        return <Step4Layout step={step} />
+        return <Step4Layout 
+          step={step} 
+          selectedDrawer={selectedDrawer}
+          isDrawerOpen={isDrawerOpen}
+          onCardClick={onCardClick}
+          onDrawerClose={onDrawerClose}
+        />
       case 5:
         return <Step5Layout 
           step={step} 
@@ -1443,6 +1466,33 @@ function Step3Layout({
         return <ClickablePrototypes onClose={onDrawerClose} />
       case 'design-systems':
         return <DesignSystems onClose={onDrawerClose} />
+      // Step 4: Plan tab drawers
+      case 'sprint-planning-backlog-grooming':
+        return <SprintPlanningBacklogGrooming onClose={onDrawerClose} />
+      case 'release-planning-cut-candidate':
+        return <ReleasePlanningCutCandidate onClose={onDrawerClose} />
+      case 'dev-handoff-packages':
+        return <DevHandoffPackages onClose={onDrawerClose} />
+      case 'stakeholder-demos-acceptance':
+        return <StakeholderDemosAcceptance onClose={onDrawerClose} />
+      // Step 4: Build tab drawers
+      case 'daily-design-qa':
+        return <DailyDesignQA onClose={onDrawerClose} />
+      case 'figma-product-parity-audit':
+        return <FigmaProductParityAudit onClose={onDrawerClose} />
+      case 'accessibility-performance-qa':
+        return <AccessibilityPerformanceQA onClose={onDrawerClose} />
+      case 'analytics-events-tracking-spec':
+        return <AnalyticsEventsTrackingSpec onClose={onDrawerClose} />
+      // Step 4: Ship tab drawers
+      case 'cross-functional-risk-assessment':
+        return <CrossFunctionalRiskAssessment onClose={onDrawerClose} />
+      case 'release-readiness-review':
+        return <ReleaseReadinessReview onClose={onDrawerClose} />
+      case 'incident-rollback-plan':
+        return <IncidentRollbackPlan onClose={onDrawerClose} />
+      case 'post-release-monitoring-bug-smash':
+        return <PostReleaseMonitoringBugSmash onClose={onDrawerClose} />
       default:
         return null
     }
@@ -1480,134 +1530,220 @@ function Step3Layout({
 }
 
 // Step 4: Implementation Support Dashboard
-function Step4Layout({ step }: { step: ProcessStep }) {
-  const [activeTab, setActiveTab] = useState('Daily Design QA')
-  const [selectedTask, setSelectedTask] = useState<any>(null)
-  const [isTaskDrawerOpen, setIsTaskDrawerOpen] = useState(false)
+function Step4Layout({ 
+  step, 
+  selectedDrawer, 
+  isDrawerOpen, 
+  onCardClick, 
+  onDrawerClose 
+}: { 
+  step: ProcessStep
+  selectedDrawer: string | null
+  isDrawerOpen: boolean
+  onCardClick: (slug: string) => void
+  onDrawerClose: () => void
+}) {
+  const [activeTab, setActiveTab] = useState('Plan')
   
-  const tabs = ['Daily Design QA', 'Sprint Demo', 'Bug-Smash Friday']
+  const tabs = ['Plan', 'Build', 'Ship']
   
-  // Main KPIs (only 3)
+  // Main KPIs (updated for new workflow)
   const mainKPIs = [
     {
-      name: 'Design QA pass rate',
+      name: 'Release readiness',
+      value: '92%',
+      trend: '↗ +5pp',
+      target: '≥90%',
+      tooltip: 'Percentage of planned items completed and ready for release.'
+    },
+    {
+      name: 'Implementation velocity', 
+      value: '12',
+      trend: '↗ +2',
+      target: '≥10',
+      tooltip: 'Average implementation items completed per sprint.'
+    },
+    {
+      name: 'Quality score',
       value: '96%',
-      trend: '↗ +2pp',
-      target: '≥95%',
-      tooltip: '% of UI checks passing on first review (layout, tokens, states, a11y).'
-    },
-    {
-      name: 'Avg tickets closed per sprint', 
-      value: '38',
-      trend: '↗ +4',
-      target: '≥35',
-      tooltip: 'Average tickets closed per sprint across the active squad.'
-    },
-    {
-      name: 'Figma→Prod parity',
-      value: '98%',
       trend: '—',
       target: '≥95%',
-      tooltip: 'Visual parity across tokens, spacing grid, and component variants.'
+      tooltip: 'Combined score across design QA, accessibility, and performance metrics.'
     }
   ]
   
   // Header indicators (secondary data)
   const statusIndicators = {
-    releaseConfidence: 88,
-    a11yDefects: { p0: 0, p1: 2 }
+    releaseConfidence: 92,
+    riskLevel: { high: 1, medium: 3 }
   }
   
-  // Sample tasks data
-  const sampleTasks = [
-    {
-      id: 1,
-      task: 'Create Onboarding Flow',
-      pr: '#234',
-      area: 'Navigation',
-      owner: 'Sarah Chen',
-      status: 'Completed',
-      severity: 'P1',
-      updated: '2h ago',
-      acceptance: ['User can complete signup flow', 'Email verification works', 'Onboarding steps are intuitive'],
-      tests: ['Unit tests pass', 'E2E flow tested', 'A11y compliance verified'],
-      instrumentationHooks: ['log_signup_start', 'log_step_completion', 'log_signup_success'],
-      dodChecklist: ['Design QA passed', 'Code review approved', 'Tests written', 'Data hooks added']
-    },
-    {
-      id: 2,
-      task: 'Refactor Button Tokens',
-      pr: '#235',
-      area: 'DS',
-      owner: 'Marcus Rodriguez',
-      status: 'In QA',
-      severity: 'P2',
-      updated: '45m ago'
-    },
-    {
-      id: 3,
-      task: 'Fix Modal Focus Trap',
-      pr: '#236',
-      area: 'A11y',
-      owner: 'Alex Kim',
-      status: 'Fix Needed',
-      severity: 'P1',
-      updated: '1d ago'
-    },
-    {
-      id: 4,
-      task: 'Design System Documentation',
-      pr: '#237',
-      area: 'DS',
-      owner: null,
-      status: 'Completed',
-      severity: 'P3',
-      updated: '3h ago'
-    },
-    {
-      id: 5,
-      task: 'Mobile Navigation Polish',
-      pr: '#238',
-      area: 'Navigation',
-      owner: null,
-      status: 'In QA',
-      severity: 'P2',
-      updated: '1d ago'
-    }
-  ]
-  
+  // Implementation items organized by tab
+  const implementationItems = {
+    Plan: [
+      {
+        id: 1,
+        title: 'Sprint Planning & Backlog Grooming',
+        slug: 'sprint-planning-backlog-grooming',
+        area: 'Planning',
+        description: 'Clear priorities beat long wish lists.',
+        status: 'Active',
+        priority: 'P1',
+        updated: '2h ago'
+      },
+      {
+        id: 2,
+        title: 'Release Planning & Cut Candidate',
+        slug: 'release-planning-cut-candidate',
+        area: 'Planning',
+        description: 'Know what you&apos;re building. Ship what you planned.',
+        status: 'Active',
+        priority: 'P1',
+        updated: '1d ago'
+      },
+      {
+        id: 3,
+        title: 'Dev Handoff & Packages',
+        slug: 'dev-handoff-packages',
+        area: 'Coordination',
+        description: 'Bundle context so engineers can execute with confidence.',
+        status: 'In Review',
+        priority: 'P2',
+        updated: '3h ago'
+      },
+      {
+        id: 4,
+        title: 'Stakeholder Demos & Acceptance',
+        slug: 'stakeholder-demos-acceptance',
+        area: 'Communication',
+        description: 'Demo to build trust, not to surprise.',
+        status: 'Scheduled',
+        priority: 'P1',
+        updated: '5h ago'
+      }
+    ],
+    Build: [
+      {
+        id: 5,
+        title: 'Daily Design QA',
+        slug: 'daily-design-qa',
+        area: 'Quality',
+        description: 'Ship quality as a habit, not a finale.',
+        status: 'Active',
+        priority: 'P1',
+        updated: '1h ago'
+      },
+      {
+        id: 6,
+        title: 'Figma → Prod Parity Audit',
+        slug: 'figma-product-parity-audit',
+        area: 'Design Systems',
+        description: 'One system, one look—no "almosts."',
+        status: 'In Progress',
+        priority: 'P2',
+        updated: '4h ago'
+      },
+      {
+        id: 7,
+        title: 'Accessibility & Performance QA',
+        slug: 'accessibility-performance-qa',
+        area: 'Quality',
+        description: 'Fast, inclusive experiences help everyone.',
+        status: 'Active',
+        priority: 'P1',
+        updated: '2h ago'
+      },
+      {
+        id: 8,
+        title: 'Analytics Events & Tracking Spec',
+        slug: 'analytics-events-tracking-spec',
+        area: 'Measurement',
+        description: 'If we can&apos;t measure it, we can&apos;t know it worked.',
+        status: 'In Review',
+        priority: 'P2',
+        updated: '1d ago'
+      }
+    ],
+    Ship: [
+      {
+        id: 9,
+        title: 'Cross-Functional Risk Assessment',
+        slug: 'cross-functional-risk-assessment',
+        area: 'Risk Management',
+        description: 'Find the icebergs before they sink the ship.',
+        status: 'Pending',
+        priority: 'P1',
+        updated: '6h ago'
+      },
+      {
+        id: 10,
+        title: 'Release Readiness Review',
+        slug: 'release-readiness-review',
+        area: 'Validation',
+        description: 'The final check before the world sees your work.',
+        status: 'Scheduled',
+        priority: 'P1',
+        updated: '8h ago'
+      },
+      {
+        id: 11,
+        title: 'Incident & Rollback Plan',
+        slug: 'incident-rollback-plan',
+        area: 'Risk Management',
+        description: 'Hope for the best, plan for the worst.',
+        status: 'In Progress',
+        priority: 'P2',
+        updated: '1d ago'
+      },
+      {
+        id: 12,
+        title: 'Post-Release Monitoring & Bug Smash',
+        slug: 'post-release-monitoring-bug-smash',
+        area: 'Monitoring',
+        description: 'Stay close to the data. Stay closer to the users.',
+        status: 'Planned',
+        priority: 'P2',
+        updated: '2d ago'
+      }
+    ]
+  }
+
   const accordionItems = [
     {
-      title: 'Sprint Planning & Backlog Grooming',
-      content: 'RICE scoring, dependency mapping. Weekly ceremonies where we break down user stories, estimate effort, and sequence work based on dependencies and business impact. I facilitate these sessions to ensure design and technical constraints are surfaced early.'
+      title: 'Plan: Setting up for success',
+      content: 'Strategic planning and coordination activities that ensure teams have clear priorities, well-defined requirements, and aligned expectations before implementation begins.'
     },
     {
-      title: 'Daily Design QA & Handoff Reviews',
-      content: 'Pixel parity checks, copy QA, a11y. Every feature gets a design QA pass before and after implementation. I pair with engineers to review Figma specs, validate component usage, and ensure accessibility standards are met throughout the development cycle.'
+      title: 'Build: Quality throughout the process',
+      content: 'Continuous quality assurance and systematic validation that maintains design integrity, accessibility standards, and performance benchmarks during active development.'
     },
     {
-      title: 'Cross-functional Risk Assessment',
-      content: 'Perf budgets, event hooks, error paths. I maintain a running risk log that tracks potential blockers, technical debt implications, and scope creep. This includes monitoring for design system breaking changes and coordinating with stakeholders when trade-offs are needed.'
+      title: 'Ship: Confident delivery',
+      content: 'Risk assessment, readiness validation, and monitoring setup that enables confident releases with proper fallback plans and post-launch support systems.'
     }
   ]
   
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Completed':
+      case 'Active':
         return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-      case 'In QA':
+      case 'In Progress':
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
-      case 'Fix Needed':
-        return 'bg-rose-100 text-rose-800 dark:bg-rose-900/20 dark:text-rose-400'
-      case 'Blocked':
+      case 'In Review':
         return 'bg-amber-100 text-amber-800 dark:bg-amber-900/20 dark:text-amber-400'
+      case 'Scheduled':
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400'
+      case 'Pending':
+        return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300'
+      case 'Planned':
+        return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300'
       default:
         return 'bg-zinc-100 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-300'
     }
   }
   
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
       case 'P0':
         return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
       case 'P1':
@@ -1619,6 +1755,50 @@ function Step4Layout({ step }: { step: ProcessStep }) {
     }
   }
 
+  const currentItems = implementationItems[activeTab as keyof typeof implementationItems]
+
+  // Convert slug to title
+  const slugToTitle = (slug: string) => {
+    return slug
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  }
+
+  // Render the appropriate drawer component
+  const renderDrawerContent = () => {
+    switch (selectedDrawer) {
+      // Step 4: Plan tab drawers
+      case 'sprint-planning-backlog-grooming':
+        return <SprintPlanningBacklogGrooming onClose={onDrawerClose} />
+      case 'release-planning-cut-candidate':
+        return <ReleasePlanningCutCandidate onClose={onDrawerClose} />
+      case 'dev-handoff-packages':
+        return <DevHandoffPackages onClose={onDrawerClose} />
+      case 'stakeholder-demos-acceptance':
+        return <StakeholderDemosAcceptance onClose={onDrawerClose} />
+      // Step 4: Build tab drawers
+      case 'daily-design-qa':
+        return <DailyDesignQA onClose={onDrawerClose} />
+      case 'figma-product-parity-audit':
+        return <FigmaProductParityAudit onClose={onDrawerClose} />
+      case 'accessibility-performance-qa':
+        return <AccessibilityPerformanceQA onClose={onDrawerClose} />
+      case 'analytics-events-tracking-spec':
+        return <AnalyticsEventsTrackingSpec onClose={onDrawerClose} />
+      // Step 4: Ship tab drawers
+      case 'cross-functional-risk-assessment':
+        return <CrossFunctionalRiskAssessment onClose={onDrawerClose} />
+      case 'release-readiness-review':
+        return <ReleaseReadinessReview onClose={onDrawerClose} />
+      case 'incident-rollback-plan':
+        return <IncidentRollbackPlan onClose={onDrawerClose} />
+      case 'post-release-monitoring-bug-smash':
+        return <PostReleaseMonitoringBugSmash onClose={onDrawerClose} />
+      default:
+        return null
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -1660,25 +1840,25 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                 <div className="size-2 rounded-full bg-current" />
               </div>
               <h1 className="flex gap-x-3 text-base/7">
-                <span className="font-semibold text-zinc-900 dark:text-white">Sprint 47: Mobile Polish & A11y</span>
+                <span className="font-semibold text-zinc-900 dark:text-white">Implementation Support · {activeTab}</span>
               </h1>
             </div>
-            <p className="mt-2 text-xs/6 text-zinc-500 dark:text-zinc-400">Active · 3 days remaining</p>
+            <p className="mt-2 text-xs/6 text-zinc-500 dark:text-zinc-400">Active workflow · {currentItems.length} items</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <div className={`order-first flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset sm:order-0 ${
-              statusIndicators.releaseConfidence >= 85 
+              statusIndicators.releaseConfidence >= 90 
                 ? 'bg-emerald-400/10 text-emerald-600 dark:text-emerald-400 ring-emerald-500/30' 
                 : 'bg-zinc-400/10 text-zinc-600 dark:text-zinc-400 ring-zinc-500/30'
             }`}>
               Release confidence: {statusIndicators.releaseConfidence}/100
             </div>
             <div className={`flex-none rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${
-              statusIndicators.a11yDefects.p0 > 0 
+              statusIndicators.riskLevel.high > 0 
                 ? 'bg-orange-400/10 text-orange-600 dark:text-orange-400 ring-orange-500/30'
                 : 'bg-blue-400/10 text-blue-600 dark:text-blue-400 ring-blue-500/30'
             }`}>
-              A11y: P0:{statusIndicators.a11yDefects.p0}·P1:{statusIndicators.a11yDefects.p1}
+              Risks: High:{statusIndicators.riskLevel.high}·Med:{statusIndicators.riskLevel.medium}
             </div>
           </div>
         </div>
@@ -1711,17 +1891,18 @@ function Step4Layout({ step }: { step: ProcessStep }) {
           ))}
         </div>
 
-        {/* Task list */}
+        {/* Implementation items list */}
         <div className="border-t border-zinc-200 dark:border-zinc-700 pt-6">
-          <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">Latest tasks</h2>
+          <h2 className="px-4 text-base/7 font-semibold text-zinc-900 dark:text-white sm:px-6">{activeTab} items</h2>
           <div className="mt-4">
             <ScrollableTable>
               <table className="w-full text-left min-w-[800px]">
               <colgroup>
                 <col style={{ minWidth: '200px' }} />
                 <col style={{ minWidth: '150px' }} />
+                <col style={{ minWidth: '250px' }} />
                 <col style={{ minWidth: '120px' }} />
-                <col style={{ minWidth: '120px' }} />
+                <col style={{ minWidth: '100px' }} />
                 <col style={{ minWidth: '100px' }} />
               </colgroup>
               <thead className="border-b border-zinc-200 dark:border-zinc-700 text-sm/6 text-zinc-900 dark:text-white">
@@ -1733,13 +1914,13 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                     Area
                   </th>
                   <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
-                    Owner
+                    Description
                   </th>
                   <th scope="col" className="py-2 pr-4 pl-0 font-semibold">
                     Status
                   </th>
                   <th scope="col" className="py-2 pr-8 pl-0 font-semibold">
-                    Severity
+                    Priority
                   </th>
                   <th scope="col" className="py-2 pr-4 pl-0 text-right font-semibold sm:pr-6">
                     Updated
@@ -1747,18 +1928,15 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-700">
-                {sampleTasks.map((task) => (
+                {currentItems.map((item) => (
                   <tr 
-                    key={task.id} 
+                    key={item.id} 
                     className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer"
-                    onClick={() => {
-                      setSelectedTask(task)
-                      setIsTaskDrawerOpen(true)
-                    }}
+                    onClick={() => onCardClick(item.slug)}
                   >
                     <td className="py-4 pr-8 pl-4 sm:pl-6">
                       <div className="flex items-center justify-between">
-                        <div className="font-medium text-sm text-zinc-900 dark:text-white">{task.task}</div>
+                        <div className="font-medium text-sm text-zinc-900 dark:text-white">{item.title}</div>
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                           <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1768,32 +1946,33 @@ function Step4Layout({ step }: { step: ProcessStep }) {
                     </td>
                     <td className="py-4 pr-8 pl-0 text-sm">
                       <span className="inline-flex items-center rounded-md bg-zinc-50 dark:bg-zinc-800 px-2 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 ring-1 ring-inset ring-zinc-500/10">
-                        {task.area}
+                        {item.area}
                       </span>
                     </td>
-                    <td className="py-4 pr-4 pl-0 text-sm">
-                      <div className="text-zinc-900 dark:text-white">{task.owner || 'N/A'}</div>
+                    <td className="py-4 pr-4 pl-0 text-sm text-zinc-600 dark:text-zinc-400">
+                      {item.description}
                     </td>
                     <td className="py-4 pr-4 pl-0 text-sm">
                       <div className="flex items-center gap-x-2">
                         <div className={`flex-none rounded-full p-1 ${
-                          task.status === 'Completed' ? 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-400/10' :
-                          task.status === 'In QA' ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-400/10' :
-                          task.status === 'Fix Needed' ? 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-400/10' :
+                          item.status === 'Active' ? 'text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-400/10' :
+                          item.status === 'In Progress' ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-400/10' :
+                          item.status === 'In Review' ? 'text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-400/10' :
+                          item.status === 'Scheduled' ? 'text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-400/10' :
                           'text-zinc-600 bg-zinc-50 dark:text-zinc-400 dark:bg-zinc-400/10'
                         }`}>
                           <div className="size-1.5 rounded-full bg-current" />
                         </div>
-                        <div className="text-zinc-900 dark:text-white">{task.status}</div>
+                        <div className="text-zinc-900 dark:text-white">{item.status}</div>
                       </div>
                     </td>
                     <td className="py-4 pr-8 pl-0 text-sm">
-                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getSeverityColor(task.severity)}`}>
-                        {task.severity}
+                      <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(item.priority)}`}>
+                        {item.priority}
                       </span>
                     </td>
                     <td className="py-4 pr-4 pl-0 text-right text-sm text-zinc-500 dark:text-zinc-400 sm:pr-6">
-                      {task.updated}
+                      {item.updated}
                     </td>
                   </tr>
                 ))}
@@ -1808,35 +1987,17 @@ function Step4Layout({ step }: { step: ProcessStep }) {
       <div className="mt-12">
         <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6">How I Support Implementation</h3>
         <AccordionPanel items={accordionItems} />
-        
       </div>
-      
-      {/* Task Detail Drawer */}
-      {selectedTask && (
-        <SideDrawer
-          open={isTaskDrawerOpen}
-          onClose={() => setIsTaskDrawerOpen(false)}
-          title={selectedTask.task}
-          overview={selectedTask.acceptance ? `## Acceptance Criteria
-${selectedTask.acceptance.map((criteria: string) => `• ${criteria}`).join('\n')}
 
-## Test Cases
-${selectedTask.tests ? selectedTask.tests.map((test: string) => `• ${test}`).join('\n') : 'Tests pending'}
-
-## Data Hooks
-${selectedTask.instrumentationHooks ? selectedTask.instrumentationHooks.map((hook: string) => `• ${hook}`).join('\n') : 'No data hooks'}` : 'Task details loading...'}
-          whyItMatters={{ 
-            stat: `${selectedTask.severity} priority · ${selectedTask.area}`, 
-            text: `${selectedTask.owner ? `Owned by ${selectedTask.owner}` : 'Unassigned'} · Last updated ${selectedTask.updated}` 
-          }}
-          sampleContent={selectedTask.dodChecklist ? `## Definition of Done
-${selectedTask.dodChecklist.map((item: string) => `• ${item}`).join('\n')}
-
-**Pull Request:** ${selectedTask.pr}
-**Area:** ${selectedTask.area}
-**Status:** ${selectedTask.status}
-**Severity:** ${selectedTask.severity}` : 'Definition of Done checklist pending...'}
-        />
+      {/* Component Drawer */}
+      {isDrawerOpen && selectedDrawer && (
+        <ComponentDrawer
+          open={isDrawerOpen}
+          onClose={onDrawerClose}
+          title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
+        >
+          {renderDrawerContent()}
+        </ComponentDrawer>
       )}
     </div>
   )
