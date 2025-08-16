@@ -221,7 +221,11 @@ export function PortfolioGrid() {
                             } : {}}
                           >
                             <button
-                              onClick={() => handleSkillToggle(skill)}
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                handleSkillToggle(skill)
+                              }}
                               className={`inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200 text-xs px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
                                 selectedSkills.has(skill)
                                   ? 'border border-emerald-600 text-emerald-800 bg-emerald-200/60 shadow-sm shadow-emerald-500/20 dark:border-emerald-500 dark:text-emerald-100 dark:bg-emerald-400/30 dark:shadow-emerald-400/20'
