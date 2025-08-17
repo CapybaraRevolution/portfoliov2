@@ -4,9 +4,94 @@ import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FunnelIcon } from '@heroicons/react/20/solid'
 import { projects, filterProjects, disciplines, skillGroups } from '@/data/projects'
+import { skillCategories, getAllSkillNames, standardizedSkills } from '@/data/standardizedSkills'
 import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
 import { FilterChip } from '@/components/FilterChip'
 import { AIToggle } from '@/components/AIToggle'
+
+// Create a mapping from new skill names to legacy project skill names
+const skillNameMapping: Record<string, string[]> = {
+  // Strategy
+  'Product Vision': ['Product Vision'],
+  'Roadmap': ['Roadmapping'],
+  'Prioritization': ['Backlog Shaping', 'Scope Negotiation'],
+  'OKRs': ['KPI Dashboards'],
+  
+  // Discovery & Design
+  'User Research': ['User Interviews', 'User Research'],
+  'Information Architecture': ['Journey Mapping', 'Service Design'],
+  'Wireframes & Prototypes': ['Wireframing', 'Prototyping'],
+  'Usability Testing': ['A/B Testing'],
+  
+  // Build & Ship
+  'PRDs (Specs)': ['Opportunity Framing'],
+  'System Design': ['Design Systems'],
+  'APIs & Integrations': ['Event Instrumentation'],
+  'Agile Delivery': ['Release Planning', 'Cross-team Facilitation'],
+  
+  // Data & AI
+  'Product Analytics': ['Funnel Analysis', 'Data Viz'],
+  'Experimentation': ['A/B Testing'],
+  'Instrumentation': ['Event Instrumentation'],
+  'AI Integration': ['AI Prompt Design'],
+  
+  // Leadership & Collaboration
+  'Stakeholder Alignment': ['Stakeholder Alignment'],
+  'Communication': ['Data Visualization'],
+  'Storytelling': ['Market Research'],
+  'Team Facilitation': ['Cross-team Facilitation']
+}
+
+// Helper function to find project skills that match a standardized skill
+const findMatchingProjectSkills = (standardizedSkillName: string): string[] => {
+  return skillNameMapping[standardizedSkillName] || []
+}
+
+// Create reverse mapping from legacy skill names to standardized skills
+const reverseMappingCache = new Map<string, string>()
+Object.entries(skillNameMapping).forEach(([standardizedSkill, legacySkills]) => {
+  legacySkills.forEach(legacySkill => {
+    reverseMappingCache.set(legacySkill, standardizedSkill)
+  })
+})
+
+const findStandardizedSkill = (legacySkillName: string): string | null => {
+  return reverseMappingCache.get(legacySkillName) || null
+}
+
+// Create simplified skill groups with new 5-category system
+const simplifiedSkillGroups = {
+  'Strategy': [
+    'Product Vision',
+    'Roadmap',
+    'Prioritization',
+    'OKRs'
+  ],
+  'Discovery & Design': [
+    'User Research',
+    'Information Architecture',
+    'Wireframes & Prototypes',
+    'Usability Testing'
+  ],
+  'Build & Ship': [
+    'PRDs (Specs)',
+    'System Design',
+    'APIs & Integrations',
+    'Agile Delivery'
+  ],
+  'Data & AI': [
+    'Product Analytics',
+    'Experimentation',
+    'Instrumentation',
+    'AI Integration'
+  ],
+  'Leadership': [
+    'Stakeholder Alignment',
+    'Communication',
+    'Storytelling',
+    'Team Facilitation'
+  ]
+}
 
 export function PortfolioGrid() {
   const router = useRouter()
@@ -16,22 +101,30 @@ export function PortfolioGrid() {
   const [activeCategory, setActiveCategory] = useState<string>('All')
   const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set())
   const [aiAccelerated, setAiAccelerated] = useState<boolean>(false)
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(() => {
-    // Persist filter open state during URL changes
-    if (typeof window !== 'undefined') {
-      return sessionStorage.getItem('portfolio-filters-open') === 'true'
-    }
-    return false
-  })
+  const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
   
-  // Derived state
+  // Derived state - convert standardized skills to legacy skills for filtering
+  const legacySkillsForFiltering = Array.from(selectedSkills).flatMap(skillName => 
+    findMatchingProjectSkills(skillName)
+  )
+  
   const filteredProjects = filterProjects(
     activeCategory,
-    Array.from(selectedSkills),
+    legacySkillsForFiltering,
     aiAccelerated
   )
   
   const activeFiltersCount = selectedSkills.size + (aiAccelerated ? 1 : 0) + (activeCategory !== 'All' ? 1 : 0)
+
+  // Initialize filtersOpen from sessionStorage after hydration
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedState = sessionStorage.getItem('portfolio-filters-open')
+      if (savedState === 'true') {
+        setFiltersOpen(true)
+      }
+    }
+  }, [])
 
   // Persist filtersOpen state
   useEffect(() => {
@@ -44,11 +137,16 @@ export function PortfolioGrid() {
   useEffect(() => {
     const cat = searchParams.get('cat') || 'All'
     const skillsParam = searchParams.get('skills')
-    const skills = skillsParam && typeof skillsParam === 'string' ? skillsParam.split(',').filter(Boolean) : []
+    const legacySkills = skillsParam && typeof skillsParam === 'string' ? skillsParam.split(',').filter(Boolean) : []
     const ai = searchParams.get('ai') === '1'
     
+    // Convert legacy skills to standardized skills
+    const standardizedSkills = legacySkills
+      .map(legacySkill => findStandardizedSkill(decodeURIComponent(legacySkill)))
+      .filter(Boolean) as string[]
+    
     setActiveCategory(cat)
-    setSelectedSkills(new Set(skills))
+    setSelectedSkills(new Set(standardizedSkills))
     setAiAccelerated(ai)
   }, [searchParams])
 
@@ -72,7 +170,11 @@ export function PortfolioGrid() {
       if (updates.skills.size === 0) {
         params.delete('skills')
       } else {
-        params.set('skills', Array.from(updates.skills).join(','))
+        // Convert standardized skills back to legacy skills for URL
+        const legacySkillsForURL = Array.from(updates.skills).flatMap(standardizedSkill => 
+          findMatchingProjectSkills(standardizedSkill)
+        )
+        params.set('skills', legacySkillsForURL.join(','))
       }
     }
     
@@ -203,7 +305,7 @@ export function PortfolioGrid() {
                 {/* Skills Filters */}
                 <div>
                   <h3 
-                    className={`text-sm font-medium text-zinc-900 dark:text-white mb-4 transition-all duration-300 ${
+                    className={`text-sm font-medium text-zinc-900 dark:text-white mb-6 transition-all duration-300 ${
                       filtersOpen ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-4'
                     }`}
                     style={filtersOpen ? {
@@ -212,8 +314,9 @@ export function PortfolioGrid() {
                   >
                     Filter by skill
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {Object.entries(skillGroups).map(([groupName, skills], groupIndex) => (
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {Object.entries(simplifiedSkillGroups).map(([groupName, skills], groupIndex) => (
                     <div 
                       key={groupName} 
                       className={`space-y-3 transition-all duration-300 ${
@@ -246,7 +349,7 @@ export function PortfolioGrid() {
                               }}
                               onMouseDown={(e) => e.stopPropagation()}
                               onMouseUp={(e) => e.stopPropagation()}
-                              className={`inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200 text-xs px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
+                              className={`inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200 text-xs px-2 py-1 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
                                 selectedSkills.has(skill)
                                   ? 'border border-emerald-600 text-emerald-800 bg-emerald-200/60 shadow-sm shadow-emerald-500/20 dark:border-emerald-500 dark:text-emerald-100 dark:bg-emerald-400/30 dark:shadow-emerald-400/20'
                                   : 'border border-zinc-300 bg-transparent text-zinc-700 dark:border-zinc-600 dark:text-zinc-300 hover:border-emerald-300 hover:text-emerald-700 hover:ring-1 hover:ring-emerald-300/25 hover:shadow-sm hover:shadow-emerald-500/10 dark:hover:border-emerald-500 dark:hover:text-emerald-400 dark:hover:ring-emerald-500/25'

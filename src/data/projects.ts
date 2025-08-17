@@ -12,38 +12,42 @@ export interface Project {
   status: 'completed' | 'ongoing'
 }
 
-// Skills organized according to IA brief
+// Skills organized into new 5-category system
 export const skillGroups = {
-  'UX': [
-    'User Interviews',
-    'Journey Mapping', 
-    'Wireframing',
-    'Prototyping',
-    'Design Systems',
-    'Accessibility'
-  ],
-  'Strategy & Vision': [
+  'Strategy': [
     'Product Vision',
-    'Stakeholder Alignment',
-    'Opportunity Framing',
-    'Market Research',
-    'Competitive Analysis'
-  ],
-  'PM': [
     'Roadmapping',
     'Backlog Shaping',
     'Scope Negotiation',
-    'Risk Surfacing',
+    'KPI Dashboards'
+  ],
+  'Discovery & Design': [
+    'User Interviews',
+    'Journey Mapping',
+    'Service Design',
+    'Wireframing',
+    'Prototyping',
+    'A/B Testing'
+  ],
+  'Build & Ship': [
+    'Opportunity Framing',
+    'Design Systems',
+    'Event Instrumentation',
     'Release Planning',
     'Cross-team Facilitation'
   ],
-  'Analytics & AI': [
-    'Event Instrumentation',
+  'Data & AI': [
     'Funnel Analysis',
-    'A/B Testing',
-    'KPI Dashboards',
     'Data Viz',
+    'A/B Testing',
+    'Event Instrumentation',
     'AI Prompt Design'
+  ],
+  'Leadership & Collaboration': [
+    'Stakeholder Alignment',
+    'Data Visualization',
+    'Market Research',
+    'Cross-team Facilitation'
   ]
 } as const
 
