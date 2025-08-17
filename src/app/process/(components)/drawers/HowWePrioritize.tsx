@@ -3,6 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface HowWePrioritizeProps {
   className?: string
@@ -132,6 +133,19 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
               "Time from idea to priority score < 1 week"
             ]}
           />
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Prioritization" variant="default" size="sm" />
+            <NavigationChip skill="OKRs" variant="outline" size="sm" />
+            <NavigationChip skill="Roadmap" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

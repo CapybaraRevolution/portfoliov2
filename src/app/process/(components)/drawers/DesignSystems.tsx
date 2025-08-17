@@ -3,6 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface DesignSystemsProps {
   className?: string
@@ -101,6 +102,19 @@ export function DesignSystems({ className, onClose }: DesignSystemsProps) {
 
         {/* Future lightbox placeholder */}
         {/* TODO: Add lightbox section for before/after component audit, token palette, and component anatomy callout */}
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="System Design" variant="default" size="sm" />
+            <NavigationChip skill="PRDs (Specs)" variant="outline" size="sm" />
+            <NavigationChip skill="Agile Delivery" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+          </div>
+        </div>
 
       </DrawerLayout>
     </div>

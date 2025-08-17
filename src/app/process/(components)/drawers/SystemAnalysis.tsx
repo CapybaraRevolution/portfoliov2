@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 
 interface SystemAnalysisProps {
@@ -191,6 +192,19 @@ export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="System Design" variant="default" size="sm" />
+            <NavigationChip skill="APIs & Integrations" variant="outline" size="sm" />
+            <NavigationChip skill="PRDs (Specs)" variant="outline" size="sm" />
+            <NavigationChip skill="Product Analytics" variant="outline" size="sm" />
           </div>
         </div>
 

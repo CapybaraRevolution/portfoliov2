@@ -3,6 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface ReleasePlanningCutCandidateProps {
   className?: string
@@ -90,6 +91,19 @@ export function ReleasePlanningCutCandidate({ className, onClose }: ReleasePlann
               "Demos align with the written release brief"
             ]}
           />
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Agile Delivery" variant="default" size="sm" />
+            <NavigationChip skill="Roadmap" variant="outline" size="sm" />
+            <NavigationChip skill="Prioritization" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

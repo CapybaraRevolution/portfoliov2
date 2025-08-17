@@ -22,7 +22,13 @@ export function SkillChip({
   onClick
 }: SkillChipProps) {
   const router = useRouter()
-  const colors = getCategoryColors(skill.category.id)
+  // Always use emerald colors for consistency
+  const colors = {
+    color: 'emerald',
+    bgColor: 'bg-emerald-100 dark:bg-emerald-900/20',
+    textColor: 'text-emerald-700 dark:text-emerald-300',
+    hoverBgColor: 'hover:bg-emerald-200 dark:hover:bg-emerald-900/30'
+  }
 
   const handleViewProjects = () => {
     router.push(`/work/overview?skills=${encodeURIComponent(skill.name)}`)
@@ -58,17 +64,17 @@ export function SkillChip({
     switch (variant) {
       case 'default':
         return {
-          className: `border-${colors.color}-200 dark:border-${colors.color}-800 ${colors.bgColor} ${colors.textColor}`,
+          className: `border-emerald-200 dark:border-emerald-800 bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300`,
           variant: 'filled' as const
         }
       case 'subtle':
         return {
-          className: `border-${colors.color}-100 dark:border-${colors.color}-900/20 bg-${colors.color}-50 dark:bg-${colors.color}-900/10 ${colors.textColor}`,
+          className: `border-emerald-100 dark:border-emerald-900/20 bg-emerald-50 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-300`,
           variant: 'outline' as const
         }
       default:
         return {
-          className: `border-${colors.color}-200 dark:border-${colors.color}-700 hover:${colors.bgColor} hover:${colors.textColor}`,
+          className: `border-emerald-200 dark:border-emerald-700 hover:bg-emerald-100 hover:dark:bg-emerald-900/20 hover:text-emerald-700 hover:dark:text-emerald-300`,
           variant: 'outline' as const
         }
     }

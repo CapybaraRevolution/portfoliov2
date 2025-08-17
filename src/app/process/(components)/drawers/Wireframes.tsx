@@ -3,6 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface WireframesProps {
   className?: string
@@ -98,6 +99,19 @@ export function Wireframes({ className, onClose }: WireframesProps) {
 
         {/* Future lightbox placeholder */}
         {/* TODO: Add lightbox section for 3-5 hero frames (Home, Task start, Decision point, Error, Success) */}
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Wireframes & Prototypes" variant="default" size="sm" />
+            <NavigationChip skill="Information Architecture" variant="outline" size="sm" />
+            <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+          </div>
+        </div>
 
       </DrawerLayout>
     </div>

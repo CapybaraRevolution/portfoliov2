@@ -5,8 +5,7 @@ import { SkillChip } from '@/components/SkillChip'
 import { 
   skillCategories, 
   getSkillsByCategory, 
-  SkillCategory,
-  getCategoryColors 
+  SkillCategory
 } from '@/data/standardizedSkills'
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 
@@ -38,7 +37,6 @@ export function SkillChipGroup({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
   const category = skillCategories[categoryId]
   const skills = getSkillsByCategory(categoryId)
-  const colors = getCategoryColors(categoryId)
 
   if (!category || skills.length === 0) {
     return null
@@ -68,8 +66,8 @@ export function SkillChipGroup({
         )}
         
         <div className="flex items-center gap-3">
-          {/* Category Color Indicator */}
-          <div className={`w-3 h-3 rounded-full bg-${colors.color}-500`} />
+          {/* Category Color Indicator - using emerald */}
+          <div className="w-3 h-3 rounded-full bg-emerald-500" />
           
           {/* Category Name */}
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">

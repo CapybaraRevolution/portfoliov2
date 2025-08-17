@@ -3,6 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface CrossFunctionalRiskAssessmentProps {
   className?: string
@@ -87,6 +88,19 @@ export function CrossFunctionalRiskAssessment({ className, onClose }: CrossFunct
               "Team can answer &quot;what would stop us?&quot; in 30 seconds"
             ]}
           />
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Team Facilitation" variant="default" size="sm" />
+            <NavigationChip skill="Stakeholder Alignment" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+            <NavigationChip skill="Agile Delivery" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

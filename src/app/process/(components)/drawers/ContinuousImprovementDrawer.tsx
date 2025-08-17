@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 import { trackProcessDrawerOpen } from '@/components/GoogleAnalytics'
 
 interface ContinuousImprovementDrawerProps {
@@ -185,6 +186,19 @@ export function ContinuousImprovementDrawer({ className, onClose }: ContinuousIm
                 ]}
               />
             </div>
+          </div>
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="OKRs" variant="default" size="sm" />
+            <NavigationChip skill="Product Analytics" variant="outline" size="sm" />
+            <NavigationChip skill="Experimentation" variant="outline" size="sm" />
+            <NavigationChip skill="Team Facilitation" variant="outline" size="sm" />
           </div>
         </div>
 

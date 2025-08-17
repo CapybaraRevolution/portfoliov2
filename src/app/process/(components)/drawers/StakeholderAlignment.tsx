@@ -4,6 +4,7 @@ import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { Chip } from '@/components/ui/Chip'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface StakeholderAlignmentProps {
   className?: string
@@ -181,6 +182,19 @@ export function StakeholderAlignment({ className, onClose }: StakeholderAlignmen
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Stakeholder Alignment" variant="default" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+            <NavigationChip skill="Team Facilitation" variant="outline" size="sm" />
+            <NavigationChip skill="Storytelling" variant="outline" size="sm" />
           </div>
         </div>
 
