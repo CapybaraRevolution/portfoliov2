@@ -497,8 +497,8 @@ Instead of making big guesses, we run controlled experiments to validate improve
       text: 'A/B testing de-risks decisions by showing which version performs better, ensuring we invest effort where it returns value.' 
     },
     sample: `**Experiment: Checkout CTA Copy**
-• **Hypothesis:** Changing "Place Order" to "Complete Purchase Securely" will increase checkout completion by ≥3% on mobile
-• **Variants:** Control (Place Order) vs Treatment (Complete Purchase Securely)
+• **Hypothesis:** Changing "Place Order" to "Secure Checkout" will increase checkout completion by ≥3% on mobile
+• **Variants:** Control (Place Order) vs Treatment (Secure Checkout)
 • **Sample size:** 10,000 users per variant
 • **Duration:** 14 days
 • **Primary metric:** Checkout completion rate

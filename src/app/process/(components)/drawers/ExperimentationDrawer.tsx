@@ -123,7 +123,7 @@ export function ExperimentationDrawer({ className, onClose }: ExperimentationDra
               <div>
                 <h5 className="font-medium text-zinc-900 dark:text-white mb-2">Hypothesis</h5>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  Changing &quot;Place Order&quot; to &quot;Complete Purchase Securely&quot; will increase checkout completion by ≥3% on mobile
+                  Changing &quot;Place Order&quot; to &quot;Secure Checkout&quot; will increase checkout completion by ≥3% on mobile
                 </p>
               </div>
 
@@ -132,7 +132,7 @@ export function ExperimentationDrawer({ className, onClose }: ExperimentationDra
                 <BulletList 
                   color="emerald"
                   items={[
-                    "Variants: Control (Place Order) vs Treatment (Complete Purchase Securely)",
+                    "Variants: Control (Place Order) vs Treatment (Secure Checkout)",
                     "Sample size: 10,000 users per variant",
                     "Duration: 14 days",
                     "Primary metric: Checkout completion rate",
