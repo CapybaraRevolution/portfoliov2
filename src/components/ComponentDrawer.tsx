@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { CommentSection } from './CommentSection'
@@ -34,6 +34,9 @@ export function ComponentDrawer({
   const [lastTime, setLastTime] = useState(0)
   const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const [preloadedComments, setPreloadedComments] = useState<any[] | null>(null)
+  const [isLoadingComments, setIsLoadingComments] = useState(false)
+  const [commentsError, setCommentsError] = useState<string | null>(null)
 
   // Enhanced touch handlers for drag-to-dismiss
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -115,14 +118,43 @@ export function ComponentDrawer({
     }
   }
 
-  // Reset drag state when drawer closes
+  // Preload comments when drawer opens
+  const preloadComments = useCallback(async () => {
+    if (!enableComments || !itemId || preloadedComments !== null) return
+    
+    setIsLoadingComments(true)
+    setCommentsError(null)
+    
+    try {
+      const response = await fetch(`/api/comments/${itemId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setPreloadedComments(data.comments || [])
+      } else {
+        setCommentsError('Failed to load comments')
+      }
+    } catch (error) {
+      console.error('Failed to preload comments:', error)
+      setCommentsError('Failed to load comments')
+    } finally {
+      setIsLoadingComments(false)
+    }
+  }, [enableComments, itemId, preloadedComments])
+
+  // Reset drag state when drawer closes and preload comments when it opens
   useEffect(() => {
     if (!open) {
       setDragOffset(0)
       setIsDragging(false)
       setIsHorizontalSwipe(null)
+      // Reset comments when drawer closes
+      setPreloadedComments(null)
+      setCommentsError(null)
+    } else {
+      // Preload comments when drawer opens
+      preloadComments()
     }
-  }, [open])
+  }, [open, itemId]) // Intentionally not including preloadComments to avoid re-fetching
 
   return (
     <Dialog open={open} onClose={onClose} className="relative z-50">
@@ -171,6 +203,10 @@ export function ComponentDrawer({
                         <CommentSection 
                           itemId={itemId} 
                           onCaptchaRequired={onCaptchaRequired}
+                          preloadedComments={preloadedComments}
+                          isLoadingComments={isLoadingComments}
+                          commentsError={commentsError}
+                          onCommentsUpdate={setPreloadedComments}
                         />
                       </div>
                     )

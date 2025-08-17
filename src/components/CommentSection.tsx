@@ -27,6 +27,10 @@ interface Comment {
 interface CommentSectionProps {
   itemId: string
   onCaptchaRequired?: () => Promise<boolean>
+  preloadedComments?: Comment[] | null
+  isLoadingComments?: boolean
+  commentsError?: string | null
+  onCommentsUpdate?: (comments: Comment[]) => void
 }
 
 const moods = [
@@ -79,35 +83,60 @@ function getInitialsColor(name: string): string {
   return colors[Math.abs(hash) % colors.length]
 }
 
-export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProps) {
-  const [comments, setComments] = useState<Comment[]>([])
+export function CommentSection({ 
+  itemId, 
+  onCaptchaRequired,
+  preloadedComments,
+  isLoadingComments,
+  commentsError,
+  onCommentsUpdate
+}: CommentSectionProps) {
+  const [comments, setComments] = useState<Comment[]>(preloadedComments || [])
   const [newComment, setNewComment] = useState('')
   const [selectedMood, setSelectedMood] = useState(moods[5]) // Default to "I feel nothing"
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(isLoadingComments || false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showCaptcha, setShowCaptcha] = useState(false)
   const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null)
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(!!preloadedComments)
   const { isAdmin } = useAdmin()
 
   const loadComments = useCallback(async () => {
+    // Skip if we already have preloaded comments
+    if (hasLoadedOnce) return
+    
     setIsLoading(true)
     try {
       const response = await fetch(`/api/comments/${itemId}`)
       if (response.ok) {
         const data = await response.json()
-        setComments(data.comments || [])
+        const fetchedComments = data.comments || []
+        setComments(fetchedComments)
+        onCommentsUpdate?.(fetchedComments)
+        setHasLoadedOnce(true)
       }
     } catch (error) {
       console.error('Failed to load comments:', error)
     } finally {
       setIsLoading(false)
     }
-  }, [itemId])
+  }, [itemId, hasLoadedOnce, onCommentsUpdate])
 
-  // Load comments when component mounts
+  // Use preloaded comments if available
   useEffect(() => {
-    loadComments()
-  }, [loadComments])
+    if (preloadedComments && !hasLoadedOnce) {
+      setComments(preloadedComments)
+      setHasLoadedOnce(true)
+      setIsLoading(false)
+    }
+  }, [preloadedComments, hasLoadedOnce])
+
+  // Load comments only if not preloaded
+  useEffect(() => {
+    if (!preloadedComments && !hasLoadedOnce) {
+      loadComments()
+    }
+  }, [preloadedComments, hasLoadedOnce, loadComments])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -136,7 +165,9 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
 
       if (response.ok) {
         const data = await response.json()
-        setComments(prev => [data.comment, ...prev])
+        const updatedComments = [data.comment, ...comments]
+        setComments(updatedComments)
+        onCommentsUpdate?.(updatedComments)
         setNewComment('')
         setShowCaptcha(false)
         // Reset mood to default
@@ -166,7 +197,9 @@ export function CommentSection({ itemId, onCaptchaRequired }: CommentSectionProp
 
       if (response.ok) {
         // Remove comment from local state
-        setComments(prev => prev.filter(comment => comment.id !== commentId))
+        const updatedComments = comments.filter(comment => comment.id !== commentId)
+        setComments(updatedComments)
+        onCommentsUpdate?.(updatedComments)
       } else {
         const errorData = await response.json()
         alert(`Failed to delete comment: ${errorData.error}`)

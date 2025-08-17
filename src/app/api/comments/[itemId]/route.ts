@@ -155,17 +155,27 @@ export async function GET(
         throw error
       }
       
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         comments: data || []
       })
+      
+      // Add cache headers for better performance
+      response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate=30')
+      
+      return response
     } else {
       // Fallback to in-memory storage
       const itemComments = comments[itemId] || []
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         comments: itemComments.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       })
+      
+      // Add cache headers for better performance
+      response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate=30')
+      
+      return response
     }
   } catch (error) {
     console.error('Error fetching comments:', error)

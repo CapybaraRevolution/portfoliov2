@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useState, useRef, useEffect } from 'react'
+import { ReactNode, useState, useRef, useEffect, useCallback } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { CommentSection } from '@/components/CommentSection'
 
@@ -41,6 +41,9 @@ export function DrawerLayout({
   const [activeTab, setActiveTab] = useState<'overview' | 'comments'>('overview')
   const [scrollPositions, setScrollPositions] = useState<Record<string, number>>({})
   const contentRef = useRef<HTMLDivElement>(null)
+  const [preloadedComments, setPreloadedComments] = useState<any[] | null>(null)
+  const [isLoadingComments, setIsLoadingComments] = useState(false)
+  const [commentsError, setCommentsError] = useState<string | null>(null)
 
   // Save scroll position when switching tabs
   const saveScrollPosition = (tab: string) => {
@@ -66,6 +69,34 @@ export function DrawerLayout({
     // Use setTimeout to ensure the content has rendered before scrolling
     setTimeout(() => restoreScrollPosition(newTab), 0)
   }
+
+  // Preload comments when drawer opens
+  const preloadComments = useCallback(async () => {
+    if (!enableComments || !itemId || preloadedComments !== null) return
+    
+    setIsLoadingComments(true)
+    setCommentsError(null)
+    
+    try {
+      const response = await fetch(`/api/comments/${itemId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setPreloadedComments(data.comments || [])
+      } else {
+        setCommentsError('Failed to load comments')
+      }
+    } catch (error) {
+      console.error('Failed to preload comments:', error)
+      setCommentsError('Failed to load comments')
+    } finally {
+      setIsLoadingComments(false)
+    }
+  }, [enableComments, itemId, preloadedComments])
+
+  // Preload comments when component mounts
+  useEffect(() => {
+    preloadComments()
+  }, []) // Intentionally not including preloadComments to avoid re-fetching
 
   return (
     <div className="flex flex-col h-full relative bg-white dark:bg-zinc-900">
@@ -137,7 +168,13 @@ export function DrawerLayout({
           </div>
         ) : (
           enableComments && itemId && (
-            <CommentSection itemId={itemId} />
+            <CommentSection 
+              itemId={itemId} 
+              preloadedComments={preloadedComments}
+              isLoadingComments={isLoadingComments}
+              commentsError={commentsError}
+              onCommentsUpdate={setPreloadedComments}
+            />
           )
         )}
       </div>
