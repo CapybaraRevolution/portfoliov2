@@ -17,6 +17,7 @@ interface ProcessCardProps {
     squares: Array<[x: number, y: number]>
   }
   onClick: () => void
+  isHighlighted?: boolean
 }
 
 function ProcessCardIcon({ icon: Icon }: { icon: ProcessCardProps['icon'] }) {
@@ -69,7 +70,7 @@ function ProcessCardPattern({
   )
 }
 
-export function ProcessCard({ title, subtitle, icon, pattern, onClick }: ProcessCardProps) {
+export function ProcessCard({ title, subtitle, icon, pattern, onClick, isHighlighted = false }: ProcessCardProps) {
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
 
@@ -92,7 +93,11 @@ export function ProcessCard({ title, subtitle, icon, pattern, onClick }: Process
     <button
       onClick={handleClick}
       onMouseMove={onMouseMove}
-      className="group relative flex rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 w-full text-left"
+      className={`group relative flex rounded-2xl bg-zinc-50 transition-all hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 w-full text-left ${
+        isHighlighted 
+          ? 'ring-2 ring-emerald-400 shadow-lg shadow-emerald-500/25 dark:ring-emerald-500 dark:shadow-emerald-400/20 animate-pulse' 
+          : ''
+      }`}
     >
       <ProcessCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
       <div className="absolute inset-0 rounded-2xl ring-1 ring-zinc-900/7.5 ring-inset group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />

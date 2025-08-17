@@ -38,7 +38,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
   
   // Track drawer open on mount
   useEffect(() => {
-    trackProcessDrawerOpen('Persona & Journey Mapping')
+    trackProcessDrawerOpen('Personas')
   }, [])
   
   // Persona images
@@ -54,7 +54,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
     setLightboxOpen(true)
     trackEvent('persona_example_viewed', {
       persona_index: index + 1,
-      process_step: 'Persona & Journey Mapping'
+      process_step: 'Personas'
     })
   }, [])
 
@@ -154,7 +154,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
     <div className={className}>
       <DrawerLayout
         stepText="Step 1 · Discovery & Strategy"
-        title="Persona & Journey Mapping"
+        title="Personas"
         summary="Turn anecdotes into patterns we can design for—and measure."
         tools={tools}
         caseStudyUrl="/case-studies/fintech"
@@ -190,7 +190,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
             items={[
               "Tight interview script; 5–7 interviews to reach pattern clarity",
               "Mine tickets & usage data for top tasks and friction points",
-              "Lightweight personas (needs, contexts, JTBD)",
+              "Lightweight personas (needs, contexts, Jobs-to-be-done)",
               "End-to-end journey with key moments and drop-offs",
               "Pain-point heatmap tied to experiment ideas"
             ]}
@@ -207,7 +207,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
             items={[
               "Personas (goals, contexts, constraints)",
               "Journey map with stages, emotions, and per-stage measures",
-              "JTBD statements and opportunity backlog"
+              "Jobs-to-be-done statements and opportunity backlog"
             ]}
           />
         </div>
@@ -226,31 +226,14 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
           />
         </div>
 
-        {/* Sample - Persona image gallery */}
+        {/* Persona Example - image gallery */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Sample
+            Persona Example
           </h3>
           
-          {/* Test Button */}
-          <div className="mb-4">
-            <button 
-              onClick={() => {
-                console.log('[DEBUG] Test button clicked - opening lightbox with index 0')
-                openLightbox(0)
-              }}
-              className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
-            >
-              Test Lightbox (Click to open first persona)
-            </button>
-          </div>
-
-          {/* Persona Image Gallery */}
-          <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-            <h4 className="font-medium text-zinc-900 dark:text-white mb-4">Persona Examples</h4>
-            
-            {/* Grid layout for personas */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Grid layout for personas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {personas.map((persona, index) => (
                 <button
                   key={index}
@@ -277,7 +260,6 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
                 </button>
               ))}
             </div>
-          </div>
         </div>
 
       </DrawerLayout>

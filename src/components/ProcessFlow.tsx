@@ -33,6 +33,10 @@ import { CrossFunctionalRiskAssessment } from '@/app/process/(components)/drawer
 import { ReleaseReadinessReview } from '@/app/process/(components)/drawers/ReleaseReadinessReview'
 import { IncidentRollbackPlan } from '@/app/process/(components)/drawers/IncidentRollbackPlan'
 import { PostReleaseMonitoringBugSmash } from '@/app/process/(components)/drawers/PostReleaseMonitoringBugSmash'
+import { InstrumentationDrawer } from '@/app/process/(components)/drawers/InstrumentationDrawer'
+import { ExperimentationDrawer } from '@/app/process/(components)/drawers/ExperimentationDrawer'
+import { PerformanceQualityDrawer } from '@/app/process/(components)/drawers/PerformanceQualityDrawer'
+import { ContinuousImprovementDrawer } from '@/app/process/(components)/drawers/ContinuousImprovementDrawer'
 import { IAFlowsPanel } from '@/components/IAFlowsPanel'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
@@ -58,6 +62,7 @@ import { ClipboardIcon } from '@/components/icons/ClipboardIcon'
 import { PackageIcon } from '@/components/icons/PackageIcon'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { GridPattern } from '@/components/GridPattern'
+import { standardizedSkills, getSkillById } from '@/data/standardizedSkills'
 
 interface ProcessStep {
   id: number
@@ -125,6 +130,43 @@ function slugToTitle(slug: string): string {
     .join(' ')
 }
 
+// Helper function to determine if a card should be highlighted
+const isCardHighlighted = (cardSlug: string, highlightedSkillId: string | null, currentStepId: number): boolean => {
+  if (!highlightedSkillId) return false
+  
+  const skill = getSkillById(highlightedSkillId)
+  if (!skill || !skill.processSteps || !skill.processSteps.includes(currentStepId)) {
+    return false
+  }
+  
+  // Map standardized skill IDs to card slugs for each step
+  const skillToCardMapping: Record<string, Record<string, string[]>> = {
+    '1': { // Discovery & Strategy
+      'stakeholder-alignment': ['stakeholder-management', 'communication'],
+      'persona-journey-mapping': ['user-research', 'design-thinking'],
+      'competitive-analysis': ['competitive-analysis', 'market-research-analysis'],
+      'system-analysis': ['systems-architecture', 'technical-feasibility-analysis']
+    },
+    '3': { // Design & Prototyping
+      'wireframes': ['prototyping-wireframing', 'ux-design-principles'],
+      'clickable-prototypes': ['prototyping-wireframing', 'usability-testing'],
+      'design-systems': ['ux-design-principles', 'systems-architecture']
+    },
+    '5': { // Launch & Optimization
+      'instrumentation': ['data-analytics-metrics', 'ab-testing-experimentation'],
+      'experimentation': ['ab-testing-experimentation', 'data-driven-decision-making'],
+      'performance-quality': ['technical-feasibility-analysis', 'usability-testing'],
+      'continuous-improvement': ['iterative-development', 'data-driven-decision-making']
+    }
+  }
+  
+  const stepMapping = skillToCardMapping[currentStepId.toString()]
+  if (!stepMapping) return false
+  
+  const cardSkills = stepMapping[cardSlug]
+  return cardSkills ? cardSkills.includes(highlightedSkillId) : false
+}
+
 const processSteps: ProcessStep[] = [
   {
     id: 1,
@@ -172,9 +214,9 @@ const processSteps: ProcessStep[] = [
   },
   {
     id: 5,
-    name: 'Launch & Optimisation',
-    title: 'Launch & Optimisation', 
-    description: 'After go-live we measure, learn, and iterate with experiments that move the needle.',
+    name: 'Launch & Optimization',
+    title: 'Launch & Optimization', 
+    description: 'After launch, we measure, learn, and iterate – using data and experiments to keep moving the needle.',
     skills: ['KPI Dashboards', 'Funnel Analysis', 'Conversion Optimisation', 'AI Prompt Design'],
     cta: {
       text: 'See optimisation case study →',
@@ -241,14 +283,14 @@ Personas and journeys turn scattered anecdotes into patterns we can design for�
 **What I do**
 • Tight interview script; 5–7 interviews to reach pattern clarity
 • Mine tickets & usage data for top tasks and friction points
-• Lightweight personas (needs, contexts, JTBD)
+• Lightweight personas (needs, contexts, Jobs-to-be-done)
 • End-to-end journey with key moments and drop-offs
 • Pain-point heatmap tied to experiment ideas
 
 **Outputs & artifacts**
 • Personas (goals, contexts, constraints)
 • Journey map with stages, emotions, and per-stage measures
-• JTBD statements and opportunity backlog
+• Jobs-to-be-done statements and opportunity backlog
 
 **Signals of success**
 • Team can name the top 3 user goals and top 3 frictions
@@ -372,23 +414,35 @@ Design lives inside systems. Mapping current vs future reveals constraints, quic
   
   // Step 5 - Launch & Optimization
   'instrumentation': {
-    overview: `## Executive Summary
+    overview: `## Instrumentation & Analytics
 **One-liner:** Measure what matters from day one.
 
 **Why it matters**
-Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.
+Without proper instrumentation, we're flying blind. Analytics reveal where users encounter friction, enabling data-driven improvements that directly impact conversion and satisfaction. Clean events and dashboards let the team see cause → effect quickly.
 
-**What I do**
-• Define success measures tied to user outcomes
-• Event schema (names, properties, IDs) and QA checklist
-• Dashboard tiles for adoption, task success, and friction
+**What we do**
+• Define success metrics tied to user outcomes and business goals
+• Wire up comprehensive event tracking (page views, clicks, conversions)
+• Build analytics funnels to identify drop-off points
+• Create real-time dashboards for key user actions and outcomes
+• Implement user session recordings and heatmaps for behavior visualization
+• Set up automated alerts for metric degradation
 
-**Outputs & artifacts** Tracking plan, event QA, dashboard  
-**Signals of success** Clear baselines, reliable trend lines  
-**Tools** Data platforms, BigQuery (as needed)`,
+**Outputs & artifacts**
+• Tracking plan with event taxonomy
+• Analytics dashboards (Google Analytics, Mixpanel)
+• Funnel analysis reports
+• User flow visualizations
+• Performance baselines
+
+**Signals of success**
+• Clear baselines established within first week
+• <2% data discrepancy rate
+• Daily dashboard usage by team
+• Actionable insights driving iterations`,
     whyItMatters: { 
       stat: 'Clear baselines, reliable trend lines', 
-      text: 'Decisions beat hunches. Clean events and dashboards let the team see cause → effect quickly.' 
+      text: 'Analytics reveal where users encounter friction, enabling data-driven improvements that directly impact conversion.' 
     },
     sample: `**Sample Tracking Plan**
 \`\`\`json
@@ -411,23 +465,36 @@ Decisions beat hunches. Clean events and dashboards let the team see cause → e
 • Top drop-off step: Payment method selection (23% exit)`
   },
   'experimentation': {
-    overview: `## Executive Summary
+    overview: `## Experimentation (A/B Testing)
 **One-liner:** Learn fast, ship what works.
 
 **Why it matters**
-AB tests validate assumptions and focus effort where it returns value.
+Instead of making big guesses, we run controlled experiments to validate improvements. A/B testing de-risks decisions by showing which version performs better on metrics like conversion or task success, ensuring we invest effort where it returns measurable value.
 
-**What I do**
-• Hypothesis framing, sample size and power checks
-• Test design with guardrails and success criteria
-• Result reads and next-step recommendations
+**What we do**
+• Design small, falsifiable tests with clear hypotheses
+• Calculate proper sample sizes and statistical power
+• Set up controlled A/B tests and feature rollouts
+• Define success criteria and guardrail metrics
+• Monitor experiments in real-time for early signals
+• Analyze results with statistical significance testing
+• Make data-driven decisions on feature rollouts
 
-**Outputs & artifacts** Test briefs, experiment configs, readouts  
-**Signals of success** Statistically valid wins; fewer "maybe" launches  
-**Tools** Optimizely/LaunchDarkly, internal frameworks`,
+**Outputs & artifacts**
+• Experiment briefs with hypothesis and success criteria
+• A/B test configurations (Optimizely, LaunchDarkly)
+• Statistical analysis and readout reports
+• Decision recommendations with confidence intervals
+• Winning variation implementation guides
+
+**Signals of success**
+• >80% of major feature decisions backed by experiments
+• Statistically significant results (p<0.05)
+• Average 15% improvement in tested metrics
+• Reduced rollback rate due to data validation`,
     whyItMatters: { 
       stat: 'Statistically valid wins; fewer "maybe" launches', 
-      text: 'A/B tests validate assumptions and focus effort where it returns measurable value.' 
+      text: 'A/B testing de-risks decisions by showing which version performs better, ensuring we invest effort where it returns value.' 
     },
     sample: `**Experiment: Checkout CTA Copy**
 • **Hypothesis:** Changing "Place Order" to "Complete Purchase Securely" will increase checkout completion by ≥3% on mobile
@@ -444,23 +511,37 @@ AB tests validate assumptions and focus effort where it returns value.
 • **Decision:** Ship treatment to 100% of users`
   },
   'continuous-improvement': {
-    overview: `## Executive Summary
+    overview: `## Continuous Improvement & Iteration
 **One-liner:** Close the loop and keep momentum.
 
 **Why it matters**
-We fold learning into the roadmap so wins scale and misses don't repeat.
+Launch is just the beginning. Continuous improvement means your product never stops getting better. We systematically collect user feedback, analyze performance data, and turn insights into a prioritized backlog of enhancements that keep moving the needle.
 
-**What I do**
-• Post-launch reviews; backlog grooming with RICE
-• UX debt log and prioritization cadence
-• Quarterly theme updates based on evidence
+**What we do**
+• Collect user feedback through surveys, support tickets, and reviews
+• Conduct quarterly usability testing with real users
+• Analyze analytics data for patterns and friction points
+• Maintain a prioritized improvement backlog using RICE scoring
+• Plan and execute regular enhancement sprints
+• Track improvement impact with before/after metrics
+• Hold retrospectives to identify process optimizations
 
-**Outputs & artifacts** Post-launch report, updated roadmap, UX debt board  
-**Signals of success** Steady measure lift; fewer regressions  
-**Tools** Notion/Jira, RICE scoring, dashboards`,
+**Outputs & artifacts**
+• User feedback analysis reports
+• Usability testing findings and recordings
+• RICE-prioritized enhancement backlog
+• Post-launch improvement reports
+• Regular release notes documenting changes
+• Performance impact assessments
+
+**Signals of success**
+• Quarterly NPS improvement (+5 points per quarter target)
+• 95% of user-reported issues addressed within 2 sprints
+• Consistent velocity in shipping improvements
+• Measurable impact from each enhancement cycle`,
     whyItMatters: { 
       stat: 'Steady measure lift; fewer regressions', 
-      text: 'Learning folds into the roadmap so wins scale and misses don\'t repeat.' 
+      text: 'Systematic feedback collection and iteration ensure the product continuously improves and user needs stay met.' 
     },
     sample: `**RICE-Scored Backlog**
 | Initiative | Reach | Impact | Confidence | Effort | Score |
@@ -476,24 +557,37 @@ We fold learning into the roadmap so wins scale and misses don't repeat.
 • Week 4: Launch A/B tests, measure results, update backlog`
   },
   'performance-quality': {
-    overview: `## Executive Summary
-**One-liner:** Speed, accessibility, and stability are UX; I monitor and harden them in CI.
+    overview: `## Performance & Quality Monitoring
+**One-liner:** Speed, accessibility, and stability are UX; we monitor and harden them continuously.
 
 **Why it matters**
-Performance is UX. Users abandon slow sites, and accessibility gaps exclude users. Core Web Vitals affect SEO and conversion directly.
+Performance is UX. Users abandon slow sites within 3 seconds, and accessibility gaps exclude users entirely. We treat speed and stability as features, actively tracking Core Web Vitals, error rates, and uptime to ensure a high-quality experience for everyone.
 
-**What I do**
-• Set performance budgets and add CI checks
-• Implement accessibility testing in pipelines
-• Monitor error rates, Core Web Vitals, and uptime
-• Create quality gates that prevent regression
+**What we do**
+• Set and enforce performance budgets in CI/CD pipelines
+• Monitor Core Web Vitals (LCP, FID, CLS) in real-time
+• Track error rates, crash reports, and API response times
+• Run automated accessibility testing (WCAG AA compliance)
+• Set up alerting for performance degradation
+• Implement quality gates that prevent slow code from shipping
+• Conduct regular performance audits and optimizations
 
-**Outputs & artifacts** Performance dashboard, CI quality gates, accessibility audit  
-**Signals of success** ≥95% Core Web Vitals pass, <1% error rate, WCAG AA compliance  
-**Tools** Lighthouse CI, axe-core, Sentry, DataDog`,
+**Outputs & artifacts**
+• Performance monitoring dashboards (New Relic, DataDog)
+• CI quality gates and performance budgets
+• Accessibility audit reports and remediation plans
+• Error tracking and incident response logs
+• Load testing results and capacity planning
+• Performance optimization recommendations
+
+**Signals of success**
+• ≥95% of pages meet Core Web Vitals thresholds
+• <1% error rate across all user interactions
+• WCAG AA compliance maintained
+• Zero performance regressions reach production`,
     whyItMatters: { 
       stat: '≥95% Core Web Vitals pass, <1% error rate', 
-      text: 'Performance is UX - users abandon slow sites, and accessibility gaps exclude users directly.' 
+      text: 'Users abandon slow sites within 3 seconds - we proactively monitor speed, stability, and accessibility to ensure quality.' 
     },
     sample: `**Performance Budget Dashboard**
 | Metric | Target | Current | Status |
@@ -589,13 +683,15 @@ function StepContent({
   selectedDrawer, 
   isDrawerOpen, 
   onCardClick, 
-  onDrawerClose 
+  onDrawerClose,
+  highlightedSkillId
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
+  highlightedSkillId: string | null
 }) {
   const getStepLayout = () => {
     switch (step.id) {
@@ -606,6 +702,7 @@ function StepContent({
           isDrawerOpen={isDrawerOpen}
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
+          highlightedSkillId={highlightedSkillId}
         />
       case 2:
         return <Step2Layout step={step} />
@@ -616,6 +713,7 @@ function StepContent({
           isDrawerOpen={isDrawerOpen}
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
+          highlightedSkillId={highlightedSkillId}
         />
       case 4:
         return <Step4Layout 
@@ -632,6 +730,7 @@ function StepContent({
           isDrawerOpen={isDrawerOpen}
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
+          highlightedSkillId={highlightedSkillId}
         />
       default:
         return <DefaultLayout step={step} />
@@ -704,13 +803,15 @@ function Step1Layout({
   selectedDrawer, 
   isDrawerOpen, 
   onCardClick, 
-  onDrawerClose 
+  onDrawerClose,
+  highlightedSkillId
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
+  highlightedSkillId: string | null
 }) {
   const cards: ProcessCard[] = [
     {
@@ -721,7 +822,7 @@ function Step1Layout({
       pattern: { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
     },
     {
-      title: 'Persona & Journey Mapping',
+      title: 'Personas',
       slug: 'persona-journey-mapping',
       subtitle: 'Turn anecdotes into patterns we can design for—and measure.',
       icon: UserIcon,
@@ -756,6 +857,7 @@ function Step1Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
+            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id)}
           />
         ))}
       </div>
@@ -775,7 +877,7 @@ function Step1Layout({
           <ComponentDrawer
             open={isDrawerOpen}
             onClose={onDrawerClose}
-            title="Persona & Journey Mapping"
+            title="Personas"
             enableComments={true}
           >
             <PersonaJourneyMapping onClose={onDrawerClose} />
@@ -1425,13 +1527,15 @@ function Step3Layout({
   selectedDrawer, 
   isDrawerOpen, 
   onCardClick, 
-  onDrawerClose 
+  onDrawerClose,
+  highlightedSkillId
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
+  highlightedSkillId: string | null
 }) {
   const cards: ProcessCard[] = [
     {
@@ -1511,6 +1615,7 @@ function Step3Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
+            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id)}
           />
         ))}
       </div>
@@ -2009,13 +2114,15 @@ function Step5Layout({
   selectedDrawer, 
   isDrawerOpen, 
   onCardClick, 
-  onDrawerClose 
+  onDrawerClose,
+  highlightedSkillId
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
+  highlightedSkillId: string | null
 }) {
   const cards: ProcessCard[] = [
     {
@@ -2028,21 +2135,21 @@ function Step5Layout({
     {
       title: 'Experimentation',
       slug: 'experimentation',
-      subtitle: 'Run small, falsifiable tests to de-risk decisions.',
+      subtitle: 'Run small experiments (A/B tests) to learn what works and de-risk big decisions.',
       icon: FlaskIcon,
       pattern: { y: -6, squares: [[-1, 2], [1, 3]] as Array<[number, number]> }
     },
     {
       title: 'Performance & Quality',
       slug: 'performance-quality',
-      subtitle: 'Monitor speed, accessibility, and stability in CI.',
+      subtitle: 'Continuously monitor speed, stability, and accessibility to ensure high quality.',
       icon: BoltIcon,
       pattern: { y: 8, squares: [[1, 2], [2, 4]] as Array<[number, number]> }
     },
     {
       title: 'Continuous Improvement',
       slug: 'continuous-improvement',
-      subtitle: 'Turn insights into a prioritized backlog, prune and ship weekly.',
+      subtitle: 'Turn user insights into a prioritized backlog – refine and ship updates weekly.',
       icon: ArrowPathIcon,
       pattern: { y: 32, squares: [[0, 2], [1, 4]] as Array<[number, number]> }
     }
@@ -2052,21 +2159,21 @@ function Step5Layout({
     <div>
       <p className="text-lg text-zinc-700 dark:text-zinc-300 mb-8">{step.description}</p>
       
-      {/* KPI Cards */}
+      {/* KPI Cards - Success Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 text-center">
           <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">+28%</div>
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">Conversion lift</div>
+          <div className="text-sm text-zinc-600 dark:text-zinc-400">Conversion rate increase</div>
         </div>
         
         <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 text-center">
           <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">95%</div>
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">Core Web Vitals pass</div>
+          <div className="text-sm text-zinc-600 dark:text-zinc-400">Pages meet Core Web Vitals</div>
         </div>
         
         <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700 text-center">
           <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">4.7★</div>
-          <div className="text-sm text-zinc-600 dark:text-zinc-400">User sentiment</div>
+          <div className="text-sm text-zinc-600 dark:text-zinc-400">User satisfaction</div>
         </div>
       </div>
 
@@ -2080,20 +2187,50 @@ function Step5Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
+            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id)}
           />
         ))}
       </div>
       
       {/* Drawer */}
       {isDrawerOpen && selectedDrawer && (
-        <SideDrawer
-          open={isDrawerOpen}
-          onClose={onDrawerClose}
-          title={selectedDrawer ? slugToTitle(selectedDrawer) : ''}
-          overview={drawerContent[selectedDrawer as keyof typeof drawerContent]?.overview || `## ${selectedDrawer}\n**Content missing for slug: "${selectedDrawer}"**\n\nThis indicates a configuration issue. Please check the browser console for available content keys.`}
-          whyItMatters={drawerContent[selectedDrawer as keyof typeof drawerContent]?.whyItMatters || { stat: 'Content missing', text: 'This drawer content needs to be configured in ProcessFlow.tsx' }}
-          sampleContent={drawerContent[selectedDrawer as keyof typeof drawerContent]?.sample || `**Missing sample content for "${selectedDrawer}"**\n\nThis content needs to be added to the drawerContent map in ProcessFlow.tsx. Check the console for available content keys.`}
-        />
+        selectedDrawer === 'instrumentation' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Instrumentation"
+            enableComments={true}
+          >
+            <InstrumentationDrawer onClose={onDrawerClose} />
+          </ComponentDrawer>
+        ) : selectedDrawer === 'experimentation' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Experimentation"
+            enableComments={true}
+          >
+            <ExperimentationDrawer onClose={onDrawerClose} />
+          </ComponentDrawer>
+        ) : selectedDrawer === 'performance-quality' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Performance & Quality"
+            enableComments={true}
+          >
+            <PerformanceQualityDrawer onClose={onDrawerClose} />
+          </ComponentDrawer>
+        ) : selectedDrawer === 'continuous-improvement' ? (
+          <ComponentDrawer
+            open={isDrawerOpen}
+            onClose={onDrawerClose}
+            title="Continuous Improvement"
+            enableComments={true}
+          >
+            <ContinuousImprovementDrawer onClose={onDrawerClose} />
+          </ComponentDrawer>
+        ) : null
       )}
     </div>
   )
@@ -2116,10 +2253,17 @@ function ProcessFlowContent() {
   // State for drawer functionality across all steps
   const [selectedDrawer, setSelectedDrawer] = useState<string | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  
+  // State for skill highlighting
+  const [highlightedSkillId, setHighlightedSkillId] = useState<string | null>(null)
 
   // URL parameter handling
   useEffect(() => {
     const panel = searchParams.get('panel')
+    const step = searchParams.get('step')
+    const highlight = searchParams.get('highlight')
+    
+    // Handle panel parameter
     if (panel) {
       setSelectedDrawer(panel)
       setIsDrawerOpen(true)
@@ -2127,6 +2271,17 @@ function ProcessFlowContent() {
       setIsDrawerOpen(false)
       setSelectedDrawer(null)
     }
+    
+    // Handle step parameter
+    if (step) {
+      const stepId = parseInt(step)
+      if (stepId >= 1 && stepId <= 5) {
+        setActiveStep(stepId)
+      }
+    }
+    
+    // Handle highlight parameter
+    setHighlightedSkillId(highlight)
   }, [searchParams])
 
   // Drawer handlers for all steps
@@ -2207,6 +2362,7 @@ function ProcessFlowContent() {
           isDrawerOpen={isDrawerOpen}
           onCardClick={handleCardClick}
           onDrawerClose={handleDrawerClose}
+          highlightedSkillId={highlightedSkillId}
         />
         
         {/* Skills and CTA */}
