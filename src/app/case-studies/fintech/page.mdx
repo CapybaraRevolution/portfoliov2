@@ -1,4 +1,4 @@
-import { CaseMetaBar } from '@/components/CaseMetaBar'
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 
 export const metadata = {
@@ -13,11 +13,34 @@ export default function FinTechCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  // Sample metrics data - replace with actual metrics
+  const metrics = [
+    { 
+      name: 'Funding Secured', 
+      stat: '$2.3M', 
+      description: 'Series A round completed',
+      change: '+100%',
+      changeType: 'increase'
+    },
+    { 
+      name: 'Investor Interest', 
+      stat: '+180%', 
+      description: 'Meeting requests increase',
+      change: '180%',
+      changeType: 'increase'
+    },
+    { 
+      name: 'Time to Clarity', 
+      stat: '3 weeks', 
+      description: 'From concept to prototype',
+      previousStat: '6+ months',
+      change: '-50%',
+      changeType: 'increase'
+    },
+  ]
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <CaseMetaBar caseStudy={caseStudy} />
-      
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
         <h2>Project Overview</h2>
 
         <p><strong>The Challenge</strong><br />
@@ -72,7 +95,6 @@ export default function FinTechCaseStudy() {
         <blockquote>
           <p><strong>Key Insight</strong>: Investors need to see and feel the product experience, not just read about it. Interactive prototypes were 10x more effective than static presentations.</p>
         </blockquote>
-      </div>
-    </div>
+    </CaseStudyViewer>
   )
 }

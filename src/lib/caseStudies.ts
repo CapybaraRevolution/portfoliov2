@@ -47,6 +47,36 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "Miro", "Amplitude", "Notion"],
     services: ["User Research", "Service Design", "Data Visualization"],
     order: 2
+  },
+  {
+    title: "Boveda Tr1n1ty",
+    description: "From fragmented workflow to coherent, measurable experience—aligning stakeholders, simplifying flows, and shipping modernized UX.",
+    slug: "boveda-tr1n1ty",
+    category: "UX",
+    aiAccelerated: false,
+    role: "Business Analyst & Feature Designer",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "July 2018 – December 2019",
+    status: "Completed",
+    tools: ["Figma", "FigJam", "Notion", "Jira"],
+    services: ["Product Vision", "User Research", "Information Architecture", "Wireframes & Prototypes", "Stakeholder Management", "Product Analytics"],
+    order: 3
+  },
+  {
+    title: "Old Skool Game Studios",
+    description: "UX research + systematic design improvements that lifted engagement and fixed localization pain.",
+    slug: "old-skool",
+    category: "UX",
+    aiAccelerated: false,
+    role: "Lead UX Designer & UX Researcher",
+    engagementType: "Full-time",
+    location: "Remote",
+    timeline: "January 2019 – September 2021",
+    status: "Completed",
+    tools: ["Figma", "FigJam", "Jira", "Confluence"],
+    services: ["User Research", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
+    order: 4
   }
 ]
 

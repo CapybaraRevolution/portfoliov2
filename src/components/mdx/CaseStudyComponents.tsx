@@ -201,22 +201,127 @@ interface VideoProps {
   src: string
   caption?: string
   poster?: string
+  autoplay?: boolean
+  loop?: boolean
+  muted?: boolean
+  controls?: boolean
+  inline?: boolean
+  width?: number | string
+  height?: number | string
   className?: string
 }
 
-export function Video({ src, caption, poster, className }: VideoProps) {
+export function Video({ 
+  src, 
+  caption, 
+  poster, 
+  autoplay = false,
+  loop = false,
+  muted = false,
+  controls = true,
+  inline = false,
+  width,
+  height,
+  className 
+}: VideoProps) {
+  const videoElement = (
+    <div className={clsx(
+      'relative overflow-hidden rounded-xl shadow-lg',
+      {
+        'inline-block': inline
+      }
+    )}>
+      <video
+        src={src}
+        poster={poster}
+        controls={controls}
+        autoPlay={autoplay}
+        loop={loop}
+        muted={muted}
+        className={clsx(
+          'h-auto',
+          {
+            'w-full': !inline && !width,
+            'max-w-none': inline
+          }
+        )}
+        style={width || height ? {
+          width: typeof width === 'number' ? `${width}px` : width,
+          height: typeof height === 'number' ? `${height}px` : height
+        } : undefined}
+        preload="metadata"
+      >
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  )
+
+  if (inline) {
+    return (
+      <span className={clsx('inline-block align-middle mx-2', className)}>
+        {videoElement}
+        {caption && (
+          <span className="block text-xs text-zinc-500 dark:text-zinc-400 text-center mt-1">
+            {caption}
+          </span>
+        )}
+      </span>
+    )
+  }
+
   return (
     <figure className={clsx('my-8', className)}>
+      {videoElement}
+      {caption && (
+        <figcaption className="text-sm text-zinc-600 dark:text-zinc-400 text-center mt-3">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  )
+}
+
+// CaseImage component (alias for Figure with case study styling)
+interface CaseImageProps {
+  src: string
+  alt: string
+  variant?: 'hero' | 'default'
+  caption?: string
+  width?: number
+  height?: number
+  className?: string
+}
+
+export function CaseImage({ 
+  src, 
+  alt, 
+  variant = 'default',
+  caption, 
+  width = 800, 
+  height = 400, 
+  className 
+}: CaseImageProps) {
+  return (
+    <figure className={clsx(
+      'my-8',
+      {
+        'my-12': variant === 'hero'
+      },
+      className
+    )}>
       <div className="relative overflow-hidden rounded-xl shadow-lg">
-        <video
+        <Image
           src={src}
-          poster={poster}
-          controls
-          className="w-full h-auto"
-          preload="metadata"
-        >
-          Your browser does not support the video tag.
-        </video>
+          alt={alt}
+          width={width}
+          height={height}
+          className={clsx(
+            'w-full h-auto',
+            {
+              'max-w-none': variant === 'hero'
+            }
+          )}
+        />
       </div>
       {caption && (
         <figcaption className="text-sm text-zinc-600 dark:text-zinc-400 text-center mt-3">
@@ -224,5 +329,36 @@ export function Video({ src, caption, poster, className }: VideoProps) {
         </figcaption>
       )}
     </figure>
+  )
+}
+
+// CaseMetric component for displaying metrics
+interface CaseMetricProps {
+  label: string
+  value: string
+  context?: string
+  className?: string
+}
+
+export function CaseMetric({ label, value, context, className }: CaseMetricProps) {
+  return (
+    <div
+      className={clsx(
+        'bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6',
+        className
+      )}
+    >
+      <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">
+        {value}
+      </div>
+      <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100 mb-1">
+        {label}
+      </div>
+      {context && (
+        <div className="text-xs text-zinc-500 dark:text-zinc-400">
+          {context}
+        </div>
+      )}
+    </div>
   )
 }

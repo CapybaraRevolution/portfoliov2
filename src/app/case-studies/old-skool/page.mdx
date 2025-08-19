@@ -1,0 +1,155 @@
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { CaseImage, CaseMetric, Video } from '@/components/mdx/CaseStudyComponents'
+import { Row, Col } from '@/components/mdx'
+
+export const metadata = {
+  title: 'Old Skool Game Studios - Case Study',
+  description: 'UX research + systematic design improvements that lifted engagement and fixed localization pain.',
+}
+
+export default function OldSkoolCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('old-skool')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
+
+  // Metrics data from the content strategist brief
+  const metrics = [
+    {
+      name: 'Avg session length (non-EN)',
+      stat: '+13%',
+      previousStat: 'baseline',
+      change: '+13%',
+      changeType: 'increase',
+      description: '3 months post-localization fixes'
+    },
+    {
+      name: 'Design inconsistency debt',
+      stat: '-14%',
+      previousStat: 'baseline',
+      change: '-14%',
+      changeType: 'increase',
+      description: 'Tracked via design-QA checklist across two titles'
+    },
+    {
+      name: 'Qualitative satisfaction',
+      stat: '↑',
+      previousStat: 'baseline',
+      change: 'Improved',
+      changeType: 'increase',
+      description: 'Playtesters described UI as "more polished" and "easier to read"'
+    },
+  ]
+
+  return (
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <CaseImage
+        src="/images/case-studies/old-skool/oldskoolgamecollage.png"
+        alt="Collage of Old Skool game titles showcasing rich themed art across multiple releases"
+        variant="hero"
+        width={1400}
+        height={800}
+      />
+
+      <h2>Executive summary</h2>
+
+      <p>Old Skool builds browser-based casino games with rich themes. The art landed; the UX needed structure.<br />
+      I led research and systematic design improvements—fixing localization issues, tightening interaction patterns, and standardizing components—resulting in <strong>+13% session length in non-English locales</strong> and a <strong>14% reduction in design inconsistency debt</strong> tracked via our design-QA checklist.</p>
+
+      <h3>At-a-glance</h3>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+        <CaseMetric label="Avg session length (non-EN)" value="+13%" context="3 months post-fix" />
+        <CaseMetric label="Design inconsistency debt" value="-14%" context="Checklist items across 2 titles" />
+        <CaseMetric label="Qualitative satisfaction" value="↑" context="Playtests noted 'more polished', 'easier to read'" />
+      </div>
+
+      <hr />
+
+      <h2>Context & challenges</h2>
+
+      <ul>
+        <li><strong>Unknown UX friction.</strong> Teams felt "something's off" but lacked a method to isolate causes.</li>
+        <li><strong>Localization pain.</strong> Translations (e.g., Welsh) routinely overflowed buttons and labels, hurting readability and trust.</li>
+        <li><strong>Engagement delta.</strong> Non-English regions underperformed on session time and return play.</li>
+      </ul>
+
+      <hr />
+
+      <h2>What I did</h2>
+
+      <h3>1) Establish a lightweight research loop</h3>
+      <ul>
+        <li>Stakeholder interviews → agree on success signals for play and readability.</li>
+        <li>Heuristic audit + quick analytics review to flag drop-off points.</li>
+        <li>Task-based usability tests on click-through prototypes to validate fixes before code.</li>
+      </ul>
+
+      <h3>2) Fix internationalization the right way</h3>
+      <ul>
+        <li>Swapped fixed-width labels for <strong>flexible containers</strong>, safe line-wrapping, and clamped styles.</li>
+        <li>Set <strong>minimum tap targets</strong> and <strong>readable type scales</strong> for long strings.</li>
+      </ul>
+
+      <h3>3) Add polish with purposeful micro-interactions</h3>
+      <div className="flex flex-col md:flex-row gap-6 items-start my-8">
+        <div className="flex-1 min-w-0">
+          <p>Introduced subtle button states, win notifications, and reel feedback—designed to <strong>confirm actions</strong> and <strong>reduce uncertainty</strong>, not distract.</p>
+          <p>Documented motion primitives (timing curves, durations) for consistency across all game interfaces, ensuring a cohesive experience that builds player confidence.</p>
+        </div>
+        <div className="flex-shrink-0 w-full md:w-96">
+          <Video
+            src="/images/case-studies/old-skool/OldSkoolmicroanimation1.mp4"
+            autoplay={true}
+            loop={true}
+            muted={true}
+            controls={false}
+            inline={false}
+            width="100%"
+            height="auto"
+            caption="Live example of micro-interactions showing button feedback and win state animations"
+          />
+        </div>
+      </div>
+
+      <CaseImage
+        src="/images/case-studies/old-skool/ascensionfeaturescreen.png"
+        alt="In-game feature screen highlighting iconography, payoff messaging, and micro-interaction targets"
+        caption="Feature screen used during motion guidelines—icons and CTAs selected for micro-interaction testing"
+        width={1200}
+        height={800}
+      />
+
+      <h3>4) Standardize components to speed delivery</h3>
+      <ul>
+        <li>Built a <strong>component library</strong> (controls, panels, modals, meter bars) aligned with engineering's constraints.</li>
+        <li>Authored concise <strong>PRDs/specs</strong> so art, dev, and QA had one page of truth per feature.</li>
+      </ul>
+
+      <hr />
+
+      <h2>Outcomes</h2>
+
+      <ul>
+        <li><strong>+13% average session length</strong> in non-English markets after localization fixes.</li>
+        <li><strong>-14% design inconsistency debt</strong>, measured via a shared design-QA checklist.</li>
+        <li><strong>Smoother hand-offs</strong> and fewer UI nits in QA thanks to a reusable component set and single-page specs.</li>
+      </ul>
+
+      <hr />
+
+      <h2>What I learned</h2>
+
+      <p>Focus polish where it reduces uncertainty: readable text, clear affordances, timely feedback.<br />
+      Pair that with a checklist and a small, well-named component library and you get compounding wins—better playtests, fewer bugs, and faster iteration.</p>
+
+      <hr />
+
+      <h3>Credits</h3>
+
+      <p>Art direction, engineering, and QA partners at Old Skool Game Studios.</p>
+    </CaseStudyViewer>
+  )
+}
