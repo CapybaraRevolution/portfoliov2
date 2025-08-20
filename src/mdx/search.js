@@ -14,3 +14,14 @@ export default function Search(nextConfig = {}) {
 export function search(query, options = {}) {
   return []
 }
+
+// Export a minimal Result type definition
+/**
+ * @typedef {Object} Result
+ * @property {string} url
+ * @property {string} title  
+ * @property {string} pageTitle
+ */
+
+// Export empty Result for TypeScript compatibility
+export const Result = undefined

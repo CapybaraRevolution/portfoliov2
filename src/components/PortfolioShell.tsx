@@ -9,7 +9,7 @@ import { FilterChip } from '@/components/FilterChip'
 import { AIToggle } from '@/components/AIToggle'
 
 // Legacy imports
-import { projects, filterProjects, disciplines, skillGroups } from '@/data/projects'
+import { projects, filterProjects, disciplines, skillGroups, type Project } from '@/data/projects'
 import { skillCategories, getAllSkillNames, standardizedSkills } from '@/data/standardizedSkills'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 import { mapSkillNameToStandardized, getSkillsByStandardizedCategory } from '@/lib/skillMapping'
@@ -25,7 +25,29 @@ interface BackendCaseStudy {
   id: string
   title: string
   description: string
+  category: 'UX' | 'Strategy' | 'PM' | 'BA'
   skills: BackendSkill[]
+  ai: boolean
+  href: string
+  status: 'completed' | 'ongoing'
+  client?: string
+  timeline?: string
+  image?: string
+  [key: string]: any
+}
+
+interface TransformedBackendCaseStudy {
+  id: string
+  title: string
+  description: string
+  category: 'UX' | 'Strategy' | 'PM' | 'BA'
+  skills: string[] // Transformed from BackendSkill[] to string[]
+  ai: boolean
+  href: string
+  status: 'completed' | 'ongoing'
+  client?: string
+  timeline?: string
+  image?: string
   [key: string]: any
 }
 
@@ -192,23 +214,21 @@ export function PortfolioShell() {
   }
 
   // Filter projects
-  const getFilteredProjects = () => {
+  const getFilteredProjects = (): Project[] => {
     if (backendEnabled && backendCaseStudies.length > 0 && !backendError) {
       // Backend case studies already include merged local data from API
-      // and have proper href properties
-      let filtered = backendCaseStudies
-
-      // Ensure all case studies have valid IDs for React keys
-      filtered = filtered.map((caseStudy, index) => ({
+      // and have proper href properties, but we need to transform them to Project format
+      let filtered: Project[] = backendCaseStudies.map((caseStudy, index) => ({
         ...caseStudy,
-        id: caseStudy.id || `merged-case-study-${index}-${Date.now()}`
+        id: caseStudy.id || `merged-case-study-${index}-${Date.now()}`,
+        skills: caseStudy.skills?.map(skill => skill?.name).filter(Boolean) || [] // Convert BackendSkill[] to string[]
       }))
 
       // Filter by selected skills
       if (selectedSkills.size > 0) {
         filtered = filtered.filter(caseStudy => 
           Array.from(selectedSkills).some(selectedSkill => 
-            caseStudy.skills && caseStudy.skills.some(skill => skill && skill.name === selectedSkill)
+            caseStudy.skills && caseStudy.skills.includes(selectedSkill)
           )
         )
       }
@@ -223,7 +243,7 @@ export function PortfolioShell() {
     const allCaseStudies = getAllCaseStudies()
     
     // Convert case studies to the expected format
-    let formattedCaseStudies = allCaseStudies.map(study => ({
+    let formattedCaseStudies: Project[] = allCaseStudies.map(study => ({
       id: study.slug,
       title: study.title,
       description: study.description,
