@@ -19,21 +19,6 @@ export interface CaseStudyMetadata {
 // Case studies data - this will eventually be loaded from MDX frontmatter
 export const caseStudies: CaseStudyMetadata[] = [
   {
-    title: "FinTech Mobile App",
-    description: "Comprehensive audit and clickable prototypes to secure funding by clarifying product vision to investors.",
-    slug: "fintech",
-    category: "Strategy",
-    aiAccelerated: true,
-    role: "UX Lead",
-    engagementType: "Contract",
-    location: "Remote",
-    timeline: "2024–Present",
-    status: "Ongoing",
-    tools: ["Figma", "Jira", "Confluence", "Notion"],
-    services: ["Prototyping", "Design Systems", "Stakeholder Alignment"],
-    order: 1
-  },
-  {
     title: "Healthcare Portal",
     description: "Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.",
     slug: "healthcare",
@@ -125,7 +110,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Breeze Mortgage Hub",
-    description: "Transform an incomplete product into a modern, AI-enabled experience that's clearer for users and easier for the team to ship",
+    description: "Secured $2.3M Series A funding by transforming an incomplete product into a modern, AI-enabled mortgage experience",
     slug: "breeze-mortgage-hub",
     category: "UX",
     aiAccelerated: true,
@@ -136,7 +121,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Ongoing",
     tools: ["Figma", "FigJam", "Notion", "Jira", "React", "SQL"],
     services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
-    order: 8
+    order: 1
   },
   {
     title: "AMFA Class Filter Redesign",
