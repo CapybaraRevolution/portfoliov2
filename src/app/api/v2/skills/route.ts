@@ -2,13 +2,20 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { mapBackendSkill, getSkillsByStandardizedCategory } from '@/lib/skillMapping'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_BACKEND_URL!
-const supabaseKey = process.env.SUPABASE_BACKEND_SERVICE_ROLE_KEY!
-
-const supabase = createClient(supabaseUrl, supabaseKey)
-
 export async function GET() {
   try {
+    // Check if Supabase environment variables are available
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_BACKEND_URL
+    const supabaseKey = process.env.SUPABASE_BACKEND_SERVICE_ROLE_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.log('Supabase environment variables not configured, falling back to standardized skills')
+      const standardizedSkills = getSkillsByStandardizedCategory()
+      const flatSkills = Object.values(standardizedSkills).flat()
+      return NextResponse.json(flatSkills)
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey)
     const { data: backendSkills, error } = await supabase
       .from('skills')
       .select('*')

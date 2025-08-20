@@ -3,13 +3,19 @@ import { createClient } from '@supabase/supabase-js'
 import { mapBackendSkill } from '@/lib/skillMapping'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_BACKEND_URL!
-const supabaseKey = process.env.SUPABASE_BACKEND_SERVICE_ROLE_KEY!
-
-const supabase = createClient(supabaseUrl, supabaseKey)
-
 export async function GET() {
   try {
+    // Check if Supabase environment variables are available
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_BACKEND_URL
+    const supabaseKey = process.env.SUPABASE_BACKEND_SERVICE_ROLE_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.log('Supabase environment variables not configured, falling back to local case studies')
+      const localCaseStudies = getAllCaseStudies()
+      return NextResponse.json(localCaseStudies)
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey)
     const { data: caseStudies, error } = await supabase
       .from('case_studies')
       .select(`
