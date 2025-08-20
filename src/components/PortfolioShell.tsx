@@ -219,16 +219,45 @@ export function PortfolioShell() {
       return filtered
     }
 
-    // Fallback to legacy filtering
-    const legacySkillsForFiltering = Array.from(selectedSkills).flatMap(skillName => 
-      findMatchingProjectSkills(skillName)
-    )
+    // Fallback to case studies from caseStudies.ts
+    const allCaseStudies = getAllCaseStudies()
     
-    return filterProjects(
-      activeCategory,
-      legacySkillsForFiltering,
-      aiAccelerated
-    )
+    // Convert case studies to the expected format
+    let formattedCaseStudies = allCaseStudies.map(study => ({
+      id: study.slug,
+      title: study.title,
+      description: study.description,
+      category: study.category as 'UX' | 'Strategy' | 'PM' | 'BA',
+      skills: study.services || [],
+      ai: study.aiAccelerated || false,
+      href: `/case-studies/${study.slug}`,
+      client: study.role,
+      timeline: study.timeline,
+      status: study.status === 'Ongoing' ? 'ongoing' as const : 'completed' as const
+    }))
+    
+    // Filter by category
+    if (activeCategory !== 'All') {
+      formattedCaseStudies = formattedCaseStudies.filter(study => 
+        study.category === activeCategory
+      )
+    }
+    
+    // Filter by selected skills
+    if (selectedSkills.size > 0) {
+      formattedCaseStudies = formattedCaseStudies.filter(study =>
+        Array.from(selectedSkills).some(selectedSkill =>
+          study.skills.includes(selectedSkill)
+        )
+      )
+    }
+    
+    // Filter by AI acceleration
+    if (aiAccelerated) {
+      formattedCaseStudies = formattedCaseStudies.filter(study => study.ai)
+    }
+    
+    return formattedCaseStudies
   }
 
   const skillGroups = getSkillGroups()

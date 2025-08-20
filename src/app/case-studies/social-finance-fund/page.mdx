@@ -1,0 +1,156 @@
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+
+export const metadata = {
+  title: 'Social Finance Fund - Case Study',
+  description: 'UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package',
+}
+
+export default function SocialFinanceFundCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('social-finance-fund')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
+
+  // Metrics data - TBD placeholders as specified
+  const metrics = [
+    {
+      name: 'Stakeholder alignment score',
+      stat: 'TBD',
+      previousStat: 'TBD (pre-workshop pulse)',
+      change: 'TBD',
+      changeType: 'increase',
+      description: 'Workshop feedback forms / retro notes'
+    },
+    {
+      name: 'Decision latency',
+      stat: 'TBD',
+      previousStat: 'TBD (avg days before facilitation)',
+      change: 'TBD',
+      changeType: 'increase',
+      description: 'Meeting notes / action logs'
+    },
+    {
+      name: 'Survey participation',
+      stat: 'TBD',
+      previousStat: '—',
+      change: 'TBD',
+      changeType: 'increase',
+      description: 'Microsoft Forms export (responses, completion rate)'
+    },
+    {
+      name: 'Phase-two readiness',
+      stat: 'RFP package prepared',
+      previousStat: 'No shared package',
+      change: 'Complete',
+      changeType: 'increase',
+      description: 'IA + wires + research hub delivered'
+    }
+  ]
+
+  return (
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <CaseImage
+        src="/images/case-studies/social-finance-fund/sff-logo.png"
+        alt="Social Finance Fund logo"
+        variant="hero"
+        width={1400}
+        height={800}
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Overview</h2>
+
+        <p>The Social Finance Fund is a government-backed initiative to educate Canadians on social finance. Multiple independent organizations were steering the work—with competing priorities, unclear ownership, and low trust. I was brought in by Briteweb to provide UX strategy and structured facilitation. What began as "just wireframes" became a wayfinding effort: align people, clarify goals, and create a practical IA/wireframe package the group could rally around.</p>
+
+        <h3>Key Challenges</h3>
+        
+        <ul>
+          <li><strong>Conflicting priorities:</strong> 3–4 orgs with different mandates.</li>
+          <li><strong>Power dynamics:</strong> one lead org, others hesitant to follow.</li>
+          <li><strong>Low trust & unclear ownership:</strong> no single product owner.</li>
+          <li><strong>Lean budget/timeline:</strong> under $10k to reach a useful outcome.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Approach</h2>
+
+        <ul>
+          <li><strong>Survey → shared facts:</strong> Co-designed a role-branched Microsoft Forms survey, cleaned results in Excel, then synthesized in Obsidian as a lightweight knowledge hub (the single source of truth).</li>
+          <li><strong>Workshops → alignment:</strong> Facilitated sessions to define shared goals, user/content needs, and draft IA.</li>
+          <li><strong>AI-Accelerated concepting:</strong> Used LLMs to generate alternative site maps and page flows as conversation starters—the team debated, selected, and we refined.</li>
+          <li><strong>Wireframes → proof of intent:</strong> Produced mid- to high-fidelity wires in Figma for homepage, about, articles, impact, and directory—enough fidelity to support decision-making and an open RFP.</li>
+        </ul>
+      </div>
+
+      <Figure
+        src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
+        alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other user types"
+        caption="Role-based survey branching ensured relevant questions for each stakeholder type"
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Deliverables</h2>
+
+        <ul>
+          <li><strong>User survey design & analysis:</strong> Microsoft Forms + Excel exports.</li>
+          <li><strong>Obsidian research hub:</strong> clear, linkable markdown synthesis for the whole team.</li>
+          <li><strong>Information architecture & sitemap:</strong> AI-assisted variants, refined by hand.</li>
+          <li><strong>Figma wireframes:</strong> homepage, about, articles, impact, directory.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Stakeholder Navigation</h2>
+
+        <p>One pivotal session started tense. I led with listening, made space for candid critique, and focused the group on evidence from the survey and the IA. We ended with visible alignment and clear next steps—the tone for future sessions shifted from resistant to collaborative.</p>
+
+        <hr />
+
+        <h2>Where AI helped (AI-Accelerated ✅)</h2>
+
+        <p><strong>LLM-assisted concepting for sitemap/IA variants and page flows; faster theme synthesis from survey notes; used as conversation starters—human-reviewed and refined.</strong></p>
+
+        <ul>
+          <li><strong>IA concepting:</strong> Generated multiple sitemap alternatives and page flow options to spark stakeholder discussions</li>
+          <li><strong>Survey synthesis:</strong> Accelerated theme identification from survey responses, then human-edited for accuracy</li>
+          <li><strong>Content organization:</strong> Helped cluster and categorize user needs and content requirements</li>
+          <li><strong>Documentation efficiency:</strong> Faster first-draft creation for research synthesis in Obsidian</li>
+        </ul>
+
+        <p><strong>Result:</strong> More time for facilitation and stakeholder alignment, with AI handling initial data processing and ideation.</p>
+
+        <hr />
+
+        <h2>Outcome</h2>
+
+        <p>The IA, wires, and research package are now driving the open RFP for phase two. Briteweb is well positioned, with a shared vision that lets new partners slot in without relitigating fundamentals.</p>
+
+        <hr />
+
+        <h2>Learnings</h2>
+
+        <ul>
+          <li><strong>Wireframes are diplomacy tools:</strong> shared artifacts resolve abstract disagreements.</li>
+          <li><strong>Lightweight research &gt; heavy decks early:</strong> Obsidian kept us fast and aligned.</li>
+          <li><strong>Prototypes spark better conversations:</strong> especially in multi-org, high-stakes contexts.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Call to Action</h2>
+
+        <p>Sometimes the real UX problem isn't the interface—it's misalignment at the human level. If you need a strategist who can unite teams and produce shippable IA/wires, let's talk.</p>
+
+        <hr />
+
+        <h3>Credits</h3>
+
+        <p>Social Finance Fund stakeholder organizations, Briteweb team, and Boann for trusting me to navigate complex multi-organizational dynamics and deliver practical UX strategy.</p>
+      </div>
+    </CaseStudyViewer>
+  )
+}

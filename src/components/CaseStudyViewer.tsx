@@ -62,7 +62,7 @@ export function CaseStudyViewer({ caseStudy, metrics, children }: CaseStudyViewe
       </div>
 
       {/* Content Section */}
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
+      <div>
         {children}
       </div>
     </div>

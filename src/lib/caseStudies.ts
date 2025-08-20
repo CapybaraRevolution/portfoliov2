@@ -77,6 +77,66 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Jira", "Confluence"],
     services: ["User Research", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
     order: 4
+  },
+  {
+    title: "Avatar: Generations",
+    description: "UX leadership across a multi-stakeholder mobile RPG",
+    slug: "avatar-generations",
+    category: "UX",
+    aiAccelerated: false,
+    role: "UX Lead",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "September 2021 – September 2023",
+    status: "Completed",
+    tools: ["Figma", "FigJam", "Notion", "Jira", "Unity", "Lottie"],
+    services: ["Stakeholder Alignment", "System Design", "Wireframes & Prototypes", "PRDs (Specs)", "Roadmap", "Team Facilitation", "User Research", "Usability Testing", "Product Analytics", "Experimentation"],
+    order: 5
+  },
+  {
+    title: "Cornell University — SC Johnson College of Business",
+    description: "Unifying three distinct institutions through a cohesive digital experience",
+    slug: "cornell-university",
+    category: "Strategy",
+    aiAccelerated: true,
+    role: "UX Designer & Business Analyst",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "January – June 2024",
+    status: "Completed",
+    tools: ["Figma", "FigJam", "Hotjar", "Google Analytics", "LLM assistants"],
+    services: ["Information Architecture", "Wireframes & Prototypes", "Product Vision", "PRDs (Specs)", "Stakeholder Alignment", "System Design"],
+    order: 6
+  },
+  {
+    title: "Social Finance Fund",
+    description: "UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package",
+    slug: "social-finance-fund",
+    category: "Strategy",
+    aiAccelerated: true,
+    role: "Lead UX Strategist & Research Facilitator",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "June 2024 – February 2025",
+    status: "Completed",
+    tools: ["Microsoft Forms", "Excel", "Obsidian", "Figma"],
+    services: ["Product Vision", "User Research", "Information Architecture", "Wireframes & Prototypes", "Stakeholder Alignment", "Team Facilitation"],
+    order: 7
+  },
+  {
+    title: "Breeze Mortgage Hub",
+    description: "Transform an incomplete product into a modern, AI-enabled experience that's clearer for users and easier for the team to ship",
+    slug: "breeze-mortgage-hub",
+    category: "UX",
+    aiAccelerated: true,
+    role: "UX Lead, Business Analyst & AI Strategist",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "2024–Present",
+    status: "Ongoing",
+    tools: ["Figma", "FigJam", "Notion", "Jira", "React", "SQL"],
+    services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
+    order: 8
   }
 ]
 

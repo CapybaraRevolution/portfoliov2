@@ -1,0 +1,178 @@
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { Figure } from '@/components/mdx/CaseStudyComponents'
+
+export const metadata = {
+  title: 'Boveda Tr1n1ty - Case Study',
+  description: 'From fragmented workflow to a coherent, measurable experience—aligning stakeholders, simplifying flows, and shipping a modernized UX that moves the business.',
+}
+
+export default function BovedaTr1n1tyCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('boveda-tr1n1ty')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
+
+  // Metrics data following our component structure
+  const metrics = [
+    {
+      name: 'Checkout Completion',
+      stat: 'Y%',
+      previousStat: 'X%',
+      change: '+Z pp',
+      changeType: 'increase',
+      description: '30 days post-launch improvement'
+    },
+    {
+      name: 'Task Completion Time',
+      stat: 'T2',
+      previousStat: 'T1',
+      change: '−N%',
+      changeType: 'increase',
+      description: 'P50 usability test improvement'
+    },
+    {
+      name: 'Support Tickets',
+      stat: 'B',
+      previousStat: 'A',
+      change: '−M%',
+      changeType: 'increase',
+      description: 'Flow-related tickets in 8 weeks'
+    },
+  ]
+
+  return (
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <h2>Project Overview</h2>
+
+      <p><strong>The Challenge</strong><br />
+      Boveda's digital experience had grown organically. Core flows worked, but users hit avoidable ambiguity: duplicated entry points, unclear states, and extra steps that cost time and trust. Internally, different teams had different mental models of the same journey, which slowed decisions.</p>
+
+      <p><strong>The Solution</strong><br />
+      I mapped the real user flows end-to-end, aligned stakeholders on what "good" looks like, and shipped an iterative redesign: clearer IA, mid-fi wires, and a clickable prototype to de-risk decisions before code.</p>
+
+      <p><strong>The Impact</strong><br />
+      Faster decisions, fewer dead-ends for users, and a runway of prioritized work tied to metrics. We reduced task completion time, increased checkout conversion, and cut support tickets significantly.</p>
+
+      <Figure 
+        src="/images/case-studies/boveda/tr1n1tymockup.png"
+        alt="Boveda Tr1n1ty product interface mockup on laptop"
+        caption="The redesigned Boveda Tr1n1ty interface featuring streamlined navigation and clearer user flows"
+        width={1400}
+        height={900}
+      />
+
+      <hr />
+
+      <h2>Research & Discovery</h2>
+
+      <h3>Research Methods</h3>
+      <ul>
+        <li>End-to-end flow mapping with stakeholder alignment sessions</li>
+        <li>Task-based usability testing with 5-7 representative users</li>
+        <li>Cross-functional workshops using FigJam for shared mental models</li>
+        <li>Support ticket analysis to identify common friction points</li>
+      </ul>
+
+      <h3>Key Findings</h3>
+      <ul>
+        <li>Multiple entry points created user confusion and duplicate pathways</li>
+        <li>Different teams had conflicting mental models of the same user journey</li>
+        <li>Critical "decision moments" lacked clear guidance and recovery paths</li>
+        <li>Missing instrumentation made it impossible to measure improvements</li>
+      </ul>
+
+      <h3>Strategic Insights</h3>
+      <p>When teams lack shared definitions of user flows and success metrics, even good individual decisions can create system-wide friction. Users judge product robustness by recovery paths, not just happy paths.</p>
+
+      <hr />
+
+      <h2>Strategy & Solution</h2>
+
+      <h3>Primary Goals</h3>
+      <ol>
+        <li>Reduce friction in key user journeys through clearer information architecture</li>
+        <li>Align stakeholders on shared definitions of success and user flow states</li>
+        <li>Create measurable improvements through incremental, validated changes</li>
+      </ol>
+
+      <h3>Design Principles</h3>
+      <ul>
+        <li>Name the moments that matter: Label critical steps and states clearly</li>
+        <li>Design recovery paths: Plan for when things don't go right</li>
+        <li>Measure the minimum: Focus on clean, actionable events over comprehensive tracking</li>
+      </ul>
+
+      <h3>Key Decisions</h3>
+      <p>Chose surgical improvements over ground-up rebuild to work within existing technical constraints while still delivering measurable user experience improvements.</p>
+
+      <hr />
+
+      <h2>Implementation Process</h2>
+
+      <h3>Phase 1: Alignment & Discovery</h3>
+      <ul>
+        <li>Created one-page product "north star" and sharp OKRs</li>
+        <li>Facilitated cross-functional flow mapping to identify friction points</li>
+        <li>Established RACI clarity for faster decision-making</li>
+      </ul>
+
+      <h3>Phase 2: Design & Validation</h3>
+      <ul>
+        <li>Simplified information architecture with clearer entry points</li>
+        <li>Created mid-fidelity wireframes for critical and recovery paths</li>
+        <li>Built clickable prototype for task-based user testing</li>
+      </ul>
+
+      <h3>Phase 3: Implementation & Measurement</h3>
+      <ul>
+        <li>Wrote lean PRDs for incremental delivery behind feature flags</li>
+        <li>Implemented instrumentation for critical user journey moments</li>
+        <li>Set up guardrails and alerts for key performance indicators</li>
+      </ul>
+
+      <h3>Key Deliverables</h3>
+      <ul>
+        <li>Current/target flow maps with friction analysis</li>
+        <li>Mid-fi wireframes and clickable prototypes</li>
+        <li>Task-based usability test findings</li>
+        <li>Incremental PRDs with clear acceptance criteria</li>
+        <li>Basic instrumentation plan with success thresholds</li>
+      </ul>
+
+      <h3>Stakeholder Collaboration</h3>
+      <p>Worked closely with Design Lead, Engineering Lead, and Ops/Support teams. Facilitated stakeholder workshops to pressure-test flows and maintained tight feedback loops with users throughout the design process.</p>
+
+      <hr />
+
+      <h2>Results & Impact</h2>
+
+      <h3>Quantified Outcomes</h3>
+      <ul>
+        <li><strong>Checkout Completion</strong>: Improved from X% to Y% (+Z pp increase)</li>
+        <li><strong>Task Completion Time</strong>: Reduced P50 time from T1 to T2 (N% improvement)</li>
+        <li><strong>Support Tickets</strong>: Decreased flow-related tickets from A to B (M% reduction)</li>
+      </ul>
+
+      <h3>Business Value</h3>
+      <p>Faster stakeholder decision-making through shared flow definitions and success criteria. Reduced user abandonment in critical conversion moments. Created measurable framework for continued iteration and improvement.</p>
+
+      <h3>User Experience</h3>
+      <p>Eliminated "Where do I...?" confusion moments in user testing. Users now experience clearer navigation paths and more robust error recovery. Improved confidence in completing complex tasks.</p>
+
+      <hr />
+
+      <h2>Reflection & Learning</h2>
+
+      <h3>Key Insights</h3>
+      <p>The biggest impact came from aligning internal stakeholders before designing external experiences. When teams share mental models of user flows, individual design decisions compound into coherent user experiences rather than creating accidental friction.</p>
+
+      <h3>Process Improvements</h3>
+      <p>Future projects would benefit from even earlier instrumentation planning and more frequent stakeholder check-ins during the discovery phase. Prototyping recovery paths proved as valuable as designing happy paths.</p>
+
+      <h3>Broader Applications</h3>
+      <p>This approach of "name the moments that matter" applies beyond UX to any complex system where multiple stakeholders need to coordinate around user outcomes. Clear definitions enable better decisions at every level.</p>
+    </CaseStudyViewer>
+  )
+}

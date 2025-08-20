@@ -225,34 +225,40 @@ export function Video({
   className 
 }: VideoProps) {
   const videoElement = (
-    <div className={clsx(
-      'relative overflow-hidden rounded-xl shadow-lg',
-      {
-        'inline-block': inline
-      }
-    )}>
-      <video
-        src={src}
-        poster={poster}
-        controls={controls}
-        autoPlay={autoplay}
-        loop={loop}
-        muted={muted}
-        className={clsx(
-          'h-auto',
-          {
-            'w-full': !inline && !width,
-            'max-w-none': inline
-          }
-        )}
-        style={width || height ? {
-          width: typeof width === 'number' ? `${width}px` : width,
-          height: typeof height === 'number' ? `${height}px` : height
-        } : undefined}
-        preload="metadata"
-      >
-        Your browser does not support the video tag.
-      </video>
+    <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10">
+      {/* Clean header like Protocol code blocks */}
+      {caption && (
+        <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
+          <h3 className="mr-auto pt-3 text-xs font-semibold text-white">
+            {caption}
+          </h3>
+        </div>
+      )}
+      
+      {/* Video content */}
+      <div className="relative dark:bg-white/2.5">
+        <video
+          src={src}
+          poster={poster}
+          controls={controls}
+          autoPlay={autoplay}
+          loop={loop}
+          muted={muted}
+          className={clsx(
+            'w-full h-auto bg-black',
+            {
+              'max-w-none': inline
+            }
+          )}
+          style={width || height ? {
+            width: typeof width === 'number' ? `${width}px` : width,
+            height: typeof height === 'number' ? `${height}px` : height
+          } : undefined}
+          preload="metadata"
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   )
 
@@ -260,11 +266,6 @@ export function Video({
     return (
       <span className={clsx('inline-block align-middle mx-2', className)}>
         {videoElement}
-        {caption && (
-          <span className="block text-xs text-zinc-500 dark:text-zinc-400 text-center mt-1">
-            {caption}
-          </span>
-        )}
       </span>
     )
   }
@@ -272,11 +273,6 @@ export function Video({
   return (
     <figure className={clsx('my-8', className)}>
       {videoElement}
-      {caption && (
-        <figcaption className="text-sm text-zinc-600 dark:text-zinc-400 text-center mt-3">
-          {caption}
-        </figcaption>
-      )}
     </figure>
   )
 }
@@ -309,25 +305,32 @@ export function CaseImage({
       },
       className
     )}>
-      <div className="relative overflow-hidden rounded-xl shadow-lg">
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          className={clsx(
-            'w-full h-auto',
-            {
-              'max-w-none': variant === 'hero'
-            }
-          )}
-        />
+      <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10">
+        {/* Clean header like Protocol code blocks */}
+        {caption && (
+          <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
+            <h3 className="mr-auto pt-3 text-xs font-semibold text-white">
+              {caption}
+            </h3>
+          </div>
+        )}
+        
+        {/* Image content */}
+        <div className="relative dark:bg-white/2.5">
+          <Image
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            className={clsx(
+              'w-full h-auto',
+              {
+                'max-w-none': variant === 'hero'
+              }
+            )}
+          />
+        </div>
       </div>
-      {caption && (
-        <figcaption className="text-sm text-zinc-600 dark:text-zinc-400 text-center mt-3">
-          {caption}
-        </figcaption>
-      )}
     </figure>
   )
 }

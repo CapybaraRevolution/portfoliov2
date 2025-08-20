@@ -1,0 +1,196 @@
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+
+export const metadata = {
+  title: 'Avatar: Generations - Case Study',
+  description: 'UX leadership across a multi-stakeholder mobile RPG',
+}
+
+export default function AvatarGenerationsCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('avatar-generations')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
+
+  // Metrics data with placeholders as specified
+  const metrics = [
+    {
+      name: 'Combat tutorial completion',
+      stat: '+X–Y pp',
+      previousStat: 'baseline',
+      change: 'Placeholder',
+      changeType: 'increase',
+      description: 'Tutorial completion improvement (placeholder)'
+    },
+    {
+      name: 'Time-to-first-win',
+      stat: '–A–B%',
+      previousStat: 'baseline',
+      change: 'Placeholder',
+      changeType: 'increase',
+      description: 'Reduced time to first victory (placeholder)'
+    },
+    {
+      name: 'Spec acceptance (first pass)',
+      stat: '+X pp',
+      previousStat: 'baseline',
+      change: 'Placeholder',
+      changeType: 'increase',
+      description: 'Spec acceptance rate improvement (placeholder)'
+    },
+    {
+      name: 'Design→dev rework',
+      stat: '–Y%',
+      previousStat: 'baseline',
+      change: 'Placeholder',
+      changeType: 'increase',
+      description: 'Reduced design to development rework (placeholder)'
+    },
+    {
+      name: 'Weekly PVP participation',
+      stat: '+X%',
+      previousStat: 'baseline',
+      change: 'Placeholder',
+      changeType: 'increase',
+      description: 'Increased player vs player engagement (placeholder)'
+    }
+  ]
+
+  return (
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <CaseImage
+        src="/images/case-studies/avatar-generations/avatarlogo.png"
+        alt="Avatar: Generations logo"
+        variant="hero"
+        width={1400}
+        height={800}
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Executive summary</h2>
+
+        <p>Multi-studio collaboration on a live-ops, UI-heavy mobile RPG demands clarity, pace, and consistency. I led UX across partners (Navigator Games, Square Enix London Mobile, Paramount), established a scalable UX process, and delivered system-level improvements to combat, navigation, and core UI patterns—making the game easier to learn and more satisfying to play.</p>
+
+        <h3>Why it matters</h3>
+
+        <p>When art, design, and engineering operate on different clocks, UX becomes the translator. Strong UX process turns "good ideas" into shippable, learnable features that reduce rework and keep everyone aligned.</p>
+
+        <hr />
+
+        <h2>What I did</h2>
+
+        <ul>
+          <li>Built a common UX process (brief → flows → IA → wireframes → prototype → spec → review) so teams could move in step.</li>
+          <li>Redesigned the combat UI to surface depth (turn order, ability states, readable targeting).</li>
+          <li>Standardized patterns for modals, menus, and in-game navigation via a reusable component library.</li>
+          <li>Authored specs & review gates (PRDs, acceptance criteria, motion notes) to tighten design↔dev loop.</li>
+          <li>Drove alignment across SE London Mobile + Paramount on brand, accessibility, and review cadence.</li>
+          <li>Instrumented learning goals and ran lightweight tests to prioritize fixes with the biggest impact.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Selected work</h2>
+
+        <h3>1) Combat clarity pass</h3>
+
+        <p><strong>Problem:</strong> Deep system; UI hid affordances (turn order, status, target state).</p>
+        <p><strong>Approach:</strong> Grouped related elements, clear hierarchy, explicit turn queue, consistent iconography, inline affordances.</p>
+        <p><strong>Result (placeholder):</strong> ↑ task success in combat tutorial (+X–Y pp); ↓ time-to-first-win (–A–B%).</p>
+      </div>
+
+      <Figure
+        src="/images/case-studies/avatar-generations/avatarcombatui.png"
+        alt="Combat UI with clearer hierarchy and turn order"
+        caption="Surfacing the right signals makes depth approachable."
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h3>2) Consistent, scalable UI patterns</h3>
+
+        <p><strong>Problem:</strong> Inconsistent modals/menus slowed delivery and confused users.</p>
+        <p><strong>Approach:</strong> Modular system for dialogs, confirmations, and menu layouts; brand-safe, accessible.</p>
+        <p><strong>Impact (placeholder):</strong> ↓ design→dev rework (–X%); ↑ spec acceptance on first pass (+Y pp).</p>
+      </div>
+
+      <Figure
+        src="/images/case-studies/avatar-generations/aresmodal.png"
+        alt="Standard confirmation modal pattern"
+        caption="One pattern, many contexts: fewer decisions, faster builds."
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h3>3) PVP progression & motivation</h3>
+
+        <p><strong>Problem:</strong> Competitive loop needed clarity around ranking, rewards, and match flow.</p>
+        <p><strong>Approach:</strong> Interactive prototypes with motion cues for matchmaking, rank change, and rewards.</p>
+        <p><strong>Result (placeholder):</strong> ↑ weekly PVP participation (+X%); ↑ return-to-play after loss (+Y pp).</p>
+      </div>
+
+      <Figure
+        src="/images/case-studies/avatar-generations/arena.png"
+        alt="Arena/PVP overview"
+        caption="Transparent rules and rewards keep players competing (and coming back)."
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h3>Process snapshot</h3>
+      </div>
+
+      <Figure
+        src="/images/case-studies/avatar-generations/AvatarUXProcess.png"
+        alt="Standardized UX process flow"
+        caption="Shared map = fewer detours. This became the team's default path from idea to build."
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <hr />
+
+        <h2>Outputs & deliverables</h2>
+
+        <ul>
+          <li>UX process playbook and team-wide flowchart</li>
+          <li>Combat UI redesign (flows, wireframes, prototypes, motion references)</li>
+          <li>Design system foundations (modals, toasts, menus, nav; tokens + redlines)</li>
+          <li>PRDs/specs with acceptance criteria, edge-case handling, and handoff notes</li>
+          <li>PVP wireframes/prototypes (progression, matchmaking, results)</li>
+          <li>Instrumentation plan for new flows (onboarding & combat learnability)</li>
+        </ul>
+
+        <hr />
+
+        <h2>Team & stakeholders</h2>
+
+        <ul>
+          <li><strong>Partners:</strong> Navigator Games, Square Enix London Mobile, Paramount Pictures</li>
+          <li><strong>Cross-functional:</strong> Design, Engineering, Art, Production, QA</li>
+          <li><strong>My role:</strong> UX Lead (process, systems, combat UI, specs, reviews, facilitation)</li>
+        </ul>
+
+        <hr />
+
+        <h2>Risks & constraints</h2>
+
+        <ul>
+          <li>Multi-party approvals (brand/IP) extended review cycles.</li>
+          <li>Live-ops cadence demanded incremental, low-risk changes.</li>
+          <li>Project ultimately sunset due to business priorities outside the UX team.</li>
+        </ul>
+
+        <hr />
+
+        <h2>What I learned</h2>
+
+        <p>Great game UX is a leadership job as much as a design job. A steady process, clear patterns, and respectful facilitation let teams ship clarity without sacrificing depth—even with multiple stakeholders.</p>
+
+        <hr />
+
+        <h3>Credits</h3>
+
+        <p>Navigator Games, Square Enix London Mobile, Paramount Pictures, and the talented cross-functional teams who brought Avatar: Generations to life.</p>
+      </div>
+    </CaseStudyViewer>
+  )
+}

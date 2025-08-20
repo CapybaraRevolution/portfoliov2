@@ -1,0 +1,218 @@
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+
+export const metadata = {
+  title: 'Cornell University — SC Johnson College of Business - Case Study',
+  description: 'Unifying three distinct institutions through a cohesive digital experience',
+}
+
+export default function CornellUniversityCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('cornell-university')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
+
+  // Metrics data with directional placeholders
+  const metrics = [
+    {
+      name: 'Navigation findability (key tasks)',
+      stat: '↑',
+      previousStat: 'baseline',
+      change: 'Improved',
+      changeType: 'increase',
+      description: 'Post-test improvement in unmoderated task success (directional)'
+    },
+    {
+      name: 'Bounce rate (problem pages)',
+      stat: '↓',
+      previousStat: 'baseline',
+      change: 'Reduced',
+      changeType: 'increase',
+      description: 'Post-redesign baseline from GA snapshot (directional)'
+    },
+    {
+      name: 'Design consistency debt',
+      stat: '↓',
+      previousStat: 'baseline',
+      change: 'Reduced',
+      changeType: 'increase',
+      description: 'Module standardization + documentation (directional)'
+    }
+  ]
+
+  return (
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <CaseImage
+        src="/images/case-studies/cornell-university/cornelllogo.png"
+        alt="Cornell University SC Johnson College of Business logo"
+        variant="hero"
+        width={1400}
+        height={800}
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Goal: Unify three distinct institutions through a cohesive digital experience</h2>
+
+        <p><strong>Context:</strong> In 2016, Cornell combined three business schools under SC Johnson (Johnson, Nolan, Dyson). By 2024, the web presence still reflected three mindsets, three vocabularies, and three site patterns. I was brought in (via Briteweb) to help analyze the problem, align stakeholders, and design a coherent system the internal team could own.</p>
+
+        <hr />
+
+        <h2>Why this mattered</h2>
+
+        <p>Fragmentation was eroding trust and task success. Users (especially prospective students) struggled with inconsistent navigation, terminology, and page modules—creating unnecessary exits on high-value paths.</p>
+
+        <hr />
+
+        <h2>What I did</h2>
+
+        <h3>1) Insights (Data-informed, human-interpreted)</h3>
+        
+        <ul>
+          <li>Triangulated quant + qual: Hotjar/GA patterns + session observations to locate drop-offs and friction.</li>
+          <li>Mapped priority journeys (e.g., prospective student tasks) to affected pages/modules.</li>
+          <li>Produced a risk-to-remedy matrix: problem → hypothesis → design probe → success signal.</li>
+        </ul>
+
+        <p><em>We needed to bridge the gaps between these institutions.</em></p>
+        <p><strong>Users want a single, predictable path from A → B.</strong></p>
+
+        <details>
+          <summary className="font-bold cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400">Nerdy: how we used data without drowning in it</summary>
+          <div className="p-4 mt-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
+            <p>We treated analytics like a map (where to dig) and observation like a metal detector (exactly where the signal is strongest).</p>
+            
+            <Figure 
+              src="/images/case-studies/cornell-university/treasuremap.jpg" 
+              alt="Treasure map metaphor" 
+              caption="Data as a treasure map: showing us where to dig deeper"
+            />
+            
+            <Figure 
+              src="/images/case-studies/cornell-university/nerdycornelldata.jpg" 
+              alt="Annotated Hotjar data" 
+              caption="Pinpointing the right problems made the design work calmer and faster"
+            />
+          </div>
+        </details>
+
+        <h3>2) Understand the user (personas + user stories)</h3>
+        
+        <ul>
+          <li>Created/validated personas (e.g., Prospective Student) to anchor decisions.</li>
+          <li>Wrote user stories per archetype to drive IA and module design.</li>
+        </ul>
+
+        <p><strong>A grounded persona keeps choices honest and focused.</strong></p>
+
+        <details>
+          <summary className="font-bold cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400">Why inconsistency hurts</summary>
+          <div className="p-4 mt-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
+            <p>Inconsistent patterns break trust—like a form that changes layout every page.</p>
+            
+            <Figure 
+              src="/images/case-studies/cornell-university/taxes.jpg" 
+              alt="Complex tax forms" 
+              caption="If every page 'feels' different, users start second-guessing the product"
+            />
+          </div>
+        </details>
+      </div>
+
+      <Figure
+        src="/images/case-studies/cornell-university/persona-slide1.png"
+        alt="Prospective student persona and user stories"
+        caption="Grounded personas kept our design decisions honest and user-focused"
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h3>3) Module design (system first)</h3>
+        
+        <ul>
+          <li>Designed a library of page modules (hero, program cards, stats, admissions CTAs, etc.) with clear inputs/variants.</li>
+          <li>Documented each module's anatomy and usage so SC Johnson's team could evolve it safely.</li>
+        </ul>
+
+        <p><strong>Documentation made the system teachable.</strong></p>
+      </div>
+
+      <Figure
+        src="/images/case-studies/cornell-university/cornell-fieldchip.jpg"
+        alt="Standardized module components and documentation"
+        caption="Systematic approach: one pattern, many contexts, fewer decisions"
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h3>4) Navigation system (patterns + rules)</h3>
+        
+        <ul>
+          <li>Prototyped and iterated site-wide navigation (global, sectional, in-page).</li>
+          <li>Defined naming, grouping, and wayfinding rules tied to user tasks.</li>
+        </ul>
+
+        <p><em>Flowcharts showed how the pieces click together.</em></p>
+        <p><strong>Clarity scales when the rules are simple and explicit.</strong></p>
+      </div>
+
+      <Figure
+        src="/images/case-studies/cornell-university/cornell-nav-flow.jpg"
+        alt="Navigation flow and information architecture"
+        caption="Clear navigation rules that scale across all three schools"
+      />
+
+      <Figure
+        src="/images/case-studies/cornell-university/Cornell-nav-flow2.png"
+        alt="Detailed navigation wireframes"
+        caption="Detailed wireframes showing consistent navigation patterns"
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h3>5) Handoff (so it lives beyond us)</h3>
+        
+        <ul>
+          <li>Organized the Figma file for hand-off ownership: naming, spacing tokens, componentization, example pages.</li>
+          <li>Provided PRD-lite specs for modules and nav, so engineering could implement predictably.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Where AI helped (AI-Accelerated ✅)</h2>
+
+        <p><strong>Human-in-the-loop, safety-first.</strong> No automated decisions shipped without review.</p>
+        
+        <ul>
+          <li><strong>IA clustering aid:</strong> used LLMs to cluster program pages and surface naming collisions—we made the calls, the model just accelerated the first pass.</li>
+          <li><strong>Story synthesis:</strong> drafted first-pass user stories from research notes, then edited for accuracy.</li>
+          <li><strong>Content linting:</strong> flagged inconsistent terminology between schools (style/voice checks).</li>
+          <li><strong>Doc automation:</strong> generated structured checklists from module specs to speed QA.</li>
+        </ul>
+
+        <p><strong>Result:</strong> faster first-drafts, better consistency checks, and more time for the real work—talking to stakeholders and simplifying journeys.</p>
+
+        <hr />
+
+        <h2>Outcomes (directional; safe-to-share)</h2>
+        
+        <ul>
+          <li>Findability improved in unmoderated tests for key tasks after the IA/nav prototype.</li>
+          <li>Bounce rate trended down on problem pages post-module standardization (early baseline).</li>
+          <li>Consistency debt reduced with a documented module library and naming rules.</li>
+          <li>Internal clarity: stakeholders cited clearer shared language and easier onboarding.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Learnings</h2>
+
+        <p>Complex mergers need more than visuals—they need shared rules. By combining data, plain-language documentation, and a maintainable design system (plus selective AI assists), we helped Cornell SC Johnson act like one institution online—without losing each school's identity.</p>
+
+        <hr />
+
+        <h3>Credits</h3>
+
+        <p>Cornell SC Johnson College of Business, Briteweb team, and the stakeholders who trusted us to bridge three institutions into one cohesive digital experience.</p>
+      </div>
+    </CaseStudyViewer>
+  )
+}
