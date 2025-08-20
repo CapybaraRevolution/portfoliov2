@@ -137,6 +137,21 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Notion", "Jira", "React", "SQL"],
     services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
     order: 8
+  },
+  {
+    title: "AMFA Class Filter Redesign",
+    description: "Improving navigation and registration through smarter filtering and cross-system user flows for the Arkansas Museum of Fine Arts",
+    slug: "amfa-class-filter-redesign",
+    category: "UX",
+    aiAccelerated: false,
+    role: "UX Designer, Systems Analyst & Facilitator",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "Feb–May 2025",
+    status: "Completed",
+    tools: ["Figma", "FigJam", "Miro", "Notion"],
+    services: ["Information Architecture", "Wireframes & Prototypes", "Stakeholder Alignment", "Product Analytics", "Usability Testing", "PRDs (Specs)", "Team Facilitation"],
+    order: 9
   }
 ]
 

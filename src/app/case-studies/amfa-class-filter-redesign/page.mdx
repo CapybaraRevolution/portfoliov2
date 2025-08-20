@@ -1,0 +1,181 @@
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
+import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+
+export const metadata = {
+  title: 'AMFA Class Filter Redesign - Case Study',
+  description: 'Improving navigation and registration through smarter filtering and cross-system user flows for the Arkansas Museum of Fine Arts',
+}
+
+export default function AMFAClassFilterRedesignCaseStudy() {
+  const caseStudy = getCaseStudyBySlug('amfa-class-filter-redesign')
+  
+  if (!caseStudy) {
+    return <div>Case study not found</div>
+  }
+
+  // Metrics data with TBD placeholders as specified
+  const metrics = [
+    {
+      name: 'Filter completion rate',
+      stat: 'Target +15–25%',
+      previousStat: 'Baseline TBD',
+      change: 'Pending',
+      changeType: 'increase',
+      description: 'GA4 funnel from filter start → class detail → add-to-cart'
+    },
+    {
+      name: 'Class discovery time',
+      stat: 'Target −20%',
+      previousStat: 'Baseline TBD',
+      change: 'Pending',
+      changeType: 'increase',
+      description: 'Median time from directory load → class detail'
+    },
+    {
+      name: 'Cart return continuity',
+      stat: 'State preserved',
+      previousStat: 'Inconsistent state',
+      change: 'Improved',
+      changeType: 'increase',
+      description: 'UAT checklist + post-launch survey'
+    }
+  ]
+
+  return (
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <CaseImage
+        src="/images/case-studies/amfa-class-filter-redesign/amfa-logo.png"
+        alt="Arkansas Museum of Fine Arts logo"
+        variant="hero"
+        width={1400}
+        height={800}
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Overview</h2>
+
+        <p>The Arkansas Museum of Fine Arts (AMFA) offers a wide variety of community classes for youth and adults. The class filtering and booking journey was fragmented across platforms and unclear at decision points. Brought in via Jixaw, I unified the experience, streamlined filtering, and clarified system transitions so people can find the right class faster and check out with confidence.</p>
+
+        <hr />
+
+        <h2>Key Challenges</h2>
+
+        <ul>
+          <li><strong>Fragmented architecture:</strong> Marketing site, class directory (minisite), and cart lived on separate platforms.</li>
+          <li><strong>Broken filtering UX:</strong> Users couldn't quickly distinguish Youth vs. Adult paths or apply relevant criteria.</li>
+          <li><strong>Transition friction:</strong> People crossed systems without context; state was often lost.</li>
+          <li><strong>Stakeholder complexity:</strong> Marketing, operations, and dev teams had overlapping priorities.</li>
+        </ul>
+
+        <hr />
+
+        <h2>My Approach</h2>
+
+        <ul>
+          <li><strong>Map the ecosystem:</strong> Identified all systems, owners, and transition points, then aligned on entry/exit rules.</li>
+          <li><strong>Clarify the IA up front:</strong> Split the experience into clear <strong>Youth</strong> vs. <strong>Adult</strong> paths to simplify choices.</li>
+          <li><strong>Design flows + wireframes:</strong> Defined filtering, detail pages, and handoffs between systems.</li>
+          <li><strong>Preserve state across systems:</strong> Spec'd an <strong>overlay return pattern</strong> so users can add to cart and return to browsing without losing context.</li>
+          <li><strong>Set up measurement:</strong> Outlined events for discovery, filter engagement, and checkout progression.</li>
+        </ul>
+      </div>
+
+      <Figure
+        src="/images/case-studies/amfa-class-filter-redesign/AMFAFilters.png"
+        alt="Flow diagram mapping the new AMFA filter and registration flow"
+        caption="Wireframe flow mapping Youth vs. Adult filtering logic and cross-system transitions."
+      />
+
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>System Architecture & Flow Design</h2>
+
+        <p>The challenge was to create a seamless experience across three disconnected platforms. I mapped the entire ecosystem to understand where users entered, how they moved between systems, and where they dropped off.</p>
+
+        <h3>Progressive Disclosure Strategy</h3>
+        
+        <p>Rather than overwhelming users with all filter options upfront, I implemented a progressive disclosure pattern:</p>
+        
+        <ul>
+          <li><strong>Level 1:</strong> Simple binary choice - Youth or Adult classes</li>
+          <li><strong>Level 2:</strong> Age-appropriate filters (e.g., age ranges for youth, skill levels for adults)</li>
+          <li><strong>Level 3:</strong> Refinement options (schedule, location, instructor)</li>
+        </ul>
+
+        <h3>Cross-System State Management</h3>
+
+        <p>To prevent users from losing their place when adding items to cart, I designed an overlay return pattern that:</p>
+        
+        <ul>
+          <li>Preserves filter state and scroll position</li>
+          <li>Shows cart confirmation without full page reload</li>
+          <li>Enables quick return to browsing with maintained context</li>
+        </ul>
+
+        <hr />
+
+        <h2>Deliverables</h2>
+
+        <ul>
+          <li><strong>System map / flow diagram</strong> (current → future) with platform boundaries</li>
+          <li><strong>Mid-fidelity wireframes</strong> for directory, detail pages, and cross-system components</li>
+          <li><strong>Overlay return spec</strong> with UX rules and edge cases</li>
+          <li><strong>Facilitation notes</strong> summarizing goals, constraints, and decisions</li>
+          <li><strong>Analytics instrumentation plan</strong> with specific GA4 events and parameters</li>
+        </ul>
+
+        <hr />
+
+        <h2>Measurement Strategy</h2>
+
+        <p>To validate the redesign's impact, I defined key events to track post-launch:</p>
+
+        <h3>Core Events</h3>
+        <ul>
+          <li><code>filter_start</code> - User begins filtering journey</li>
+          <li><code>filter_apply</code> - Filter selection made</li>
+          <li><code>class_detail_view</code> - Class page opened</li>
+          <li><code>add_to_cart</code> - Item added to cart</li>
+          <li><code>cart_return_to_directory</code> - Return from cart overlay</li>
+          <li><code>checkout_complete</code> - Registration completed</li>
+        </ul>
+
+        <p>These events enable funnel analysis to identify remaining friction points and optimize the experience iteratively.</p>
+
+        <hr />
+
+        <h2>Stakeholder Navigation</h2>
+
+        <p>With three teams (marketing, operations, development) having different priorities, alignment was crucial. I facilitated workshops using:</p>
+        
+        <ul>
+          <li><strong>Shared language:</strong> Created a glossary of terms all teams agreed on</li>
+          <li><strong>Visual artifacts:</strong> Used flow diagrams as discussion anchors</li>
+          <li><strong>Progressive consensus:</strong> Started with high-level goals, then drilled into specifics</li>
+        </ul>
+
+        <hr />
+
+        <h2>Outcome</h2>
+
+        <p>The new filter architecture is being implemented. Analytics are configured to track discovery, filter engagement, and drop-offs. Early stakeholder feedback highlights clearer paths, better handoffs, and a more resilient cart flow.</p>
+
+        <hr />
+
+        <h2>Learnings</h2>
+
+        <ul>
+          <li><strong>Systems first:</strong> Designing across platforms demands early agreement on boundaries and state.</li>
+          <li><strong>Progressive disclosure works:</strong> A simple first split (Youth vs. Adult) reduces cognitive load downstream.</li>
+          <li><strong>Trust the return:</strong> Preserving context when people "detour" to the cart meaningfully improves task flow.</li>
+        </ul>
+
+        <hr />
+
+        <h3>Credits</h3>
+
+        <p>Arkansas Museum of Fine Arts team, Jixaw agency partners, and the cross-functional stakeholders who collaborated to create a more intuitive class registration experience.</p>
+      </div>
+    </CaseStudyViewer>
+  )
+}
