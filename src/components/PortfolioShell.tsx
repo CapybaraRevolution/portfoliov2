@@ -248,7 +248,7 @@ export function PortfolioShell() {
             animate={{ opacity: 1, y: 0 }}
             className="mt-2 text-sm text-zinc-600 dark:text-zinc-400"
           >
-            Found {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} matching "{filters.searchQuery}"
+            Found {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} matching &ldquo;{filters.searchQuery}&rdquo;
           </motion.p>
         )}
       </div>
@@ -422,7 +422,7 @@ export function PortfolioShell() {
             </p>
             <p className="text-zinc-600 dark:text-zinc-400 mb-4">
               {filters.searchQuery && (
-                <>No results for "{filters.searchQuery}". </>
+                <>No results for &ldquo;{filters.searchQuery}&rdquo;. </>
               )}
               Try adjusting your filters to see more results.
             </p>
