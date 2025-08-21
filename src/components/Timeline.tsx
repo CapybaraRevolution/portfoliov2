@@ -284,9 +284,9 @@ export function Timeline() {
         </div>
 
         {/* Timeline */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto px-6">
             <div 
-              className="space-y-8 relative"
+              className="space-y-16 relative"
               ref={registerTimelineRef}
             >
               {/* Timeline line with lightning effect */}
@@ -321,7 +321,7 @@ export function Timeline() {
               </div>
               
               {/* Timeline nodes */}
-              <div className="space-y-12">
+              <div className="space-y-14">
                 {timelineData.map((node, index) => {
                   const colors = getNodeColors(index)
                   const isActive = activeNodeIndex === index
@@ -337,8 +337,8 @@ export function Timeline() {
                         {/* Glow rings for active node */}
                         {isActive && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className={`absolute w-10 h-10 rounded-full ${colors.cardBg} animate-pulse`} />
-                            <div className={`absolute w-8 h-8 rounded-full ${colors.cardBg} animate-pulse`} style={{ animationDelay: '0.5s' }} />
+                            <div className={`absolute w-8 h-8 rounded-full ${colors.cardBg} animate-pulse`} />
+                            <div className={`absolute w-6 h-6 rounded-full ${colors.cardBg} animate-pulse`} style={{ animationDelay: '0.5s' }} />
                           </div>
                         )}
                         
@@ -351,7 +351,7 @@ export function Timeline() {
                       
                       <div className={`flex-1 space-y-3 pb-6 rounded-lg px-4 py-3 transition-all duration-500 ${
                         isActive 
-                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-lg scale-105` 
+                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-lg scale-103` 
                           : 'bg-white dark:bg-zinc-800/50 shadow-sm border border-zinc-200 dark:border-zinc-700'
                       }`}>
                         <div className="flex items-start justify-between">
