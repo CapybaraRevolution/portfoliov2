@@ -101,7 +101,7 @@ export function Timeline() {
       const currentTime = Date.now()
       const currentScrollY = window.scrollY
       
-      // Calculate velocity using refs (no setState in scroll handler)
+      // Calculate velocity for animation effects
       const deltaTime = currentTime - lastScrollTime.current
       const deltaY = currentScrollY - lastScrollY.current
       const velocity = deltaTime > 0 ? Math.abs(deltaY / deltaTime) : 0
@@ -110,7 +110,7 @@ export function Timeline() {
       lastScrollY.current = currentScrollY
       currentVelocityRef.current = velocity
 
-      // High refresh rate updates (every ~8ms for 120fps buttery feel)
+      // Update velocity state for animations
       if (currentTime - lastUpdateTime.current > 8) {
         setScrollVelocity(velocity)
         setIsScrolling(true)
@@ -122,48 +122,59 @@ export function Timeline() {
         clearTimeout(scrollTimeout.current)
       }
 
-      // Set timeout to detect when scrolling stops (longer for buttery settling)
       scrollTimeout.current = setTimeout(() => {
         setIsScrolling(false)
         setScrollVelocity(0)
         currentVelocityRef.current = 0
-      }, 250)
+      }, 150)
 
       const timelineRect = timelineRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
+      const timelineStart = timelineRect.top
+      const timelineEnd = timelineRect.bottom
       const timelineHeight = timelineRect.height
       
-      // Calculate base progress using refs
-      const baseProgress = Math.max(0, Math.min(1, 
-        (viewportHeight - timelineRect.top) / (viewportHeight + timelineHeight)
-      ))
+      // More accurate progress calculation
+      let progress = 0
+      
+      if (timelineStart > viewportHeight) {
+        // Timeline hasn't entered viewport yet
+        progress = 0
+      } else if (timelineEnd < 0) {
+        // Timeline has completely passed
+        progress = 1
+      } else {
+        // Timeline is in viewport - calculate progress based on how much has scrolled past
+        const scrolledPastTop = Math.max(0, -timelineStart)
+        const maxScrollDistance = timelineHeight + viewportHeight
+        progress = Math.min(1, scrolledPastTop / maxScrollDistance)
+      }
 
-      baseProgressRef.current = baseProgress
-      setMaxProgress(baseProgress)
+      baseProgressRef.current = progress
+      setMaxProgress(progress)
 
-      // Start animation if not already running
+      // Start smooth animation
       if (!animationFrame.current) {
         animate()
       }
 
-      // Determine active node
+      // Find active node based on viewport center
       let newActiveIndex = -1
       let closestDistance = Infinity
+      const viewportCenter = viewportHeight * 0.5
       const nodes = Object.entries(nodeRefs.current)
       
       for (let i = 0; i < nodes.length; i++) {
         const [, element] = nodes[i]
         if (element) {
           const rect = element.getBoundingClientRect()
-          const centerY = rect.top + rect.height / 2
-          const targetY = viewportHeight * 0.5
-          const distance = Math.abs(centerY - targetY)
+          const nodeCenter = rect.top + rect.height / 2
+          const distance = Math.abs(nodeCenter - viewportCenter)
           
-          if (rect.bottom > 0 && rect.top < viewportHeight) {
-            if (distance < closestDistance) {
-              closestDistance = distance
-              newActiveIndex = i
-            }
+          // Only consider nodes that are at least partially visible
+          if (rect.bottom > 0 && rect.top < viewportHeight && distance < closestDistance) {
+            closestDistance = distance
+            newActiveIndex = i
           }
         }
       }
@@ -291,20 +302,19 @@ export function Timeline() {
                     transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                   }}
                 />
-                {/* Super Buttery Lightning point with dramatic velocity response */}
-                {lightningProgress > 0 && (
+                {/* Smooth blue dot that follows active element */}
+                {maxProgress > 0 && (
                   <div 
                     className="absolute -left-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 shadow-lg transition-all motion-reduce:transition-none"
                     style={{ 
                       top: `${maxProgress * 100}%`,
-                      transform: `translateY(-50%) ${!isScrolling ? 'scale(1.2)' : 'scale(1)'}`,
-                      width: `${Math.max(10, Math.min(28, 10 + scrollVelocity * 4))}px`,
-                      height: `${Math.max(10, Math.min(28, 10 + scrollVelocity * 4))}px`,
-                      boxShadow: `0 0 ${Math.max(15, Math.min(60, 15 + scrollVelocity * 8))}px rgba(16, 185, 129, ${Math.max(0.4, Math.min(1, 0.4 + scrollVelocity * 0.15))})`,
-                      animation: !isScrolling ? 'timeline-bob 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none',
+                      transform: `translateY(-50%) ${!isScrolling ? 'scale(1.15)' : 'scale(1)'}`,
+                      width: `${Math.max(12, Math.min(20, 12 + scrollVelocity * 2))}px`,
+                      height: `${Math.max(12, Math.min(20, 12 + scrollVelocity * 2))}px`,
+                      boxShadow: `0 0 ${Math.max(20, Math.min(40, 20 + scrollVelocity * 4))}px rgba(16, 185, 129, ${Math.max(0.6, Math.min(0.9, 0.6 + scrollVelocity * 0.1))})`,
                       transition: isScrolling 
-                        ? 'all 0.05s cubic-bezier(0.34, 1.56, 0.64, 1)' 
-                        : 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                        ? 'all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)' 
+                        : 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
                     }}
                   />
                 )}
