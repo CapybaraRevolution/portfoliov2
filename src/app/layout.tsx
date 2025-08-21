@@ -55,10 +55,10 @@ export default async function RootLayout({
   let allSectionsEntries = (await Promise.all(
     pages.map(async (filename) => {
       try {
-        const module = await import(`./${filename}`)
+        const pageModule = await import(`./${filename}`)
         return [
           '/' + filename.replace(/(^|\/)page\.mdx$/, ''),
-          module.sections || [],
+          pageModule.sections || [],
         ]
       } catch (error) {
         console.warn(`Failed to import sections from ${filename}:`, error)
