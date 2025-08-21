@@ -1,225 +1,110 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { FunnelIcon } from '@heroicons/react/20/solid'
-import { isBackendAPIEnabled } from '@/lib/featureFlags'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
-import { FilterChip } from '@/components/FilterChip'
 import { AIToggle } from '@/components/AIToggle'
-
-// Imports
-import { type Project } from '@/data/projects'
-import { skillCategories, getAllSkillNames, standardizedSkills } from '@/data/standardizedSkills'
 import { getAllCaseStudies } from '@/lib/caseStudies'
-import { mapSkillNameToStandardized, getSkillsByStandardizedCategory } from '@/lib/skillMapping'
-
-// Types for backend data
-interface BackendSkill {
-  id: string
-  name: string
-  category: string
-}
-
-interface BackendCaseStudy {
-  id: string
-  title: string
-  description: string
-  category: 'UX' | 'Strategy' | 'PM' | 'BA'
-  skills: BackendSkill[]
-  ai: boolean
-  href: string
-  status: 'completed' | 'ongoing'
-  client?: string
-  timeline?: string
-  image?: string
-  [key: string]: any
-}
-
-interface TransformedBackendCaseStudy {
-  id: string
-  title: string
-  description: string
-  category: 'UX' | 'Strategy' | 'PM' | 'BA'
-  skills: string[] // Transformed from BackendSkill[] to string[]
-  ai: boolean
-  href: string
-  status: 'completed' | 'ongoing'
-  client?: string
-  timeline?: string
-  image?: string
-  [key: string]: any
-}
+import { type Project } from '@/data/projects'
 
 export function PortfolioShell() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const backendEnabled = isBackendAPIEnabled()
-  
-  // State
-  const [activeCategory, setActiveCategory] = useState<string>('All')
-  const [selectedSkills, setSelectedSkills] = useState<Set<string>>(new Set())
-  const [aiAccelerated, setAiAccelerated] = useState<boolean>(false)
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  
-  // Backend state
-  const [backendSkills, setBackendSkills] = useState<BackendSkill[]>([])
-  const [backendCaseStudies, setBackendCaseStudies] = useState<BackendCaseStudy[]>([])
-  const [backendError, setBackendError] = useState<string | null>(null)
-
-  // Legacy skill mapping (keep for fallback)
-  const skillNameMapping: Record<string, string[]> = {
-    // Strategy
-    'Product Vision': ['Product Vision'],
-    'Roadmap': ['Roadmapping'],
-    'Prioritization': ['Backlog Shaping', 'Scope Negotiation'],
-    'OKRs': ['KPI Dashboards'],
-    
-    // Discovery & Design
-    'User Research': ['User Interviews', 'User Research'],
-    'Information Architecture': ['Journey Mapping', 'Service Design'],
-    'Wireframes & Prototypes': ['Wireframing', 'Prototyping'],
-    'Usability Testing': ['A/B Testing'],
-    
-    // Build & Ship
-    'PRDs (Specs)': ['Opportunity Framing'],
-    'System Design': ['Design Systems'],
-    'APIs & Integrations': ['Event Instrumentation'],
-    'Agile Delivery': ['Release Planning', 'Cross-team Facilitation'],
-    
-    // Data & AI
-    'Product Analytics': ['Funnel Analysis', 'Data Viz'],
-    'Experimentation': ['A/B Testing'],
-    'Instrumentation': ['Event Instrumentation'],
-    'AI Integration': ['AI Prompt Design'],
-    
-    // Leadership & Collaboration
-    'Stakeholder Alignment': ['Stakeholder Alignment'],
-    'Communication': ['Data Visualization'],
-    'Storytelling': ['Market Research'],
-    'Team Facilitation': ['Cross-team Facilitation']
-  }
-
-  const findMatchingProjectSkills = (standardizedSkillName: string): string[] => {
-    return skillNameMapping[standardizedSkillName] || []
-  }
-
-  const reverseMappingCache = new Map<string, string>()
-  Object.entries(skillNameMapping).forEach(([standardizedSkill, legacySkills]) => {
-    legacySkills.forEach(legacySkill => {
-      reverseMappingCache.set(legacySkill, standardizedSkill)
-    })
+  // Local state for filtering
+  const [filters, setFilters] = useState({
+    selectedSkills: new Set<string>(),
+    aiAccelerated: false,
+    category: 'All',
+    searchQuery: ''
   })
-
-  const findStandardizedSkill = (legacySkillName: string): string | null => {
-    return reverseMappingCache.get(legacySkillName) || null
-  }
-
-  // Fetch backend data
-  useEffect(() => {
-    if (!backendEnabled) return
-
-    const fetchBackendData = async () => {
-      try {
-        setLoading(true)
-        setBackendError(null)
-
-        const [skillsResponse, caseStudiesResponse] = await Promise.all([
-          fetch('/api/v2/skills'),
-          fetch('/api/v2/case-studies')
-        ])
-
-        if (!skillsResponse.ok || !caseStudiesResponse.ok) {
-          throw new Error('Failed to fetch backend data')
-        }
-
-        const [skills, caseStudies] = await Promise.all([
-          skillsResponse.json(),
-          caseStudiesResponse.json()
-        ])
-
-        setBackendSkills(skills)
-        setBackendCaseStudies(caseStudies)
-      } catch (error) {
-        console.error('Backend fetch error:', error)
-        setBackendError('Failed to load data from backend')
-      } finally {
-        setLoading(false)
-      }
+  
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [searchFocused, setSearchFocused] = useState(false)
+  
+  // Get all case studies
+  const allCaseStudies = useMemo(() => getAllCaseStudies(), [])
+  
+  // Extract unique skills from all case studies for filter options
+  const availableSkills = useMemo(() => {
+    const skillsMap = new Map<string, Set<string>>()
+    
+    // Group skills by category (you can customize these categories)
+    const categories = {
+      'Strategy': ['Product Vision', 'Roadmap', 'Prioritization', 'OKRs', 'Stakeholder Alignment'],
+      'Discovery & Design': ['User Research', 'Information Architecture', 'Wireframes & Prototypes', 'Usability Testing', 'Service Design', 'Design Systems'],
+      'Build & Ship': ['PRDs (Specs)', 'System Design', 'APIs & Integrations', 'Agile Delivery', 'Cross-team Facilitation'],
+      'Data & AI': ['Product Analytics', 'Experimentation', 'Instrumentation', 'AI Integration', 'Data Visualization'],
+      'Leadership': ['Team Facilitation', 'Communication', 'Storytelling', 'Stakeholder Management']
     }
-
-    fetchBackendData()
-  }, [backendEnabled])
-
-  // Get skills grouped by category
-  const getSkillGroups = () => {
-    if (backendEnabled && backendSkills.length > 0) {
-      const grouped: Record<string, string[]> = {}
-      backendSkills.forEach(skill => {
-        if (!skill || !skill.name || !skill.category) return // Skip invalid skills
-        
-        // Use the category name (not categoryId) for grouping
-        const categoryName = skill.category
-        
-        if (!grouped[categoryName]) {
-          grouped[categoryName] = []
+    
+    // Initialize categories
+    Object.keys(categories).forEach(cat => skillsMap.set(cat, new Set()))
+    
+    // Add skills from case studies to appropriate categories
+    allCaseStudies.forEach(study => {
+      study.services.forEach(service => {
+        // Find which category this service belongs to
+        for (const [category, skills] of Object.entries(categories)) {
+          if (skills.some(skill => service.includes(skill) || skill.includes(service))) {
+            skillsMap.get(category)?.add(service)
+            break
+          }
         }
-        
-        // Prevent duplicate skills in the same category
-        if (!grouped[categoryName].includes(skill.name)) {
-          grouped[categoryName].push(skill.name)
+        // If no category found, add to a "Other" category
+        if (!Array.from(skillsMap.values()).some(set => set.has(service))) {
+          if (!skillsMap.has('Other')) skillsMap.set('Other', new Set())
+          skillsMap.get('Other')?.add(service)
         }
       })
-      
-      // If we have skills, return them
-      if (Object.keys(grouped).length > 0) {
-        return grouped
-      }
-    }
-
-    // Fallback to legacy skills
-    return {
-      'Strategy': [
-        'Product Vision',
-        'Roadmap',
-        'Prioritization',
-        'OKRs'
-      ],
-      'Discovery & Design': [
-        'User Research',
-        'Information Architecture',
-        'Wireframes & Prototypes',
-        'Usability Testing'
-      ],
-      'Build & Ship': [
-        'PRDs (Specs)',
-        'System Design',
-        'APIs & Integrations',
-        'Agile Delivery'
-      ],
-      'Data & AI': [
-        'Product Analytics',
-        'Experimentation',
-        'Instrumentation',
-        'AI Integration'
-      ],
-      'Leadership': [
-        'Stakeholder Alignment',
-        'Communication',
-        'Storytelling',
-        'Team Facilitation'
-      ]
-    }
-  }
-
-  // Filter projects
-  const getFilteredProjects = (): Project[] => {
-    // Always use case studies from caseStudies.ts for clean, consistent data
-    const allCaseStudies = getAllCaseStudies()
+    })
     
-    // Convert case studies to the expected format
-    let formattedCaseStudies: Project[] = allCaseStudies.map(study => ({
+    // Convert to object format
+    const result: Record<string, string[]> = {}
+    skillsMap.forEach((skills, category) => {
+      if (skills.size > 0) {
+        result[category] = Array.from(skills).sort()
+      }
+    })
+    
+    return result
+  }, [allCaseStudies])
+  
+  // Filter projects based on current filters
+  const filteredProjects = useMemo(() => {
+    let filtered = allCaseStudies
+    
+    // Search filter
+    if (filters.searchQuery) {
+      const query = filters.searchQuery.toLowerCase()
+      filtered = filtered.filter(study => 
+        study.title.toLowerCase().includes(query) ||
+        study.descriptiveTitle.toLowerCase().includes(query) ||
+        study.client.toLowerCase().includes(query) ||
+        study.description.toLowerCase().includes(query) ||
+        study.services.some(s => s.toLowerCase().includes(query))
+      )
+    }
+    
+    // Skills filter
+    if (filters.selectedSkills.size > 0) {
+      filtered = filtered.filter(study =>
+        Array.from(filters.selectedSkills).some(skill =>
+          study.services.includes(skill)
+        )
+      )
+    }
+    
+    // AI filter
+    if (filters.aiAccelerated) {
+      filtered = filtered.filter(study => study.aiAccelerated)
+    }
+    
+    // Category filter
+    if (filters.category !== 'All') {
+      filtered = filtered.filter(study => study.category === filters.category)
+    }
+    
+    // Convert to Project format
+    return filtered.map(study => ({
       id: study.slug,
       title: study.descriptiveTitle,
       description: study.description,
@@ -227,40 +112,97 @@ export function PortfolioShell() {
       skills: study.services || [],
       ai: study.aiAccelerated || false,
       href: `/case-studies/${study.slug}`,
-      client: study.client, // Use the actual client field
+      client: study.client,
       timeline: study.timeline,
       status: study.status === 'Ongoing' ? 'ongoing' as const : 'completed' as const
     }))
+  }, [allCaseStudies, filters])
+  
+  // Calculate skill counts based on current filters
+  const skillCounts = useMemo(() => {
+    const counts = new Map<string, number>()
     
-    // Filter by category
-    if (activeCategory !== 'All') {
-      formattedCaseStudies = formattedCaseStudies.filter(study => 
-        study.category === activeCategory
+    // Start with a filtered list that excludes the skill filter itself
+    let projectsForCounting = allCaseStudies
+    
+    // Apply other filters (not skill filter) to get accurate counts
+    if (filters.searchQuery) {
+      const query = filters.searchQuery.toLowerCase()
+      projectsForCounting = projectsForCounting.filter(study => 
+        study.title.toLowerCase().includes(query) ||
+        study.descriptiveTitle.toLowerCase().includes(query) ||
+        study.client.toLowerCase().includes(query) ||
+        study.description.toLowerCase().includes(query)
       )
     }
     
-    // Filter by selected skills
-    if (selectedSkills.size > 0) {
-      formattedCaseStudies = formattedCaseStudies.filter(study =>
-        Array.from(selectedSkills).some(selectedSkill =>
-          study.skills.includes(selectedSkill)
-        )
-      )
+    if (filters.aiAccelerated) {
+      projectsForCounting = projectsForCounting.filter(study => study.aiAccelerated)
     }
     
-    // Filter by AI acceleration
-    if (aiAccelerated) {
-      formattedCaseStudies = formattedCaseStudies.filter(study => study.ai)
+    if (filters.category !== 'All') {
+      projectsForCounting = projectsForCounting.filter(study => study.category === filters.category)
     }
     
-    return formattedCaseStudies
-  }
-
-  const skillGroups = getSkillGroups()
-  const filteredProjects = getFilteredProjects()
-  const activeFiltersCount = selectedSkills.size + (aiAccelerated ? 1 : 0) + (activeCategory !== 'All' ? 1 : 0)
-
-  // Initialize filtersOpen from sessionStorage
+    // Count skills in the filtered projects
+    projectsForCounting.forEach(study => {
+      study.services.forEach(skill => {
+        counts.set(skill, (counts.get(skill) || 0) + 1)
+      })
+    })
+    
+    return counts
+  }, [allCaseStudies, filters.searchQuery, filters.aiAccelerated, filters.category])
+  
+  // Filter handlers
+  const handleSkillToggle = useCallback((skill: string) => {
+    setFilters(prev => {
+      const newSkills = new Set(prev.selectedSkills)
+      if (newSkills.has(skill)) {
+        newSkills.delete(skill)
+      } else {
+        newSkills.add(skill)
+      }
+      return { ...prev, selectedSkills: newSkills }
+    })
+  }, [])
+  
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilters(prev => ({ ...prev, searchQuery: e.target.value }))
+  }, [])
+  
+  const handleAIToggle = useCallback((checked: boolean) => {
+    setFilters(prev => ({ ...prev, aiAccelerated: checked }))
+  }, [])
+  
+  const clearAllFilters = useCallback(() => {
+    setFilters({
+      selectedSkills: new Set(),
+      aiAccelerated: false,
+      category: 'All',
+      searchQuery: ''
+    })
+  }, [])
+  
+  const removeSkill = useCallback((skill: string) => {
+    setFilters(prev => {
+      const newSkills = new Set(prev.selectedSkills)
+      newSkills.delete(skill)
+      return { ...prev, selectedSkills: newSkills }
+    })
+  }, [])
+  
+  const clearSearch = useCallback(() => {
+    setFilters(prev => ({ ...prev, searchQuery: '' }))
+  }, [])
+  
+  // Calculate active filters count
+  const activeFiltersCount = filters.selectedSkills.size + 
+    (filters.aiAccelerated ? 1 : 0) + 
+    (filters.category !== 'All' ? 1 : 0) +
+    (filters.searchQuery ? 1 : 0)
+  
+  // Persist filter state in session storage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedState = sessionStorage.getItem('portfolio-filters-open')
@@ -269,157 +211,50 @@ export function PortfolioShell() {
       }
     }
   }, [])
-
-  // Persist filtersOpen state
+  
   useEffect(() => {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('portfolio-filters-open', filtersOpen.toString())
     }
   }, [filtersOpen])
-
-  // Initialize from URL params
-  useEffect(() => {
-    const cat = searchParams.get('cat') || 'All'
-    const skillsParam = searchParams.get('skills')
-    const legacySkills = skillsParam && typeof skillsParam === 'string' 
-      ? skillsParam.split(',').filter(Boolean).filter(skill => skill.trim().length > 0)
-      : []
-    const ai = searchParams.get('ai') === '1'
-    
-    if (backendEnabled) {
-      // For backend mode, use skills directly (remove duplicates)
-      const uniqueSkills = [...new Set(legacySkills.map(skill => decodeURIComponent(skill).trim()))]
-      setSelectedSkills(new Set(uniqueSkills))
-    } else {
-      // Convert legacy skills to standardized skills for legacy mode
-      const standardizedSkills = legacySkills
-        .map(legacySkill => findStandardizedSkill(decodeURIComponent(legacySkill).trim()))
-        .filter(Boolean) as string[]
-      
-      // Remove duplicates
-      const uniqueStandardizedSkills = [...new Set(standardizedSkills)]
-      setSelectedSkills(new Set(uniqueStandardizedSkills))
-    }
-    
-    setActiveCategory(cat)
-    setAiAccelerated(ai)
-  }, [searchParams, backendEnabled])
-
-  // Update URL when filters change
-  const updateURL = useCallback((updates: {
-    category?: string
-    skills?: Set<string>
-    ai?: boolean
-  }) => {
-    const params = new URLSearchParams(searchParams.toString())
-    
-    if (updates.category !== undefined) {
-      if (updates.category === 'All') {
-        params.delete('cat')
-      } else {
-        params.set('cat', updates.category)
-      }
-    }
-    
-    if (updates.skills !== undefined) {
-      if (updates.skills.size === 0) {
-        params.delete('skills')
-      } else {
-        if (backendEnabled) {
-          // For backend mode, use skills directly
-          params.set('skills', Array.from(updates.skills).join(','))
-        } else {
-          // Convert standardized skills back to legacy skills for URL
-          const legacySkillsForURL = Array.from(updates.skills).flatMap(standardizedSkill => 
-            findMatchingProjectSkills(standardizedSkill)
-          )
-          params.set('skills', legacySkillsForURL.join(','))
-        }
-      }
-    }
-    
-    if (updates.ai !== undefined) {
-      if (updates.ai) {
-        params.set('ai', '1')
-      } else {
-        params.delete('ai')
-      }
-    }
-    
-    const paramString = params.toString()
-    const newUrl = paramString ? `?${paramString}` : '/work/overview'
-    router.replace(newUrl, { scroll: false })
-  }, [searchParams, router, backendEnabled])
-
-  const handleCategoryChange = (category: string) => {
-    setActiveCategory(category)
-    updateURL({ category })
-  }
-
-  const handleSkillToggle = useCallback((skill: string) => {
-    const newSkills = new Set(selectedSkills)
-    if (newSkills.has(skill)) {
-      newSkills.delete(skill)
-    } else {
-      newSkills.add(skill)
-    }
-    setSelectedSkills(newSkills)
-    updateURL({ skills: newSkills })
-  }, [selectedSkills, updateURL])
-
-  const handleAIToggle = (checked: boolean) => {
-    setAiAccelerated(checked)
-    updateURL({ ai: checked })
-  }
-
-  const clearAllFilters = () => {
-    setActiveCategory('All')
-    setSelectedSkills(new Set())
-    setAiAccelerated(false)
-    setFiltersOpen(false)
-    router.replace('/work/overview', { scroll: false })
-  }
-
-  const removeSkill = (skill: string) => {
-    const newSkills = new Set(selectedSkills)
-    newSkills.delete(skill)
-    setSelectedSkills(newSkills)
-    updateURL({ skills: newSkills })
-  }
-
-  // Show loading state
-  if (backendEnabled && loading) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
-      </div>
-    )
-  }
-
-  // Show backend error with fallback option
-  if (backendEnabled && backendError) {
-    return (
-      <div className="text-center py-12">
-        <div className="max-w-sm mx-auto">
-          <div className="text-red-400 mb-4">
-            <FunnelIcon className="h-12 w-12 mx-auto" />
-          </div>
-          <p className="text-lg font-medium text-zinc-900 dark:text-white mb-2">
-            Backend Error
-          </p>
-          <p className="text-zinc-600 dark:text-zinc-400 mb-4">
-            {backendError}. Falling back to legacy data.
-          </p>
-        </div>
-      </div>
-    )
-  }
-
+  
   return (
     <div className="not-prose">
+      {/* Search Bar */}
+      <div className="mb-6">
+        <div className={`relative transition-all duration-300 ${searchFocused ? 'scale-[1.02]' : ''}`}>
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-400" />
+          <input
+            type="text"
+            value={filters.searchQuery}
+            onChange={handleSearchChange}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
+            placeholder="Search projects, clients, or skills..."
+            className="w-full pl-10 pr-10 py-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+          />
+          {filters.searchQuery && (
+            <button
+              onClick={clearSearch}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+            >
+              <XMarkIcon className="h-5 w-5" />
+            </button>
+          )}
+        </div>
+        {filters.searchQuery && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-2 text-sm text-zinc-600 dark:text-zinc-400"
+          >
+            Found {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} matching "{filters.searchQuery}"
+          </motion.p>
+        )}
+      </div>
+      
       {/* Filter Header */}
       <div className="mb-8">
-        {/* Filter Controls */}
         <section aria-labelledby="filter-heading">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -439,193 +274,195 @@ export function PortfolioShell() {
                       : 'text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-300'
                   }`}
                 />
-                • More filters
-                <span className="ml-2 min-w-[28px] text-center">
-                  {activeFiltersCount > 0 && (
-                    <span className="inline-block rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300 transition-all duration-200">
-                      {activeFiltersCount}
-                    </span>
-                  )}
-                </span>
+                Filters
+                {activeFiltersCount > 0 && (
+                  <span className="ml-2 inline-block rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                    {activeFiltersCount}
+                  </span>
+                )}
               </button>
               
               <AIToggle 
-                checked={aiAccelerated}
+                checked={filters.aiAccelerated}
                 onChange={handleAIToggle}
               />
             </div>
             
-            <div className="flex items-center gap-4">
-              {(selectedSkills.size > 0 || aiAccelerated || activeCategory !== 'All') && (
-                <button
-                  onClick={clearAllFilters}
-                  className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                >
-                  Clear all
-                </button>
-              )}
-            </div>
+            {activeFiltersCount > 0 && (
+              <button
+                onClick={clearAllFilters}
+                className="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+              >
+                Clear all
+              </button>
+            )}
           </div>
-
-          <div
-            className={`transition-all duration-500 ease-out overflow-hidden ${
-              filtersOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div 
-              className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6 relative overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Emerald wave of light effect */}
-              {filtersOpen && (
-                <div 
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.1) 30%, rgba(16, 185, 129, 0.2) 50%, rgba(16, 185, 129, 0.1) 70%, transparent 100%)',
-                    transform: 'translateX(-100%)',
-                    animation: 'emeraldWaveReveal 1.2s ease-out 0.2s forwards'
-                  }}
-                />
-              )}
-              
-              <div className="space-y-6 relative">
-                {/* Skills Filters */}
-                <div>
-                  <h3 
-                    className={`text-sm font-medium text-zinc-900 dark:text-white mb-6 transition-all duration-300 ${
-                      filtersOpen ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-4'
-                    }`}
-                    style={filtersOpen ? {
-                      animation: 'fadeInUp 0.5s ease-out 0.3s both'
-                    } : {}}
-                  >
+          
+          {/* Expandable Filters */}
+          <AnimatePresence>
+            {filtersOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="overflow-hidden"
+              >
+                <div className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6">
+                  <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-6">
                     Filter by skill
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {Object.entries(skillGroups).map(([groupName, skills], groupIndex) => (
-                    <div 
-                      key={groupName} 
-                      className={`space-y-3 transition-all duration-300 ${
-                        filtersOpen ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-4'
-                      }`}
-                      style={filtersOpen ? {
-                        animation: `fadeInUp 0.4s ease-out ${0.4 + groupIndex * 0.1}s both`
-                      } : {}}
-                    >
-                      <h4 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide">
-                        {groupName}
-                      </h4>
-                      <div className="space-y-2">
-                        {skills.map((skill, skillIndex) => (
-                          <div
-                            key={`${groupName}-${skill}-${skillIndex}`}
-                            className={`transition-all duration-300 ${
-                              filtersOpen ? 'opacity-100 transform-none' : 'opacity-0 transform translate-y-4'
-                            }`}
-                            style={filtersOpen ? {
-                              animation: `fadeInUp 0.3s ease-out ${0.5 + groupIndex * 0.1 + skillIndex * 0.05}s both`
-                            } : {}}
-                          >
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                e.nativeEvent?.stopImmediatePropagation?.()
-                                handleSkillToggle(skill)
-                              }}
-                              onMouseDown={(e) => e.stopPropagation()}
-                              onMouseUp={(e) => e.stopPropagation()}
-                              className={`inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200 text-xs px-2 py-1 whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
-                                selectedSkills.has(skill)
-                                  ? 'border border-emerald-600 text-emerald-800 bg-emerald-200/60 shadow-sm shadow-emerald-500/20 dark:border-emerald-500 dark:text-emerald-100 dark:bg-emerald-400/30 dark:shadow-emerald-400/20'
-                                  : 'border border-zinc-300 bg-transparent text-zinc-700 dark:border-zinc-600 dark:text-zinc-300 hover:border-emerald-300 hover:text-emerald-700 hover:ring-1 hover:ring-emerald-300/25 hover:shadow-sm hover:shadow-emerald-500/10 dark:hover:border-emerald-500 dark:hover:text-emerald-400 dark:hover:ring-emerald-500/25'
-                              }`}
-                            >
-                              {skill}
-                            </button>
-                          </div>
-                        ))}
+                    {Object.entries(availableSkills).map(([groupName, skills]) => (
+                      <div key={groupName} className="space-y-3">
+                        <h4 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide">
+                          {groupName}
+                        </h4>
+                        <div className="space-y-2">
+                          {skills.map(skill => {
+                            const count = skillCounts.get(skill) || 0
+                            const isSelected = filters.selectedSkills.has(skill)
+                            const isDisabled = count === 0 && !isSelected
+                            
+                            return (
+                              <button
+                                key={skill}
+                                onClick={() => !isDisabled && handleSkillToggle(skill)}
+                                disabled={isDisabled}
+                                className={`inline-flex items-center justify-between w-full rounded-md font-medium transition-all duration-200 text-xs px-2 py-1 ${
+                                  isSelected
+                                    ? 'border border-emerald-600 text-emerald-800 bg-emerald-200/60 dark:border-emerald-500 dark:text-emerald-100 dark:bg-emerald-400/30'
+                                    : isDisabled
+                                    ? 'border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-600 cursor-not-allowed'
+                                    : 'border border-zinc-300 bg-transparent text-zinc-700 dark:border-zinc-600 dark:text-zinc-300 hover:border-emerald-300 hover:text-emerald-700 dark:hover:border-emerald-500 dark:hover:text-emerald-400'
+                                }`}
+                              >
+                                <span className="truncate">{skill}</span>
+                                <span className={`ml-2 ${isDisabled ? 'text-zinc-400' : 'text-zinc-500 dark:text-zinc-400'}`}>
+                                  {count}
+                                </span>
+                              </button>
+                            )
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                   </div>
                 </div>
-                
-                {/* Collapse Filters Button */}
-                {filtersOpen && (
-                  <div className="flex justify-center pt-4">
-                    <button
-                      onClick={() => setFiltersOpen(false)}
-                      className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 animate-pulse"
-                      style={{
-                        animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        animationDelay: '2s',
-                        textShadow: '0 0 8px rgba(156, 163, 175, 0.3), 0 0 12px rgba(156, 163, 175, 0.15)'
-                      }}
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                      </svg>
-                      Collapse filters
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </section>
       </div>
-
-      {/* Active Filters Bar */}
-      {selectedSkills.size > 0 && (
-        <div className="mb-6 flex flex-wrap items-center gap-2">
+      
+      {/* Active Filters Pills */}
+      {filters.selectedSkills.size > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 flex flex-wrap items-center gap-2"
+        >
           <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Active filters:</span>
-          {Array.from(selectedSkills).map((skill, index) => (
-            <button
-              key={`active-filter-${skill}-${index}`}
+          {Array.from(filters.selectedSkills).map(skill => (
+            <motion.button
+              key={skill}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
               onClick={() => removeSkill(skill)}
-              className="inline-flex items-center gap-x-1 rounded-md bg-emerald-100 dark:bg-emerald-900 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-800"
+              className="inline-flex items-center gap-x-1 rounded-md bg-emerald-100 dark:bg-emerald-900 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-800 transition-colors"
             >
               {skill}
-              <span className="text-emerald-500 hover:text-emerald-700">×</span>
-            </button>
+              <XMarkIcon className="h-3 w-3" />
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
       )}
-
+      
       {/* Projects Grid */}
       {filteredProjects.length > 0 ? (
-        <div className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-2 xl:gap-x-12">
-          {filteredProjects.map((project, index) => (
-            <RefactoredProjectCard 
-              key={project.id || `${backendEnabled ? 'backend' : 'legacy'}-project-${index}-${project.title?.replace(/\s+/g, '-')}`} 
-              project={project} 
-            />
-          ))}
-        </div>
+        <motion.div 
+          layout
+          className="grid grid-cols-1 gap-x-8 gap-y-8 lg:grid-cols-2 xl:gap-x-12"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
+                  transition: {
+                    delay: index * 0.05,
+                    duration: 0.3
+                  }
+                }}
+                exit={{ opacity: 0, scale: 0.95 }}
+              >
+                <RefactoredProjectCard project={project} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       ) : (
-        <div className="text-center py-12">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-12"
+        >
           <div className="max-w-sm mx-auto">
             <div className="text-zinc-400 mb-4">
               <FunnelIcon className="h-12 w-12 mx-auto" />
             </div>
             <p className="text-lg font-medium text-zinc-900 dark:text-white mb-2">
-              No projects match these filters
+              No projects match your filters
             </p>
             <p className="text-zinc-600 dark:text-zinc-400 mb-4">
-              Try clearing one or more filters to see more results.
+              {filters.searchQuery && (
+                <>No results for "{filters.searchQuery}". </>
+              )}
+              Try adjusting your filters to see more results.
             </p>
-            <button
-              onClick={clearAllFilters}
-              className="inline-flex items-center px-3 py-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-            >
-              Clear all filters
-            </button>
+            {activeFiltersCount > 0 && (
+              <div className="space-y-2">
+                {filters.selectedSkills.size > 0 && (
+                  <p className="text-sm text-zinc-500">
+                    {filters.selectedSkills.size} skill filter{filters.selectedSkills.size > 1 ? 's' : ''} active
+                  </p>
+                )}
+                {filters.aiAccelerated && (
+                  <p className="text-sm text-zinc-500">
+                    AI-accelerated filter active
+                  </p>
+                )}
+                <button
+                  onClick={clearAllFilters}
+                  className="mt-4 inline-flex items-center px-3 py-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            )}
           </div>
-        </div>
+        </motion.div>
       )}
+      
+      {/* Add CSS for animations */}
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   )
 }
