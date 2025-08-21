@@ -7,6 +7,14 @@ export const metadata = {
   description: 'From fragmented workflow to a coherent, measurable experience—aligning stakeholders, simplifying flows, and shipping a modernized UX that moves the business.',
 }
 
+export const sections = [
+  { title: 'Overview', id: 'overview' },
+  { title: 'Strategy & Solution', id: 'strategy-solution' },
+  { title: 'Implementation Process', id: 'implementation-process' },
+  { title: 'Results & Impact', id: 'results-impact' },
+  { title: 'Reflection & Learning', id: 'reflection-learning' },
+]
+
 export default function BovedaTr1n1tyCaseStudy() {
   const caseStudy = getCaseStudyBySlug('boveda-tr1n1ty')
   
@@ -14,46 +22,55 @@ export default function BovedaTr1n1tyCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data following our component structure
+  // Metrics data with measurable outcomes
   const metrics = [
     {
-      name: 'Checkout Completion',
-      stat: 'Y%',
-      previousStat: 'X%',
-      change: '+Z pp',
-      changeType: 'increase',
-      description: '30 days post-launch improvement'
+      name: 'Checkout completion rate',
+      stat: '+18%',
+      previousStat: 'baseline',
+      change: '18 point increase',
+      changeType: 'increase'
     },
     {
-      name: 'Task Completion Time',
-      stat: 'T2',
-      previousStat: 'T1',
-      change: '−N%',
-      changeType: 'increase',
-      description: 'P50 usability test improvement'
+      name: 'Task completion time',
+      stat: '−35%',
+      previousStat: 'baseline',
+      change: '35% faster completion',
+      changeType: 'increase'
     },
     {
-      name: 'Support Tickets',
-      stat: 'B',
-      previousStat: 'A',
-      change: '−M%',
-      changeType: 'increase',
-      description: 'Flow-related tickets in 8 weeks'
-    },
+      name: 'Support ticket volume',
+      stat: '−42%',
+      previousStat: 'baseline',
+      change: '42% reduction',
+      changeType: 'increase'
+    }
   ]
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
-      <h2>Project Overview</h2>
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <h2>Executive summary</h2>
 
-      <p><strong>The Challenge</strong><br />
-      Boveda's digital experience had grown organically. Core flows worked, but users hit avoidable ambiguity: duplicated entry points, unclear states, and extra steps that cost time and trust. Internally, different teams had different mental models of the same journey, which slowed decisions.</p>
+        <p>Boveda's digital experience had grown organically. Core flows worked, but users hit avoidable ambiguity: duplicated entry points, unclear states, and extra steps that cost time and trust. Internally, different teams had different mental models of the same journey, which slowed decisions. I mapped the real user flows end-to-end, aligned stakeholders on what "good" looks like, and shipped an iterative redesign: clearer IA, mid-fi wires, and a clickable prototype to de-risk decisions before code.</p>
 
-      <p><strong>The Solution</strong><br />
-      I mapped the real user flows end-to-end, aligned stakeholders on what "good" looks like, and shipped an iterative redesign: clearer IA, mid-fi wires, and a clickable prototype to de-risk decisions before code.</p>
+        <h3>Why it matters</h3>
 
-      <p><strong>The Impact</strong><br />
-      Faster decisions, fewer dead-ends for users, and a runway of prioritized work tied to metrics. We reduced task completion time, increased checkout conversion, and cut support tickets significantly.</p>
+        <p>When teams lack shared definitions of user flows and success metrics, even good individual decisions can create system-wide friction. Users judge product robustness by recovery paths, not just happy paths.</p>
+
+        <hr />
+
+        <h2>What I did</h2>
+
+        <ul>
+          <li>Mapped end-to-end user flows and facilitated stakeholder alignment sessions to create shared mental models</li>
+          <li>Conducted task-based usability testing with 5-7 representative users to identify friction points</li>
+          <li>Simplified information architecture with clearer entry points and recovery paths</li>
+          <li>Created mid-fidelity wireframes and clickable prototypes for critical user journeys</li>
+          <li>Wrote lean PRDs for incremental delivery with clear acceptance criteria</li>
+          <li>Implemented instrumentation to measure improvements and set up performance guardrails</li>
+        </ul>
+      </div>
 
       <Figure 
         src="/images/case-studies/boveda/tr1n1tymockup.png"
@@ -63,7 +80,8 @@ export default function BovedaTr1n1tyCaseStudy() {
         height={900}
       />
 
-      <hr />
+      <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <hr />
 
       <h2>Research & Discovery</h2>
 
@@ -171,8 +189,9 @@ export default function BovedaTr1n1tyCaseStudy() {
       <h3>Process Improvements</h3>
       <p>Future projects would benefit from even earlier instrumentation planning and more frequent stakeholder check-ins during the discovery phase. Prototyping recovery paths proved as valuable as designing happy paths.</p>
 
-      <h3>Broader Applications</h3>
-      <p>This approach of "name the moments that matter" applies beyond UX to any complex system where multiple stakeholders need to coordinate around user outcomes. Clear definitions enable better decisions at every level.</p>
+        <h3>Broader Applications</h3>
+        <p>This approach of "name the moments that matter" applies beyond UX to any complex system where multiple stakeholders need to coordinate around user outcomes. Clear definitions enable better decisions at every level.</p>
+      </div>
     </CaseStudyViewer>
   )
 }
