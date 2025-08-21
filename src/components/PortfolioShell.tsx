@@ -258,29 +258,33 @@ export function PortfolioShell() {
         <section aria-labelledby="filter-heading">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <button 
-                onClick={() => setFiltersOpen(!filtersOpen)}
-                className={`group flex items-center font-medium transition-colors ${
-                  filtersOpen
-                    ? 'text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300'
-                    : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white'
-                }`}
-              >
-                <FunnelIcon
-                  aria-hidden="true"
-                  className={`mr-2 h-5 w-5 flex-none transition-colors ${
+              <div className="min-w-0 flex-shrink-0">
+                <button 
+                  onClick={() => setFiltersOpen(!filtersOpen)}
+                  className={`group flex items-center font-medium transition-colors ${
                     filtersOpen
-                      ? 'text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300'
-                      : 'text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-300'
+                      ? 'text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300'
+                      : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white'
                   }`}
-                />
-                Filters
-                {activeFiltersCount > 0 && (
-                  <span className="ml-2 inline-block rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                    {activeFiltersCount}
+                >
+                  <FunnelIcon
+                    aria-hidden="true"
+                    className={`mr-2 h-5 w-5 flex-none transition-colors ${
+                      filtersOpen
+                        ? 'text-emerald-600 dark:text-emerald-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-300'
+                        : 'text-zinc-400 group-hover:text-zinc-500 dark:group-hover:text-zinc-300'
+                    }`}
+                  />
+                  Filters
+                  <span className="ml-2 inline-flex items-center justify-center min-w-[2rem]">
+                    {activeFiltersCount > 0 && (
+                      <span className="inline-block rounded-full bg-emerald-100 dark:bg-emerald-900 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                        {activeFiltersCount}
+                      </span>
+                    )}
                   </span>
-                )}
-              </button>
+                </button>
+              </div>
               
               <AIToggle 
                 checked={filters.aiAccelerated}
