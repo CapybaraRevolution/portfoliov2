@@ -148,11 +148,15 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
         <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Skills & Approach</h4>
         <div className="flex flex-wrap gap-2">
           {(project.skills || []).slice(0, 6).map((skill, index) => (
-            <NavigationChip
+            <div
               key={`${project.id || 'project'}-skill-${skill}-${index}`}
-              skill={skill}
-              size="sm"
-            />
+              onClick={(e) => e.stopPropagation()}
+            >
+              <NavigationChip
+                skill={skill}
+                size="sm"
+              />
+            </div>
           ))}
           {(project.skills || []).length > 6 && (
             <span className="inline-flex items-center px-2 py-1 text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 rounded-md">

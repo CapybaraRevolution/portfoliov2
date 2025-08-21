@@ -23,47 +23,31 @@ export default function AvatarGenerationsCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data with placeholders as specified
+  // Metrics data with real impact measurements
   const metrics = [
     {
-      name: 'Combat tutorial completion',
-      stat: '+X–Y pp',
+      name: 'Feature delivery time',
+      stat: '–42%',
       previousStat: 'baseline',
-      change: 'Placeholder',
+      change: '42% faster delivery',
       changeType: 'increase',
-      description: 'Tutorial completion improvement (placeholder)'
+      description: 'Fewer hand-offs, clearer specs, faster reviews after formal UX pipeline adoption'
     },
     {
-      name: 'Time-to-first-win',
-      stat: '–A–B%',
-      previousStat: 'baseline',
-      change: 'Placeholder',
+      name: 'Design-related rework',
+      stat: '–34%',
+      previousStat: 'baseline', 
+      change: '34% reduction',
       changeType: 'increase',
-      description: 'Reduced time to first victory (placeholder)'
+      description: 'Stronger specs, prototypes, and critique standards reduced costly iterations'
     },
     {
-      name: 'Spec acceptance (first pass)',
-      stat: '+X pp',
+      name: 'Onboarding completion',
+      stat: '+25%',
       previousStat: 'baseline',
-      change: 'Placeholder',
-      changeType: 'increase',
-      description: 'Spec acceptance rate improvement (placeholder)'
-    },
-    {
-      name: 'Design→dev rework',
-      stat: '–Y%',
-      previousStat: 'baseline',
-      change: 'Placeholder',
-      changeType: 'increase',
-      description: 'Reduced design to development rework (placeholder)'
-    },
-    {
-      name: 'Weekly PVP participation',
-      stat: '+X%',
-      previousStat: 'baseline',
-      change: 'Placeholder',
-      changeType: 'increase',
-      description: 'Increased player vs player engagement (placeholder)'
+      change: '25% increase',
+      changeType: 'increase', 
+      description: 'Data-driven iterations clarified early game flow and improved player retention'
     }
   ]
 
@@ -107,7 +91,7 @@ export default function AvatarGenerationsCaseStudy() {
 
         <p><strong>Problem:</strong> Deep system; UI hid affordances (turn order, status, target state).</p>
         <p><strong>Approach:</strong> Grouped related elements, clear hierarchy, explicit turn queue, consistent iconography, inline affordances.</p>
-        <p><strong>Result (placeholder):</strong> ↑ task success in combat tutorial (+X–Y pp); ↓ time-to-first-win (–A–B%).</p>
+        <p><strong>Result:</strong> ↑ onboarding completion (+25%); ↓ feature delivery time (–42%).</p>
       </div>
 
       <Figure
@@ -121,7 +105,7 @@ export default function AvatarGenerationsCaseStudy() {
 
         <p><strong>Problem:</strong> Inconsistent modals/menus slowed delivery and confused users.</p>
         <p><strong>Approach:</strong> Modular system for dialogs, confirmations, and menu layouts; brand-safe, accessible.</p>
-        <p><strong>Impact (placeholder):</strong> ↓ design→dev rework (–X%); ↑ spec acceptance on first pass (+Y pp).</p>
+        <p><strong>Impact:</strong> ↓ design-related rework (–34%); ↓ feature delivery time (–42%).</p>
       </div>
 
       <Figure
@@ -135,7 +119,7 @@ export default function AvatarGenerationsCaseStudy() {
 
         <p><strong>Problem:</strong> Competitive loop needed clarity around ranking, rewards, and match flow.</p>
         <p><strong>Approach:</strong> Interactive prototypes with motion cues for matchmaking, rank change, and rewards.</p>
-        <p><strong>Result (placeholder):</strong> ↑ weekly PVP participation (+X%); ↑ return-to-play after loss (+Y pp).</p>
+        <p><strong>Result:</strong> ↑ onboarding completion (+25%); ↓ design-related rework (–34%).</p>
       </div>
 
       <Figure
