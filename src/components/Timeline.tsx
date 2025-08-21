@@ -24,7 +24,7 @@ const getTimelineData = (): TimelineNode[] => {
   const caseStudies = getAllCaseStudies()
   
   return caseStudies
-    .sort((a, b) => b.order - a.order) // Reverse chronological (higher order = more recent)
+    .sort((a, b) => a.order - b.order) // Chronological by order (lower order number = more recent/priority)
     .map((study, index) => ({
       id: `node-${index}`,
       title: study.descriptiveTitle,
@@ -351,8 +351,8 @@ export function Timeline() {
                       
                       <div className={`flex-1 space-y-3 pb-6 rounded-lg px-4 py-3 transition-all duration-500 ${
                         isActive 
-                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-lg scale-103` 
-                          : 'bg-white dark:bg-zinc-800/50 shadow-sm border border-zinc-200 dark:border-zinc-700'
+                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-lg scale-100` 
+                          : 'bg-white dark:bg-zinc-800/50 shadow-sm border border-zinc-200 dark:border-zinc-700 scale-95'
                       }`}>
                         <div className="flex items-start justify-between">
                           <div className="space-y-1 flex-1">
