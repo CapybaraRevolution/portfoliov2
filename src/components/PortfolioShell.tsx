@@ -349,6 +349,24 @@ export function PortfolioShell() {
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Collapse Filters Button */}
+                  <div className="flex justify-center pt-4">
+                    <button
+                      onClick={() => setFiltersOpen(false)}
+                      className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 animate-pulse"
+                      style={{
+                        animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        animationDelay: '2s',
+                        textShadow: '0 0 8px rgba(156, 163, 175, 0.3), 0 0 12px rgba(156, 163, 175, 0.15)'
+                      }}
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                      </svg>
+                      Collapse filters
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             )}
