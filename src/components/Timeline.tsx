@@ -5,86 +5,44 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
+import { AIBadge } from '@/components/ui/AIBadge'
+import { getAllCaseStudies } from '@/lib/caseStudies'
 
 interface TimelineNode {
   id: string
   title: string
-  company: string
+  client: string
   period: string
   description: string
   link: string
-  linkText: string
+  status: 'Ongoing' | 'Completed'
+  aiAccelerated?: boolean
 }
 
-const timelineData: TimelineNode[] = [
-  {
-    id: 'node-0',
-    title: 'Senior UX Designer / Business Analyst',
-    company: 'Jigsaw Technologies (Open Theater / Tessitura)',
-    period: '2024–Present',
-    description: 'Stakeholder discovery and IA for complex ticketing workflows; clarified requirements and de-risked delivery.',
-    link: '/case-studies/ecommerce',
-    linkText: 'View project(s)'
-  },
-  {
-    id: 'node-1',
-    title: 'Product Designer',
-    company: 'Breeze Mortgage Hub',
-    period: '2024–Present',
-    description: 'Audits → clickable prototypes → component system; sharpened vision and de-risked roadmap for funding.',
-    link: '/case-studies/fintech',
-    linkText: 'View project(s)'
-  },
-  {
-    id: 'node-2',
-    title: 'Senior UX Strategist',
-    company: 'Briteweb (BC Cancer Foundation; Social Finance Fund)',
-    period: '2023–Present',
-    description: 'IA + forms redesign; stakeholder alignment; clearer donor and ops flows prepared for dev.',
-    link: '/case-studies/saas',
-    linkText: 'View project(s)'
-  },
-  {
-    id: 'node-3',
-    title: 'Senior UX Designer (Contract)',
-    company: 'Cornell SC Johnson College of Business',
-    period: '2023–2024',
-    description: 'Modular patterns for hierarchical content; accessible system and scalable IA.',
-    link: '/case-studies/healthcare',
-    linkText: 'View project(s)'
-  },
-  {
-    id: 'node-4',
-    title: 'Senior UX Designer (Contract)',
-    company: 'AMFA Class Filters',
-    period: '2024–2025',
-    description: 'Reworked filter architecture and labeling; simpler program selection.',
-    link: '/case-studies/ecommerce',
-    linkText: 'View project(s)'
-  },
-  {
-    id: 'node-5',
-    title: 'UX Lead',
-    company: 'Navigator Games',
-    period: '2021–2023',
-    description: 'Built UX pipeline and data instrumentation; faster releases and cleaner handoffs.',
-    link: '/services',
-    linkText: 'View project(s)'
-  },
-  {
-    id: 'node-6',
-    title: 'Forward Focus',
-    company: '',
-    period: '2025→',
-    description: 'AI-first product ops: research synthesis, IA variants, instrumentation-by-default, model-backed UX.',
-    link: '/services#my-process',
-    linkText: 'Process → AI Assists'
-  }
-]
+// Generate timeline data from case studies (reverse chronological order)
+const getTimelineData = (): TimelineNode[] => {
+  const caseStudies = getAllCaseStudies()
+  
+  return caseStudies
+    .sort((a, b) => b.order - a.order) // Reverse chronological (higher order = more recent)
+    .map((study, index) => ({
+      id: `node-${index}`,
+      title: study.descriptiveTitle,
+      client: study.client,
+      period: study.timeline,
+      description: study.description,
+      link: `/case-studies/${study.slug}`,
+      status: study.status,
+      aiAccelerated: study.aiAccelerated
+    }))
+}
 
 export function Timeline() {
   const router = useRouter()
   const [activeNodeIndex, setActiveNodeIndex] = useState(-1)
+  
+  // Get timeline data from case studies
+  const timelineData = getTimelineData()
   const [lightningProgress, setLightningProgress] = useState(0)
   const [maxProgress, setMaxProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
@@ -381,32 +339,53 @@ export function Timeline() {
                         }`} />
                       </div>
                       
-                      <div className={`flex-1 space-y-2 pb-6 rounded-lg px-4 py-3 transition-all duration-500 ${
+                      <div className={`flex-1 space-y-3 pb-6 rounded-lg px-4 py-3 transition-all duration-500 ${
                         isActive 
                           ? `${colors.cardBg} border ${colors.cardBorder} shadow-lg scale-105` 
                           : 'bg-white dark:bg-zinc-800/50 shadow-sm border border-zinc-200 dark:border-zinc-700'
                       }`}>
-                        <div className="space-y-1">
-                          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
-                            {node.title}
-                          </h3>
-                          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                            {node.company} {node.company && '•'} {node.period}
-                          </p>
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1 flex-1">
+                            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
+                              {node.title}
+                            </h3>
+                            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                              {node.client} • {node.period}
+                            </p>
+                          </div>
+                          <span className={`inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+                            node.status === 'Ongoing' 
+                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+                              : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                          }`}>
+                            <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
+                              node.status === 'Ongoing' 
+                                ? 'fill-emerald-500 animate-pulse' 
+                                : 'fill-zinc-400'
+                            }`}>
+                              <circle r={3} cx={3} cy={3} />
+                            </svg>
+                            {node.status}
+                          </span>
                         </div>
                         <p className="text-sm text-zinc-700 dark:text-zinc-300">
                           {node.description}
                         </p>
-                        <Link 
-                          href={node.link}
-                          className={`inline-flex items-center text-sm font-medium transition-colors duration-300 ${
-                            isActive 
-                              ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300' 
-                              : 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300'
-                          }`}
-                        >
-                          {node.linkText} →
-                        </Link>
+                        <div className="flex items-center justify-between">
+                          <Link 
+                            href={node.link}
+                            className={`inline-flex items-center text-sm font-medium transition-colors duration-300 ${
+                              isActive 
+                                ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300' 
+                                : 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300'
+                            }`}
+                          >
+                            View Case Study →
+                          </Link>
+                          {node.aiAccelerated && (
+                            <AIBadge size="sm">AI-Accelerated</AIBadge>
+                          )}
+                        </div>
                       </div>
                     </div>
                   )
