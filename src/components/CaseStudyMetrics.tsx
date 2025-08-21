@@ -28,9 +28,6 @@ export function CaseStudyMetrics({
         {metrics.map((item) => (
           <div key={item.name} className="px-4 py-5 sm:p-6">
             <dt className="text-base font-normal text-zinc-700 dark:text-zinc-300">{item.name}</dt>
-            {item.description && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{item.description}</p>
-            )}
             <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
               <div className="flex items-baseline text-2xl font-semibold text-emerald-600 dark:text-emerald-400">
                 {item.stat}
