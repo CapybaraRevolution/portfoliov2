@@ -8,6 +8,16 @@ export const metadata = {
   description: 'Secured $2.3M Series A funding by transforming an incomplete product into a modern, AI-enabled mortgage experience with clear investor and user value',
 }
 
+export const sections = [
+  { title: 'Overview', id: 'overview' },
+  { title: 'The Challenge', id: 'the-challenge' },
+  { title: 'My Approach', id: 'my-approach' },
+  { title: 'Selected Outcomes', id: 'selected-outcomes' },
+  { title: 'What I Delivered', id: 'what-i-delivered' },
+  { title: 'Where AI Helped', id: 'where-ai-helped' },
+  { title: 'Learnings', id: 'learnings' },
+]
+
 export default function BreezeMortgageHubCaseStudy() {
   const caseStudy = getCaseStudyBySlug('breeze-mortgage-hub')
   
@@ -56,13 +66,13 @@ export default function BreezeMortgageHubCaseStudy() {
       <div className="prose prose-zinc dark:prose-invert max-w-none">
         <h2>Goal: transform an incomplete product into a modern, AI-enabled experience that's clearer for users and easier for the team to ship.</h2>
 
-        <h3>Overview</h3>
+        <h3 id="overview">Overview</h3>
 
         <p>Breeze arrived with a partly built app, uneven UX, and unfinished flows. The team needed to secure Series A funding but lacked a cohesive product vision that investors could understand. I stepped in as <strong>UX Lead, Business Analyst, and AI Strategist</strong> to clarify what we're building and why—then translate that into wireframes, prototypes, and implementation-ready specs that would resonate with both users and investors.</p>
 
         <hr />
 
-        <h2>The challenge</h2>
+        <h2 id="the-challenge">The challenge</h2>
 
         <ul>
           <li><strong>Investor confusion:</strong> scattered wireframes and documentation couldn't communicate the value proposition</li>
@@ -74,7 +84,7 @@ export default function BreezeMortgageHubCaseStudy() {
 
         <hr />
 
-        <h2>My approach</h2>
+        <h2 id="my-approach">My approach</h2>
 
         <h3>Discovery & audit (Week 1)</h3>
         <ul>
@@ -111,7 +121,7 @@ export default function BreezeMortgageHubCaseStudy() {
 
         <hr />
 
-        <h2>Selected outcomes</h2>
+        <h2 id="selected-outcomes">Selected outcomes</h2>
 
         <h3>Series A funding secured</h3>
         <p><strong>$2.3M raised</strong> after demonstrating the interactive prototypes to investors. The clickable prototypes were <strong>10x more effective</strong> than static presentations—investors could see and feel the product experience, not just read about it. This led to a <strong>+180% increase</strong> in investor meeting requests.</p>
@@ -169,7 +179,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <div className="prose prose-zinc dark:prose-invert max-w-none">
         <hr />
 
-        <h2>What I delivered</h2>
+        <h2 id="what-i-delivered">What I delivered</h2>
 
         <ul>
           <li>Comprehensive UX audit and competitive analysis findings</li>
@@ -185,7 +195,7 @@ export default function BreezeMortgageHubCaseStudy() {
 
         <hr />
 
-        <h2>Where AI helped (AI-Accelerated ✅)</h2>
+        <h2 id="where-ai-helped">Where AI helped (AI-Accelerated ✅)</h2>
 
         <p><strong>AI integration strategy and implementation guidance for mortgage workflow automation.</strong></p>
 
@@ -201,7 +211,7 @@ export default function BreezeMortgageHubCaseStudy() {
 
         <hr />
 
-        <h2>Learnings</h2>
+        <h2 id="learnings">Learnings</h2>
 
         <p>Pairing UX strategy with business analysis and practical AI delivers compounding returns: clearer decisions, less rework, and a product that feels powerful without being complex.</p>
 

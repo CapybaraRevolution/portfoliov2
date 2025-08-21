@@ -11,6 +11,7 @@ import { useIsInsideMobileNavigation } from '@/components/MobileNavigation'
 import { useSectionStore } from '@/components/SectionProvider'
 import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
+import { getAllCaseStudies } from '@/lib/caseStudies'
 import { CloseButton } from '@headlessui/react'
 
 interface NavGroup {
@@ -59,6 +60,8 @@ function NavLink({
   active?: boolean
   isAnchorLink?: boolean
 }) {
+  const isOverview = children === 'Overview' && href.includes('/work/overview')
+  
   return (
     <CloseButton
       as={Link}
@@ -68,7 +71,11 @@ function NavLink({
         'flex justify-between gap-2 py-1 pr-3 text-sm transition',
         isAnchorLink ? 'pl-7' : 'pl-4',
         active
-          ? 'text-zinc-900 dark:text-white'
+          ? isOverview
+            ? 'text-emerald-600 dark:text-emerald-400 font-medium'
+            : 'text-zinc-900 dark:text-white'
+          : isOverview
+          ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium'
           : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white',
       )}
     >
@@ -245,10 +252,10 @@ export const navigation: Array<NavGroup> = [
     title: 'Work',
     links: [
       { title: 'Overview', href: '/work/overview' },
-      { title: 'FinTech Mobile App', href: '/case-studies/fintech' },
-      { title: 'Healthcare Portal', href: '/case-studies/healthcare' },
-      { title: 'E-commerce Platform', href: '/case-studies/ecommerce' },
-      { title: 'SaaS Dashboard', href: '/case-studies/saas' },
+      ...getAllCaseStudies().map(study => ({
+        title: study.descriptiveTitle,
+        href: `/case-studies/${study.slug}`
+      }))
     ],
   },
 ]

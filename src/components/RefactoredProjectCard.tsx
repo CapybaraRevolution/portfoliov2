@@ -9,7 +9,6 @@ import {
 import Link from 'next/link'
 import { CalendarIcon, MapPinIcon, BriefcaseIcon } from '@heroicons/react/20/solid'
 import { GridPattern } from '@/components/GridPattern'
-import { CategoryBadge } from '@/components/ui/CategoryBadge'
 import { AIBadge } from '@/components/ui/AIBadge'
 import { NavigationChip } from '@/components/NavigationChip'
 import { type Project } from '@/data/projects'
@@ -79,10 +78,11 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
   const pattern = { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
 
   return (
-    <div
-      onMouseMove={onMouseMove}
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
-    >
+    <Link href={project.href} className="group">
+      <div
+        onMouseMove={onMouseMove}
+        className="relative flex flex-col overflow-hidden rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 cursor-pointer"
+      >
       <ProjectCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
       <div className="absolute inset-0 rounded-2xl ring-1 ring-zinc-900/7.5 ring-inset group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
       
@@ -92,7 +92,20 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
             {project.title}
           </h3>
-          <CategoryBadge category={project.category} />
+          <span className={`inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+            project.status === 'ongoing' 
+              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+              : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+          }`}>
+            <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
+              project.status === 'ongoing' 
+                ? 'fill-emerald-500 animate-pulse' 
+                : 'fill-zinc-400'
+            }`}>
+              <circle r={3} cx={3} cy={3} />
+            </svg>
+            {project.status === 'ongoing' ? 'Ongoing' : 'Completed'}
+          </span>
         </div>
       </div>
 
@@ -114,7 +127,7 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
             <div className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
               <BriefcaseIcon className="h-4 w-4" />
               <span className="font-medium">Client:</span>
-              <span>{project.client}</span>
+              <span className="font-bold text-emerald-600 dark:text-emerald-400">{project.client}</span>
             </div>
           )}
           {project.timeline && (
@@ -122,13 +135,6 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
               <CalendarIcon className="h-4 w-4" />
               <span className="font-medium">Timeline:</span>
               <span>{project.timeline}</span>
-              <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${
-                project.status === 'ongoing' 
-                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                  : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
-              }`}>
-                {project.status === 'ongoing' ? 'Ongoing' : 'Completed'}
-              </span>
             </div>
           )}
         </div>
@@ -171,21 +177,13 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
 
       {/* Footer - Utility Zone */}
       <div className="relative mt-auto bg-zinc-100/50 dark:bg-zinc-800/50 p-6 border-t border-zinc-900/7.5 dark:border-white/10">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Link
-            href={project.href}
-            className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
-          >
+        <div className="flex justify-center">
+          <span className="inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 transition-colors">
             View case study →
-          </Link>
-          <Link
-            href="/work/overview"
-            className="inline-flex items-center text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
-          >
-            Browse all projects →
-          </Link>
+          </span>
         </div>
       </div>
     </div>
+    </Link>
   )
 }

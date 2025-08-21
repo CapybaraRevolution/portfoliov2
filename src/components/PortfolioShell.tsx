@@ -8,8 +8,8 @@ import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
 import { FilterChip } from '@/components/FilterChip'
 import { AIToggle } from '@/components/AIToggle'
 
-// Legacy imports
-import { projects, filterProjects, disciplines, skillGroups, type Project } from '@/data/projects'
+// Imports
+import { type Project } from '@/data/projects'
 import { skillCategories, getAllSkillNames, standardizedSkills } from '@/data/standardizedSkills'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 import { mapSkillNameToStandardized, getSkillsByStandardizedCategory } from '@/lib/skillMapping'
@@ -215,43 +215,19 @@ export function PortfolioShell() {
 
   // Filter projects
   const getFilteredProjects = (): Project[] => {
-    if (backendEnabled && backendCaseStudies.length > 0 && !backendError) {
-      // Backend case studies already include merged local data from API
-      // and have proper href properties, but we need to transform them to Project format
-      let filtered: Project[] = backendCaseStudies.map((caseStudy, index) => ({
-        ...caseStudy,
-        id: caseStudy.id || `merged-case-study-${index}-${Date.now()}`,
-        skills: caseStudy.skills?.map(skill => skill?.name).filter(Boolean) || [] // Convert BackendSkill[] to string[]
-      }))
-
-      // Filter by selected skills
-      if (selectedSkills.size > 0) {
-        filtered = filtered.filter(caseStudy => 
-          Array.from(selectedSkills).some(selectedSkill => 
-            caseStudy.skills && caseStudy.skills.includes(selectedSkill)
-          )
-        )
-      }
-
-      // Note: AI filtering and category filtering would need to be implemented
-      // based on how the backend data is structured
-      
-      return filtered
-    }
-
-    // Fallback to case studies from caseStudies.ts
+    // Always use case studies from caseStudies.ts for clean, consistent data
     const allCaseStudies = getAllCaseStudies()
     
     // Convert case studies to the expected format
     let formattedCaseStudies: Project[] = allCaseStudies.map(study => ({
       id: study.slug,
-      title: study.title,
+      title: study.descriptiveTitle,
       description: study.description,
       category: study.category as 'UX' | 'Strategy' | 'PM' | 'BA',
       skills: study.services || [],
       ai: study.aiAccelerated || false,
       href: `/case-studies/${study.slug}`,
-      client: study.role,
+      client: study.client, // Use the actual client field
       timeline: study.timeline,
       status: study.status === 'Ongoing' ? 'ongoing' as const : 'completed' as const
     }))

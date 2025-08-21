@@ -2,6 +2,8 @@ import { type CategoryType } from '@/components/ui/CategoryBadge'
 
 export interface CaseStudyMetadata {
   title: string
+  descriptiveTitle: string
+  client: string
   description: string
   slug: string
   category: CategoryType
@@ -20,6 +22,8 @@ export interface CaseStudyMetadata {
 export const caseStudies: CaseStudyMetadata[] = [
   {
     title: "Healthcare Portal",
+    descriptiveTitle: "Healthcare Portal",
+    client: "Confidential",
     description: "Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.",
     slug: "healthcare",
     category: "UX",
@@ -35,6 +39,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Boveda Tr1n1ty",
+    descriptiveTitle: "Digital Heartbeat Timer",
+    client: "Boveda",
     description: "From fragmented workflow to coherent, measurable experience—aligning stakeholders, simplifying flows, and shipping modernized UX.",
     slug: "boveda-tr1n1ty",
     category: "UX",
@@ -50,6 +56,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Old Skool Game Studios",
+    descriptiveTitle: "Mobile Casino Game Studio",
+    client: "Old Skool Game Studios (now MahiGaming)",
     description: "UX research + systematic design improvements that lifted engagement and fixed localization pain.",
     slug: "old-skool",
     category: "UX",
@@ -65,6 +73,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Avatar: Generations",
+    descriptiveTitle: "Mobile Game",
+    client: "Navigator Games, Paramount, Nickelodeon",
     description: "UX leadership across a multi-stakeholder mobile RPG",
     slug: "avatar-generations",
     category: "UX",
@@ -80,6 +90,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Cornell University — SC Johnson College of Business",
+    descriptiveTitle: "Ivy League Institution",
+    client: "Cornell University — SC Johnson College of Business",
     description: "Unifying three distinct institutions through a cohesive digital experience",
     slug: "cornell-university",
     category: "Strategy",
@@ -95,6 +107,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Social Finance Fund",
+    descriptiveTitle: "Government Social Finance Initiative",
+    client: "Social Finance Fund",
     description: "UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package",
     slug: "social-finance-fund",
     category: "Strategy",
@@ -110,6 +124,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Breeze Mortgage Hub",
+    descriptiveTitle: "Fintech Platform",
+    client: "Breeze Mortgage Hub",
     description: "Secured $2.3M Series A funding by transforming an incomplete product into a modern, AI-enabled mortgage experience",
     slug: "breeze-mortgage-hub",
     category: "UX",
@@ -125,6 +141,8 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "AMFA Class Filter Redesign",
+    descriptiveTitle: "Museum Filter/Sort Experience",
+    client: "Arkansas Museum of Fine Arts",
     description: "Improving navigation and registration through smarter filtering and cross-system user flows for the Arkansas Museum of Fine Arts",
     slug: "amfa-class-filter-redesign",
     category: "UX",
