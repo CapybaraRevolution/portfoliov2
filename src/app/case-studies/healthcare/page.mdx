@@ -1,10 +1,18 @@
-import { CaseMetaBar } from '@/components/CaseMetaBar'
+import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
+import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
 
 export const metadata = {
   title: 'Healthcare Portal - Case Study',
   description: 'Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.',
 }
+
+export const sections = [
+  { title: 'Overview', id: 'overview' },
+  { title: 'Research & Discovery', id: 'research-discovery' },
+  { title: 'Key Outcomes', id: 'key-outcomes' },
+  { title: 'Coming Soon', id: 'coming-soon' },
+]
 
 export default function HealthcareCaseStudy() {
   const caseStudy = getCaseStudyBySlug('healthcare')
@@ -13,52 +21,59 @@ export default function HealthcareCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  // Metrics data based on the outcomes mentioned in the content
+  const metrics = [
+    {
+      name: 'Admin time per patient',
+      stat: '–45%',
+      previousStat: 'baseline',
+      change: '45% reduction',
+      changeType: 'increase'
+    },
+    {
+      name: 'Critical info retrieval speed',
+      stat: '+200%',
+      previousStat: 'baseline',
+      change: '200% faster access',
+      changeType: 'increase'
+    },
+    {
+      name: 'Provider satisfaction rating',
+      stat: '4.7/5',
+      previousStat: 'baseline',
+      change: 'High satisfaction',
+      changeType: 'increase'
+    }
+  ]
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <CaseMetaBar caseStudy={caseStudy} />
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
       
       <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Project Overview</h2>
+        <h2>Executive summary</h2>
 
-        <p><strong>The Challenge</strong><br />
-        Healthcare providers were spending 60% of their time on administrative tasks instead of patient care. The existing portal was fragmented, making it difficult to access critical patient information quickly.</p>
+        <p>Healthcare providers were spending 60% of their time on administrative tasks instead of patient care. The existing portal was fragmented, making it difficult to access critical patient information quickly. I redesigned the healthcare portal with a focus on care coordination, streamlined workflows, and intelligent data presentation that prioritized the most relevant information for each user role.</p>
 
-        <p><strong>The Solution</strong><br />
-        Redesigned the healthcare portal with a focus on care coordination, streamlined workflows, and intelligent data presentation that prioritized the most relevant information for each user role.</p>
+        <h3>Why it matters</h3>
+
+        <p>When healthcare providers can't quickly access patient information, both care quality and efficiency suffer. A well-designed portal becomes the foundation for better patient outcomes and reduced administrative burden.</p>
 
         <hr />
 
-        <h2>Research & Discovery</h2>
+        <h2>What I did</h2>
 
-        <h3>User Research</h3>
         <ul>
-          <li>24 healthcare provider interviews</li>
-          <li>3-day shadowing sessions in clinical settings</li>
-          <li>Workflow analysis across 4 departments</li>
-          <li>Patient journey mapping</li>
-        </ul>
-
-        <h3>Data Analysis</h3>
-        <ul>
-          <li>Portal usage analytics review</li>
-          <li>Task completion time measurements</li>
-          <li>Error rate and support ticket analysis</li>
-          <li>Accessibility audit findings</li>
+          <li>Conducted 24 healthcare provider interviews and 3-day shadowing sessions in clinical settings</li>
+          <li>Performed workflow analysis across 4 departments and comprehensive patient journey mapping</li>
+          <li>Analyzed portal usage data, task completion times, and support ticket patterns</li>
+          <li>Redesigned information architecture to prioritize critical patient data by user role</li>
+          <li>Created streamlined workflows that reduced administrative overhead</li>
+          <li>Implemented intelligent data presentation that surfaces relevant information contextually</li>
         </ul>
 
         <blockquote>
           <p><strong>AI-Enhanced Research</strong>: Leveraged AI tools to analyze interview transcripts, identify patterns across user feedback, and generate initial persona drafts. This reduced analysis time from 2 weeks to 4 days while uncovering deeper insights.</p>
         </blockquote>
-
-        <hr />
-
-        <h2>Key Outcomes</h2>
-
-        <ul>
-          <li><strong>Admin Time Reduction</strong>: -45% per patient interaction</li>
-          <li><strong>Data Access Speed</strong>: +200% critical info retrieval</li>
-          <li><strong>User Satisfaction</strong>: 4.7/5 provider rating</li>
-        </ul>
 
         <hr />
 
@@ -77,6 +92,6 @@ export default function HealthcareCaseStudy() {
           <p><strong>Measurable Results</strong>: Within 6 months of launch, the portal became the primary tool for 89% of healthcare providers, with administrative task time reduced by nearly half.</p>
         </blockquote>
       </div>
-    </div>
+    </CaseStudyViewer>
   )
 }
