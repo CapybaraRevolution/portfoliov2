@@ -290,22 +290,23 @@ export function Timeline() {
               ref={registerTimelineRef}
             >
               {/* Timeline line with lightning effect */}
-              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-zinc-300 dark:bg-zinc-600">
+              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-zinc-300 dark:bg-zinc-600 z-10">
                 {/* Super smooth gradient line with organic flow */}
                 <div 
-                  className="absolute top-0 left-0 w-full transition-all duration-[1400ms] ease-out motion-reduce:duration-300"
+                  className="absolute top-0 left-0 w-full transition-all duration-[1400ms] ease-out motion-reduce:duration-300 z-20"
                   style={{ 
                     height: `${maxProgress * 100}%`,
                     background: maxProgress > 0 
                       ? 'linear-gradient(to bottom, rgb(16 185 129), rgb(59 130 246), rgb(244 63 94), rgb(168 85 247))' 
                       : 'transparent',
+                    opacity: maxProgress > 0 ? 1 : 0,
                     transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                   }}
                 />
                 {/* Smooth blue dot that follows active element */}
                 {maxProgress > 0 && (
                   <div 
-                    className="absolute -left-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 shadow-lg transition-all motion-reduce:transition-none"
+                    className="absolute -left-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 shadow-lg transition-all motion-reduce:transition-none z-30"
                     style={{ 
                       top: `${maxProgress * 100}%`,
                       transform: `translateY(-50%) ${!isScrolling ? 'scale(1.15)' : 'scale(1)'}`,
@@ -342,7 +343,7 @@ export function Timeline() {
                           </div>
                         )}
                         
-                        <div className={`w-6 h-6 rounded-full border-2 bg-white dark:bg-zinc-900 relative z-10 transition-all duration-300 ${
+                        <div className={`w-6 h-6 rounded-full border-2 bg-white dark:bg-zinc-900 relative z-40 transition-all duration-300 ${
                           isActive
                             ? `${colors.border} ${colors.shadow} shadow-xl ${colors.bg}`
                             : 'border-zinc-300 dark:border-zinc-600'
