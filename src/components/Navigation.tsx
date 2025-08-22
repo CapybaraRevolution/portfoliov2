@@ -277,10 +277,10 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
         </li>
         <li className="md:hidden">
           <a
-            href="/Kyle_McGraw_CV.pdf"
+            href="/Kyle_McGraw_Resume_WebSafe_NoPhoneEmail.pdf"
             download
             className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            aria-label="Download Kyle McGraw's CV"
+            aria-label="Download Kyle McGraw's Resume"
           >
             Download CV
           </a>

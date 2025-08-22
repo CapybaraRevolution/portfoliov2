@@ -94,10 +94,10 @@ export const Header = forwardRef<
             </li>
             <li>
               <a
-                href="/Kyle_McGraw_CV.pdf"
+                href="/Kyle_McGraw_Resume_WebSafe_NoPhoneEmail.pdf"
                 download
                 className="text-sm/5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                aria-label="Download Kyle McGraw's CV"
+                aria-label="Download Kyle McGraw's Resume"
               >
                 Download CV
               </a>
