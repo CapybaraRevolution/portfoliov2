@@ -3,15 +3,17 @@ import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
 
 export const metadata = {
-  title: 'Healthcare Portal - Case Study',
-  description: 'Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.',
+  title: 'Healthcare Analytics Portal - Case Study',
+  description: 'Designed internal tools atop a Salesforce data model so researchers and business leaders could analyze budgets, track outcomes, and manage cross-system data with confidence.',
 }
 
 export const sections = [
   { title: 'Overview', id: 'overview' },
-  { title: 'Research & Discovery', id: 'research-discovery' },
-  { title: 'Key Outcomes', id: 'key-outcomes' },
-  { title: 'Coming Soon', id: 'coming-soon' },
+  { title: 'Constraints', id: 'constraints' },
+  { title: 'What I Did', id: 'what-i-did' },
+  { title: 'Deliverables', id: 'deliverables' },
+  { title: 'Outcome', id: 'outcome' },
+  { title: 'Learnings', id: 'learnings' },
 ]
 
 export default function HealthcareCaseStudy() {
@@ -21,76 +23,82 @@ export default function HealthcareCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data based on the outcomes mentioned in the content
-  const metrics = [
-    {
-      name: 'Admin time per patient',
-      stat: '–45%',
-      previousStat: 'baseline',
-      change: '45% reduction',
-      changeType: 'increase'
-    },
-    {
-      name: 'Critical info retrieval speed',
-      stat: '+200%',
-      previousStat: 'baseline',
-      change: '200% faster access',
-      changeType: 'increase'
-    },
-    {
-      name: 'Provider satisfaction rating',
-      stat: '4.7/5',
-      previousStat: 'baseline',
-      change: 'High satisfaction',
-      changeType: 'increase'
-    }
-  ]
+  // No metrics panel per client confidentiality
+  const metrics = null
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
       
       <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Executive summary</h2>
+        
+        <div className="border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 bg-zinc-50/50 dark:bg-zinc-800/50 shadow-sm mb-8">
+          <p className="mb-4"><strong>Client:</strong> Confidential (Global pharmaceutical organization)</p>
+          <p className="mb-4"><strong>Role:</strong> Product & UX Lead (Internal tools)</p>
+          <p className="mb-0"><strong>Confidentiality:</strong> No client visuals or metrics are shown. Content focuses on responsibilities, process, and outcomes.</p>
+        </div>
 
-        <p>Healthcare providers were spending 60% of their time on administrative tasks instead of patient care. The existing portal was fragmented, making it difficult to access critical patient information quickly. I redesigned the healthcare portal with a focus on care coordination, streamlined workflows, and intelligent data presentation that prioritized the most relevant information for each user role.</p>
+        <h2>Overview</h2>
 
-        <h3>Why it matters</h3>
-
-        <p>When healthcare providers can't quickly access patient information, both care quality and efficiency suffer. A well-designed portal becomes the foundation for better patient outcomes and reduced administrative burden.</p>
-
-        <hr />
-
-        <h2>What I did</h2>
-
-        <ul>
-          <li>Conducted 24 healthcare provider interviews and 3-day shadowing sessions in clinical settings</li>
-          <li>Performed workflow analysis across 4 departments and comprehensive patient journey mapping</li>
-          <li>Analyzed portal usage data, task completion times, and support ticket patterns</li>
-          <li>Redesigned information architecture to prioritize critical patient data by user role</li>
-          <li>Created streamlined workflows that reduced administrative overhead</li>
-          <li>Implemented intelligent data presentation that surfaces relevant information contextually</li>
-        </ul>
-
-        <blockquote>
-          <p><strong>AI-Enhanced Research</strong>: Leveraged AI tools to analyze interview transcripts, identify patterns across user feedback, and generate initial persona drafts. This reduced analysis time from 2 weeks to 4 days while uncovering deeper insights.</p>
-        </blockquote>
+        <p>I led UX for a secure, internal web application that sat on top of a <strong>Salesforce</strong> data schema. The portal was used by researchers, business teams, and senior decision-makers to <strong>analyze product budgets, evaluate program outcomes, and manage information across multiple systems</strong>. My remit spanned discovery through implementation support: mapping data to user needs, shaping the information architecture, designing data-heavy interfaces, and partnering with engineering to deliver a reliable tool in a regulated environment.</p>
 
         <hr />
 
-        <h2>Coming Soon</h2>
-
-        <p>This case study is currently being expanded with comprehensive documentation, including:</p>
+        <h2>Constraints</h2>
 
         <ul>
-          <li><strong>Detailed Research Findings</strong>: Complete user journey analysis and pain point documentation</li>
-          <li><strong>Design Process</strong>: Wireframes, prototypes, and iterative testing results</li>
-          <li><strong>Implementation Details</strong>: Technical specifications and development collaboration</li>
-          <li><strong>Long-term Impact</strong>: 12-month follow-up metrics and organizational changes</li>
+          <li><strong>Regulated context:</strong> Strict privacy, auditability, and access controls.</li>
+          <li><strong>Complex data model:</strong> Salesforce objects/relationships needed to translate cleanly into usable UI concepts.</li>
+          <li><strong>Cross-system reality:</strong> Data pipelines bridged Salesforce and other internal systems; error/latency states had to be first-class.</li>
+          <li><strong>Mixed user base:</strong> Researchers, analysts, and business leaders—each with different goals and permissions.</li>
         </ul>
 
-        <blockquote>
-          <p><strong>Measurable Results</strong>: Within 6 months of launch, the portal became the primary tool for 89% of healthcare providers, with administrative task time reduced by nearly half.</p>
-        </blockquote>
+        <hr />
+
+        <h2>What I Did</h2>
+
+        <ul>
+          <li><strong>System & data mapping:</strong> Partnered with data/engineering to map <strong>Salesforce objects</strong> and relationships to concrete user jobs, shaping navigation, filters, and drill-downs.</li>
+          <li><strong>API analysis & integration notes:</strong> Reviewed available endpoints (REST/SOQL), auth/limits, error semantics, and paging. Documented <strong>integration contracts</strong> and edge cases for developers.</li>
+          <li><strong>Information architecture:</strong> Defined content groups, table anatomy, sort/filter patterns, and role-based visibility for sensitive fields.</li>
+          <li><strong>Data-heavy UI design:</strong> Wireframed dashboards, comparison views, and detail pages; specified empty, loading, and error states so the UI stayed trustworthy under real-world conditions.</li>
+          <li><strong>Visualization standards:</strong> Established conventions for charts/tables (legends, units, thresholds), and when to chart vs. table for clarity.</li>
+          <li><strong>Delivery support:</strong> Authored PRDs/acceptance criteria, paired with devs during implementation, and supported QA for high-risk flows.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Deliverables</h2>
+
+        <ul>
+          <li><strong>Current/Future system diagrams</strong> (lightweight C4-ish) showing data flows and permission boundaries</li>
+          <li><strong>API/integration notes</strong> (endpoints, payloads, failure states, retries)</li>
+          <li><strong>Wireframes & interaction specs</strong> for dashboards, filters, and record detail views</li>
+          <li><strong>Data dictionary & field glossary</strong> to align naming and units across teams</li>
+          <li><strong>UX writing & states</strong> (empty/loading/error/help) for analyst-grade clarity</li>
+        </ul>
+
+        <hr />
+
+        <h2>Outcome</h2>
+
+        <p>The first release shipped to internal users with <strong>consistent patterns</strong>, clearer data navigation, and trustworthy behaviors under load and failure. Teams reported <strong>faster analysis cycles</strong> and <strong>cleaner handoffs</strong> between research and business operations. The portal now provides a maintainable foundation for new modules without reinventing core interaction patterns.</p>
+
+        <hr />
+
+        <h2>Tools & Stack</h2>
+
+        <p><strong>Salesforce</strong> (data model & auth), <strong>Figma</strong> (wireframes/prototypes), <strong>Jira/Confluence</strong> (delivery), <strong>Miro</strong> (system mapping), <strong>Tableau</strong> (visualization exploration).</p>
+
+        <hr />
+
+        <h2>Learnings</h2>
+
+        <ul>
+          <li>Great internal tools <strong>translate schemas into human workflows</strong>—not the other way around.</li>
+          <li>In data-dense UIs, <strong>states and semantics</strong> (empty/loading/error) are as important as charts.</li>
+          <li>Early integration notes prevent "invisible" complexity from surfacing late as rework.</li>
+        </ul>
+
       </div>
     </CaseStudyViewer>
   )

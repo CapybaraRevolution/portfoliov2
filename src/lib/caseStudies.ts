@@ -21,20 +21,20 @@ export interface CaseStudyMetadata {
 // Case studies data - this will eventually be loaded from MDX frontmatter
 export const caseStudies: CaseStudyMetadata[] = [
   {
-    title: "Healthcare Portal",
-    descriptiveTitle: "Healthcare Portal",
+    title: "Healthcare Analytics Portal",
+    descriptiveTitle: "Healthcare Analytics Portal",
     client: "Confidential",
-    description: "Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.",
+    description: "Designed internal tools atop a Salesforce data model so researchers and business leaders could analyze budgets, track outcomes, and manage cross-system data with confidence.",
     slug: "healthcare",
     category: "UX",
-    aiAccelerated: true,
-    role: "Senior UX Designer",
+    aiAccelerated: false,
+    role: "Product & UX Lead",
     engagementType: "Contract",
     location: "Remote",
     timeline: "2023–2024",
     status: "Completed",
-    tools: ["Figma", "Miro", "Amplitude", "Notion"],
-    services: ["User Research", "Service Design", "Data Visualization"],
+    tools: ["Salesforce", "Figma", "Miro", "Jira", "Confluence", "Tableau"],
+    services: ["System Mapping", "API Analysis", "Information Architecture", "Data Visualization", "Wireframes", "Stakeholder Alignment"],
     order: 2
   },
   {
