@@ -104,7 +104,7 @@ function getPageContextFromItemId(itemId: string): { title: string; url: string 
     'contact': { title: 'Contact Page', url: '/contact' },
     
     // Case study pages
-    'case-study-healthcare': { title: 'Healthcare Portal Case Study', url: '/case-studies/healthcare' },
+    'case-study-healthcare': { title: 'Pharmaceutical Project Management Portal Case Study', url: '/case-studies/healthcare' },
     'case-study-boveda-tr1n1ty': { title: 'Boveda Tr1n1ty Case Study', url: '/case-studies/boveda-tr1n1ty' },
     'case-study-old-skool': { title: 'Old Skool Game Studios Case Study', url: '/case-studies/old-skool' },
     'case-study-avatar-generations': { title: 'Avatar: Generations Case Study', url: '/case-studies/avatar-generations' },

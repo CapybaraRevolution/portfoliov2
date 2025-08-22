@@ -117,7 +117,7 @@ export const projects: Project[] = [
   },
   {
     id: 'healthcare-portal',
-    title: 'Healthcare Portal',
+    title: 'Pharmaceutical Project Management Portal',
     description: 'Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.',
     category: 'UX',
     skills: [
@@ -131,7 +131,7 @@ export const projects: Project[] = [
     ai: true,
     href: '/case-studies/healthcare',
     client: 'Confidential',
-    timeline: '2023–2024',
+    timeline: '2023',
     status: 'completed'
   },
   {
