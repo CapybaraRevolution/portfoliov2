@@ -1,30 +1,22 @@
 export const metadata = {
-  title: 'Services & Tools - Kyle McGraw',
-  description: 'Product Manager, UX Design, and Business Analysis services powered by proven tools and methodologies for exceptional digital experiences.',
+  title: 'Services - Kyle McGraw',
+  description: 'Product Manager, UX Design, and Business Analysis services powered by proven methodologies for exceptional digital experiences.',
 }
 
-export const sections = [
-  { title: 'Services I Provide', id: 'services-i-provide' },
-]
-
 import { ProcessRedirect } from '@/components/ProcessRedirect'
-import { RefactoredServicesGrid } from '@/components/RefactoredServicesGrid'
+import { SimplifiedServicesGrid } from '@/components/SimplifiedServicesGrid'
 import { Button } from '@/components/Button'
 
-# Services & Tools
+# Services
 
 <ProcessRedirect />
 
-I offer comprehensive product development services that help companies create exceptional digital experiences. From strategic planning to detailed implementation, each service leverages proven tools and methodologies.
-
-## Services I Provide
-
-<div className="not-prose my-12">
-  <RefactoredServicesGrid />
+<div className="not-prose">
+  <SimplifiedServicesGrid />
 </div>
 
 <div className="not-prose mt-12 text-center">
-  <Button href="/case-studies/ecommerce" arrow="right">
-    <>See My Work</>
+  <Button href="/work/overview" arrow="right">
+    <>View My Work</>
   </Button>
 </div>
