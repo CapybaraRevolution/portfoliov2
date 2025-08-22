@@ -27,7 +27,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     description: "Designed internal tools atop a Salesforce data model so researchers and business leaders could analyze budgets, track outcomes, and manage cross-system data with confidence.",
     slug: "healthcare",
     category: "UX",
-    aiAccelerated: false,
+    aiAccelerated: true,
     role: "Product & UX Lead",
     engagementType: "Contract",
     location: "Remote",
