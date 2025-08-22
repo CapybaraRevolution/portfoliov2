@@ -146,7 +146,6 @@ const isElementHighlighted = (elementId: string, highlightedSkillId: string | nu
       'persona-journey-mapping': ['user-research', 'design-thinking'],
       'competitive-analysis': ['competitive-analysis', 'market-research-analysis'],
       'system-analysis': ['systems-architecture', 'technical-feasibility-analysis', 'api-integration-design'],
-      // Additional step 1 skills
       'product-vision': ['product-vision'],
       'product-discovery': ['product-discovery', 'user-research'],
       'okrs-goal-setting': ['okrs-goal-setting'],
@@ -155,7 +154,6 @@ const isElementHighlighted = (elementId: string, highlightedSkillId: string | nu
       'communication': ['communication', 'stakeholder-alignment'],
       'stakeholder-management': ['stakeholder-management', 'stakeholder-alignment'],
       'market-research-analysis': ['market-research-analysis', 'competitive-analysis'],
-      'competitive-analysis': ['competitive-analysis'],
       'product-market-fit': ['product-market-fit'],
       'cross-functional-leadership': ['cross-functional-leadership'],
       'technical-feasibility-analysis': ['technical-feasibility-analysis', 'system-analysis'],
@@ -179,13 +177,10 @@ const isElementHighlighted = (elementId: string, highlightedSkillId: string | nu
       'deployment-6': ['release-planning']
     },
     '3': { // Design & Prototyping
-      'wireframes': ['wireframing', 'ux-design-principles'],
+      'wireframing': ['wireframing', 'wireframes'],
       'clickable-prototypes': ['prototyping', 'usability-testing'],
       'design-systems': ['ux-design-principles', 'systems-architecture'],
-      // Additional step 3 skills
-      'wireframing': ['wireframing', 'wireframes'],
       'prototyping': ['prototyping', 'clickable-prototypes'],
-      'ux-design-principles': ['ux-design-principles', 'wireframes', 'design-systems'],
       'requirements-definition': ['requirements-definition'],
       'product-requirement-docs': ['product-requirement-docs'],
       'ai-agent-design': ['ai-agent-design'],
@@ -798,6 +793,7 @@ function StepContent({
           isDrawerOpen={isDrawerOpen}
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
+          highlightedSkillId={highlightedSkillId}
         />
       case 5:
         return <Step5Layout 
@@ -1015,13 +1011,13 @@ function Step2Layout({ step, initialTab, highlightedSkillId }: { step: ProcessSt
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Prioritization':
-        return <PrioritizationPanel />
+        return <PrioritizationPanel highlightedSkillId={highlightedSkillId} />
       case 'IA & Flows':
         return <IAFlowsPanel />
       case 'Roadmap & Alignment':
         return <RoadmapPanel />
       default:
-        return <PrioritizationPanel />
+        return <PrioritizationPanel highlightedSkillId={highlightedSkillId} />
     }
   }
 
@@ -1110,7 +1106,7 @@ function Step2Layout({ step, initialTab, highlightedSkillId }: { step: ProcessSt
 }
 
 // Panel Components
-function PrioritizationPanel() {
+function PrioritizationPanel({ highlightedSkillId }: { highlightedSkillId: string | null }) {
   const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -1729,13 +1725,15 @@ function Step4Layout({
   selectedDrawer, 
   isDrawerOpen, 
   onCardClick, 
-  onDrawerClose 
+  onDrawerClose,
+  highlightedSkillId
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
   isDrawerOpen: boolean
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
+  highlightedSkillId: string | null
 }) {
   const [activeTab, setActiveTab] = useState('Plan')
   
