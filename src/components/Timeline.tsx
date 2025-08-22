@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { AIBadge } from '@/components/ui/AIBadge'
+import { NavigationChip } from '@/components/NavigationChip'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 
 interface TimelineNode {
@@ -17,48 +17,160 @@ interface TimelineNode {
   link: string
   status: 'Ongoing' | 'Completed'
   aiAccelerated?: boolean
+  services: string[]
+}
+
+// Map legacy service strings to standardized skill names
+const mapServiceToStandardizedSkills = (service: string): string[] => {
+  const serviceMap: Record<string, string[]> = {
+    // UX & Research Skills
+    'Wireframes & Prototypes': ['Prototyping & Wireframing'],
+    'Wireframes': ['Prototyping & Wireframing'],
+    'Prototypes': ['Prototyping & Wireframing'],
+    'User Research': ['User Research'],
+    'UX Research': ['User Research'],
+    'Information Architecture': ['UX Design Principles'],
+    'Usability Testing': ['Usability Testing'],
+    'Design Thinking': ['Design Thinking'],
+    
+    // Product Strategy Skills
+    'Product Strategy': ['Product Vision'],
+    'Product Vision': ['Product Vision'],
+    'Feature Prioritization': ['Feature Prioritization'],
+    'Product Discovery': ['Product Discovery'],
+    'Product Analytics': ['Data Analytics & Metrics'],
+    
+    // Technical Skills
+    'System Mapping': ['Systems Architecture'],
+    'API Analysis': ['API & Integration Design'],
+    'Technical Analysis': ['Technical Feasibility Analysis'],
+    'Integration Design': ['API & Integration Design'],
+    
+    // Business & Analysis Skills
+    'Business Analysis': ['Market Research & Analysis'],
+    'Market Research': ['Market Research & Analysis'],
+    'Competitive Analysis': ['Competitive Analysis'],
+    'Go-to-Market Strategy': ['Go-to-Market Strategy'],
+    
+    // Data & Analytics Skills
+    'Data Visualization': ['Data Analytics & Metrics'],
+    'Analytics': ['Data Analytics & Metrics'],
+    'A/B Testing': ['A/B Testing & Experimentation'],
+    'Metrics': ['Data Analytics & Metrics'],
+    
+    // Collaboration Skills
+    'Stakeholder Alignment': ['Stakeholder Management'],
+    'Stakeholder Management': ['Stakeholder Management'],
+    'Cross-functional Leadership': ['Cross-Functional Leadership'],
+    'Communication': ['Communication'],
+    
+    // Delivery & Execution Skills
+    'Project Management': ['Project Management'],
+    'Agile Methodologies': ['Agile Methodologies'],
+    'Requirements Definition': ['Requirements Definition'],
+    'Release Planning': ['Release Planning'],
+    
+    // AI & Data Skills
+    'AI Integration': ['Generative AI Integration'],
+    'AI Strategy': ['AI Agent Design'],
+    'Prompt Engineering': ['Prompt Engineering'],
+    'Data-Driven Decisions': ['Data-Driven Decision Making']
+  }
+  
+  return serviceMap[service] || [service] // Fallback to original if no mapping
+}
+
+// Parse date from timeline string to get end date for sorting
+const parseTimelineEndDate = (timeline: string): Date => {
+  // Handle different timeline formats
+  if (timeline.includes('Present') || timeline.includes('Current')) {
+    // For ongoing projects, use current date
+    return new Date()
+  } else if (timeline.includes('–') || timeline.includes('-')) {
+    // Extract end date from range like "July 2018 – December 2019" or "January – June 2024"
+    const parts = timeline.split(/[–-]/)
+    const endDateStr = parts[parts.length - 1].trim()
+    
+    // Handle partial ranges like "January – June 2024"
+    if (endDateStr.includes(' ')) {
+      // Full month year format
+      return new Date(endDateStr + ' 1') // Add day for proper parsing
+    } else {
+      // Just year or month
+      return new Date(endDateStr)
+    }
+  } else {
+    // Single date like "June 2023" or "2023"
+    if (timeline.includes(' ')) {
+      // Month year format - use end of month
+      return new Date(timeline + ' 1')
+    } else {
+      // Just year - use end of year
+      return new Date(timeline + '-12-31')
+    }
+  }
 }
 
 // Generate timeline data from case studies (reverse chronological order)
 const getTimelineData = (): TimelineNode[] => {
   const caseStudies = getAllCaseStudies()
   
-  return caseStudies
-    .sort((a, b) => a.order - b.order) // Chronological by order (lower order number = more recent/priority)
+  const caseStudyNodes = caseStudies
+    .sort((a, b) => {
+      // First priority: Active/Ongoing projects at the top
+      if (a.status === 'Ongoing' && b.status !== 'Ongoing') return -1
+      if (b.status === 'Ongoing' && a.status !== 'Ongoing') return 1
+      
+      // For same status, sort by actual timeline dates (most recent first)
+      const dateA = parseTimelineEndDate(a.timeline)
+      const dateB = parseTimelineEndDate(b.timeline)
+      return dateB.getTime() - dateA.getTime()
+    })
     .map((study, index) => ({
-      id: `node-${index}`,
+      id: `node-${index + 1}`, // Start from 1 to leave 0 for Future Focus
       title: study.descriptiveTitle,
       client: study.client,
       period: study.timeline,
       description: study.description,
       link: `/case-studies/${study.slug}`,
       status: study.status,
-      aiAccelerated: study.aiAccelerated
+      aiAccelerated: study.aiAccelerated,
+      services: study.services
+        .flatMap(service => mapServiceToStandardizedSkills(service))
+        .slice(0, 4) // Limit to first 4 services for space
     }))
+
+  // Add Future Focus entry at the top
+  const futureFocusNode: TimelineNode = {
+    id: 'node-0',
+    title: 'Future Focus: AI-Driven Workflows',
+    client: 'Innovation & Strategy',
+    period: '2024 – Present',
+    description: 'Exploring how AI tools can enhance product workflows, from automated user research synthesis to intelligent design systems and predictive analytics.',
+    link: '#', // No link for future focus
+    status: 'Ongoing',
+    aiAccelerated: true,
+    services: [] // No skill chips for future focus
+  }
+
+  return [futureFocusNode, ...caseStudyNodes]
 }
 
 export function Timeline() {
-  const router = useRouter()
   const [activeNodeIndex, setActiveNodeIndex] = useState(-1)
   
   // Get timeline data from case studies
   const timelineData = getTimelineData()
-  const [lightningProgress, setLightningProgress] = useState(0)
-  const [maxProgress, setMaxProgress] = useState(0)
+  const [rainbowProgress, setRainbowProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
   const [isScrolling, setIsScrolling] = useState(false)
   
-  // Refs for animation tracking (no re-renders)
+  // Refs for precise tracking
   const timelineRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
   const lastScrollTime = useRef(Date.now())
   const lastScrollY = useRef(0)
-  const animationFrame = useRef<number | undefined>(undefined)
   const scrollTimeout = useRef<NodeJS.Timeout | undefined>(undefined)
-  const lightningProgressRef = useRef(0)
-  const baseProgressRef = useRef(0)
-  const currentVelocityRef = useRef(0)
-  const lastUpdateTime = useRef(0)
 
   const registerNodeRef = useCallback((id: string, element: HTMLDivElement | null) => {
     nodeRefs.current[id] = element
@@ -70,29 +182,6 @@ export function Timeline() {
     }
   }, [])
 
-  // Super buttery animation function with organic momentum
-  const animate = useCallback(() => {
-    const diff = baseProgressRef.current - lightningProgressRef.current
-    
-    // Much looser smoothing for buttery feel (was 0.15-0.3, now 0.03-0.08)
-    const velocity = currentVelocityRef.current
-    let smoothing = velocity > 1 ? 0.08 : 0.03  // Even looser for momentum
-    
-    // Add slight overshoot for very fast scrolling
-    if (velocity > 5) {
-      smoothing = 0.12 // More responsive for fast scroll
-    }
-    
-    lightningProgressRef.current += diff * smoothing
-    
-    // Update React state for rendering
-    setLightningProgress(lightningProgressRef.current)
-    
-    // Keep animating much longer (was 0.001, now 0.02 for more flow)
-    if (Math.abs(diff) > 0.02) {
-      animationFrame.current = requestAnimationFrame(animate)
-    }
-  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,14 +197,10 @@ export function Timeline() {
       
       lastScrollTime.current = currentTime
       lastScrollY.current = currentScrollY
-      currentVelocityRef.current = velocity
 
-      // Update velocity state for animations
-      if (currentTime - lastUpdateTime.current > 8) {
-        setScrollVelocity(velocity)
-        setIsScrolling(true)
-        lastUpdateTime.current = currentTime
-      }
+      // Update scrolling state
+      setScrollVelocity(velocity)
+      setIsScrolling(velocity > 0.1)
 
       // Clear existing timeout
       if (scrollTimeout.current) {
@@ -125,43 +210,16 @@ export function Timeline() {
       scrollTimeout.current = setTimeout(() => {
         setIsScrolling(false)
         setScrollVelocity(0)
-        currentVelocityRef.current = 0
       }, 150)
 
-      const timelineRect = timelineRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
-      const timelineStart = timelineRect.top
-      const timelineEnd = timelineRect.bottom
-      const timelineHeight = timelineRect.height
+      const viewportCenter = viewportHeight * 0.4 // Slightly above center for better feel
       
-      // More accurate progress calculation
-      let progress = 0
-      
-      if (timelineStart > viewportHeight) {
-        // Timeline hasn't entered viewport yet
-        progress = 0
-      } else if (timelineEnd < 0) {
-        // Timeline has completely passed
-        progress = 1
-      } else {
-        // Timeline is in viewport - calculate progress based on how much has scrolled past
-        const scrolledPastTop = Math.max(0, -timelineStart)
-        const maxScrollDistance = timelineHeight + viewportHeight
-        progress = Math.min(1, scrolledPastTop / maxScrollDistance)
-      }
-
-      baseProgressRef.current = progress
-      setMaxProgress(progress)
-
-      // Start smooth animation
-      if (!animationFrame.current) {
-        animate()
-      }
-
-      // Find active node based on viewport center
+      // Calculate rainbow progress based on visible nodes
       let newActiveIndex = -1
+      let newProgress = 0
       let closestDistance = Infinity
-      const viewportCenter = viewportHeight * 0.5
+      
       const nodes = Object.entries(nodeRefs.current)
       
       for (let i = 0; i < nodes.length; i++) {
@@ -171,14 +229,25 @@ export function Timeline() {
           const nodeCenter = rect.top + rect.height / 2
           const distance = Math.abs(nodeCenter - viewportCenter)
           
-          // Only consider nodes that are at least partially visible
-          if (rect.bottom > 0 && rect.top < viewportHeight && distance < closestDistance) {
+          // Check if this node is closest to the viewport center
+          if (distance < closestDistance && rect.bottom > 0 && rect.top < viewportHeight) {
             closestDistance = distance
             newActiveIndex = i
+            
+            // Calculate progress based on how far through the visible nodes we are
+            // Plus interpolation for smooth in-between states
+            const nodeProgress = i / Math.max(1, nodes.length - 1)
+            const interpolation = Math.max(0, Math.min(1, (viewportCenter - rect.top) / rect.height))
+            newProgress = nodeProgress + (interpolation / nodes.length)
           }
         }
       }
-
+      
+      // Clamp progress and make it more responsive
+      newProgress = Math.max(0, Math.min(1, newProgress))
+      
+      // Update states with immediate responsiveness
+      setRainbowProgress(newProgress)
       setActiveNodeIndex(newActiveIndex)
     }
 
@@ -187,15 +256,11 @@ export function Timeline() {
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      if (animationFrame.current) {
-        cancelAnimationFrame(animationFrame.current)
-        animationFrame.current = undefined
-      }
       if (scrollTimeout.current) {
         clearTimeout(scrollTimeout.current)
       }
     }
-  }, [animate])
+  }, [])
 
   const getNodeColors = (index: number) => {
     const colorSchemes = [
@@ -289,40 +354,36 @@ export function Timeline() {
               className="space-y-16 relative"
               ref={registerTimelineRef}
             >
-              {/* Timeline line with lightning effect */}
-              <div className="absolute left-3 top-0 bottom-0 w-0.5 bg-zinc-300 dark:bg-zinc-600 z-10">
-                {/* Super smooth gradient line with organic flow */}
+              {/* Timeline line with responsive rainbow effect */}
+              <div className="absolute left-6 top-0 bottom-0 w-1 bg-zinc-200 dark:bg-zinc-700 rounded-full z-10">
+                {/* Responsive rainbow gradient line */}
                 <div 
-                  className="absolute top-0 left-0 w-full transition-all duration-[1400ms] ease-out motion-reduce:duration-300 z-20"
+                  className="absolute top-0 left-0 w-full rounded-full transition-all duration-200 ease-out z-20"
                   style={{ 
-                    height: `${maxProgress * 100}%`,
-                    background: maxProgress > 0 
+                    height: `${rainbowProgress * 100}%`,
+                    background: rainbowProgress > 0 
                       ? 'linear-gradient(to bottom, rgb(16 185 129), rgb(59 130 246), rgb(244 63 94), rgb(168 85 247))' 
                       : 'transparent',
-                    opacity: maxProgress > 0 ? 1 : 0,
-                    transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    opacity: rainbowProgress > 0 ? 1 : 0
                   }}
                 />
-                {/* Smooth blue dot that follows active element */}
-                {maxProgress > 0 && (
+                {/* Responsive dot that follows progress */}
+                {rainbowProgress > 0 && (
                   <div 
-                    className="absolute -left-1.5 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 shadow-lg transition-all motion-reduce:transition-none z-30"
+                    className="absolute -left-1 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 shadow-lg transition-all duration-200 ease-out z-30"
                     style={{ 
-                      top: `${maxProgress * 100}%`,
-                      transform: `translateY(-50%) ${!isScrolling ? 'scale(1.15)' : 'scale(1)'}`,
-                      width: `${Math.max(12, Math.min(20, 12 + scrollVelocity * 2))}px`,
-                      height: `${Math.max(12, Math.min(20, 12 + scrollVelocity * 2))}px`,
-                      boxShadow: `0 0 ${Math.max(20, Math.min(40, 20 + scrollVelocity * 4))}px rgba(16, 185, 129, ${Math.max(0.6, Math.min(0.9, 0.6 + scrollVelocity * 0.1))})`,
-                      transition: isScrolling 
-                        ? 'all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)' 
-                        : 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                      top: `${rainbowProgress * 100}%`,
+                      transform: 'translateY(-50%)',
+                      width: `${Math.max(16, Math.min(22, 16 + scrollVelocity * 1.5))}px`,
+                      height: `${Math.max(16, Math.min(22, 16 + scrollVelocity * 1.5))}px`,
+                      boxShadow: `0 0 ${Math.max(24, Math.min(36, 24 + scrollVelocity * 3))}px rgba(16, 185, 129, ${Math.max(0.4, Math.min(0.8, 0.4 + scrollVelocity * 0.1))})`
                     }}
                   />
                 )}
               </div>
               
               {/* Timeline nodes */}
-              <div className="space-y-14">
+              <div className="space-y-20">
                 {timelineData.map((node, index) => {
                   const colors = getNodeColors(index)
                   const isActive = activeNodeIndex === index
@@ -330,41 +391,39 @@ export function Timeline() {
                   return (
                     <div 
                       key={node.id}
-                      className="relative flex gap-6 transition-all duration-500"
+                      className="relative transition-all duration-300 pl-16"
                       ref={(el) => registerNodeRef(node.id, el)}
                     >
-                      {/* Timeline circle */}
-                      <div className="relative w-6 h-6 flex-shrink-0">
+                      {/* Timeline circle - absolutely positioned to align with line and text */}
+                      <div className="absolute left-2 w-8 h-8 top-1/2 transform -translate-y-1/2 z-50">
                         {/* Glow rings for active node */}
                         {isActive && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className={`absolute w-8 h-8 rounded-full ${colors.cardBg} animate-pulse`} />
-                            <div className={`absolute w-6 h-6 rounded-full ${colors.cardBg} animate-pulse`} style={{ animationDelay: '0.5s' }} />
+                            <div className={`absolute w-12 h-12 rounded-full ${colors.cardBg} animate-pulse opacity-60`} />
+                            <div className={`absolute w-8 h-8 rounded-full ${colors.cardBg} animate-pulse opacity-40`} style={{ animationDelay: '0.5s' }} />
                           </div>
                         )}
                         
-                        <div className={`w-6 h-6 rounded-full border-2 bg-white dark:bg-zinc-900 relative z-40 transition-all duration-300 ${
+                        <div className={`w-8 h-8 rounded-full border-3 bg-white dark:bg-zinc-900 relative z-40 transition-all duration-300 ${
                           isActive
-                            ? `${colors.border} ${colors.shadow} shadow-xl ${colors.bg}`
-                            : 'border-zinc-300 dark:border-zinc-600'
+                            ? `${colors.border} ${colors.shadow} shadow-xl ${colors.bg} scale-110`
+                            : 'border-zinc-300 dark:border-zinc-600 scale-100'
                         }`} />
                       </div>
                       
-                      <div className={`flex-1 space-y-3 pb-6 rounded-lg px-4 py-3 transition-all duration-500 ${
+                      <div className={`rounded-xl transition-all duration-300 ${
                         isActive 
-                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-lg scale-100` 
-                          : 'bg-white dark:bg-zinc-800/50 shadow-sm border border-zinc-200 dark:border-zinc-700 scale-95'
+                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-xl scale-105 translate-x-2` 
+                          : 'bg-white dark:bg-zinc-800/30 shadow-md border border-zinc-200 dark:border-zinc-700 scale-100'
                       }`}>
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-1 flex-1">
-                            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
+                        {/* Title header - no top padding */}
+                        <div className="flex items-start justify-between gap-4 px-6 py-3">
+                          <div className="flex-1">
+                            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white leading-tight">
                               {node.title}
                             </h3>
-                            <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                              {node.client} • {node.period}
-                            </p>
                           </div>
-                          <span className={`inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium ${
+                          <span className={`inline-flex items-center gap-x-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${
                             node.status === 'Ongoing' 
                               ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
                               : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
@@ -379,22 +438,52 @@ export function Timeline() {
                             {node.status}
                           </span>
                         </div>
-                        <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                          {node.description}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <Link 
-                            href={node.link}
-                            className={`inline-flex items-center text-sm font-medium transition-colors duration-300 ${
-                              isActive 
-                                ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300' 
-                                : 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300'
-                            }`}
-                          >
-                            View Case Study →
-                          </Link>
-                          {node.aiAccelerated && (
-                            <AIBadge size="sm">AI-Accelerated</AIBadge>
+                        
+                        {/* Content section */}
+                        <div className="px-6 pb-3 space-y-3">
+                          <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+                            {node.client} • {node.period}
+                          </p>
+                          <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                            {node.description}
+                          </p>
+                          {/* Service/Skill chips */}
+                          {node.services.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {node.services.map((service) => (
+                                <NavigationChip 
+                                  key={service} 
+                                  skill={service}
+                                  size="sm"
+                                />
+                              ))}
+                            </div>
+                          )}
+                          {/* Only show call-to-action for actual case studies */}
+                          {node.link !== '#' && (
+                            <div className="flex items-center justify-between pt-1">
+                              <Link 
+                                href={node.link}
+                                className={`inline-flex items-center text-sm font-semibold transition-all duration-300 hover:gap-2 group ${
+                                  isActive 
+                                    ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300' 
+                                    : 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300'
+                                }`}
+                              >
+                                View Case Study 
+                                <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
+                              </Link>
+                              {node.aiAccelerated && (
+                                <AIBadge size="sm">AI-Accelerated</AIBadge>
+                              )}
+                            </div>
+                          )}
+                          
+                          {/* For Future Focus, just show AI badge if applicable */}
+                          {node.link === '#' && node.aiAccelerated && (
+                            <div className="pt-1">
+                              <AIBadge size="sm">AI-Accelerated</AIBadge>
+                            </div>
                           )}
                         </div>
                       </div>
