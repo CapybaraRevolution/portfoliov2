@@ -360,6 +360,11 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
   
   // Function to handle opening drawer
   const handleRowClick = (row: Row) => {
+    // Prevent drawer opening for Information Architecture cards
+    if (currentStep === 'information-architecture') {
+      return
+    }
+    
     setSelectedDeployment(row)
     setDrawerOpen(true)
   }
@@ -447,7 +452,11 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
           <div 
             key={row.id} 
             data-highlight-target={row.id.startsWith('ia-') ? 'ia-flows' : row.itemId}
-            className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
+            className={`px-6 py-5 transition-all duration-500 ease-out group ${
+              currentStep === 'information-architecture' 
+                ? 'cursor-default' 
+                : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer'
+            } ${
               isAnimating || !isLoaded
                 ? 'transform translate-y-12 opacity-0' 
                 : 'transform translate-y-0 opacity-100'
