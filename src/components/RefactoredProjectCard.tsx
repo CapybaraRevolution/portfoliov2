@@ -81,7 +81,7 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
     <Link href={project.href} className="group">
       <div
         onMouseMove={onMouseMove}
-        className="relative flex flex-col overflow-hidden rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 cursor-pointer"
+        className="relative flex flex-col rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 cursor-pointer"
       >
       <ProjectCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
       <div className="absolute inset-0 rounded-2xl ring-1 ring-zinc-900/7.5 ring-inset group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
@@ -144,13 +144,17 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
       <div className="relative mx-6 h-px bg-zinc-900/7.5 dark:bg-white/10" />
 
       {/* Body Section 3 - Skills */}
-      <div className="relative p-6 pb-4">
+      <div className="relative p-6 pb-4 overflow-visible">
         <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Skills & Approach</h4>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 overflow-visible">
           {(project.skills || []).slice(0, 6).map((skill, index) => (
             <div
               key={`${project.id || 'project'}-skill-${skill}-${index}`}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+              }}
+              style={{ pointerEvents: 'auto' }}
             >
               <NavigationChip
                 skill={skill}

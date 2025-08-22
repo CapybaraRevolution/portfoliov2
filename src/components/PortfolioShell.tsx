@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
@@ -20,8 +21,22 @@ export function PortfolioShell() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [searchFocused, setSearchFocused] = useState(false)
   
+  const searchParams = useSearchParams()
+  
   // Get all case studies
   const allCaseStudies = useMemo(() => getAllCaseStudies(), [])
+  
+  // Read URL parameters on mount
+  useEffect(() => {
+    const skillsParam = searchParams.get('skills')
+    if (skillsParam) {
+      const decodedSkill = decodeURIComponent(skillsParam)
+      setFilters(prev => ({
+        ...prev,
+        selectedSkills: new Set([decodedSkill])
+      }))
+    }
+  }, [searchParams])
   
   // Extract unique skills from all case studies for filter options
   const availableSkills = useMemo(() => {
@@ -30,7 +45,7 @@ export function PortfolioShell() {
     // Group skills by category (you can customize these categories)
     const categories = {
       'Strategy': ['Product Vision', 'Roadmap', 'Prioritization', 'OKRs', 'Stakeholder Alignment'],
-      'Discovery & Design': ['User Research', 'Information Architecture', 'Wireframes & Prototypes', 'Usability Testing', 'Service Design', 'Design Systems'],
+      'Discovery & Design': ['User Research', 'Information Architecture', 'Wireframing', 'Prototyping', 'Usability Testing', 'Service Design', 'Design Systems'],
       'Build & Ship': ['PRDs (Specs)', 'System Design', 'APIs & Integrations', 'Agile Delivery', 'Cross-team Facilitation'],
       'Data & AI': ['Product Analytics', 'Experimentation', 'Instrumentation', 'AI Integration', 'Data Visualization'],
       'Leadership': ['Team Facilitation', 'Communication', 'Storytelling', 'Stakeholder Management']

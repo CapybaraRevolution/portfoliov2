@@ -124,11 +124,18 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     description: 'Applying empathy & iterative design to solve user problems',
     processSteps: [1]
   },
-  'prototyping-wireframing': {
-    id: 'prototyping-wireframing',
-    name: 'Prototyping & Wireframing',
+  'wireframing': {
+    id: 'wireframing',
+    name: 'Wireframing',
     category: skillCategories['ux-research'],
-    description: 'Crafting low-fi prototypes or wireframes to test concepts',
+    description: 'Creating low-fidelity sketches and layouts to define structure and flow',
+    processSteps: [3]
+  },
+  'prototyping': {
+    id: 'prototyping',
+    name: 'Prototyping',
+    category: skillCategories['ux-research'],
+    description: 'Building interactive mockups and clickable prototypes to test concepts',
     processSteps: [3]
   },
   'usability-testing': {

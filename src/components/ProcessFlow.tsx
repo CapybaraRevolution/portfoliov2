@@ -148,8 +148,8 @@ const isCardHighlighted = (cardSlug: string, highlightedSkillId: string | null, 
       'system-analysis': ['systems-architecture', 'technical-feasibility-analysis']
     },
     '3': { // Design & Prototyping
-      'wireframes': ['prototyping-wireframing', 'ux-design-principles'],
-      'clickable-prototypes': ['prototyping-wireframing', 'usability-testing'],
+      'wireframes': ['wireframing', 'ux-design-principles'],
+      'clickable-prototypes': ['prototyping', 'usability-testing'],
       'design-systems': ['ux-design-principles', 'systems-architecture']
     },
     '5': { // Launch & Optimization

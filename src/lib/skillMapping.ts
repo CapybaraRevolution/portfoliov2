@@ -28,9 +28,9 @@ export const skillNameToStandardizedId: Record<string, string> = {
   'Journey Mapping': 'design-thinking',
   'Service Design': 'design-thinking',
   'Design Thinking': 'design-thinking',
-  'Wireframes & Prototypes': 'prototyping-wireframing',
-  'Wireframing': 'prototyping-wireframing',
-  'Prototyping': 'prototyping-wireframing',
+  'Wireframes & Prototypes': 'wireframing', // Legacy - maps to wireframing for backward compatibility
+  'Wireframing': 'wireframing',
+  'Prototyping': 'prototyping',
   'Usability Testing': 'usability-testing',
   'A/B Testing': 'ab-testing-experimentation',
   

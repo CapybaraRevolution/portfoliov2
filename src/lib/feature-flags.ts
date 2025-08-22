@@ -45,8 +45,8 @@ export function convertLegacySkillsToBackend(legacySkills: string[]): string[] {
     'User Research': 'User Research',
     'Journey Mapping': 'Information Architecture',
     'Service Design': 'Information Architecture',
-    'Wireframing': 'Wireframes & Prototypes',
-    'Prototyping': 'Wireframes & Prototypes',
+    'Wireframing': 'Wireframing',
+    'Prototyping': 'Prototyping',
     'A/B Testing': 'Usability Testing',
     
     // Build & Ship

@@ -55,7 +55,8 @@ export const services: Service[] = [
     blurb: 'Intuitive interfaces from wireframes to design systems that balance user needs with business goals.',
     toolSlugs: ['figma', 'framer', 'principle', 'webflow'],
     relatedSkills: [
-      { label: 'Wireframes & Prototypes', href: '/work/overview?tag=wireframes-prototypes' },
+      { label: 'Wireframing', href: '/work/overview?skills=Wireframing' },
+      { label: 'Prototyping', href: '/work/overview?skills=Prototyping' },
       { label: 'Information Architecture', href: '/work/overview?tag=information-architecture' },
       { label: 'Usability Testing', href: '/work/overview?tag=usability-testing' },
       { label: 'Stakeholder Alignment', href: '/work/overview?tag=stakeholder-alignment' }

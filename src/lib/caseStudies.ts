@@ -51,7 +51,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "July 2018 – December 2019",
     status: "Completed",
     tools: ["Figma", "FigJam", "Notion", "Jira"],
-    services: ["Product Vision", "User Research", "Information Architecture", "Wireframes & Prototypes", "Stakeholder Management", "Product Analytics"],
+    services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Management", "Product Analytics"],
     order: 3
   },
   {
@@ -68,7 +68,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "January 2019 – September 2021",
     status: "Completed",
     tools: ["Figma", "FigJam", "Jira", "Confluence"],
-    services: ["User Research", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
+    services: ["User Research", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
     order: 4
   },
   {
@@ -85,7 +85,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "September 2021 – September 2023",
     status: "Completed",
     tools: ["Figma", "FigJam", "Notion", "Jira", "Unity", "Lottie"],
-    services: ["Stakeholder Alignment", "System Design", "Wireframes & Prototypes", "PRDs (Specs)", "Roadmap", "Team Facilitation", "User Research", "Usability Testing", "Product Analytics", "Experimentation"],
+    services: ["Stakeholder Alignment", "System Design", "Wireframing", "Prototyping", "PRDs (Specs)", "Roadmap", "Team Facilitation", "User Research", "Usability Testing", "Product Analytics", "Experimentation"],
     order: 5
   },
   {
@@ -102,7 +102,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "January – June 2024",
     status: "Completed",
     tools: ["Figma", "FigJam", "Hotjar", "Google Analytics", "LLM assistants"],
-    services: ["Information Architecture", "Wireframes & Prototypes", "Product Vision", "PRDs (Specs)", "Stakeholder Alignment", "System Design"],
+    services: ["Information Architecture", "Wireframing", "Prototyping", "Product Vision", "PRDs (Specs)", "Stakeholder Alignment", "System Design"],
     order: 6
   },
   {
@@ -119,7 +119,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "June 2024 – February 2025",
     status: "Completed",
     tools: ["Microsoft Forms", "Excel", "Obsidian", "Figma"],
-    services: ["Product Vision", "User Research", "Information Architecture", "Wireframes & Prototypes", "Stakeholder Alignment", "Team Facilitation"],
+    services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Team Facilitation"],
     order: 7
   },
   {
@@ -136,7 +136,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "2024–Present",
     status: "Ongoing",
     tools: ["Figma", "FigJam", "Notion", "Jira", "React", "SQL"],
-    services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframes & Prototypes", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
+    services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
     order: 1
   },
   {
@@ -153,7 +153,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     timeline: "February 2024 – Present",
     status: "Ongoing",
     tools: ["Figma", "FigJam", "Miro", "Notion"],
-    services: ["Information Architecture", "Wireframes & Prototypes", "Stakeholder Alignment", "Product Analytics", "Usability Testing", "PRDs (Specs)", "Team Facilitation"],
+    services: ["Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Product Analytics", "Usability Testing", "PRDs (Specs)", "Team Facilitation"],
     order: 9
   }
 ]

@@ -20,7 +20,8 @@ const skillNameMapping: Record<string, string[]> = {
   // Discovery & Design
   'User Research': ['User Interviews', 'User Research'],
   'Information Architecture': ['Journey Mapping', 'Service Design'],
-  'Wireframes & Prototypes': ['Wireframing', 'Prototyping'],
+  'Wireframing': [],
+  'Prototyping': [],
   'Usability Testing': ['A/B Testing'],
   
   // Build & Ship
@@ -70,7 +71,8 @@ const simplifiedSkillGroups = {
   'Discovery & Design': [
     'User Research',
     'Information Architecture',
-    'Wireframes & Prototypes',
+    'Wireframing',
+    'Prototyping',
     'Usability Testing'
   ],
   'Build & Ship': [

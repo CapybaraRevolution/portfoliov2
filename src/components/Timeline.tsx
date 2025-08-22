@@ -24,9 +24,11 @@ interface TimelineNode {
 const mapServiceToStandardizedSkills = (service: string): string[] => {
   const serviceMap: Record<string, string[]> = {
     // UX & Research Skills
-    'Wireframes & Prototypes': ['Prototyping & Wireframing'],
-    'Wireframes': ['Prototyping & Wireframing'],
-    'Prototypes': ['Prototyping & Wireframing'],
+    'Wireframes & Prototypes': ['Wireframing', 'Prototyping'], // Legacy support
+    'Wireframing': ['Wireframing'],
+    'Prototyping': ['Prototyping'],
+    'Wireframes': ['Wireframing'],
+    'Prototypes': ['Prototyping'],
     'User Research': ['User Research'],
     'UX Research': ['User Research'],
     'Information Architecture': ['UX Design Principles'],
@@ -163,7 +165,6 @@ export function Timeline() {
   const timelineData = getTimelineData()
   const [rainbowProgress, setRainbowProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
-  const [isScrolling, setIsScrolling] = useState(false)
   
   // Refs for precise tracking
   const timelineRef = useRef<HTMLDivElement>(null)
@@ -200,7 +201,6 @@ export function Timeline() {
 
       // Update scrolling state
       setScrollVelocity(velocity)
-      setIsScrolling(velocity > 0.1)
 
       // Clear existing timeout
       if (scrollTimeout.current) {
@@ -208,7 +208,6 @@ export function Timeline() {
       }
 
       scrollTimeout.current = setTimeout(() => {
-        setIsScrolling(false)
         setScrollVelocity(0)
       }, 150)
 
@@ -455,6 +454,7 @@ export function Timeline() {
                                   key={service} 
                                   skill={service}
                                   size="sm"
+                                  variant="outline"
                                 />
                               ))}
                             </div>

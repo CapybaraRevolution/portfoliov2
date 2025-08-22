@@ -105,7 +105,7 @@ export function ClickablePrototypes({ className, onClose }: ClickablePrototypesP
             Related Skills
           </h3>
           <div className="flex flex-wrap gap-2">
-            <NavigationChip skill="Wireframes & Prototypes" variant="default" size="sm" />
+            <NavigationChip skill="Prototyping" variant="default" size="sm" />
             <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
             <NavigationChip skill="Product Analytics" variant="outline" size="sm" />
             <NavigationChip skill="Communication" variant="outline" size="sm" />

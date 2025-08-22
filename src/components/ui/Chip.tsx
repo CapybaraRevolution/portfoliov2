@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
@@ -39,6 +40,24 @@ export function Chip({
   dropdown = false,
   dropdownItems = []
 }: ChipProps) {
+  const [isDark, setIsDark] = useState(false)
+  
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'))
+    }
+    
+    checkDarkMode()
+    
+    // Watch for changes
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    
+    return () => observer.disconnect()
+  }, [])
   const baseClasses = clsx(
     'inline-flex items-center gap-x-1 rounded-md font-medium transition-all duration-200',
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50',
@@ -80,18 +99,35 @@ export function Chip({
         {/* Hover glow effect */}
         <div className="absolute -inset-1 rounded-md transition-all duration-300 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-emerald-500/5 to-blue-500/5 blur-sm" />
         
-        <MenuButton className={clsx(allClasses, 'relative z-10')}>
+        <MenuButton 
+          className={clsx(allClasses, 'relative z-10')}
+          onClick={(e: React.MouseEvent) => {
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+        >
           {content}
         </MenuButton>
 
         <MenuItems
+          anchor="bottom start"
           transition
-          className="absolute left-0 z-[60] mt-1 w-64 origin-top-left rounded-md bg-white dark:bg-zinc-800 py-1 shadow-lg ring-1 ring-black/5 dark:ring-white/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          className="mt-1 w-64 rounded-md py-1 shadow-xl shadow-black/10 dark:shadow-black/20 ring-1 ring-black/10 dark:ring-white/10 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          style={{
+            backgroundColor: isDark ? '#27272A' : '#FFFFFF',
+            opacity: '1',
+            zIndex: 999999,
+            backdropFilter: 'none',
+            WebkitBackdropFilter: 'none'
+          }}
         >
           {dropdownItems.map((item, index) => (
             <MenuItem key={index}>
               <button
-                onClick={item.onClick}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  item.onClick()
+                }}
                 className="block w-full px-4 py-2 text-left text-sm text-zinc-700 dark:text-zinc-300 data-focus:bg-emerald-50 dark:data-focus:bg-emerald-900/20 data-focus:text-emerald-700 dark:data-focus:text-emerald-300 data-focus:outline-hidden"
               >
                 <div className="font-medium">{item.label}</div>

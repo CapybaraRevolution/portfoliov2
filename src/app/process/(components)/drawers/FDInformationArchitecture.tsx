@@ -104,7 +104,7 @@ export function FDInformationArchitecture({ className, onClose }: FDInformationA
           </h3>
           <div className="flex flex-wrap gap-2">
             <NavigationChip skill="Information Architecture" variant="default" size="sm" />
-            <NavigationChip skill="Wireframes & Prototypes" variant="outline" size="sm" />
+            <NavigationChip skill="Wireframing" variant="outline" size="sm" />
             <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
             <NavigationChip skill="Communication" variant="outline" size="sm" />
           </div>
