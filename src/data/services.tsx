@@ -23,9 +23,10 @@ export const services: Service[] = [
     blurb: 'Product roadmaps and stakeholder alignment that translate business goals into actionable development plans.',
     toolSlugs: ['jira', 'confluence', 'notion', 'loom'],
     relatedSkills: [
-      { label: 'Roadmapping', href: '/work/overview?tag=roadmapping' },
-      { label: 'Backlog Grooming', href: '/work/overview?tag=backlog-grooming' },
-      { label: 'Release Planning', href: '/work/overview?tag=release-planning' }
+      { label: 'Product Vision', href: '/work/overview?tag=product-vision' },
+      { label: 'Roadmap', href: '/work/overview?tag=roadmap' },
+      { label: 'Prioritization', href: '/work/overview?tag=prioritization' },
+      { label: 'OKRs', href: '/work/overview?tag=okrs' }
     ],
     processLink: '/process#step-2',
     portfolioLink: '/work/overview?tag=product-planning',
@@ -38,9 +39,10 @@ export const services: Service[] = [
     blurb: 'User insights through interviews and behavioral analysis that inform strategic product decisions.',
     toolSlugs: ['userinterviews', 'typeform', 'hotjar', 'ga4', 'maze'],
     relatedSkills: [
-      { label: 'User Interviews', href: '/process?panel=user-interviews' },
-      { label: 'Journey Mapping', href: '/process?panel=persona-journey-mapping' },
-      { label: 'Competitive Analysis', href: '/work/overview?tag=competitive-analysis' }
+      { label: 'User Research', href: '/work/overview?tag=user-research' },
+      { label: 'Usability Testing', href: '/work/overview?tag=usability-testing' },
+      { label: 'Product Analytics', href: '/work/overview?tag=product-analytics' },
+      { label: 'Experimentation', href: '/work/overview?tag=experimentation' }
     ],
     processLink: '/process#step-1', 
     portfolioLink: '/work/overview?tag=user-research',
@@ -53,9 +55,10 @@ export const services: Service[] = [
     blurb: 'Intuitive interfaces from wireframes to design systems that balance user needs with business goals.',
     toolSlugs: ['figma', 'framer', 'principle', 'webflow'],
     relatedSkills: [
-      { label: 'Wireframes', href: '/process?panel=wireframes' },
-      { label: 'Clickable Prototypes', href: '/process?panel=clickable-prototypes' },
-      { label: 'Design Systems', href: '/process?panel=design-systems' }
+      { label: 'Wireframes & Prototypes', href: '/work/overview?tag=wireframes-prototypes' },
+      { label: 'Information Architecture', href: '/work/overview?tag=information-architecture' },
+      { label: 'Usability Testing', href: '/work/overview?tag=usability-testing' },
+      { label: 'Stakeholder Alignment', href: '/work/overview?tag=stakeholder-alignment' }
     ],
     processLink: '/process#step-3',
     portfolioLink: '/work/overview?tag=design',
@@ -68,9 +71,10 @@ export const services: Service[] = [
     blurb: 'Technical requirements gathering that bridges stakeholder needs with development feasibility.',
     toolSlugs: ['confluence', 'notion', 'airtable'],
     relatedSkills: [
-      { label: 'Requirements', href: '/work/overview?tag=requirements' },
-      { label: 'IA Map', href: '/process?panel=ia-map' },
-      { label: 'Risk Surfacing', href: '/work/overview?tag=risk-analysis' }
+      { label: 'PRDs (Specs)', href: '/work/overview?tag=prds-specs' },
+      { label: 'System Design', href: '/work/overview?tag=system-design' },
+      { label: 'APIs & Integrations', href: '/work/overview?tag=apis-integrations' },
+      { label: 'Stakeholder Alignment', href: '/work/overview?tag=stakeholder-alignment' }
     ],
     processLink: '/process#step-2',
     portfolioLink: '/work/overview?tag=business-analysis',
