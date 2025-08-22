@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import DOMPurify from 'isomorphic-dompurify'
 import { supabase, type Comment, type CommentInsert } from '@/lib/supabase'
+import { sendCommentNotification } from '@/lib/email'
 
 // Fallback in-memory storage if Supabase is not configured
 let comments: { [key: string]: any[] } = {}
@@ -264,6 +265,18 @@ export async function POST(
         throw new Error('Failed to save comment to database')
       }
 
+      // Send email notification (don't block response if email fails)
+      sendCommentNotification({
+        authorName: sanitizedAuthor,
+        content: sanitizedContent,
+        itemId: itemId,
+        mood: mood || null,
+        timestamp: data.created_at
+      }).catch(emailError => {
+        console.error('Failed to send comment notification email:', emailError)
+        // Continue execution - email failure shouldn't affect comment creation
+      })
+
       return NextResponse.json({
         success: true,
         comment: data,
@@ -291,6 +304,18 @@ export async function POST(
 
       // Add comment to the beginning of the array
       comments[itemId].unshift(newComment)
+
+      // Send email notification (don't block response if email fails)
+      sendCommentNotification({
+        authorName: sanitizedAuthor,
+        content: sanitizedContent,
+        itemId: itemId,
+        mood: mood || null,
+        timestamp: newComment.created_at
+      }).catch(emailError => {
+        console.error('Failed to send comment notification email:', emailError)
+        // Continue execution - email failure shouldn't affect comment creation
+      })
 
       // Remove clientId from response for privacy
       const responseComment = {
