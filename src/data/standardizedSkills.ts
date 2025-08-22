@@ -82,31 +82,36 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'product-vision',
     name: 'Product Vision',
     category: skillCategories['product-strategy'],
-    description: 'Crafting an inspiring end-state for the product'
+    description: 'Crafting an inspiring end-state for the product',
+    processSteps: [1]
   },
   'product-roadmapping': {
     id: 'product-roadmapping',
     name: 'Product Roadmapping',
     category: skillCategories['product-strategy'],
-    description: 'Strategic roadmap planning and evolution'
+    description: 'Strategic roadmap planning and evolution',
+    processSteps: [2]
   },
   'feature-prioritization': {
     id: 'feature-prioritization',
     name: 'Feature Prioritization',
     category: skillCategories['product-strategy'],
-    description: 'Deciding what to build first based on impact and alignment'
+    description: 'Deciding what to build first based on impact and alignment',
+    processSteps: [2]
   },
   'product-discovery': {
     id: 'product-discovery',
     name: 'Product Discovery',
     category: skillCategories['product-strategy'],
-    description: 'Validating ideas through user/market research before development'
+    description: 'Validating ideas through user/market research before development',
+    processSteps: [1]
   },
   'okrs-goal-setting': {
     id: 'okrs-goal-setting',
     name: 'OKRs & Goal Setting',
     category: skillCategories['product-strategy'],
-    description: 'Defining clear Objectives and Key Results to align team efforts'
+    description: 'Defining clear Objectives and Key Results to align team efforts',
+    processSteps: [1]
   },
 
   // UX & Research (5 skills)
@@ -142,13 +147,15 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'usability-testing',
     name: 'Usability Testing',
     category: skillCategories['ux-research'],
-    description: 'Observing users to ensure the product is easy and effective to use'
+    description: 'Observing users to ensure the product is easy and effective to use',
+    processSteps: [3, 5]
   },
   'ux-design-principles': {
     id: 'ux-design-principles',
     name: 'UX Design Principles',
     category: skillCategories['ux-research'],
-    description: 'Understanding intuitive UX/UI patterns and accessibility standards'
+    description: 'Understanding intuitive UX/UI patterns and accessibility standards',
+    processSteps: [3]
   },
 
   // Technical Fluency (5 skills)
@@ -156,31 +163,36 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'systems-architecture',
     name: 'Systems Architecture',
     category: skillCategories['technical-fluency'],
-    description: 'Grasping how the product\'s components and services fit together'
+    description: 'Grasping how the product\'s components and services fit together',
+    processSteps: [1, 4]
   },
   'software-development-lifecycle': {
     id: 'software-development-lifecycle',
     name: 'Software Development Lifecycle (SDLC)',
     category: skillCategories['technical-fluency'],
-    description: 'Knowledge of stages from development to deployment'
+    description: 'Knowledge of stages from development to deployment',
+    processSteps: [4]
   },
   'api-integration-design': {
     id: 'api-integration-design',
     name: 'API & Integration Design',
     category: skillCategories['technical-fluency'],
-    description: 'Understanding how to leverage APIs and integrate with other platforms'
+    description: 'Understanding how to leverage APIs and integrate with other platforms',
+    processSteps: [1, 4]
   },
   'product-requirement-docs': {
     id: 'product-requirement-docs',
     name: 'Product Requirement Docs (PRDs)',
     category: skillCategories['technical-fluency'],
-    description: 'Writing clear specifications and user stories for engineering'
+    description: 'Writing clear specifications and user stories for engineering',
+    processSteps: [3, 4]
   },
   'technical-feasibility-analysis': {
     id: 'technical-feasibility-analysis',
     name: 'Technical Feasibility Analysis',
     category: skillCategories['technical-fluency'],
-    description: 'Assessing technical constraints & effort during planning'
+    description: 'Assessing technical constraints & effort during planning',
+    processSteps: [1, 2]
   },
 
   // AI & Data (7 skills)
@@ -188,25 +200,29 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'generative-ai-integration',
     name: 'Generative AI Integration',
     category: skillCategories['ai-data'],
-    description: 'Embedding AI/ML capabilities into product features'
+    description: 'Embedding AI/ML capabilities into product features',
+    processSteps: [4]
   },
   'prompt-engineering': {
     id: 'prompt-engineering',
     name: 'Prompt Engineering',
     category: skillCategories['ai-data'],
-    description: 'Crafting effective prompts for LLMs to harness AI outputs'
+    description: 'Crafting effective prompts for LLMs to harness AI outputs',
+    processSteps: [4]
   },
   'ai-model-fine-tuning': {
     id: 'ai-model-fine-tuning',
     name: 'AI Model Fine-Tuning',
     category: skillCategories['ai-data'],
-    description: 'Adapting ML models (e.g. LLMs) to domain-specific needs'
+    description: 'Adapting ML models (e.g. LLMs) to domain-specific needs',
+    processSteps: [4]
   },
   'ai-agent-design': {
     id: 'ai-agent-design',
     name: 'AI Agent Design',
     category: skillCategories['ai-data'],
-    description: 'Designing autonomous AI agents or workflows to enhance products'
+    description: 'Designing autonomous AI agents or workflows to enhance products',
+    processSteps: [3, 4]
   },
   'data-analytics-metrics': {
     id: 'data-analytics-metrics',
@@ -235,43 +251,50 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'market-research-analysis',
     name: 'Market Research & Analysis',
     category: skillCategories['business-acumen'],
-    description: 'Researching market needs, trends, and competitor offerings'
+    description: 'Researching market needs, trends, and competitor offerings',
+    processSteps: [1]
   },
   'competitive-analysis': {
     id: 'competitive-analysis',
     name: 'Competitive Analysis',
     category: skillCategories['business-acumen'],
-    description: 'Understanding the competition and differentiators in the landscape'
+    description: 'Understanding the competition and differentiators in the landscape',
+    processSteps: [1]
   },
   'product-market-fit': {
     id: 'product-market-fit',
     name: 'Product-Market Fit',
     category: skillCategories['business-acumen'],
-    description: 'Assessing and iterating until the product meets a real market need'
+    description: 'Assessing and iterating until the product meets a real market need',
+    processSteps: [1, 5]
   },
   'go-to-market-strategy': {
     id: 'go-to-market-strategy',
     name: 'Go-to-Market Strategy',
     category: skillCategories['business-acumen'],
-    description: 'Planning product launch, marketing, and distribution approach'
+    description: 'Planning product launch, marketing, and distribution approach',
+    processSteps: [2]
   },
   'monetization-pricing': {
     id: 'monetization-pricing',
     name: 'Monetization & Pricing',
     category: skillCategories['business-acumen'],
-    description: 'Defining the business model, pricing strategy, and revenue streams'
+    description: 'Defining the business model, pricing strategy, and revenue streams',
+    processSteps: [2]
   },
   'growth-strategy': {
     id: 'growth-strategy',
     name: 'Growth Strategy',
     category: skillCategories['business-acumen'],
-    description: 'Driving user acquisition, retention, and expansion tactics'
+    description: 'Driving user acquisition, retention, and expansion tactics',
+    processSteps: [2, 5]
   },
   'operations-scaling': {
     id: 'operations-scaling',
     name: 'Operations & Scaling',
     category: skillCategories['business-acumen'],
-    description: 'Planning operational processes and scaling strategies for growth'
+    description: 'Planning operational processes and scaling strategies for growth',
+    processSteps: [4, 5]
   },
 
   // Collaboration (5 skills)
@@ -293,19 +316,22 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'cross-functional-leadership',
     name: 'Cross-Functional Leadership',
     category: skillCategories['collaboration'],
-    description: 'Coordinating and motivating engineering, design, marketing, etc., toward common goals'
+    description: 'Coordinating and motivating engineering, design, marketing, etc., toward common goals',
+    processSteps: [1, 4]
   },
   'influencing-without-authority': {
     id: 'influencing-without-authority',
     name: 'Influencing without Authority',
     category: skillCategories['collaboration'],
-    description: 'Driving decisions and change through persuasion and credibility rather than formal power'
+    description: 'Driving decisions and change through persuasion and credibility rather than formal power',
+    processSteps: [1, 2]
   },
   'storytelling-presentation': {
     id: 'storytelling-presentation',
     name: 'Storytelling & Presentation',
     category: skillCategories['collaboration'],
-    description: 'Crafting a compelling narrative about the product and presenting insights effectively'
+    description: 'Crafting a compelling narrative about the product and presenting insights effectively',
+    processSteps: [1, 5]
   },
 
   // Delivery & Execution (5 skills)
@@ -313,31 +339,36 @@ export const standardizedSkills: Record<string, StandardizedSkill> = {
     id: 'project-management',
     name: 'Project Management',
     category: skillCategories['delivery-execution'],
-    description: 'Organizing tasks, timelines, and resources to drive projects to completion'
+    description: 'Organizing tasks, timelines, and resources to drive projects to completion',
+    processSteps: [2, 4]
   },
   'agile-methodologies': {
     id: 'agile-methodologies',
     name: 'Agile Methodologies',
     category: skillCategories['delivery-execution'],
-    description: 'Applying Scrum/Kanban practices and an adaptive, iterative mindset'
+    description: 'Applying Scrum/Kanban practices and an adaptive, iterative mindset',
+    processSteps: [4]
   },
   'requirements-definition': {
     id: 'requirements-definition',
     name: 'Requirements Definition',
     category: skillCategories['delivery-execution'],
-    description: 'Gathering and specifying functional requirements and user stories'
+    description: 'Gathering and specifying functional requirements and user stories',
+    processSteps: [3]
   },
   'release-planning': {
     id: 'release-planning',
     name: 'Release Planning',
     category: skillCategories['delivery-execution'],
-    description: 'Managing product release cycles, roadmaps, and launch coordination'
+    description: 'Managing product release cycles, roadmaps, and launch coordination',
+    processSteps: [2, 4]
   },
   'iterative-development': {
     id: 'iterative-development',
     name: 'Iterative Development',
     category: skillCategories['delivery-execution'],
-    description: 'Rapidly iterating and improving the product based on testing and feedback'
+    description: 'Rapidly iterating and improving the product based on testing and feedback',
+    processSteps: [4, 5]
   }
 }
 

@@ -130,8 +130,8 @@ function slugToTitle(slug: string): string {
     .join(' ')
 }
 
-// Helper function to determine if a card should be highlighted
-const isCardHighlighted = (cardSlug: string, highlightedSkillId: string | null, currentStepId: number): boolean => {
+// Helper function to determine if any element should be highlighted
+const isElementHighlighted = (elementId: string, highlightedSkillId: string | null, currentStepId: number): boolean => {
   if (!highlightedSkillId) return false
   
   const skill = getSkillById(highlightedSkillId)
@@ -145,26 +145,100 @@ const isCardHighlighted = (cardSlug: string, highlightedSkillId: string | null, 
       'stakeholder-alignment': ['stakeholder-management', 'communication'],
       'persona-journey-mapping': ['user-research', 'design-thinking'],
       'competitive-analysis': ['competitive-analysis', 'market-research-analysis'],
-      'system-analysis': ['systems-architecture', 'technical-feasibility-analysis']
+      'system-analysis': ['systems-architecture', 'technical-feasibility-analysis', 'api-integration-design'],
+      // Additional step 1 skills
+      'product-vision': ['product-vision'],
+      'product-discovery': ['product-discovery', 'user-research'],
+      'okrs-goal-setting': ['okrs-goal-setting'],
+      'user-research': ['user-research', 'persona-journey-mapping'],
+      'design-thinking': ['design-thinking', 'persona-journey-mapping'],
+      'communication': ['communication', 'stakeholder-alignment'],
+      'stakeholder-management': ['stakeholder-management', 'stakeholder-alignment'],
+      'market-research-analysis': ['market-research-analysis', 'competitive-analysis'],
+      'competitive-analysis': ['competitive-analysis'],
+      'product-market-fit': ['product-market-fit'],
+      'cross-functional-leadership': ['cross-functional-leadership'],
+      'technical-feasibility-analysis': ['technical-feasibility-analysis', 'system-analysis'],
+      'api-integration-design': ['api-integration-design', 'system-analysis']
+    },
+    '2': { // Strategy & Planning
+      'product-roadmapping': ['product-roadmapping'],
+      'feature-prioritization': ['feature-prioritization', 'deployment-1', 'deployment-2', 'deployment-3'],
+      'go-to-market-strategy': ['go-to-market-strategy'],
+      'monetization-pricing': ['monetization-pricing'],
+      'growth-strategy': ['growth-strategy'],
+      'project-management': ['project-management', 'deployment-4', 'deployment-5'],
+      'release-planning': ['release-planning', 'deployment-6'],
+      'influencing-without-authority': ['influencing-without-authority'],
+      // Deployment-specific mappings
+      'deployment-1': ['feature-prioritization'],
+      'deployment-2': ['feature-prioritization'], 
+      'deployment-3': ['feature-prioritization'],
+      'deployment-4': ['project-management'],
+      'deployment-5': ['project-management'],
+      'deployment-6': ['release-planning']
     },
     '3': { // Design & Prototyping
       'wireframes': ['wireframing', 'ux-design-principles'],
       'clickable-prototypes': ['prototyping', 'usability-testing'],
-      'design-systems': ['ux-design-principles', 'systems-architecture']
+      'design-systems': ['ux-design-principles', 'systems-architecture'],
+      // Additional step 3 skills
+      'wireframing': ['wireframing', 'wireframes'],
+      'prototyping': ['prototyping', 'clickable-prototypes'],
+      'ux-design-principles': ['ux-design-principles', 'wireframes', 'design-systems'],
+      'requirements-definition': ['requirements-definition'],
+      'product-requirement-docs': ['product-requirement-docs'],
+      'ai-agent-design': ['ai-agent-design'],
+      'usability-testing': ['usability-testing', 'clickable-prototypes']
+    },
+    '4': { // Build & Ship
+      'systems-architecture': ['systems-architecture'],
+      'software-development-lifecycle': ['software-development-lifecycle'],
+      'api-integration-design': ['api-integration-design'],
+      'product-requirement-docs': ['product-requirement-docs'],
+      'generative-ai-integration': ['generative-ai-integration'],
+      'prompt-engineering': ['prompt-engineering'],
+      'ai-model-fine-tuning': ['ai-model-fine-tuning'],
+      'agile-methodologies': ['agile-methodologies'],
+      'cross-functional-leadership': ['cross-functional-leadership'],
+      'operations-scaling': ['operations-scaling'],
+      'iterative-development': ['iterative-development']
     },
     '5': { // Launch & Optimization
       'instrumentation': ['data-analytics-metrics', 'ab-testing-experimentation'],
       'experimentation': ['ab-testing-experimentation', 'data-driven-decision-making'],
       'performance-quality': ['technical-feasibility-analysis', 'usability-testing'],
-      'continuous-improvement': ['iterative-development', 'data-driven-decision-making']
+      'continuous-improvement': ['iterative-development', 'data-driven-decision-making'],
+      // Additional step 5 skills
+      'data-analytics-metrics': ['data-analytics-metrics', 'instrumentation'],
+      'ab-testing-experimentation': ['ab-testing-experimentation', 'experimentation'],
+      'data-driven-decision-making': ['data-driven-decision-making', 'experimentation', 'continuous-improvement'],
+      'usability-testing': ['usability-testing', 'performance-quality'],
+      'product-market-fit': ['product-market-fit'],
+      'growth-strategy': ['growth-strategy'],
+      'storytelling-presentation': ['storytelling-presentation'],
+      'operations-scaling': ['operations-scaling'],
+      'iterative-development': ['iterative-development', 'continuous-improvement'],
+      // Step5 specific items (generic mappings for launch & optimization items)
+      'step5-item-1': ['data-analytics-metrics', 'instrumentation'],
+      'step5-item-2': ['ab-testing-experimentation'],
+      'step5-item-3': ['usability-testing'],
+      'step5-item-4': ['data-driven-decision-making'],
+      'step5-item-5': ['operations-scaling'],
+      'step5-item-6': ['iterative-development']
     }
   }
   
   const stepMapping = skillToCardMapping[currentStepId.toString()]
   if (!stepMapping) return false
   
-  const cardSkills = stepMapping[cardSlug]
-  return cardSkills ? cardSkills.includes(highlightedSkillId) : false
+  const elementSkills = stepMapping[elementId]
+  return elementSkills ? elementSkills.includes(highlightedSkillId) : false
+}
+
+// Helper function for backward compatibility with cards
+const isCardHighlighted = (cardSlug: string, highlightedSkillId: string | null, currentStepId: number): boolean => {
+  return isElementHighlighted(cardSlug, highlightedSkillId, currentStepId)
 }
 
 const processSteps: ProcessStep[] = [
@@ -707,7 +781,7 @@ function StepContent({
           highlightedSkillId={highlightedSkillId}
         />
       case 2:
-        return <Step2Layout step={step} initialTab={initialTab} />
+        return <Step2Layout step={step} initialTab={initialTab} highlightedSkillId={highlightedSkillId} />
       case 3:
         return <Step3Layout 
           step={step} 
@@ -918,7 +992,7 @@ function Step1Layout({
 }
 
 // Step 2: Planning & Architecture Application Shell
-function Step2Layout({ step, initialTab }: { step: ProcessStep; initialTab: string | null }) {
+function Step2Layout({ step, initialTab, highlightedSkillId }: { step: ProcessStep; initialTab: string | null; highlightedSkillId: string | null }) {
   const [activeTab, setActiveTab] = useState(initialTab || 'Prioritization')
   
   // Update activeTab when initialTab changes from URL
@@ -1254,7 +1328,13 @@ function PrioritizationPanel() {
                   {/* Main content row */}
                   <tr 
                     data-deployment-index={index}
-                    className={`deployment-row-main cursor-pointer transition-transform transition-opacity duration-200 ease-out ${hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''} ${
+                    className={`deployment-row-main cursor-pointer transition-transform transition-opacity duration-200 ease-out ${
+                      hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''
+                    } ${
+                      isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2) 
+                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50 animate-pulse' 
+                        : ''
+                    } ${
                       isAnimating || !isLoaded
                         ? 'transform translate-y-12 opacity-0' 
                         : 'transform translate-y-0 opacity-100'
@@ -2045,7 +2125,11 @@ function Step4Layout({
                 {currentItems.map((item) => (
                   <tr 
                     key={item.id} 
-                    className="group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer"
+                    className={`group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer ${
+                      isElementHighlighted(`step5-item-${item.id}`, highlightedSkillId, 5) 
+                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50 animate-pulse' 
+                        : ''
+                    }`}
                     onClick={() => onCardClick(item.slug)}
                   >
                     <td className="py-4 pr-8 pl-4 sm:pl-6">
