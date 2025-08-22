@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
 import { TeamTag } from '@/components/ui/TeamTag'
 import { StatusBadge } from '@/components/ui/StatusBadge'
@@ -307,25 +306,12 @@ interface IAFlowsPanelProps {
 }
 
 export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsPanelProps) {
-  const searchParams = useSearchParams()
-  const router = useRouter()
+  // Auto-switch to information-architecture step when IA is highlighted
+  const initialStep = (highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive
+    ? 'information-architecture' 
+    : 'ux-research'
   
-  // Get substep from URL or determine initial step
-  const getInitialStep = (): IaStepType => {
-    const substep = searchParams.get('substep') as IaStepType
-    if (substep && ['ux-research', 'information-architecture', 'design'].includes(substep)) {
-      return substep
-    }
-    
-    // Auto-switch to information-architecture step when IA is highlighted
-    if ((highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive) {
-      return 'information-architecture'
-    }
-    
-    return 'ux-research'
-  }
-  
-  const [currentStep, setCurrentStep] = useState<IaStepType>(getInitialStep())
+  const [currentStep, setCurrentStep] = useState<IaStepType>(initialStep)
   const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -346,25 +332,11 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
     }
   }, [highlightedSkillId, isHighlightActive])
   
-  // Sync current step with URL substep parameter
-  useEffect(() => {
-    const substep = searchParams.get('substep') as IaStepType
-    if (substep && ['ux-research', 'information-architecture', 'design'].includes(substep)) {
-      if (substep !== currentStep) {
-        setCurrentStep(substep)
-      }
-    }
-  }, [searchParams, currentStep])
 
   const handleStepClick = async (stepId: IaStepType) => {
     if (stepId === currentStep) return
     
     setIsAnimating(true)
-    
-    // Update URL with substep parameter
-    const currentUrl = new URL(window.location.href)
-    currentUrl.searchParams.set('substep', stepId)
-    router.replace(currentUrl.toString(), { scroll: false })
     
     // Cards slide out animation
     await new Promise(resolve => setTimeout(resolve, 200))
