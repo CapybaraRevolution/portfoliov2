@@ -11,7 +11,8 @@ const services = [
     id: 'strategic-product-planning',
     name: 'Strategic Product Planning',
     description: 'Product roadmaps and stakeholder alignment that translate business goals into actionable development plans.',
-    href: '/work/overview?tag=product-planning',
+    href: '/process?step=2&tab=Prioritization&open=how-we-prioritize',
+    portfolioHref: '/work/overview?tag=product-planning',
     icon: ChartBarIcon,
     skills: ['Product Vision', 'Roadmap', 'Prioritization', 'OKRs']
   },
@@ -19,7 +20,8 @@ const services = [
     id: 'user-research-strategy',
     name: 'User Research & Strategy',
     description: 'User insights through interviews and behavioral analysis that inform strategic product decisions.',
-    href: '/work/overview?tag=user-research',
+    href: '/process?step=1&open=persona-journey-mapping',
+    portfolioHref: '/work/overview?tag=user-research',
     icon: MagnifyingGlassIcon,
     skills: ['User Research', 'Usability Testing', 'Product Analytics', 'Experimentation']
   },
@@ -27,15 +29,17 @@ const services = [
     id: 'design-prototyping',
     name: 'Design & Prototyping',
     description: 'Intuitive interfaces from wireframes to design systems that balance user needs with business goals.',
-    href: '/work/overview?tag=design',
+    href: '/process?step=3&open=wireframes',
+    portfolioHref: '/work/overview?tag=design',
     icon: PaintBrushIcon,
-    skills: ['Wireframes & Prototypes', 'Information Architecture', 'Usability Testing', 'Stakeholder Alignment']
+    skills: ['Wireframing', 'Prototyping', 'Information Architecture', 'Usability Testing']
   },
   {
     id: 'requirements-analysis',
     name: 'Requirements Analysis',
     description: 'Technical requirements gathering that bridges stakeholder needs with development feasibility.',
-    href: '/work/overview?tag=business-analysis',
+    href: '/process?step=2&tab=IA%20%26%20Flows',
+    portfolioHref: '/work/overview?tag=business-analysis',
     icon: DocumentTextIcon,
     skills: ['PRDs (Specs)', 'System Design', 'APIs & Integrations', 'Stakeholder Alignment']
   }
@@ -79,11 +83,18 @@ export function SimplifiedServicesGrid() {
                     </div>
                   </div>
                   
-                  <p className="mt-6">
-                    <a href={service.href} className="text-sm/6 font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300">
-                      See projects with this service <span aria-hidden="true">→</span>
-                    </a>
-                  </p>
+                  <div className="mt-6 space-y-3">
+                    <p>
+                      <a href={service.href} className="text-sm/6 font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300">
+                        How this fits into my process <span aria-hidden="true">→</span>
+                      </a>
+                    </p>
+                    <p>
+                      <a href={service.portfolioHref} className="text-sm/6 font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+                        See projects with this service <span aria-hidden="true">→</span>
+                      </a>
+                    </p>
+                  </div>
                 </dd>
               </div>
             ))}

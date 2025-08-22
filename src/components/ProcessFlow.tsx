@@ -684,7 +684,8 @@ function StepContent({
   isDrawerOpen, 
   onCardClick, 
   onDrawerClose,
-  highlightedSkillId
+  highlightedSkillId,
+  initialTab
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
@@ -692,6 +693,7 @@ function StepContent({
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
   highlightedSkillId: string | null
+  initialTab: string | null
 }) {
   const getStepLayout = () => {
     switch (step.id) {
@@ -705,7 +707,7 @@ function StepContent({
           highlightedSkillId={highlightedSkillId}
         />
       case 2:
-        return <Step2Layout step={step} />
+        return <Step2Layout step={step} initialTab={initialTab} />
       case 3:
         return <Step3Layout 
           step={step} 
@@ -916,8 +918,15 @@ function Step1Layout({
 }
 
 // Step 2: Planning & Architecture Application Shell
-function Step2Layout({ step }: { step: ProcessStep }) {
-  const [activeTab, setActiveTab] = useState('Prioritization')
+function Step2Layout({ step, initialTab }: { step: ProcessStep; initialTab: string | null }) {
+  const [activeTab, setActiveTab] = useState(initialTab || 'Prioritization')
+  
+  // Update activeTab when initialTab changes from URL
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab)
+    }
+  }, [initialTab])
   
   const tabs = [
     { name: 'Prioritization', current: activeTab === 'Prioritization' },
@@ -2256,16 +2265,26 @@ function ProcessFlowContent() {
   
   // State for skill highlighting
   const [highlightedSkillId, setHighlightedSkillId] = useState<string | null>(null)
+  
+  // State for tab parameter (Step 2)
+  const [initialTab, setInitialTab] = useState<string | null>(null)
 
   // URL parameter handling
   useEffect(() => {
     const panel = searchParams.get('panel')
+    const open = searchParams.get('open')
     const step = searchParams.get('step')
+    const tab = searchParams.get('tab')
     const highlight = searchParams.get('highlight')
     
-    // Handle panel parameter
+    // Handle panel parameter (legacy support)
     if (panel) {
       setSelectedDrawer(panel)
+      setIsDrawerOpen(true)
+    }
+    // Handle open parameter (new deep-linking)
+    else if (open) {
+      setSelectedDrawer(open)
       setIsDrawerOpen(true)
     } else {
       setIsDrawerOpen(false)
@@ -2279,6 +2298,9 @@ function ProcessFlowContent() {
         setActiveStep(stepId)
       }
     }
+    
+    // Handle tab parameter (Step 2)
+    setInitialTab(tab)
     
     // Handle highlight parameter
     setHighlightedSkillId(highlight)
@@ -2363,6 +2385,7 @@ function ProcessFlowContent() {
           onCardClick={handleCardClick}
           onDrawerClose={handleDrawerClose}
           highlightedSkillId={highlightedSkillId}
+          initialTab={initialTab}
         />
         
         {/* Skills and CTA */}
