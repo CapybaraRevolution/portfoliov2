@@ -5,13 +5,14 @@ import {
   DocumentTextIcon 
 } from '@heroicons/react/24/outline'
 import { NavigationChip } from '@/components/NavigationChip'
+import { generateProcessUrl } from '@/data/skillProcessMap'
 
 const services = [
   {
     id: 'strategic-product-planning',
     name: 'Strategic Product Planning',
     description: 'Product roadmaps and stakeholder alignment that translate business goals into actionable development plans.',
-    href: '/process?step=2&tab=Prioritization&open=how-we-prioritize',
+    href: generateProcessUrl('feature-prioritization'),
     portfolioHref: '/work/overview?tag=product-planning',
     icon: ChartBarIcon,
     skills: ['Product Vision', 'Roadmap', 'Prioritization', 'OKRs']
@@ -20,7 +21,7 @@ const services = [
     id: 'user-research-strategy',
     name: 'User Research & Strategy',
     description: 'User insights through interviews and behavioral analysis that inform strategic product decisions.',
-    href: '/process?step=1&open=persona-journey-mapping',
+    href: generateProcessUrl('user-research'),
     portfolioHref: '/work/overview?tag=user-research',
     icon: MagnifyingGlassIcon,
     skills: ['User Research', 'Usability Testing', 'Product Analytics', 'Experimentation']
@@ -29,7 +30,7 @@ const services = [
     id: 'design-prototyping',
     name: 'Design & Prototyping',
     description: 'Intuitive interfaces from wireframes to design systems that balance user needs with business goals.',
-    href: '/process?step=3&open=wireframes',
+    href: generateProcessUrl('wireframing'),
     portfolioHref: '/work/overview?tag=design',
     icon: PaintBrushIcon,
     skills: ['Wireframing', 'Prototyping', 'Information Architecture', 'Usability Testing']
@@ -38,7 +39,7 @@ const services = [
     id: 'requirements-analysis',
     name: 'Requirements Analysis',
     description: 'Technical requirements gathering that bridges stakeholder needs with development feasibility.',
-    href: '/process?step=2&tab=IA%20%26%20Flows',
+    href: generateProcessUrl('information-architecture'),
     portfolioHref: '/work/overview?tag=business-analysis',
     icon: DocumentTextIcon,
     skills: ['PRDs (Specs)', 'System Design', 'APIs & Integrations', 'Stakeholder Alignment']

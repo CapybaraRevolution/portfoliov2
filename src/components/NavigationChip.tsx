@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Chip } from '@/components/ui/Chip'
 import { SkillChip } from '@/components/SkillChip'
 import { standardizedSkills, StandardizedSkill } from '@/data/standardizedSkills'
+import { generateProcessUrl } from '@/data/skillProcessMap'
 
 interface NavigationChipProps {
   skill: string | StandardizedSkill
@@ -59,7 +60,10 @@ export function NavigationChip({
   }
 
   const handleViewProcess = () => {
-    router.push(`/process#${skillName.toLowerCase().replace(/\s+/g, '-')}`)
+    // Try to find a mapping for this skill name by converting to a potential ID
+    const potentialSkillId = skillName.toLowerCase().replace(/\s+/g, '-')
+    const processUrl = generateProcessUrl(potentialSkillId)
+    router.push(processUrl)
   }
 
   const dropdownItems = showDropdown ? [

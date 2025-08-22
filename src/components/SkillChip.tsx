@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { Chip } from '@/components/ui/Chip'
 import { StandardizedSkill, getCategoryColors } from '@/data/standardizedSkills'
+import { generateProcessUrl } from '@/data/skillProcessMap'
 
 interface SkillChipProps {
   skill: StandardizedSkill
@@ -35,16 +36,9 @@ export function SkillChip({
   }
 
   const handleViewProcess = () => {
-    // Navigate to process page and highlight relevant steps
-    const processSteps = skill.processSteps || []
-    if (processSteps.length > 0) {
-      // Navigate to first step that contains this skill and add glow parameter
-      const stepId = processSteps[0]
-      router.push(`/process?step=${stepId}&highlight=${encodeURIComponent(skill.id)}`)
-    } else {
-      // Fallback to general process page
-      router.push(`/process`)
-    }
+    // Navigate to process page using the skill process map for deep-linking
+    const processUrl = generateProcessUrl(skill.id)
+    router.push(processUrl)
   }
 
   const dropdownItems = showDropdown ? [

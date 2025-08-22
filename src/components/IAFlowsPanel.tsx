@@ -146,7 +146,7 @@ const iaSteps: IaStep[] = [
   },
   {
     id: 'flow-design',
-    name: 'Flow Design', 
+    name: 'Design', 
     href: '#',
     status: 'upcoming'
   }
@@ -261,8 +261,18 @@ const rowsByStep: Record<IaStepType, Row[]> = {
 }
 
 
-export function IAFlowsPanel() {
-  const [currentStep, setCurrentStep] = useState<IaStepType>('user-research')
+interface IAFlowsPanelProps {
+  highlightedSkillId?: string | null
+  isHighlightActive?: boolean
+}
+
+export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsPanelProps) {
+  // Auto-switch to flow-design step when IA is highlighted
+  const initialStep = (highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive
+    ? 'flow-design' 
+    : 'user-research'
+  
+  const [currentStep, setCurrentStep] = useState<IaStepType>(initialStep)
   const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -275,6 +285,13 @@ export function IAFlowsPanel() {
     const timer = setTimeout(() => setIsLoaded(true), 100)
     return () => clearTimeout(timer)
   }, [])
+  
+  // Auto-switch to flow-design step when IA is highlighted
+  useEffect(() => {
+    if ((highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive) {
+      setCurrentStep('flow-design')
+    }
+  }, [highlightedSkillId, isHighlightActive])
 
   const handleStepClick = async (stepId: IaStepType) => {
     if (stepId === currentStep) return
@@ -308,6 +325,14 @@ export function IAFlowsPanel() {
   }
 
   const currentRows = rowsByStep[currentStep] || []
+  
+  // Check if a row should be highlighted
+  const isRowHighlighted = (rowId: string) => {
+    if (!highlightedSkillId || !isHighlightActive) return false
+    // Highlight the IA row when information-architecture skill is selected
+    return (highlightedSkillId === 'ia-flows' && rowId === 'fd-ia') ||
+           (highlightedSkillId === 'information-architecture' && rowId === 'fd-ia')
+  }
   
   return (
     <div className="space-y-0">
@@ -381,13 +406,21 @@ export function IAFlowsPanel() {
         {currentRows.map((row, index) => (
           <div 
             key={row.id} 
+            data-highlight-target={row.id === 'fd-ia' ? 'ia-flows' : row.itemId}
             className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
               isAnimating || !isLoaded
                 ? 'transform translate-y-12 opacity-0' 
                 : 'transform translate-y-0 opacity-100'
+            } ${
+              isRowHighlighted(row.id)
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50'
+                : ''
             }`}
             style={{
-              transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
+              transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`,
+              ...(isRowHighlighted(row.id) ? {
+                animation: 'highlight-pulse 2s ease-in-out 4'
+              } : {})
             }}
             onClick={() => handleRowClick(row)}
           >

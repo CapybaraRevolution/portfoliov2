@@ -14,6 +14,7 @@ import { Chip } from '@/components/ui/Chip'
 import { NavigationChip } from '@/components/NavigationChip'
 import { type Service } from '@/data/services'
 import { getToolsForService } from '@/lib/toolsConfig'
+import { generateProcessUrl } from '@/data/skillProcessMap'
 
 interface RefactoredServiceCardProps {
   service: Service
@@ -179,7 +180,7 @@ export function RefactoredServiceCard({ service }: RefactoredServiceCardProps) {
       <div className="relative mt-auto bg-zinc-100/50 dark:bg-zinc-800/50 p-6 border-t border-zinc-900/7.5 dark:border-white/10">
         <div className="flex flex-col sm:flex-row gap-3">
           <a
-            href={service.processLink}
+            href={service.primarySkillId ? generateProcessUrl(service.primarySkillId) : service.processLink}
             className="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
           >
             How this fits into my process →

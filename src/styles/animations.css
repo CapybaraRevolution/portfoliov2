@@ -51,6 +51,17 @@
   }
 }
 
+@keyframes highlight-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+}
+
 /* Smooth spring-like transitions */
 .spring-bounce {
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);

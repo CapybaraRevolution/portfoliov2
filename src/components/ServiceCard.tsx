@@ -1,6 +1,7 @@
 import { CardWithHeaderAndFooter } from './CardWithHeaderAndFooter'
 import { SimpleDivider } from './SimpleDivider'
 import { type Service } from '@/data/services'
+import { generateProcessUrl } from '@/data/skillProcessMap'
 
 interface ServiceCardProps {
   service: Service
@@ -89,7 +90,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
   const footer = (
     <div className="flex flex-col sm:flex-row gap-3">
       <a
-        href={service.processLink}
+        href={service.primarySkillId ? generateProcessUrl(service.primarySkillId) : service.processLink}
         className="inline-flex items-center text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
       >
         How this fits into my process →

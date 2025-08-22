@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useEffect, useRef, Suspense, useMemo } from 'react'
+import React, { useState, useEffect, useRef, Suspense, useMemo, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { parseProcessUrl, getNavigationAnalytics } from '@/data/skillProcessMap'
 import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
 import { SideDrawer } from '@/components/SideDrawer'
@@ -131,16 +132,20 @@ function slugToTitle(slug: string): string {
 }
 
 // Helper function to determine if any element should be highlighted
-const isElementHighlighted = (elementId: string, highlightedSkillId: string | null, currentStepId: number): boolean => {
-  if (!highlightedSkillId) return false
+const isElementHighlighted = (elementId: string, highlightedTarget: string | null, currentStepId: number, isHighlightActive: boolean = false): boolean => {
+  if (!highlightedTarget || !isHighlightActive) return false
   
-  const skill = getSkillById(highlightedSkillId)
-  if (!skill || !skill.processSteps || !skill.processSteps.includes(currentStepId)) {
-    return false
-  }
-  
-  // Map standardized skill IDs to card slugs for each step
-  const skillToCardMapping: Record<string, Record<string, string[]>> = {
+  // Direct target matching for new deep-linking system
+  return elementId === highlightedTarget
+}
+
+// Legacy function for backward compatibility with existing skill-based highlighting
+const isCardHighlighted = (cardSlug: string, highlightedTarget: string | null, currentStepId: number, isHighlightActive: boolean = false): boolean => {
+  return isElementHighlighted(cardSlug, highlightedTarget, currentStepId, isHighlightActive)
+}
+
+// Map standardized skill IDs to card slugs for each step (kept for legacy skill highlighting)
+const skillToCardMapping: Record<string, Record<string, string[]>> = {
     '1': { // Discovery & Strategy
       'stakeholder-alignment': ['stakeholder-management', 'communication'],
       'persona-journey-mapping': ['user-research', 'design-thinking'],
@@ -223,18 +228,6 @@ const isElementHighlighted = (elementId: string, highlightedSkillId: string | nu
       'step5-item-6': ['iterative-development']
     }
   }
-  
-  const stepMapping = skillToCardMapping[currentStepId.toString()]
-  if (!stepMapping) return false
-  
-  const elementSkills = stepMapping[elementId]
-  return elementSkills ? elementSkills.includes(highlightedSkillId) : false
-}
-
-// Helper function for backward compatibility with cards
-const isCardHighlighted = (cardSlug: string, highlightedSkillId: string | null, currentStepId: number): boolean => {
-  return isElementHighlighted(cardSlug, highlightedSkillId, currentStepId)
-}
 
 const processSteps: ProcessStep[] = [
   {
@@ -754,6 +747,7 @@ function StepContent({
   onCardClick, 
   onDrawerClose,
   highlightedSkillId,
+  isHighlightActive,
   initialTab
 }: { 
   step: ProcessStep
@@ -762,6 +756,7 @@ function StepContent({
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
   highlightedSkillId: string | null
+  isHighlightActive: boolean
   initialTab: string | null
 }) {
   const getStepLayout = () => {
@@ -774,9 +769,10 @@ function StepContent({
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
           highlightedSkillId={highlightedSkillId}
+          isHighlightActive={isHighlightActive}
         />
       case 2:
-        return <Step2Layout step={step} initialTab={initialTab} highlightedSkillId={highlightedSkillId} />
+        return <Step2Layout step={step} initialTab={initialTab} highlightedSkillId={highlightedSkillId} isHighlightActive={isHighlightActive} />
       case 3:
         return <Step3Layout 
           step={step} 
@@ -785,6 +781,7 @@ function StepContent({
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
           highlightedSkillId={highlightedSkillId}
+          isHighlightActive={isHighlightActive}
         />
       case 4:
         return <Step4Layout 
@@ -794,6 +791,7 @@ function StepContent({
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
           highlightedSkillId={highlightedSkillId}
+          isHighlightActive={isHighlightActive}
         />
       case 5:
         return <Step5Layout 
@@ -803,6 +801,7 @@ function StepContent({
           onCardClick={onCardClick}
           onDrawerClose={onDrawerClose}
           highlightedSkillId={highlightedSkillId}
+          isHighlightActive={isHighlightActive}
         />
       default:
         return <DefaultLayout step={step} />
@@ -876,7 +875,8 @@ function Step1Layout({
   isDrawerOpen, 
   onCardClick, 
   onDrawerClose,
-  highlightedSkillId
+  highlightedSkillId,
+  isHighlightActive
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
@@ -884,6 +884,7 @@ function Step1Layout({
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
   highlightedSkillId: string | null
+  isHighlightActive: boolean
 }) {
   const cards: ProcessCard[] = [
     {
@@ -929,7 +930,8 @@ function Step1Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
-            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id)}
+            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id, isHighlightActive)}
+            data-highlight-target={card.slug}
           />
         ))}
       </div>
@@ -988,7 +990,7 @@ function Step1Layout({
 }
 
 // Step 2: Planning & Architecture Application Shell
-function Step2Layout({ step, initialTab, highlightedSkillId }: { step: ProcessStep; initialTab: string | null; highlightedSkillId: string | null }) {
+function Step2Layout({ step, initialTab, highlightedSkillId, isHighlightActive }: { step: ProcessStep; initialTab: string | null; highlightedSkillId: string | null; isHighlightActive: boolean }) {
   const [activeTab, setActiveTab] = useState(initialTab || 'Prioritization')
   
   // Update activeTab when initialTab changes from URL
@@ -1011,13 +1013,13 @@ function Step2Layout({ step, initialTab, highlightedSkillId }: { step: ProcessSt
   const renderTabContent = () => {
     switch (activeTab) {
       case 'Prioritization':
-        return <PrioritizationPanel highlightedSkillId={highlightedSkillId} />
+        return <PrioritizationPanel highlightedSkillId={highlightedSkillId} isHighlightActive={isHighlightActive} />
       case 'IA & Flows':
-        return <IAFlowsPanel />
+        return <IAFlowsPanel highlightedSkillId={highlightedSkillId} isHighlightActive={isHighlightActive} />
       case 'Roadmap & Alignment':
         return <RoadmapPanel />
       default:
-        return <PrioritizationPanel highlightedSkillId={highlightedSkillId} />
+        return <PrioritizationPanel highlightedSkillId={highlightedSkillId} isHighlightActive={isHighlightActive} />
     }
   }
 
@@ -1106,7 +1108,7 @@ function Step2Layout({ step, initialTab, highlightedSkillId }: { step: ProcessSt
 }
 
 // Panel Components
-function PrioritizationPanel({ highlightedSkillId }: { highlightedSkillId: string | null }) {
+function PrioritizationPanel({ highlightedSkillId, isHighlightActive }: { highlightedSkillId: string | null, isHighlightActive: boolean }) {
   const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -1324,11 +1326,12 @@ function PrioritizationPanel({ highlightedSkillId }: { highlightedSkillId: strin
                   {/* Main content row */}
                   <tr 
                     data-deployment-index={index}
+                    data-highlight-target={`deployment-${deployment.id}`}
                     className={`deployment-row-main cursor-pointer transition-transform transition-opacity duration-200 ease-out ${
                       hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''
                     } ${
-                      isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2) 
-                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50 animate-pulse' 
+                      isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2, isHighlightActive) 
+                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50' 
                         : ''
                     } ${
                       isAnimating || !isLoaded
@@ -1336,7 +1339,10 @@ function PrioritizationPanel({ highlightedSkillId }: { highlightedSkillId: strin
                         : 'transform translate-y-0 opacity-100'
                     }`}
                     style={{
-                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
+                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`,
+                      ...(isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2, isHighlightActive) ? {
+                        animation: 'highlight-pulse 2s ease-in-out 4'
+                      } : {})
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
                     onMouseEnter={() => setHoveredIndex(index)}
@@ -1390,7 +1396,10 @@ function PrioritizationPanel({ highlightedSkillId }: { highlightedSkillId: strin
                         : 'transform translate-y-0 opacity-100'
                     }`}
                     style={{
-                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
+                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`,
+                      ...(isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2, isHighlightActive) ? {
+                        animation: 'highlight-pulse 2s ease-in-out 4'
+                      } : {})
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
                     onMouseEnter={() => setHoveredIndex(index)}
@@ -1613,7 +1622,8 @@ function Step3Layout({
   isDrawerOpen, 
   onCardClick, 
   onDrawerClose,
-  highlightedSkillId
+  highlightedSkillId,
+  isHighlightActive
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
@@ -1621,6 +1631,7 @@ function Step3Layout({
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
   highlightedSkillId: string | null
+  isHighlightActive: boolean
 }) {
   const cards: ProcessCard[] = [
     {
@@ -1700,7 +1711,8 @@ function Step3Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
-            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id)}
+            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id, isHighlightActive)}
+            data-highlight-target={card.slug}
           />
         ))}
       </div>
@@ -1726,7 +1738,8 @@ function Step4Layout({
   isDrawerOpen, 
   onCardClick, 
   onDrawerClose,
-  highlightedSkillId
+  highlightedSkillId,
+  isHighlightActive
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
@@ -1734,6 +1747,7 @@ function Step4Layout({
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
   highlightedSkillId: string | null
+  isHighlightActive: boolean
 }) {
   const [activeTab, setActiveTab] = useState('Plan')
   
@@ -2123,11 +2137,15 @@ function Step4Layout({
                 {currentItems.map((item) => (
                   <tr 
                     key={item.id} 
+                    data-highlight-target={`step5-item-${item.id}`}
                     className={`group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer ${
-                      isElementHighlighted(`step5-item-${item.id}`, highlightedSkillId, 5) 
-                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50 animate-pulse' 
+                      isElementHighlighted(`step5-item-${item.id}`, highlightedSkillId, 5, isHighlightActive) 
+                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50' 
                         : ''
                     }`}
+                    style={isElementHighlighted(`step5-item-${item.id}`, highlightedSkillId, 5, isHighlightActive) ? {
+                      animation: 'highlight-pulse 2s ease-in-out 4'
+                    } : undefined}
                     onClick={() => onCardClick(item.slug)}
                   >
                     <td className="py-4 pr-8 pl-4 sm:pl-6">
@@ -2206,7 +2224,8 @@ function Step5Layout({
   isDrawerOpen, 
   onCardClick, 
   onDrawerClose,
-  highlightedSkillId
+  highlightedSkillId,
+  isHighlightActive
 }: { 
   step: ProcessStep
   selectedDrawer: string | null
@@ -2214,6 +2233,7 @@ function Step5Layout({
   onCardClick: (slug: string) => void
   onDrawerClose: () => void
   highlightedSkillId: string | null
+  isHighlightActive: boolean
 }) {
   const cards: ProcessCard[] = [
     {
@@ -2278,7 +2298,8 @@ function Step5Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
-            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id)}
+            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id, isHighlightActive)}
+            data-highlight-target={card.slug}
           />
         ))}
       </div>
@@ -2347,46 +2368,157 @@ function ProcessFlowContent() {
   
   // State for skill highlighting
   const [highlightedSkillId, setHighlightedSkillId] = useState<string | null>(null)
+  const [isHighlightActive, setIsHighlightActive] = useState(false)
+  const highlightTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   // State for tab parameter (Step 2)
   const [initialTab, setInitialTab] = useState<string | null>(null)
 
-  // URL parameter handling
+  // URL parameter handling with deep-linking support
   useEffect(() => {
+    const urlParams = parseProcessUrl(searchParams)
     const panel = searchParams.get('panel')
     const open = searchParams.get('open')
-    const step = searchParams.get('step')
-    const tab = searchParams.get('tab')
-    const highlight = searchParams.get('highlight')
     
-    // Handle panel parameter (legacy support)
-    if (panel) {
+    // Priority: highlight parameter takes precedence (no auto-open drawers)
+    if (urlParams.highlight) {
+      // Clear any open drawers when highlight is present
+      setIsDrawerOpen(false)
+      setSelectedDrawer(null)
+      
+      // Set highlight state
+      setHighlightedSkillId(urlParams.highlight)
+      setIsHighlightActive(true)
+      
+      // Start highlight timeout (8 seconds)
+      if (highlightTimeoutRef.current) {
+        clearTimeout(highlightTimeoutRef.current)
+      }
+      highlightTimeoutRef.current = setTimeout(() => {
+        setIsHighlightActive(false)
+      }, 8000)
+      
+      // Scroll into view after a brief delay to ensure rendering
+      setTimeout(() => {
+        const highlightedElement = document.querySelector(`[data-highlight-target="${urlParams.highlight}"]`)
+        if (highlightedElement) {
+          highlightedElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          })
+          
+          // Set ARIA focus for keyboard users
+          const focusTarget = highlightedElement.querySelector('h3, h4, .card-title, [role="button"]') as HTMLElement
+          if (focusTarget) {
+            focusTarget.focus()
+            focusTarget.setAttribute('aria-live', 'polite')
+            focusTarget.setAttribute('aria-describedby', 'highlight-instructions')
+          }
+        }
+      }, 100)
+      
+      // Analytics: track skill-to-process navigation
+      try {
+        const { skillProcessMap } = require('@/data/skillProcessMap')
+        const skillId = Object.entries(skillProcessMap)
+          .find(([_, mapping]: [string, any]) => mapping.target === urlParams.highlight)?.[0]
+        
+        if (skillId) {
+          const analytics = getNavigationAnalytics(skillId)
+          if (analytics) {
+            // TODO: Replace with actual analytics implementation
+            console.log('Analytics: skill_to_process_nav', analytics)
+          }
+        }
+      } catch (error) {
+        console.warn('Analytics tracking failed:', error)
+      }
+    }
+    // Handle legacy panel/open parameters (auto-open drawers)
+    else if (panel) {
       setSelectedDrawer(panel)
       setIsDrawerOpen(true)
+      setHighlightedSkillId(null)
+      setIsHighlightActive(false)
     }
-    // Handle open parameter (new deep-linking)
     else if (open) {
       setSelectedDrawer(open)
       setIsDrawerOpen(true)
+      setHighlightedSkillId(null)
+      setIsHighlightActive(false)
     } else {
       setIsDrawerOpen(false)
       setSelectedDrawer(null)
-    }
-    
-    // Handle step parameter
-    if (step) {
-      const stepId = parseInt(step)
-      if (stepId >= 1 && stepId <= 5) {
-        setActiveStep(stepId)
+      if (!urlParams.highlight) {
+        setHighlightedSkillId(null)
+        setIsHighlightActive(false)
       }
     }
     
-    // Handle tab parameter (Step 2)
-    setInitialTab(tab)
+    // Handle step parameter
+    if (urlParams.step) {
+      setActiveStep(urlParams.step)
+    }
     
-    // Handle highlight parameter
-    setHighlightedSkillId(highlight)
+    // Handle tab parameter
+    setInitialTab(urlParams.tab)
   }, [searchParams])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (highlightTimeoutRef.current) {
+        clearTimeout(highlightTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  // Esc key handler to clear highlights
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isHighlightActive) {
+        setIsHighlightActive(false)
+        if (highlightTimeoutRef.current) {
+          clearTimeout(highlightTimeoutRef.current)
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleEscKey)
+    return () => document.removeEventListener('keydown', handleEscKey)
+  }, [isHighlightActive])
+
+  // Clear highlight when step changes
+  useEffect(() => {
+    if (isHighlightActive) {
+      setIsHighlightActive(false)
+      if (highlightTimeoutRef.current) {
+        clearTimeout(highlightTimeoutRef.current)
+      }
+    }
+  }, [activeStep])
+
+  // Enhanced card click handler with analytics
+  const handleCardClickWithAnalytics = useCallback((title: string) => {
+    // Analytics: track highlight click
+    if (isHighlightActive && highlightedSkillId) {
+      console.log('Analytics: process_highlight_click', {
+        target: title,
+        highlightedSkill: highlightedSkillId
+      })
+    }
+    
+    // Clear highlight when user clicks
+    if (isHighlightActive) {
+      setIsHighlightActive(false)
+      if (highlightTimeoutRef.current) {
+        clearTimeout(highlightTimeoutRef.current)
+      }
+    }
+    
+    // Proceed with normal card click
+    handleCardClick(title)
+  }, [isHighlightActive, highlightedSkillId])
 
   // Drawer handlers for all steps
   const handleCardClick = (title: string) => {
@@ -2467,8 +2599,21 @@ function ProcessFlowContent() {
           onCardClick={handleCardClick}
           onDrawerClose={handleDrawerClose}
           highlightedSkillId={highlightedSkillId}
+          isHighlightActive={isHighlightActive}
           initialTab={initialTab}
         />
+        
+        {/* Hidden ARIA live region for screen reader announcements */}
+        <div 
+          id="highlight-instructions" 
+          className="sr-only" 
+          aria-live="polite"
+        >
+          {isHighlightActive && highlightedSkillId ? 
+            `Highlighted: ${slugToTitle(highlightedSkillId)} - press Enter to open details.` : 
+            ''
+          }
+        </div>
         
         {/* Skills and CTA */}
         <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
