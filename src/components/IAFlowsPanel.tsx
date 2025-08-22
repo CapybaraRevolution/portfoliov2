@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
 import { TeamTag } from '@/components/ui/TeamTag'
 import { StatusBadge } from '@/components/ui/StatusBadge'
@@ -110,7 +111,7 @@ function PlaceholderDrawerContent({ title }: { title?: string }) {
   )
 }
 
-type IaStepType = 'user-research' | 'journey-mapping' | 'flow-design'
+type IaStepType = 'ux-research' | 'information-architecture' | 'design'
 
 interface IaStep {
   id: IaStepType
@@ -133,19 +134,19 @@ type Row = {
 
 const iaSteps: IaStep[] = [
   {
-    id: 'user-research',
-    name: 'User Research',
+    id: 'ux-research',
+    name: 'UX Research',
     href: '#',
     status: 'complete'
   },
   {
-    id: 'journey-mapping', 
-    name: 'Journey Mapping',
+    id: 'information-architecture', 
+    name: 'Information Architecture',
     href: '#',
     status: 'current'
   },
   {
-    id: 'flow-design',
+    id: 'design',
     name: 'Design', 
     href: '#',
     status: 'upcoming'
@@ -153,7 +154,7 @@ const iaSteps: IaStep[] = [
 ]
 
 const rowsByStep: Record<IaStepType, Row[]> = {
-  'user-research': [
+  'ux-research': [
     {
       id: 'ur-what',
       title: 'What is user research?',
@@ -186,9 +187,7 @@ const rowsByStep: Record<IaStepType, Row[]> = {
       drawerId: 'ur-methods',
       drawerComponent: ChooseRightMethod,
       itemId: 'user-research-method'
-    }
-  ],
-  'journey-mapping': [
+    },
     {
       id: 'jm-personas',
       title: 'Personas & contexts',
@@ -223,18 +222,59 @@ const rowsByStep: Record<IaStepType, Row[]> = {
       itemId: 'journey-mapping-decisions'
     }
   ],
-  'flow-design': [
+  'information-architecture': [
     {
-      id: 'fd-ia',
-      title: 'Information architecture',
-      subtitle: 'Organize content and features in a way that matches users\' mental models and supports key tasks.',
+      id: 'ia-navigation',
+      title: 'Navigation model (Sitemap)',
+      subtitle: 'Define global/local nav patterns, wayfinding, and cross-links.',
       dept: 'Design',
       status: 'In Progress',
-      priority: 76,
-      drawerId: 'fd-ia',
-      drawerComponent: FDInformationArchitecture,
-      itemId: 'flow-design-ia'
+      priority: 85,
+      drawerId: 'ia-navigation',
+      itemId: 'information-architecture-navigation'
     },
+    {
+      id: 'ia-page-types',
+      title: 'Page types & modules inventory',
+      subtitle: 'Catalog page types and reusable sections; standardize patterns.',
+      dept: 'Design',
+      status: 'In Progress',
+      priority: 82,
+      drawerId: 'ia-page-types',
+      itemId: 'information-architecture-page-types'
+    },
+    {
+      id: 'ia-user-flows',
+      title: 'User flows & entry/exit points',
+      subtitle: 'Map tasks, handoffs, and cross-system transitions.',
+      dept: 'Design',
+      status: 'In Progress',
+      priority: 79,
+      drawerId: 'ia-user-flows',
+      itemId: 'information-architecture-user-flows'
+    },
+    {
+      id: 'ia-taxonomy',
+      title: 'Taxonomy & naming system',
+      subtitle: 'Labels, synonyms, and content groupings for findability.',
+      dept: 'Product Team',
+      status: 'Preview',
+      priority: 76,
+      drawerId: 'ia-taxonomy',
+      itemId: 'information-architecture-taxonomy'
+    },
+    {
+      id: 'ia-validation',
+      title: 'IA validation',
+      subtitle: 'Tree tests / card sorts to validate nav & labels.',
+      dept: 'Design',
+      status: 'Preview',
+      priority: 73,
+      drawerId: 'ia-validation',
+      itemId: 'information-architecture-validation'
+    }
+  ],
+  'design': [
     {
       id: 'fd-flows',
       title: 'User flow diagrams',
@@ -267,12 +307,25 @@ interface IAFlowsPanelProps {
 }
 
 export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsPanelProps) {
-  // Auto-switch to flow-design step when IA is highlighted
-  const initialStep = (highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive
-    ? 'flow-design' 
-    : 'user-research'
+  const searchParams = useSearchParams()
+  const router = useRouter()
   
-  const [currentStep, setCurrentStep] = useState<IaStepType>(initialStep)
+  // Get substep from URL or determine initial step
+  const getInitialStep = (): IaStepType => {
+    const substep = searchParams.get('substep') as IaStepType
+    if (substep && ['ux-research', 'information-architecture', 'design'].includes(substep)) {
+      return substep
+    }
+    
+    // Auto-switch to information-architecture step when IA is highlighted
+    if ((highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive) {
+      return 'information-architecture'
+    }
+    
+    return 'ux-research'
+  }
+  
+  const [currentStep, setCurrentStep] = useState<IaStepType>(getInitialStep())
   const [selectedDeployment, setSelectedDeployment] = useState<any>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -286,17 +339,32 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
     return () => clearTimeout(timer)
   }, [])
   
-  // Auto-switch to flow-design step when IA is highlighted
+  // Auto-switch to information-architecture step when IA is highlighted
   useEffect(() => {
     if ((highlightedSkillId === 'ia-flows' || highlightedSkillId === 'information-architecture') && isHighlightActive) {
-      setCurrentStep('flow-design')
+      setCurrentStep('information-architecture')
     }
   }, [highlightedSkillId, isHighlightActive])
+  
+  // Sync current step with URL substep parameter
+  useEffect(() => {
+    const substep = searchParams.get('substep') as IaStepType
+    if (substep && ['ux-research', 'information-architecture', 'design'].includes(substep)) {
+      if (substep !== currentStep) {
+        setCurrentStep(substep)
+      }
+    }
+  }, [searchParams, currentStep])
 
   const handleStepClick = async (stepId: IaStepType) => {
     if (stepId === currentStep) return
     
     setIsAnimating(true)
+    
+    // Update URL with substep parameter
+    const currentUrl = new URL(window.location.href)
+    currentUrl.searchParams.set('substep', stepId)
+    router.replace(currentUrl.toString(), { scroll: false })
     
     // Cards slide out animation
     await new Promise(resolve => setTimeout(resolve, 200))
@@ -309,7 +377,7 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
 
   // Calculate step status based on current selection
   const getStepStatus = (stepId: IaStepType) => {
-    const stepOrder = ['user-research', 'journey-mapping', 'flow-design']
+    const stepOrder = ['ux-research', 'information-architecture', 'design']
     const currentIndex = stepOrder.indexOf(currentStep)
     const stepIndex = stepOrder.indexOf(stepId)
     
@@ -329,9 +397,9 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
   // Check if a row should be highlighted
   const isRowHighlighted = (rowId: string) => {
     if (!highlightedSkillId || !isHighlightActive) return false
-    // Highlight the IA row when information-architecture skill is selected
-    return (highlightedSkillId === 'ia-flows' && rowId === 'fd-ia') ||
-           (highlightedSkillId === 'information-architecture' && rowId === 'fd-ia')
+    // Highlight any IA row when information-architecture skill is selected
+    return (highlightedSkillId === 'ia-flows' && rowId.startsWith('ia-')) ||
+           (highlightedSkillId === 'information-architecture' && rowId.startsWith('ia-'))
   }
   
   return (
@@ -406,7 +474,7 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
         {currentRows.map((row, index) => (
           <div 
             key={row.id} 
-            data-highlight-target={row.id === 'fd-ia' ? 'ia-flows' : row.itemId}
+            data-highlight-target={row.id.startsWith('ia-') ? 'ia-flows' : row.itemId}
             className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
               isAnimating || !isLoaded
                 ? 'transform translate-y-12 opacity-0' 
