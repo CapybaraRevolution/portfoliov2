@@ -3,6 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface ReleaseReadinessReviewProps {
   className?: string
@@ -16,7 +17,8 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
         toolPill("notion", "Notion", "md"),
         genericTool("Linear"),
         toolPill("jira", "Jira", "md"),
-        genericTool("Slack")
+        genericTool("Release checklists"),
+        genericTool("Quality dashboards")
       ]}
     />
   )
@@ -24,9 +26,9 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
   return (
     <div className={className}>
       <DrawerLayout
-        stepText="Step 4 · Implementation Support · Ship"
+        stepText="Step 4 · Implementation Support · Execute"
         title="Release Readiness Review"
-        summary="The final check before the world sees your work."
+        summary="Provide systematic validation that all technical, operational, and business criteria are met before production deployment through structured go/no-go decision frameworks."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
