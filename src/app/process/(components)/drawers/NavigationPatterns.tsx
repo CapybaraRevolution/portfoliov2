@@ -28,7 +28,7 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Information Architecture"
         title="Navigation Patterns & Cross-linking"
-        summary="Choose the right pattern and add smart side-doors."
+        summary="Make the structure visible—and give users smart side-doors."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Information%20Architecture"
@@ -36,17 +36,42 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
         itemId="information-architecture-nav-patterns"
       >
 
+        {/* Overview */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Overview
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+            IA isn&apos;t just a tree; it&apos;s how users move. We select the right patterns (mega-menu, hub-and-spoke, faceted filters, breadcrumbs) and design intentional cross-links so people can recover from wrong turns.
+          </p>
+        </div>
+
         {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Pogo-sticking ↓; onward clicks ↑
+              Why it matters
             </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              The IA must be visible and traversable. Pattern choice (mega-menu, hub-and-spoke, breadcrumbs, faceted browse) and intentional cross-links reduce dead ends and support exploration. Making structure visible and adding cross-links keeps users oriented and moving toward outcomes.
-            </p>
+            <BulletList 
+              color="emerald"
+              items={[
+                "The right pattern reduces cognitive load.",
+                "Cross-links rescue ambiguous cases and boost content depth without trapping users."
+              ]}
+              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
+            />
           </div>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Inputs
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Content scale/complexity · Device mix · Top journeys · Known ambiguity hot-spots
+          </p>
         </div>
 
         {/* What we do */}
@@ -57,26 +82,27 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
           <BulletList 
             color="emerald"
             items={[
-              "Pattern selection by scenario & scale: Mega-menus for breadth; breadcrumbs for depth",
-              "Faceted navigation for attribute-driven sets; Hub-and-spoke for help/knowledge centers",
-              "Cross-link strategy: Add lateral links where users commonly go &ldquo;the other way&rdquo;",
-              "Page templates: Where global nav, local nav, breadcrumbs, and links live",
-              "Mobile first: Thumb reach, progressive disclosure, performance"
+              "Choose global nav pattern (breadth vs depth), define breadcrumb rules",
+              "Specify when to use mega-menus vs. category landing pages",
+              "Design facets/filters (focused, non-duplicative)",
+              "Create cross-link rules (e.g., product ↔ docs, FAQ ↔ related guides)",
+              "Page templates show where nav, breadcrumbs, and cross-links live"
             ]}
           />
         </div>
 
-        {/* Artifacts */}
+        {/* Deliverables */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Artifacts
+            Deliverables
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Navigation spec (patterns, states, breakpoints)",
-              "Page template wireframes with nav placement",
-              "Cross-link rules (when/where to add side-doors)"
+              "Navigation spec (patterns, breakpoints, interactions)",
+              "Breadcrumb + local-nav rules",
+              "Cross-linking matrix & content model diagrams",
+              "Mobile patterns and accessibility notes"
             ]}
           />
         </div>
@@ -89,9 +115,9 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
           <BulletList 
             color="purple"
             items={[
-              "Pogo-sticking down (fewer backtracks/rapid hops)",
-              "Onward clicks up from category hubs",
-              "Mobile nav task success & time-to-content improve"
+              "Pogo-sticking down, onward clicks from category pages up",
+              "Deeper content depth (pages/session) without loops",
+              "Mobile nav task success on par with desktop"
             ]}
           />
         </div>
@@ -101,30 +127,19 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Deep/skinny hierarchies on mobile",
-              "Duplicate/overlapping categories without guidance",
-              "Filters that silo content or hide key paths"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Deep, skinny hierarchies (&gt;3–4 levels), facet bloat, dead-end pages, desktop-only patterns
+          </p>
         </div>
 
-        {/* Sample Template */}
+        {/* Instrumentation */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
           <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Pattern cheat-sheet
+            Instrumentation
           </h4>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Lots of categories? Use mega-menu or category landing pages",
-              "Deep paths? Add breadcrumbs + contextual links",
-              "Large sets? Use faceted filters with clear, limited attributes",
-              "Common misroutes? Add cross-reference links in both locations"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Nav clicks by label/position, breadcrumb usage, filter application/clear rates, dead-end detection (no onward links)
+          </p>
         </div>
 
         {/* Related Skills */}

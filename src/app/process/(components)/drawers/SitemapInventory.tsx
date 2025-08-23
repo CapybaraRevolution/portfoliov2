@@ -36,17 +36,43 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
         itemId="information-architecture-sitemap-inventory"
       >
 
+        {/* Overview */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Overview
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+            A great IA starts with reality, not wishful thinking. We inventory every page, file, and pathway, then map the true shape of the product. This prevents &ldquo;lost pages,&rdquo; duplication, and orphan content before we design navigation.
+          </p>
+        </div>
+
         {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Findability drives task success
+              Why it matters
             </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              A content inventory prevents blind spots and &ldquo;orphan&rdquo; pages. It&apos;s the foundation for a rational IA that improves findability, deflects support, and reduces wasted redesign effort. A clear, complete map reduces backtracking and enables the IA work that lifts findability, conversion, and support deflection.
-            </p>
+            <BulletList 
+              color="emerald"
+              items={[
+                "Findability starts with coverage. If content isn't accounted for, users can't find it—and teams can't maintain it.",
+                "Cost control. Pruning ROT (redundant, outdated, trivial) early saves design/dev cycles later.",
+                "Baseline for change. A clear map lets us measure impact post-IA."
+              ]}
+              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
+            />
           </div>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Inputs
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            CMS export · Analytics top pages · Existing site maps/redirects · Known &ldquo;must keep&rdquo; content
+          </p>
         </div>
 
         {/* What we do */}
@@ -57,25 +83,25 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
           <BulletList 
             color="emerald"
             items={[
-              "Content inventory & ROT audit (redundant/outdated/trivial): URL, owner, purpose, usage, status",
-              "Gap & overlap analysis: Spot duplicates, dead ends, and unclear entry points",
-              "Draft sitemap: Group by user mental models, not org chart",
-              "De-risking notes: Flags for accessibility, SEO, and deep/skinny paths"
+              "Content inventory & audit (owner, purpose, status, keep/update/remove)",
+              "Group pages into candidate domains/sections",
+              "Identify orphans/duplicates and ROT candidates",
+              "Draft a sitemap diagram to visualize current → proposed structure"
             ]}
           />
         </div>
 
-        {/* Artifacts */}
+        {/* Deliverables */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Artifacts
+            Deliverables
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Inventory spreadsheet + keep/fix/remove matrix",
-              "Draft sitemap (tree diagram) with entry/exit points",
-              "Risks & assumptions list for hand-off"
+              "Content inventory sheet (coverage %)",
+              "Current-state and proposed sitemap diagrams",
+              "ROT list + redirect recommendations"
             ]}
           />
         </div>
@@ -88,9 +114,9 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
           <BulletList 
             color="purple"
             items={[
-              "100% of in-scope content accounted for; no orphan pages",
-              "Category pages show lower bounce and higher onward CTR",
-              "Fewer &ldquo;where is X?&rdquo; support tickets and internal &ldquo;content hunts&rdquo;"
+              "≥95% content coverage audited",
+              "No orphaned &ldquo;must-have&rdquo; pages in final IA",
+              "Redirect plan covers all removed/merged URLs"
             ]}
           />
         </div>
@@ -100,39 +126,19 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Mirroring the org chart",
-              "Over-nesting (>3–4 levels)",
-              "Keeping legacy pages that dilute information scent"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Designing nav before auditing; copying an outdated sitemap; missing file-type content (PDFs, assets)
+          </p>
         </div>
 
-        {/* Sample Template */}
+        {/* Instrumentation */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
           <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Inventory columns (minimum)
+            Instrumentation (post-launch)
           </h4>
-          <BulletList 
-            color="emerald"
-            items={[
-              "URL · Title · Owner · Last updated · Purpose · Audience",
-              "Engagement (views/entrances) · SEO (indexable?) · Accessibility flags",
-              "Status: Keep / Update / Merge / Remove"
-            ]}
-          />
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mt-6 mb-4">
-            Sitemap notes
-          </h4>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Group by user goals; cap depth at 3–4 levels",
-              "Mark cross-links where users commonly choose the &ldquo;other&rdquo; path"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Track visits to legacy URLs → redirects; 404 rate; entrances to top categories vs. before
+          </p>
         </div>
 
         {/* Related Skills */}

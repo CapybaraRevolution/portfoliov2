@@ -36,17 +36,42 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
         itemId="information-architecture-taxonomy-labels"
       >
 
+        {/* Overview */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Overview
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+            Taxonomy is the controlled vocabulary behind your product: the categories, subcategories, tags, and the words we choose for them. Clear, consistent labels create strong information scent and make search work.
+          </p>
+        </div>
+
         {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              First-click success ↑; search dependence ↓
+              Why it matters
             </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Labels and controlled vocabularies make content findable. Consistent names, synonyms, and facets reduce dead ends, search rewrites, and pogo-sticking. Aligning labels to user vocabulary improves direct navigation and reduces &ldquo;type-and-pray&rdquo; behavior.
-            </p>
+            <BulletList 
+              color="emerald"
+              items={[
+                "Users convert when the label matches their mental model (&ldquo;TVs&rdquo; vs &ldquo;Televisions&rdquo;).",
+                "Consistency across nav, headings, and search boosts first-click success and reduces query reformulation."
+              ]}
+              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
+            />
           </div>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Inputs
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Search logs/auto-complete terms · Domain language from SMEs · Prior card sorts
+          </p>
         </div>
 
         {/* What we do */}
@@ -57,26 +82,25 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
           <BulletList 
             color="emerald"
             items={[
-              "Controlled vocabulary: Canonical terms + definitions",
-              "Synonym map: User language (e.g., &ldquo;TVs&rdquo; ⇄ &ldquo;Televisions&rdquo;; &ldquo;Cell&rdquo; ⇄ &ldquo;Phone&rdquo;)",
-              "Facets & attributes: Only what users actually filter by",
-              "Nav copy deck: Approved labels at each level"
+              "Harvest terms, build a controlled vocabulary and synonym map",
+              "Define category/facet rules (what belongs where and why)",
+              "Create a nav copy deck (approved labels, tone, examples)",
+              "Quick label checks for readability and ambiguity"
             ]}
           />
         </div>
 
-        {/* Artifacts */}
+        {/* Deliverables */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Artifacts
+            Deliverables
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Taxonomy hierarchy (categories, subcats, relations)",
-              "Synonym/alias sheet + search mapping",
-              "Facet spec (names, data source, rules)",
-              "Nav copy deck (microcopy ready for build)"
+              "Taxonomy tree + definitions",
+              "Synonym/alias map (for search + navigation)",
+              "Nav copy deck (all levels)"
             ]}
           />
         </div>
@@ -89,9 +113,9 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
           <BulletList 
             color="purple"
             items={[
-              "Fewer search refinements and no-results queries",
-              "Higher first-click success in tree tests",
-              "Consistent labels across nav, headings, and filters"
+              "Fewer search refinements per session",
+              "Tree-test direct success up on renamed categories",
+              "Reduced &ldquo;where is X?&rdquo; support tickets"
             ]}
           />
         </div>
@@ -101,30 +125,19 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Inconsistent terminology across surfaces",
-              "Facet bloat (near-duplicate or unclear filters)",
-              "Ambiguous or clever labels with weak information scent"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Jargon, look-alike labels (&ldquo;Info&rdquo; vs &ldquo;Resources&rdquo;), drifting terminology across teams
+          </p>
         </div>
 
-        {/* Sample Template */}
+        {/* Instrumentation */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
           <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Taxonomy starter
+            Instrumentation
           </h4>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Category → Subcategory → (Optional) Sub-subcategory",
-              "Facets: Brand · Type · Price · Audience · Level",
-              "Synonyms: Map user terms to canonical labels",
-              "Copy rules: Plain language; avoid internal jargon"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Track internal search queries with no results; clicks on renamed labels; readability grade of labels
+          </p>
         </div>
 
         {/* Related Skills */}

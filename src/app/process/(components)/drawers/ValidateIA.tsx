@@ -36,17 +36,37 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
         itemId="information-architecture-validate-ia"
       >
 
+        {/* Overview */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Overview
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+            We don&apos;t guess. We validate groupings and labels with users, then pressure-test the draft IA in a text-only environment to measure how easily people find things.
+          </p>
+        </div>
+
         {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              ≥80–90% tree-test success
+              Why it matters
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Evidence over guesses. Card sorting reveals mental models; tree testing validates findability without UI chrome. Validated IA reduces misnavigation, accelerates onboarding, and protects build time from rework.
+              Evidence beats opinion. Validated IA reduces redesign churn and protects conversion.
             </p>
           </div>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Inputs
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Candidate categories/labels · Top user tasks · Recruit list (target roles)
+          </p>
         </div>
 
         {/* What we do */}
@@ -57,25 +77,24 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
           <BulletList 
             color="emerald"
             items={[
-              "Card sorting (open → early discovery; closed → label validation)",
-              "Diverse users; stop when clusters stabilize (~15 is a solid baseline)",
-              "Tree testing (text-only nav) - Measure success, directness/first-try, time-to-find",
-              "Iterate until key tasks hit ≥80–90% success (mission-critical aim >90%)"
+              "Card sorting (open → mental models; closed → label validation), ~15 participants as a strong baseline",
+              "Build the draft tree; run tree testing on key tasks",
+              "Iterate (test → tweak → retest) until we hit target"
             ]}
           />
         </div>
 
-        {/* Artifacts */}
+        {/* Deliverables */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Artifacts
+            Deliverables
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Sort dendrograms & clusters; label recommendations",
-              "Tree-test report: paths, misroutes, time, success rubric",
-              "Change log (test → tweak → retest)"
+              "Card-sort report (clusters, dendrograms, label insights)",
+              "Tree-test readout (success, directness, time, wrong-turn paths)",
+              "Change log & final IA recommendations"
             ]}
           />
         </div>
@@ -88,9 +107,9 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
           <BulletList 
             color="purple"
             items={[
-              "≥80–90% success on representative tasks",
-              "Time-to-content trending down; misroutes concentrated and fixed",
-              "Clear rationale linking labels to findings"
+              "≥80–90% direct success on key tasks (≥90% for mission-critical)",
+              "Time-to-content down vs. baseline",
+              "Wrong-turn concentration eliminated on renamed/relocated items"
             ]}
           />
         </div>
@@ -100,40 +119,19 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Testing with insiders only",
-              "Letting UI chrome mask IA problems",
-              "Declaring victory without retest on critical paths"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Testing the wrong tasks, tiny samples that don&apos;t represent key audiences, skipping the retest
+          </p>
         </div>
 
-        {/* Sample Template */}
+        {/* Instrumentation */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
           <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Tree-test KPI (per task)
+            Instrumentation
           </h4>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Success: ≥80% (very good), >90% (excellent for mission-critical)",
-              "Directness (first-try): ≥70% target",
-              "Median time-to-find: ↓ vs. prior test"
-            ]}
-          />
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mt-6 mb-4">
-            Minimal task set (example)
-          </h4>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Find Program tuition & aid",
-              "Find Faculty directory",
-              "Find Enrollment deadlines"
-            ]}
-          />
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Post-launch: first-click success in analytics, category pogo-sticking, time to key content
+          </p>
         </div>
 
         {/* Related Skills */}
