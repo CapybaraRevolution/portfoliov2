@@ -17,7 +17,8 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
         toolPill("figma", "Figma", "md"),
         toolPill("figma", "FigJam", "md"),
         genericTool("Wireframing tools"),
-        genericTool("Prototype tools")
+        genericTool("Prototype tools"),
+        genericTool("Analytics tools")
       ]}
     />
   )
@@ -35,44 +36,47 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
         itemId="information-architecture-nav-patterns"
       >
 
-        {/* Why it matters */}
+        {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
+              Pogo-sticking ↓; onward clicks ↑
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Select appropriate global/local nav (e.g., mega-menu vs. focused navbar), breadcrumbs, faceted filters, and purposeful cross-links. Include page templates so the structure survives implementation.
+              The IA must be visible and traversable. Pattern choice (mega-menu, hub-and-spoke, breadcrumbs, faceted browse) and intentional cross-links reduce dead ends and support exploration. Making structure visible and adding cross-links keeps users oriented and moving toward outcomes.
             </p>
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* What we do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
+            What we do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Final IA + taxonomy",
-              "Priority user journeys"
+              "Pattern selection by scenario & scale: Mega-menus for breadth; breadcrumbs for depth",
+              "Faceted navigation for attribute-driven sets; Hub-and-spoke for help/knowledge centers",
+              "Cross-link strategy: Add lateral links where users commonly go &ldquo;the other way&rdquo;",
+              "Page templates: Where global nav, local nav, breadcrumbs, and links live",
+              "Mobile first: Thumb reach, progressive disclosure, performance"
             ]}
           />
         </div>
 
-        {/* Deliverables */}
+        {/* Artifacts */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
+            Artifacts
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Nav pattern spec",
-              "Cross-link rules",
-              "Page templates (wireframes) showing breadcrumbs/local nav"
+              "Navigation spec (patterns, states, breakpoints)",
+              "Page template wireframes with nav placement",
+              "Cross-link rules (when/where to add side-doors)"
             ]}
           />
         </div>
@@ -85,9 +89,40 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
           <BulletList 
             color="purple"
             items={[
-              "Fewer pogo-stick loops",
-              "Higher onward clicks from category pages",
-              "Lower reliance on internal search"
+              "Pogo-sticking down (fewer backtracks/rapid hops)",
+              "Onward clicks up from category hubs",
+              "Mobile nav task success & time-to-content improve"
+            ]}
+          />
+        </div>
+
+        {/* Pitfalls to avoid */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Pitfalls to avoid
+          </h3>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Deep/skinny hierarchies on mobile",
+              "Duplicate/overlapping categories without guidance",
+              "Filters that silo content or hide key paths"
+            ]}
+          />
+        </div>
+
+        {/* Sample Template */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
+            Pattern cheat-sheet
+          </h4>
+          <BulletList 
+            color="emerald"
+            items={[
+              "Lots of categories? Use mega-menu or category landing pages",
+              "Deep paths? Add breadcrumbs + contextual links",
+              "Large sets? Use faceted filters with clear, limited attributes",
+              "Common misroutes? Add cross-reference links in both locations"
             ]}
           />
         </div>

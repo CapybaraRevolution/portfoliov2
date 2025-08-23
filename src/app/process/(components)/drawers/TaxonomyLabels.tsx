@@ -17,7 +17,8 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
         toolPill("notion", "Notion", "md"),
         genericTool("Search analytics"),
         genericTool("Support ticket tools"),
-        genericTool("Airtable")
+        genericTool("Airtable"),
+        genericTool("Spreadsheet tools")
       ]}
     />
   )
@@ -35,45 +36,47 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
         itemId="information-architecture-taxonomy-labels"
       >
 
-        {/* Why it matters */}
+        {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
+              First-click success ↑; search dependence ↓
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Define controlled vocabulary, categories, and synonyms so labels match user language and search behavior. Eliminates ambiguous/jargon labels and improves findability.
+              Labels and controlled vocabularies make content findable. Consistent names, synonyms, and facets reduce dead ends, search rewrites, and pogo-sticking. Aligning labels to user vocabulary improves direct navigation and reduces &ldquo;type-and-pray&rdquo; behavior.
             </p>
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* What we do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
+            What we do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Search logs",
-              "Support tickets", 
-              "Stakeholder terms"
+              "Controlled vocabulary: Canonical terms + definitions",
+              "Synonym map: User language (e.g., &ldquo;TVs&rdquo; ⇄ &ldquo;Televisions&rdquo;; &ldquo;Cell&rdquo; ⇄ &ldquo;Phone&rdquo;)",
+              "Facets & attributes: Only what users actually filter by",
+              "Nav copy deck: Approved labels at each level"
             ]}
           />
         </div>
 
-        {/* Deliverables */}
+        {/* Artifacts */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
+            Artifacts
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Labels sheet (nav copy deck)",
-              "Synonym map",
-              "Facet schema (if needed)"
+              "Taxonomy hierarchy (categories, subcats, relations)",
+              "Synonym/alias sheet + search mapping",
+              "Facet spec (names, data source, rules)",
+              "Nav copy deck (microcopy ready for build)"
             ]}
           />
         </div>
@@ -86,9 +89,40 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
           <BulletList 
             color="purple"
             items={[
-              "Reduced ambiguous labels",
-              "Fewer zero-result searches",
-              "Consistent terminology across UI"
+              "Fewer search refinements and no-results queries",
+              "Higher first-click success in tree tests",
+              "Consistent labels across nav, headings, and filters"
+            ]}
+          />
+        </div>
+
+        {/* Pitfalls to avoid */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Pitfalls to avoid
+          </h3>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Inconsistent terminology across surfaces",
+              "Facet bloat (near-duplicate or unclear filters)",
+              "Ambiguous or clever labels with weak information scent"
+            ]}
+          />
+        </div>
+
+        {/* Sample Template */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
+            Taxonomy starter
+          </h4>
+          <BulletList 
+            color="emerald"
+            items={[
+              "Category → Subcategory → (Optional) Sub-subcategory",
+              "Facets: Brand · Type · Price · Audience · Level",
+              "Synonyms: Map user terms to canonical labels",
+              "Copy rules: Plain language; avoid internal jargon"
             ]}
           />
         </div>
@@ -101,8 +135,8 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
           <div className="flex flex-wrap gap-2">
             <NavigationChip skill="Information Architecture" variant="default" size="sm" />
             <NavigationChip skill="User Research" variant="outline" size="sm" />
-            <NavigationChip skill="Communication" variant="outline" size="sm" />
             <NavigationChip skill="Data Analysis" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
           </div>
         </div>
 

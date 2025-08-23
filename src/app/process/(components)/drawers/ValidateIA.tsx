@@ -17,6 +17,7 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
         genericTool("OptimalSort"),
         genericTool("Maze"),
         genericTool("UserZoom"),
+        genericTool("Treejack"),
         toolPill("figma", "FigJam", "md")
       ]}
     />
@@ -35,43 +36,46 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
         itemId="information-architecture-validate-ia"
       >
 
-        {/* Why it matters */}
+        {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
+              ≥80–90% tree-test success
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Use card sorting (≈15 participants) to learn mental models; tree testing to quantify findability without UI noise. Iterate until tasks are easy to find.
+              Evidence over guesses. Card sorting reveals mental models; tree testing validates findability without UI chrome. Validated IA reduces misnavigation, accelerates onboarding, and protects build time from rework.
             </p>
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* What we do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
+            What we do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Draft categories/labels",
-              "Key user tasks"
+              "Card sorting (open → early discovery; closed → label validation)",
+              "Diverse users; stop when clusters stabilize (~15 is a solid baseline)",
+              "Tree testing (text-only nav) - Measure success, directness/first-try, time-to-find",
+              "Iterate until key tasks hit ≥80–90% success (mission-critical aim >90%)"
             ]}
           />
         </div>
 
-        {/* Deliverables */}
+        {/* Artifacts */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
+            Artifacts
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Card-sort groupings",
-              "Tree-test results (success, first-click, time)"
+              "Sort dendrograms & clusters; label recommendations",
+              "Tree-test report: paths, misroutes, time, success rubric",
+              "Change log (test → tweak → retest)"
             ]}
           />
         </div>
@@ -84,8 +88,50 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
           <BulletList 
             color="purple"
             items={[
-              "≥80% direct success on key tasks",
-              "Reduced time-to-find across iterations"
+              "≥80–90% success on representative tasks",
+              "Time-to-content trending down; misroutes concentrated and fixed",
+              "Clear rationale linking labels to findings"
+            ]}
+          />
+        </div>
+
+        {/* Pitfalls to avoid */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Pitfalls to avoid
+          </h3>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Testing with insiders only",
+              "Letting UI chrome mask IA problems",
+              "Declaring victory without retest on critical paths"
+            ]}
+          />
+        </div>
+
+        {/* Sample Template */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
+            Tree-test KPI (per task)
+          </h4>
+          <BulletList 
+            color="emerald"
+            items={[
+              "Success: ≥80% (very good), >90% (excellent for mission-critical)",
+              "Directness (first-try): ≥70% target",
+              "Median time-to-find: ↓ vs. prior test"
+            ]}
+          />
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mt-6 mb-4">
+            Minimal task set (example)
+          </h4>
+          <BulletList 
+            color="emerald"
+            items={[
+              "Find Program tuition & aid",
+              "Find Faculty directory",
+              "Find Enrollment deadlines"
             ]}
           />
         </div>
