@@ -47,6 +47,12 @@ The codebase follows a drawer-based architecture for process documentation:
    - Unescaped quotes/apostrophes in JSX (use HTML entities: `&quot;`, `&apos;`)
    - Missing alt text on images
 
+5. **HTML Entity Handling**: ESLint's `react/no-unescaped-entities` rule requires proper escaping in JSX text:
+   - Use `&quot;` for straight quotes (renders as ")
+   - Use `&apos;` for apostrophes (renders as ')
+   - Avoid `&ldquo;`/`&rdquo;` (curly quotes) - they display as literal entities
+   - These entities render properly in browsers while satisfying ESLint
+
 ### Environment Configuration
 
 - Uses `.env.local` for environment variables (not tracked in git)
