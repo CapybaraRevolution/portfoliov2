@@ -56,7 +56,7 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
             <BulletList 
               color="emerald"
               items={[
-                "Users convert when the label matches their mental model (&ldquo;TVs&rdquo; vs &ldquo;Televisions&rdquo;).",
+                "Users convert when the label matches their mental model (&quot;TVs&quot; vs &quot;Televisions&quot;).",
                 "Consistency across nav, headings, and search boosts first-click success and reduces query reformulation."
               ]}
               className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
@@ -115,7 +115,7 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
             items={[
               "Fewer search refinements per session",
               "Tree-test direct success up on renamed categories",
-              "Reduced &ldquo;where is X?&rdquo; support tickets"
+              "Reduced &quot;where is X?&quot; support tickets"
             ]}
           />
         </div>
@@ -126,7 +126,7 @@ export function TaxonomyLabels({ className, onClose }: TaxonomyLabelsProps) {
             Pitfalls to avoid
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Jargon, look-alike labels (&ldquo;Info&rdquo; vs &ldquo;Resources&rdquo;), drifting terminology across teams
+            Jargon, look-alike labels (&quot;Info&quot; vs &quot;Resources&quot;), drifting terminology across teams
           </p>
         </div>
 

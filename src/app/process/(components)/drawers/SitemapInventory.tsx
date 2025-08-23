@@ -42,7 +42,7 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            A great IA starts with reality, not wishful thinking. We inventory every page, file, and pathway, then map the true shape of the product. This prevents &ldquo;lost pages,&rdquo; duplication, and orphan content before we design navigation.
+            A great IA starts with reality, not wishful thinking. We inventory every page, file, and pathway, then map the true shape of the product. This prevents &quot;lost pages,&quot; duplication, and orphan content before we design navigation.
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
             Inputs
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300">
-            CMS export · Analytics top pages · Existing site maps/redirects · Known &ldquo;must keep&rdquo; content
+            CMS export · Analytics top pages · Existing site maps/redirects · Known &quot;must keep&quot; content
           </p>
         </div>
 
@@ -115,7 +115,7 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
             color="purple"
             items={[
               "≥95% content coverage audited",
-              "No orphaned &ldquo;must-have&rdquo; pages in final IA",
+              "No orphaned &quot;must-have&quot; pages in final IA",
               "Redirect plan covers all removed/merged URLs"
             ]}
           />
