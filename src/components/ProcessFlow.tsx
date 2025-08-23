@@ -1802,7 +1802,7 @@ function Step4Layout({
         title: 'Release Planning & Cut Candidate',
         slug: 'release-planning-cut-candidate',
         area: 'Planning',
-        description: 'Know what you&apos;re building. Ship what you planned.',
+        description: 'Know what you\'re building. Ship what you planned.',
         status: 'Active',
         priority: 'P1',
         updated: '1d ago'

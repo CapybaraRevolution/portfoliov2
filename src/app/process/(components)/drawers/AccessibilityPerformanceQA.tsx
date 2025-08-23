@@ -43,7 +43,7 @@ export function AccessibilityPerformanceQA({ className, onClose }: Accessibility
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Accessibility and performance QA ensures digital products meet WCAG 2.2 standards while achieving Core Web Vitals benchmarks. This dual focus on inclusive design and technical excellence creates experiences usable by all while maintaining optimal performance. With 96.8% of websites failing accessibility tests, this systematic approach protects both users and organizations.
+            Accessibility and performance QA ensures digital products meet WCAG 2.2 standards while achieving Core Web Vitals benchmarks. This dual focus on inclusive design and technical excellence creates experiences usable by all while maintaining optimal performance. As of 2025, ~95% of the web's top home pages contain detectable WCAG 2 A/AA accessibility failures (WebAIM Million), this systematic approach protects both users and organizations.
           </p>
         </div>
 
