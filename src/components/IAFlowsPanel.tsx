@@ -441,18 +441,18 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
 
       {/* Row List */}
       <div className="relative overflow-hidden">
-        <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
+        <div className="divide-y divide-zinc-200 dark:divide-zinc-700 border-t border-zinc-200 dark:border-zinc-700">
         {currentRows.map((row, index) => (
           <div 
             key={row.id} 
             data-highlight-target={['sitemap-inventory', 'taxonomy-labels', 'validate-ia', 'nav-patterns'].includes(row.id) ? 'ia-flows' : row.itemId}
-            className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
+            className={`px-6 py-5 bg-white dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group border-l-4 border-l-transparent hover:border-l-zinc-300 dark:hover:border-l-zinc-600 ${
               isAnimating || !isLoaded
                 ? 'transform translate-y-12 opacity-0' 
                 : 'transform translate-y-0 opacity-100'
             } ${
               isRowHighlighted(row.id)
-                ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50'
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50 border-l-emerald-500'
                 : ''
             }`}
             style={{
