@@ -36,43 +36,77 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
         itemId="release-readiness-review"
       >
 
-        {/* Why it matters */}
+        {/* Overview */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Overview
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+            Release readiness review provides systematic validation that all technical, operational, and business criteria are met before production deployment. This formal checkpoint integrates multi-team perspectives through structured go/no-go decision frameworks. Organizations with mature readiness reviews achieve 99% deployment success rates while reducing rollback frequency by 70%.
+          </p>
+        </div>
+
+        {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Ship with confidence
+              Why it matters
             </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              A systematic final check prevents avoidable release issues.
-            </p>
+            <BulletList 
+              color="emerald"
+              items={[
+                "Reduces deployment failures: Formal readiness reviews decrease change failure rates from 45% to less than 15%.",
+                "Prevents customer impact: Structured validation catches 95% of potential issues before they reach production.",
+                "Aligns stakeholders: Multi-team sign-off ensures organizational readiness beyond just technical completion.",
+                "Accelerates recovery: Clear rollback procedures reduce MTTR by 75% when issues occur."
+              ]}
+              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
+            />
           </div>
         </div>
 
-        {/* What I do */}
+        {/* Inputs */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
+            Inputs
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Release scope documentation · Test completion reports · Quality metrics dashboard · Security scan results · Support team preparedness status
+          </p>
+        </div>
+
+        {/* What we do */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What we do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Review checklist across all functions (dev, design, QA, legal, ops)",
-              "Confirm rollback plan, comms plan, and success metrics are ready"
+              "Execute formal readiness checklists covering planning artifacts, development completion, testing validation, and documentation updates",
+              "Validate testing completion ensuring >80% unit test coverage, integration tests passed, performance benchmarks met, security scans clear",
+              "Coordinate multi-team sign-offs from development, QA, operations, security, product, and support teams",
+              "Facilitate go/no-go meetings lasting 5-15 minutes maximum, with clear decision criteria and documented rationale",
+              "Track readiness metrics including release success rate, change failure rate, deployment frequency, and mean time to recovery"
             ]}
           />
         </div>
 
-        {/* Outputs & deliverables */}
+        {/* Deliverables */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Outputs &amp; deliverables
+            Deliverables
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Release readiness scorecard (signed off by owners)",
-              "Final go/no-go decision with rationale"
+              "Release readiness checklist completed",
+              "Multi-team sign-off documentation",
+              "Go/no-go decision record",
+              "Test completion certificates",
+              "Quality metrics report",
+              "Deployment runbook verified"
             ]}
           />
         </div>
@@ -85,10 +119,46 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
           <BulletList 
             color="purple"
             items={[
-              "100% of launch checklist complete",
-              "All teams can describe their post-release responsibilities"
+              "Go/no-go meeting duration <15 minutes consistently",
+              "First-time go rate >85% for releases",
+              "Sign-off completion 100% before deployment",
+              "Release success rate >99% achieved",
+              "Rollback invocation <5% of deployments"
             ]}
           />
+        </div>
+
+        {/* Pitfalls to avoid */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Pitfalls to avoid
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Treating review as rubber stamp exercise, missing key stakeholder sign-offs, unclear go/no-go criteria, accepting &quot;almost ready&quot; status, skipping documentation updates
+          </p>
+        </div>
+
+        {/* Instrumentation */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
+            Instrumentation
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Release success rate tracking, go/no-go decision time measurement, sign-off completion monitoring, rollback frequency analysis, stakeholder satisfaction surveys
+          </p>
+        </div>
+
+        {/* Related Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Related Skills
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Quality Assurance" variant="default" size="sm" />
+            <NavigationChip skill="Process Design" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+            <NavigationChip skill="Team Leadership" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>
