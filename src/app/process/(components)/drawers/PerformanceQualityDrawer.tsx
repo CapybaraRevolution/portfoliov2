@@ -21,11 +21,11 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
   const tools = (
     <ToolSection 
       tools={[
-        toolPill("google", "Lighthouse CI", "md"),
-        toolPill("notion", "axe-core", "md"),
-        toolPill("google", "Sentry", "md"),
-        toolPill("ga4", "DataDog", "md"),
-        toolPill("google", "New Relic", "md")
+        toolPill("github", "GitHub Actions", "md"),
+        toolPill("sonarqube", "SonarQube", "md"),
+        toolPill("jest", "Jest", "md"),
+        toolPill("cypress", "Cypress", "md"),
+        toolPill("storybook", "Storybook", "md")
       ]}
     />
   )
@@ -33,30 +33,55 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
   return (
     <div className={className}>
       <DrawerLayout
-        stepText="Step 5 · Launch & Optimization"
-        title="Performance & Quality"
-        summary="Continuously monitor speed, stability, and accessibility to ensure high quality."
+        stepText="Step 4 · Implementation Support · Execute"
+        title="Ship Quality as a Habit, Not a Finale"
+        summary="Building quality as an organizational habit transforms testing from a phase-gate activity into a continuous, collaborative practice embedded throughout development."
         tools={tools}
         caseStudyUrl="/work/overview"
-        caseStudyFilters="skills=Performance%20Optimization"
+        caseStudyFilters="skills=Quality%20Assurance"
         enableComments={true}
-        itemId="performance-quality"
+        itemId="ship-quality-habit"
       >
 
-        {/* Why it matters - Feature card with gradient */}
+        {/* Overview */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Overview
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
+            Building quality as an organizational habit transforms testing from a phase-gate activity into a continuous, collaborative practice embedded throughout development. This cultural shift reduces bugs by 36% during development while accelerating deployment frequency by 50-100%. Teams embrace shared ownership where quality becomes everyone&apos;s responsibility, not just QA&apos;s mandate.
+          </p>
+        </div>
+
+        {/* Why it matters - Feature card */}
         <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          {/* Subtle glow effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          
-          {/* Content */}
           <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed italic">
-              Performance is UX.
+            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
+              Why it matters
             </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Users abandon slow sites within 3 seconds, and accessibility gaps exclude users entirely. We treat speed and stability as features, actively tracking Core Web Vitals and error rates.
-            </p>
+            <BulletList 
+              color="emerald"
+              items={[
+                "Reduces correction costs 10x: Preventive quality measures cost 90% less than reactive fixes, saving up to $67 million per 5,000 employees.",
+                "Accelerates delivery: Teams with excellent test coverage are 2.5x more likely to achieve 50-100% deployment frequency improvements.",
+                "Decreases failure rates: Strong quality cultures see 46% fewer mistakes and achieve 0-15% change failure rates (elite performer standard).",
+                "Improves team velocity: Near 100% code review coverage reduces post-merge errors while maintaining 300-500 lines/hour review speeds.",
+                "Enables sustainable pace: Shift-left testing catches issues early when they&apos;re cheapest to fix, preventing technical debt accumulation."
+              ]}
+              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
+            />
           </div>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Inputs
+          </h3>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Team capability assessments · Current quality metrics baseline · Development workflow documentation · Testing infrastructure inventory · Historical defect data
+          </p>
         </div>
 
         {/* What we do */}
@@ -67,31 +92,34 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
           <BulletList 
             color="emerald"
             items={[
-              "Set and enforce performance budgets in CI/CD pipelines",
-              "Monitor Core Web Vitals (LCP, FID, CLS) in real-time",
-              "Track error rates, crash reports, and API response times",
-              "Run automated accessibility testing (WCAG AA compliance)",
-              "Set up alerting for performance degradation",
-              "Implement quality gates that prevent slow code from shipping",
-              "Conduct regular performance audits and optimizations"
+              "Establish shared ownership model where developers write testable code and unit tests, QA engineers serve as quality coaches",
+              "Implement shift-left testing strategies enabling developers to test at local build stage with optimized containerized test environments",
+              "Deploy comprehensive automated testing following the testing pyramid with 80% minimum unit/integration coverage",
+              "Facilitate peer code reviews maintaining 200-400 lines per session, 60-90 minute maximum duration, near 100% coverage",
+              "Create continuous feedback loops through QA office hours, cross-functional daily meetings, and shared communication channels",
+              "Integrate CI/CD quality gates with four-stage structure (planning, development, testing, deployment) and SonarQube metrics",
+              "Monitor DORA metrics tracking deployment frequency, lead time, change failure rate, and MTTR for elite performance standards",
+              "Build quality-first culture focusing on three pillars: people (collaborative learning), processes (clear frameworks), technology (enabling systems)"
             ]}
           />
         </div>
 
-        {/* Outputs & artifacts */}
+        {/* Deliverables */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Outputs & artifacts
+            Deliverables
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Performance monitoring dashboards (New Relic, DataDog)",
-              "CI quality gates and performance budgets",
-              "Accessibility audit reports and remediation plans",
-              "Error tracking and incident response logs",
-              "Load testing results and capacity planning",
-              "Performance optimization recommendations"
+              "Quality culture maturity assessment",
+              "Automated testing framework documentation",
+              "Code review standards and checklists",
+              "CI/CD pipeline configuration with quality gates",
+              "Team quality dashboard with DORA metrics",
+              "Shift-left testing playbook",
+              "Peer review process documentation",
+              "Quality metrics reporting templates"
             ]}
           />
         </div>
@@ -104,92 +132,36 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
           <BulletList 
             color="purple"
             items={[
-              "≥95% of pages meet Core Web Vitals thresholds",
-              "<1% error rate across all user interactions",
-              "WCAG AA compliance maintained",
-              "Zero performance regressions reach production"
+              "Code review coverage >95% of all changes",
+              "Unit test coverage >80% for new code",
+              "Change failure rate <15% (elite performer level)",
+              "Mean time to recovery <1 hour for critical issues",
+              "Deployment frequency >1 per day for mature teams",
+              "Review turnaround time <24 hours for most changes",
+              "Defect escape rate <10% to production",
+              "Team quality NPS >70 indicating culture adoption"
             ]}
           />
         </div>
 
-        {/* Sample - Performance dashboard */}
+        {/* Pitfalls to avoid */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Sample
+            Pitfalls to avoid
           </h3>
-          
-          <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-            <h4 className="font-medium text-zinc-900 dark:text-white mb-4">Performance Budget Dashboard</h4>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-200 dark:border-zinc-700">
-                    <th className="text-left py-2 text-zinc-900 dark:text-white">Metric</th>
-                    <th className="text-left py-2 text-zinc-900 dark:text-white">Target</th>
-                    <th className="text-left py-2 text-zinc-900 dark:text-white">Current</th>
-                    <th className="text-left py-2 text-zinc-900 dark:text-white">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="text-zinc-600 dark:text-zinc-400">
-                  <tr className="border-b border-zinc-200 dark:border-zinc-700">
-                    <td className="py-2">LCP</td>
-                    <td className="py-2">≤2.5s</td>
-                    <td className="py-2">2.1s</td>
-                    <td className="py-2">
-                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 rounded-full">
-                        ✅ Pass
-                      </span>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-zinc-200 dark:border-zinc-700">
-                    <td className="py-2">FID</td>
-                    <td className="py-2">≤100ms</td>
-                    <td className="py-2">85ms</td>
-                    <td className="py-2">
-                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 rounded-full">
-                        ✅ Pass
-                      </span>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-zinc-200 dark:border-zinc-700">
-                    <td className="py-2">CLS</td>
-                    <td className="py-2">≤0.1</td>
-                    <td className="py-2">0.08</td>
-                    <td className="py-2">
-                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 rounded-full">
-                        ✅ Pass
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Bundle size</td>
-                    <td className="py-2">≤250KB</td>
-                    <td className="py-2">223KB</td>
-                    <td className="py-2">
-                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400 rounded-full">
-                        ✅ Pass
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Treating quality as solely QA team&apos;s responsibility, focusing only on test quantity over quality, implementing tools without cultural change, creating quality gates that become bottlenecks, measuring activity instead of outcomes
+          </p>
+        </div>
 
-            <div className="mt-6">
-              <h5 className="font-medium text-zinc-900 dark:text-white mb-3">Accessibility Checklist</h5>
-              <BulletList 
-                color="emerald"
-                items={[
-                  "Color contrast ratio ≥4.5:1",
-                  "All interactive elements keyboard accessible",
-                  "Form labels and error messages clear",
-                  "Images have alt text, videos have captions",
-                  "Focus indicators visible and consistent"
-                ]}
-              />
-            </div>
-          </div>
+        {/* Instrumentation */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
+            Instrumentation
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Code review coverage tracking, automated test coverage reporting, DORA metrics dashboard (deployment frequency, lead time, change failure rate, MTTR), defect escape rate monitoring, team quality culture surveys
+          </p>
         </div>
 
         {/* Related Skills */}
@@ -198,10 +170,10 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
             Related Skills
           </h3>
           <div className="flex flex-wrap gap-2">
-            <NavigationChip skill="Product Analytics" variant="default" size="sm" />
-            <NavigationChip skill="Agile Delivery" variant="outline" size="sm" />
-            <NavigationChip skill="System Design" variant="outline" size="sm" />
-            <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
+            <NavigationChip skill="Quality Assurance" variant="default" size="sm" />
+            <NavigationChip skill="Process Design" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
+            <NavigationChip skill="Team Leadership" variant="outline" size="sm" />
           </div>
         </div>
 
