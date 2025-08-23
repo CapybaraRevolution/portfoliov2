@@ -13,6 +13,10 @@ import { JMDecisions } from '@/app/process/(components)/drawers/JMDecisions'
 import { FDInformationArchitecture } from '@/app/process/(components)/drawers/FDInformationArchitecture'
 import { FDUserFlows } from '@/app/process/(components)/drawers/FDUserFlows'
 import { FDTaskValidation } from '@/app/process/(components)/drawers/FDTaskValidation'
+import { SitemapInventory } from '@/app/process/(components)/drawers/SitemapInventory'
+import { TaxonomyLabels } from '@/app/process/(components)/drawers/TaxonomyLabels'
+import { ValidateIA } from '@/app/process/(components)/drawers/ValidateIA'
+import { NavigationPatterns } from '@/app/process/(components)/drawers/NavigationPatterns'
 
 // Placeholder drawer content for steps without implemented drawers
 function PlaceholderDrawerContent({ title }: { title?: string }) {
@@ -223,54 +227,48 @@ const rowsByStep: Record<IaStepType, Row[]> = {
   ],
   'information-architecture': [
     {
-      id: 'ia-navigation',
-      title: 'Navigation model (Sitemap)',
-      subtitle: 'Define global/local nav patterns, wayfinding, and cross-links.',
-      dept: 'Design',
-      status: 'In Progress',
-      priority: 85,
-      drawerId: 'ia-navigation',
-      itemId: 'information-architecture-navigation'
-    },
-    {
-      id: 'ia-page-types',
-      title: 'Page types & modules inventory',
-      subtitle: 'Catalog page types and reusable sections; standardize patterns.',
-      dept: 'Design',
-      status: 'In Progress',
-      priority: 82,
-      drawerId: 'ia-page-types',
-      itemId: 'information-architecture-page-types'
-    },
-    {
-      id: 'ia-user-flows',
-      title: 'User flows & entry/exit points',
-      subtitle: 'Map tasks, handoffs, and cross-system transitions.',
-      dept: 'Design',
-      status: 'In Progress',
-      priority: 79,
-      drawerId: 'ia-user-flows',
-      itemId: 'information-architecture-user-flows'
-    },
-    {
-      id: 'ia-taxonomy',
-      title: 'Taxonomy & naming system',
-      subtitle: 'Labels, synonyms, and content groupings for findability.',
+      id: 'sitemap-inventory',
+      title: 'Sitemap & Inventory',
+      subtitle: 'See the whole forest before pruning any trees.',
       dept: 'Product Team',
-      status: 'Preview',
-      priority: 76,
-      drawerId: 'ia-taxonomy',
-      itemId: 'information-architecture-taxonomy'
+      status: 'Production',
+      priority: 85,
+      drawerId: 'sitemap-inventory',
+      drawerComponent: SitemapInventory,
+      itemId: 'information-architecture-sitemap-inventory'
     },
     {
-      id: 'ia-validation',
-      title: 'IA validation',
-      subtitle: 'Tree tests / card sorts to validate nav & labels.',
+      id: 'taxonomy-labels',
+      title: 'Taxonomy & Labels',
+      subtitle: 'Name things the way users think.',
+      dept: 'Product Team',
+      status: 'Production',
+      priority: 82,
+      drawerId: 'taxonomy-labels',
+      drawerComponent: TaxonomyLabels,
+      itemId: 'information-architecture-taxonomy-labels'
+    },
+    {
+      id: 'validate-ia',
+      title: 'Validate IA (Card Sort + Tree Test)',
+      subtitle: 'Test the structure before you polish the pixels.',
       dept: 'Design',
-      status: 'Preview',
-      priority: 73,
-      drawerId: 'ia-validation',
-      itemId: 'information-architecture-validation'
+      status: 'Production',
+      priority: 79,
+      drawerId: 'validate-ia',
+      drawerComponent: ValidateIA,
+      itemId: 'information-architecture-validate-ia'
+    },
+    {
+      id: 'nav-patterns',
+      title: 'Navigation Patterns & Cross-linking',
+      subtitle: 'Choose the right pattern and add smart side-doors.',
+      dept: 'Design',
+      status: 'Production',
+      priority: 76,
+      drawerId: 'nav-patterns',
+      drawerComponent: NavigationPatterns,
+      itemId: 'information-architecture-nav-patterns'
     }
   ],
   'design': [
@@ -360,11 +358,6 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
   
   // Function to handle opening drawer
   const handleRowClick = (row: Row) => {
-    // Prevent drawer opening for Information Architecture cards
-    if (currentStep === 'information-architecture') {
-      return
-    }
-    
     setSelectedDeployment(row)
     setDrawerOpen(true)
   }
@@ -374,9 +367,10 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
   // Check if a row should be highlighted
   const isRowHighlighted = (rowId: string) => {
     if (!highlightedSkillId || !isHighlightActive) return false
-    // Highlight any IA row when information-architecture skill is selected
-    return (highlightedSkillId === 'ia-flows' && rowId.startsWith('ia-')) ||
-           (highlightedSkillId === 'information-architecture' && rowId.startsWith('ia-'))
+    // Highlight the first IA row when information-architecture skill is selected
+    const iaItemIds = ['sitemap-inventory', 'taxonomy-labels', 'validate-ia', 'nav-patterns']
+    return (highlightedSkillId === 'ia-flows' && rowId === 'sitemap-inventory') ||
+           (highlightedSkillId === 'information-architecture' && rowId === 'sitemap-inventory')
   }
   
   return (
@@ -451,12 +445,8 @@ export function IAFlowsPanel({ highlightedSkillId, isHighlightActive }: IAFlowsP
         {currentRows.map((row, index) => (
           <div 
             key={row.id} 
-            data-highlight-target={row.id.startsWith('ia-') ? 'ia-flows' : row.itemId}
-            className={`px-6 py-5 transition-all duration-500 ease-out group ${
-              currentStep === 'information-architecture' 
-                ? 'cursor-default' 
-                : 'hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer'
-            } ${
+            data-highlight-target={['sitemap-inventory', 'taxonomy-labels', 'validate-ia', 'nav-patterns'].includes(row.id) ? 'ia-flows' : row.itemId}
+            className={`px-6 py-5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 cursor-pointer transition-all duration-500 ease-out group ${
               isAnimating || !isLoaded
                 ? 'transform translate-y-12 opacity-0' 
                 : 'transform translate-y-0 opacity-100'
