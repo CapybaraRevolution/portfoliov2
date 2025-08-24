@@ -111,7 +111,7 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
             Signals of success
           </h3>
           <BulletList 
-            color="orange"
+            color="purple"
             items={[
               "Insight utilization rate: 80% of research insights influencing product decisions",
               "Reuse efficiency: 70% of insights referenced across multiple projects",

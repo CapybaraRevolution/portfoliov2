@@ -2016,19 +2016,23 @@ function Step4Layout({
       {/* Implementation Dashboard */}
       <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800">
         {/* Secondary navigation */}
-        <nav className="flex overflow-x-auto border-b border-zinc-200 dark:border-zinc-700 py-4">
+        <nav className="border-b border-zinc-200 dark:border-zinc-700 px-4 py-4 sm:px-6">
+          <div className="mb-3">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">Switch between workflow phases:</p>
+          </div>
           <ul
             role="list"
-            className="flex gap-x-6 px-4 text-sm/6 font-semibold text-zinc-600 dark:text-zinc-400 sm:px-6"
+            className="flex gap-x-2 text-sm font-medium"
           >
             {tabs.map((item) => (
               <li key={item}>
                 <button
                   onClick={() => setActiveTab(item)}
-                  className={`transition-colors duration-200 ${
-                    activeTab === item 
-                      ? 'text-emerald-600 dark:text-emerald-400' 
-                      : 'hover:text-zinc-900 dark:hover:text-zinc-100'
+                  aria-current={activeTab === item ? 'page' : undefined}
+                  className={`rounded-md px-3 py-2 transition-colors ${
+                    activeTab === item
+                      ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
+                      : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-100'
                   }`}
                 >
                   {item}
