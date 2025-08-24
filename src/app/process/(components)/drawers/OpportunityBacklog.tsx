@@ -159,26 +159,10 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
             Related Skills
           </h3>
           <div className="flex flex-wrap gap-2">
-            <NavigationChip 
-              href="/process#opportunity-scoring"
-              label="Opportunity Scoring"
-              color="emerald"
-            />
-            <NavigationChip 
-              href="/process#requirements-definition"
-              label="Requirements Definition"
-              color="blue"
-            />
-            <NavigationChip 
-              href="/process#stakeholder-management"
-              label="Stakeholder Management"
-              color="purple"
-            />
-            <NavigationChip 
-              href="/process#roadmap-planning"
-              label="Roadmap Planning"
-              color="orange"
-            />
+            <NavigationChip skill="Product Strategy" variant="default" size="sm" />
+            <NavigationChip skill="Prioritization" variant="outline" size="sm" />
+            <NavigationChip skill="Process Design" variant="outline" size="sm" />
+            <NavigationChip skill="Communication" variant="outline" size="sm" />
           </div>
         </div>
 
