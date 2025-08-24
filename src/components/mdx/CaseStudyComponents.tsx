@@ -314,15 +314,15 @@ export function CaseImage({
       className
     )}>
       {variant === 'logo' ? (
-        // Simplified logo display without heavy container
-        <div className="flex justify-center items-center py-8 px-4">
+        // Half-width logo aligned left for content flow
+        <div className="py-6">
           <Image
             src={src}
             alt={alt}
             width={imageWidth}
             height={imageHeight}
-            className="h-auto w-auto max-h-32 object-contain"
-            style={{ maxWidth: '100%', height: 'auto' }}
+            className="h-auto w-full max-w-md object-contain"
+            style={{ maxWidth: '50%', height: 'auto' }}
             priority
           />
         </div>
