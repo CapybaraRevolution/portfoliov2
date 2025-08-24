@@ -321,7 +321,7 @@ export function CaseImage({
             alt={alt}
             width={imageWidth}
             height={imageHeight}
-            className="h-auto w-full max-w-md object-contain"
+            className="h-auto w-full max-w-md object-contain rounded-lg"
             style={{ maxWidth: '50%', height: 'auto' }}
             priority
           />
