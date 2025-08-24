@@ -59,7 +59,7 @@ export function TechnicalDebtTriage({ className, onClose }: TechnicalDebtTriageP
               Why it matters
             </h3>
             <BulletList 
-              color="orange"
+              color="emerald"
               items={[
                 "Velocity recovery: Technical debt causes 20-42% development effort waste; systematic paydown recovers this lost capacity and improves team productivity",
                 "Cost multiplication prevention: Feature development in high-debt codebases takes 1.2-2.5x longer; prioritized debt reduction prevents exponential cost growth",
