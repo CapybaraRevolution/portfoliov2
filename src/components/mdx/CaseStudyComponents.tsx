@@ -281,7 +281,7 @@ export function Video({
 interface CaseImageProps {
   src: string
   alt: string
-  variant?: 'hero' | 'default'
+  variant?: 'hero' | 'default' | 'logo'
   caption?: string
   width?: number
   height?: number
@@ -297,15 +297,27 @@ export function CaseImage({
   height = 400, 
   className 
 }: CaseImageProps) {
+  // For logo variant, use flexible sizing to preserve aspect ratio
+  const isLogo = variant === 'logo'
+  const imageWidth = isLogo ? undefined : width
+  const imageHeight = isLogo ? undefined : height
+
   return (
     <figure className={clsx(
       'my-8',
       {
-        'my-12': variant === 'hero'
+        'my-12': variant === 'hero',
+        'my-6': variant === 'logo'
       },
       className
     )}>
-      <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10">
+      <div className={clsx(
+        'group my-6 overflow-hidden rounded-2xl shadow-md dark:ring-1 dark:ring-white/10',
+        {
+          'bg-zinc-900': variant !== 'logo',
+          'bg-white dark:bg-zinc-900': variant === 'logo'
+        }
+      )}>
         {/* Clean header like Protocol code blocks */}
         {caption && (
           <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
@@ -316,18 +328,29 @@ export function CaseImage({
         )}
         
         {/* Image content */}
-        <div className="relative dark:bg-white/2.5">
+        <div className={clsx(
+          'relative',
+          {
+            'dark:bg-white/2.5': variant !== 'logo',
+            'bg-white dark:bg-zinc-900 flex items-center justify-center p-8': variant === 'logo'
+          }
+        )}>
           <Image
             src={src}
             alt={alt}
-            width={width}
-            height={height}
+            width={imageWidth || 0}
+            height={imageHeight || 0}
             className={clsx(
-              'w-full h-auto',
               {
-                'max-w-none': variant === 'hero'
+                'w-full h-auto max-w-none': variant === 'hero',
+                'w-full h-auto': variant === 'default',
+                'max-w-sm h-auto object-contain': variant === 'logo'
               }
             )}
+            {...(isLogo && {
+              sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+              style: { width: 'auto', height: 'auto' }
+            })}
           />
         </div>
       </div>
