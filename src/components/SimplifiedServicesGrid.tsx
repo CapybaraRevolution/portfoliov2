@@ -13,7 +13,6 @@ const services = [
     name: 'Strategic Product Planning',
     description: 'Product roadmaps and stakeholder alignment that translate business goals into actionable development plans.',
     href: generateProcessUrl('feature-prioritization'),
-    portfolioHref: '/work/overview?tag=product-planning',
     icon: ChartBarIcon,
     skills: ['Product Vision', 'Roadmap', 'Prioritization', 'OKRs']
   },
@@ -22,7 +21,6 @@ const services = [
     name: 'User Research & Strategy',
     description: 'User insights through interviews and behavioral analysis that inform strategic product decisions.',
     href: generateProcessUrl('user-research'),
-    portfolioHref: '/work/overview?tag=user-research',
     icon: MagnifyingGlassIcon,
     skills: ['User Research', 'Usability Testing', 'Product Analytics', 'Experimentation']
   },
@@ -31,7 +29,6 @@ const services = [
     name: 'Design & Prototyping',
     description: 'Intuitive interfaces from wireframes to design systems that balance user needs with business goals.',
     href: generateProcessUrl('wireframing'),
-    portfolioHref: '/work/overview?tag=design',
     icon: PaintBrushIcon,
     skills: ['Wireframing', 'Prototyping', 'Information Architecture', 'Usability Testing']
   },
@@ -40,7 +37,6 @@ const services = [
     name: 'Requirements Analysis',
     description: 'Technical requirements gathering that bridges stakeholder needs with development feasibility.',
     href: generateProcessUrl('information-architecture'),
-    portfolioHref: '/work/overview?tag=business-analysis',
     icon: DocumentTextIcon,
     skills: ['PRDs (Specs)', 'System Design', 'APIs & Integrations', 'Stakeholder Alignment']
   }
@@ -84,15 +80,10 @@ export function SimplifiedServicesGrid() {
                     </div>
                   </div>
                   
-                  <div className="mt-6 space-y-3">
+                  <div className="mt-6">
                     <p>
                       <a href={service.href} className="text-sm/6 font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300">
                         How this fits into my process <span aria-hidden="true">→</span>
-                      </a>
-                    </p>
-                    <p>
-                      <a href={service.portfolioHref} className="text-sm/6 font-semibold text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
-                        See projects with this service <span aria-hidden="true">→</span>
                       </a>
                     </p>
                   </div>
