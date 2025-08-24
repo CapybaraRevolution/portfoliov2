@@ -168,33 +168,25 @@ export function TechnicalDebtTriage({ className, onClose }: TechnicalDebtTriageP
           </h3>
           <div className="flex flex-wrap gap-2">
             <NavigationChip
-              href="/process?skill=risk-management"
+              skill="Risk Management"
               variant="default"
               size="sm"
-            >
-              Risk Management
-            </NavigationChip>
+            />
             <NavigationChip
-              href="/process?skill=process-design"
+              skill="Process Design"
               variant="outline"
               size="sm"
-            >
-              Process Design
-            </NavigationChip>
+            />
             <NavigationChip
-              href="/process?skill=quality-assurance"
+              skill="Quality Assurance"
               variant="outline"
               size="sm"
-            >
-              Quality Assurance
-            </NavigationChip>
+            />
             <NavigationChip
-              href="/process?skill=performance-optimization"
+              skill="Performance Optimization"
               variant="outline"
               size="sm"
-            >
-              Performance Optimization
-            </NavigationChip>
+            />
           </div>
         </div>
 
