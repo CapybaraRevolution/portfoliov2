@@ -299,61 +299,62 @@ export function CaseImage({
 }: CaseImageProps) {
   // For logo variant, use flexible sizing to preserve aspect ratio
   const isLogo = variant === 'logo'
-  const imageWidth = isLogo ? undefined : width
-  const imageHeight = isLogo ? undefined : height
+  
+  // For logos, we'll use a reasonable default size but let Next.js handle optimization
+  const imageWidth = isLogo ? 600 : width
+  const imageHeight = isLogo ? 300 : height
 
   return (
     <figure className={clsx(
       'my-8',
       {
         'my-12': variant === 'hero',
-        'my-6': variant === 'logo'
+        'my-4': variant === 'logo'
       },
       className
     )}>
-      <div className={clsx(
-        'group my-6 overflow-hidden rounded-2xl shadow-md dark:ring-1 dark:ring-white/10',
-        {
-          'bg-zinc-900': variant !== 'logo',
-          'bg-white dark:bg-zinc-900': variant === 'logo'
-        }
-      )}>
-        {/* Clean header like Protocol code blocks */}
-        {caption && (
-          <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
-            <h3 className="mr-auto pt-3 text-xs font-semibold text-white">
-              {caption}
-            </h3>
-          </div>
-        )}
-        
-        {/* Image content */}
-        <div className={clsx(
-          'relative',
-          {
-            'dark:bg-white/2.5': variant !== 'logo',
-            'bg-white dark:bg-zinc-900 flex items-center justify-center p-8': variant === 'logo'
-          }
-        )}>
+      {variant === 'logo' ? (
+        // Simplified logo display without heavy container
+        <div className="flex justify-center items-center py-8 px-4">
           <Image
             src={src}
             alt={alt}
-            width={imageWidth || 0}
-            height={imageHeight || 0}
-            className={clsx(
-              {
-                'w-full h-auto max-w-none': variant === 'hero',
-                'w-full h-auto': variant === 'default',
-                'max-w-sm h-auto object-contain': variant === 'logo'
-              }
-            )}
-            {...(isLogo && {
-              sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
-              style: { width: 'auto', height: 'auto' }
-            })}
+            width={imageWidth}
+            height={imageHeight}
+            className="h-auto w-auto max-h-32 object-contain"
+            style={{ maxWidth: '100%', height: 'auto' }}
+            priority
           />
         </div>
-      </div>
+      ) : (
+        // Original container for hero and default images
+        <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10">
+          {/* Clean header like Protocol code blocks */}
+          {caption && (
+            <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
+              <h3 className="mr-auto pt-3 text-xs font-semibold text-white">
+                {caption}
+              </h3>
+            </div>
+          )}
+          
+          {/* Image content */}
+          <div className="relative dark:bg-white/2.5">
+            <Image
+              src={src}
+              alt={alt}
+              width={imageWidth}
+              height={imageHeight}
+              className={clsx(
+                'w-full h-auto',
+                {
+                  'max-w-none': variant === 'hero'
+                }
+              )}
+            />
+          </div>
+        </div>
+      )}
     </figure>
   )
 }
