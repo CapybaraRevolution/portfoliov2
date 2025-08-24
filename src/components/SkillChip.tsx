@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Chip } from '@/components/ui/Chip'
 import { StandardizedSkill, getCategoryColors } from '@/data/standardizedSkills'
 import { generateProcessUrl } from '@/data/skillProcessMap'
@@ -23,6 +23,7 @@ export function SkillChip({
   onClick
 }: SkillChipProps) {
   const router = useRouter()
+  const pathname = usePathname()
   // Always use emerald colors for consistency
   const colors = {
     color: 'emerald',
@@ -36,9 +37,17 @@ export function SkillChip({
   }
 
   const handleViewProcess = () => {
-    // Navigate to process page using the skill process map for deep-linking
-    const processUrl = generateProcessUrl(skill.id)
-    router.push(processUrl)
+    // If already on the process page, just update highlight without changing steps
+    if (pathname === '/process') {
+      const currentUrl = new URL(window.location.href)
+      currentUrl.searchParams.set('highlight', skill.id)
+      // Keep existing step parameter to prevent unwanted navigation
+      router.push(currentUrl.toString())
+    } else {
+      // If coming from another page, use full navigation with step change
+      const processUrl = generateProcessUrl(skill.id)
+      router.push(processUrl)
+    }
   }
 
   const dropdownItems = showDropdown ? [

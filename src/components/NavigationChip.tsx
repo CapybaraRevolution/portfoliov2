@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { Chip } from '@/components/ui/Chip'
 import { SkillChip } from '@/components/SkillChip'
 import { standardizedSkills, StandardizedSkill } from '@/data/standardizedSkills'
@@ -22,6 +22,7 @@ export function NavigationChip({
   showDropdown = true
 }: NavigationChipProps) {
   const router = useRouter()
+  const pathname = usePathname()
 
   // If skill is a StandardizedSkill object, use SkillChip
   if (typeof skill === 'object' && skill.id) {
@@ -62,8 +63,18 @@ export function NavigationChip({
   const handleViewProcess = () => {
     // Try to find a mapping for this skill name by converting to a potential ID
     const potentialSkillId = skillName.toLowerCase().replace(/\s+/g, '-')
-    const processUrl = generateProcessUrl(potentialSkillId)
-    router.push(processUrl)
+    
+    // If already on the process page, just update highlight without changing steps
+    if (pathname === '/process') {
+      const currentUrl = new URL(window.location.href)
+      currentUrl.searchParams.set('highlight', potentialSkillId)
+      // Keep existing step parameter to prevent unwanted navigation
+      router.push(currentUrl.toString())
+    } else {
+      // If coming from another page, use full navigation
+      const processUrl = generateProcessUrl(potentialSkillId)
+      router.push(processUrl)
+    }
   }
 
   const dropdownItems = showDropdown ? [
