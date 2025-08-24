@@ -3,7 +3,7 @@
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
 import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
-import { NavigationChip } from '@/components/ui/NavigationChip'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface UXResearchInsightsIntakeProps {
   className?: string
