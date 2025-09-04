@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef, Suspense, useMemo, useCallback } from 'react'
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { parseProcessUrl, getNavigationAnalytics } from '@/data/skillProcessMap'
 import { motion, useInView } from 'framer-motion'
@@ -1040,9 +1041,11 @@ function Step2Layout({ step, initialTab, highlightedSkillId, isHighlightActive }
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <div className="shrink-0">
-                  <img
+                  <Image
                     alt="Kyle McGraw"
                     src="/favicon.ico"
+                    width={32}
+                    height={32}
                     className="size-8"
                   />
                 </div>
@@ -2455,6 +2458,7 @@ function ProcessFlowContent() {
       setSelectedDrawer(null)
       if (!urlParams.highlight) {
         setHighlightedSkillId(null)
+
         setIsHighlightActive(false)
       }
     }

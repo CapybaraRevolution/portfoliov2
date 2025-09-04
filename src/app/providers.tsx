@@ -27,10 +27,33 @@ function ThemeWatcher() {
   return null
 }
 
+function ChunkErrorHandler() {
+  useEffect(() => {
+    const handler = (e: ErrorEvent) => {
+      const m = String(e?.message || '')
+      if (m.includes('Loading chunk') || m.includes('ChunkLoadError')) {
+        if ('caches' in window) {
+          caches
+            .keys()
+            .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+            .finally(() => location.reload())
+        } else {
+          location.reload()
+        }
+      }
+    }
+    window.addEventListener('error', handler)
+    return () => window.removeEventListener('error', handler)
+  }, [])
+
+  return null
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" disableTransitionOnChange>
       <ThemeWatcher />
+      <ChunkErrorHandler />
       {children}
     </ThemeProvider>
   )

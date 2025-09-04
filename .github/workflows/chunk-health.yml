@@ -1,0 +1,47 @@
+name: Chunk Health Check
+on: 
+  workflow_dispatch:
+  deployment_status:
+    
+jobs:
+  check-chunks:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.deployment_status.state == 'success' }}
+    steps:
+      - name: Check chunk availability
+        run: |
+          URL="${PROD_URL:-https://kylemcgraw.me}"
+          echo "Checking chunks for $URL"
+          
+          # Fetch main page and extract chunk URLs
+          HTML=$(curl -sS "$URL" || exit 1)
+          echo "$HTML" | grep -o "/_next/static/chunks/[^\"']*\.js" | sort -u > chunks.txt
+          
+          if [ ! -s chunks.txt ]; then
+            echo "No chunks found in HTML"
+            exit 1
+          fi
+          
+          echo "Found $(wc -l < chunks.txt) chunks to check"
+          
+          # Check each chunk
+          fail=0
+          while IFS= read -r chunk_path; do
+            full_url="$URL$chunk_path"
+            http_code=$(curl -s -o /dev/null -w "%{http_code}" -I "$full_url")
+            echo "$chunk_path -> HTTP $http_code"
+            
+            if [ "$http_code" != "200" ]; then
+              echo "❌ FAILED: $chunk_path"
+              fail=1
+            else
+              echo "✅ OK: $chunk_path"
+            fi
+          done < chunks.txt
+          
+          if [ $fail -eq 1 ]; then
+            echo "❌ Some chunks failed to load"
+            exit 1
+          else
+            echo "✅ All chunks are available"
+          fi

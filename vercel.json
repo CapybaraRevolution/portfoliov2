@@ -1,0 +1,32 @@
+{
+  "headers": [
+    { 
+      "source": "/_next/static/(.*)", 
+      "headers": [{ 
+        "key": "Cache-Control", 
+        "value": "public, max-age=31536000, immutable" 
+      }] 
+    },
+    { 
+      "source": "/:asset*(js|css|png|jpg|jpeg|webp|avif|svg|mp4)", 
+      "headers": [{ 
+        "key": "Cache-Control", 
+        "value": "public, max-age=31536000, immutable" 
+      }] 
+    },
+    { 
+      "source": "/(.*)", 
+      "headers": [{ 
+        "key": "Cache-Control", 
+        "value": "public, max-age=0, must-revalidate" 
+      }] 
+    }
+  ],
+  "redirects": [
+    { 
+      "source": "https://www.kylemcgraw.me/(.*)", 
+      "destination": "https://kylemcgraw.me/$1", 
+      "permanent": true 
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import clsx from 'clsx'
+import SafeToolIcon from '@/components/SafeToolIcon'
 
 interface ToolPillProps {
   slug: string
@@ -17,10 +17,7 @@ export function ToolPill({
   className,
   size = 'md'
 }: ToolPillProps) {
-  const [imageError, setImageError] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(false)
-
-  // Generate letter avatar from name
+  // Generate letter avatar from name for fallback
   const getInitials = (name: string) => {
     if (!name || typeof name !== 'string') {
       return 'XX' // Fallback for undefined/null names
@@ -34,7 +31,6 @@ export function ToolPill({
   }
 
   const initials = getInitials(name)
-  const imagePath = `/images/tools/${slug}.svg`
 
   return (
     <div
@@ -48,30 +44,11 @@ export function ToolPill({
         'relative flex items-center justify-center flex-shrink-0 rounded-md overflow-hidden',
         size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'
       )}>
-        {!imageError && !imageLoaded && (
-          <div className="absolute inset-0 bg-zinc-100 dark:bg-zinc-700 animate-pulse" />
-        )}
-        
-        {!imageError ? (
-          <Image
-            src={imagePath}
-            alt={`${name} logo`}
-            width={size === 'sm' ? 16 : 20}
-            height={size === 'sm' ? 16 : 20}
-            className="object-contain"
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div
-            className={clsx(
-              'flex items-center justify-center bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-700 dark:to-zinc-600 text-zinc-600 dark:text-zinc-300 font-medium',
-              size === 'sm' ? 'text-xs h-4 w-4' : 'text-xs h-5 w-5'
-            )}
-          >
-            {initials}
-          </div>
-        )}
+        <SafeToolIcon 
+          slug={slug}
+          size={size === 'sm' ? 16 : 20}
+          alt={`${name} logo`}
+        />
       </div>
       
       <span className={clsx(

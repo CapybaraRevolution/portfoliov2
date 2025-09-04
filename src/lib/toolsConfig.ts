@@ -1,4 +1,5 @@
 // Central tools configuration registry
+
 export interface ToolConfig {
   slug: string
   label: string
@@ -89,7 +90,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'typeform',
     label: 'Typeform',
-    iconPath: '/images/tools/google docs.svg', 
+    iconPath: '/images/tools/typeform.svg', 
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Typeform survey tool'
@@ -97,7 +98,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'hotjar',
     label: 'Hotjar',
-    iconPath: '/images/tools/google.svg',
+    iconPath: '/images/tools/hotjar.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Hotjar analytics tool'
@@ -113,7 +114,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'maze',
     label: 'Maze', 
-    iconPath: '/images/tools/github.svg',
+    iconPath: '/images/tools/maze.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Maze testing tool'
