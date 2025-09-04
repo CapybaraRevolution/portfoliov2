@@ -2,11 +2,14 @@
   "name": "kyle-mcgraw-portfolio",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "img:opt": "node scripts/optimize-images.js",
+    "img:lint": "node scripts/check-images.js"
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {

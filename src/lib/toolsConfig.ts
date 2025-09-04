@@ -3,7 +3,6 @@
 export interface ToolConfig {
   slug: string
   label: string
-  iconPath: string
   category: 'PM' | 'UX' | 'BA' | 'DS' | 'AI' | 'Dev' | 'Research' | 'Data'
   serviceRefs: string[] // which service IDs use this tool
   a11yAlt: string
@@ -14,7 +13,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'jira',
     label: 'Jira', 
-    iconPath: '/images/tools/jira.svg',
     category: 'PM',
     serviceRefs: ['strategic-product-planning'],
     a11yAlt: 'Jira project management tool'
@@ -22,7 +20,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'confluence',
     label: 'Confluence',
-    iconPath: '/images/tools/confluence.svg', 
+ 
     category: 'PM',
     serviceRefs: ['strategic-product-planning', 'requirements-analysis'],
     a11yAlt: 'Confluence documentation tool'
@@ -30,7 +28,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'notion',
     label: 'Notion',
-    iconPath: '/images/tools/notion.svg',
     category: 'PM', 
     serviceRefs: ['strategic-product-planning', 'requirements-analysis'],
     a11yAlt: 'Notion workspace tool'
@@ -38,7 +35,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'airtable',
     label: 'Airtable',
-    iconPath: '/images/tools/trello.svg',
     category: 'PM',
     serviceRefs: ['requirements-analysis'],
     a11yAlt: 'Airtable database tool'
@@ -48,7 +44,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'figma',
     label: 'Figma',
-    iconPath: '/images/tools/figma.svg',
     category: 'UX',
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Figma design tool'
@@ -56,7 +51,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'framer',
     label: 'Framer', 
-    iconPath: '/images/tools/framer.svg',
     category: 'UX',
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Framer prototyping tool'
@@ -64,7 +58,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'principle',
     label: 'Principle',
-    iconPath: '/images/tools/adobe_after_effects.svg',
     category: 'UX', 
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Principle animation tool'
@@ -72,7 +65,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'webflow',
     label: 'Webflow',
-    iconPath: '/images/tools/webflow.svg',
     category: 'UX',
     serviceRefs: ['design-prototyping'],
     a11yAlt: 'Webflow design tool'
@@ -82,7 +74,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'userinterviews',
     label: 'UserInterviews',
-    iconPath: '/images/tools/zoom.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'UserInterviews research tool'
@@ -90,7 +81,7 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'typeform',
     label: 'Typeform',
-    iconPath: '/images/tools/typeform.svg', 
+ 
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Typeform survey tool'
@@ -98,7 +89,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'hotjar',
     label: 'Hotjar',
-    iconPath: '/images/tools/hotjar.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Hotjar analytics tool'
@@ -106,7 +96,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'ga4',
     label: 'GA4',
-    iconPath: '/images/tools/ga4.svg',
     category: 'Data',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Google Analytics 4'
@@ -114,7 +103,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'maze',
     label: 'Maze', 
-    iconPath: '/images/tools/maze.svg',
     category: 'Research',
     serviceRefs: ['user-research-strategy'],
     a11yAlt: 'Maze testing tool'
@@ -124,7 +112,6 @@ export const toolsRegistry: ToolConfig[] = [
   {
     slug: 'loom',
     label: 'Loom',
-    iconPath: '/images/tools/loom.svg',
     category: 'PM',
     serviceRefs: ['strategic-product-planning'],
     a11yAlt: 'Loom screen recording tool'
