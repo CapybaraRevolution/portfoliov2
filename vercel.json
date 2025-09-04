@@ -21,12 +21,5 @@
         "value": "public, max-age=0, must-revalidate" 
       }] 
     }
-  ],
-  "redirects": [
-    { 
-      "source": "https://www.kylemcgraw.me/(.*)", 
-      "destination": "https://kylemcgraw.me/$1", 
-      "permanent": true 
-    }
   ]
 }
