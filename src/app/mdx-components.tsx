@@ -3,13 +3,14 @@ import type { MDXComponents } from 'mdx/types'
 import path from 'path'
 import fs from 'fs'
 import sizeOf from 'image-size'
+import { IMAGE_SIZES } from '@/lib/imageSizes'
 
 function dimsForPublic(src: string) {
   try {
     const p = path.join(process.cwd(), 'public', src.replace(/^\//, ''))
     if (fs.existsSync(p)) {
-      const { width, height } = sizeOf(p)
-      return { width: width ?? 1600, height: height ?? 900 }
+      const dimensions = sizeOf(fs.readFileSync(p))
+      return { width: dimensions.width ?? 1600, height: dimensions.height ?? 900 }
     }
   } catch (error) {
     console.warn(`Could not get dimensions for image: ${src}`, error)
@@ -22,13 +23,18 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     img: (props: any) => {
       const { src = '', alt = '' } = props
       const { width, height } = dimsForPublic(src)
+      
+      // Determine if this is likely a hero image based on size or alt text
+      const isLikelyHero = width > 1800 || alt.toLowerCase().includes('hero') || alt.toLowerCase().includes('dashboard')
+      const sizes = isLikelyHero ? IMAGE_SIZES.hero : IMAGE_SIZES.contentMax1200
+      
       return (
         <Image
           src={src}
           alt={alt}
           width={width}
           height={height}
-          sizes="(max-width: 1024px) 100vw, 1200px"
+          sizes={sizes}
           quality={90}
           className="rounded-lg"
           placeholder="blur"

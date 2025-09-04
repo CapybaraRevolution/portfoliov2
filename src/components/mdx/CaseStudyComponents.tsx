@@ -6,6 +6,7 @@ import {
   ExclamationTriangleIcon,
   ExclamationCircleIcon
 } from '@heroicons/react/20/solid'
+import { IMAGE_SIZES } from '@/lib/imageSizes'
 
 // Section component with Protocol-style dividers
 interface SectionProps {
@@ -166,6 +167,8 @@ interface FigureProps {
   width?: number
   height?: number
   className?: string
+  sizes?: string
+  priority?: boolean
 }
 
 export function Figure({ 
@@ -174,7 +177,9 @@ export function Figure({
   caption, 
   width = 800, 
   height = 400, 
-  className 
+  className,
+  sizes = IMAGE_SIZES.contentMax1200,
+  priority = false
 }: FigureProps) {
   return (
     <figure className={clsx('my-8', className)}>
@@ -184,7 +189,12 @@ export function Figure({
           alt={alt}
           width={width}
           height={height}
+          sizes={sizes}
+          priority={priority}
+          quality={90}
           className="w-full h-auto"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
         />
       </div>
       {caption && (
@@ -286,6 +296,8 @@ interface CaseImageProps {
   width?: number
   height?: number
   className?: string
+  sizes?: string
+  priority?: boolean
 }
 
 export function CaseImage({ 
@@ -295,14 +307,27 @@ export function CaseImage({
   caption, 
   width = 800, 
   height = 400, 
-  className 
+  className,
+  sizes,
+  priority
 }: CaseImageProps) {
   // For logo variant, use flexible sizing to preserve aspect ratio
   const isLogo = variant === 'logo'
+  const isHero = variant === 'hero'
   
   // For logos, we'll use a reasonable default size but let Next.js handle optimization
   const imageWidth = isLogo ? 600 : width
   const imageHeight = isLogo ? 300 : height
+  
+  // Determine appropriate sizes based on variant
+  const imageSizes = sizes || (
+    isHero ? IMAGE_SIZES.hero : 
+    isLogo ? IMAGE_SIZES.logo : 
+    IMAGE_SIZES.contentMax1200
+  )
+  
+  // Hero images should be priority by default
+  const imagePriority = priority !== undefined ? priority : isHero
 
   return (
     <figure className={clsx(
@@ -321,9 +346,12 @@ export function CaseImage({
             alt={alt}
             width={imageWidth}
             height={imageHeight}
+            sizes={imageSizes}
+            quality={90}
             className="h-auto w-full max-w-md object-contain rounded-lg"
             style={{ maxWidth: '50%', height: 'auto' }}
-            priority
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
           />
         </div>
       ) : (
@@ -345,12 +373,17 @@ export function CaseImage({
               alt={alt}
               width={imageWidth}
               height={imageHeight}
+              sizes={imageSizes}
+              priority={imagePriority}
+              quality={90}
               className={clsx(
                 'w-full h-auto',
                 {
                   'max-w-none': variant === 'hero'
                 }
               )}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
             />
           </div>
         </div>

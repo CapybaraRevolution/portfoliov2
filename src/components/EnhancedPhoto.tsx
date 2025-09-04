@@ -229,12 +229,12 @@ export function EnhancedPhoto({ src, alt, width, height }: EnhancedPhotoProps) {
           <Image
             src={src}
             alt={alt}
-            className="relative z-10 object-cover transition-all duration-700 group-hover:scale-[1.02]"
+            className="relative z-10 w-full h-auto transition-all duration-700 group-hover:scale-[1.02]"
             priority
             placeholder="blur"
             width={width}
             height={height}
-            style={{ width, height }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 600px"
           />
           
           {/* Subtle Overlay for Integration */}
