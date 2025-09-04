@@ -1,12 +1,17 @@
 import Image from 'next/image'
 import type { MDXComponents } from 'mdx/types'
 import path from 'path'
-import fs from 'fs'
-import sizeOf from 'image-size'
 import { IMAGE_SIZES } from '@/lib/imageSizes'
 
 function dimsForPublic(src: string) {
+  // Only run on server-side
+  if (typeof window !== 'undefined') {
+    return { width: 1600, height: 900 }
+  }
+  
   try {
+    const fs = require('fs') as typeof import('fs')
+    const sizeOf = require('image-size') as typeof import('image-size').default
     const p = path.join(process.cwd(), 'public', src.replace(/^\//, ''))
     if (fs.existsSync(p)) {
       const dimensions = sizeOf(fs.readFileSync(p))
