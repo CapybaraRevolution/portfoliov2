@@ -23,16 +23,23 @@ for (const f of walk(root)) {
   const outAvif = f.replace(/\.(jpe?g|png)$/i, '.avif')
   
   try {
-    // Generate WebP version
+    // Generate WebP version with higher quality for less blur
     await sharp(f)
       .resize({ width: 1920, withoutEnlargement: true })
-      .webp({ quality: 78 })
+      .webp({ 
+        quality: 90,           // Increased from 78 to 90
+        effort: 6,             // Better compression algorithm
+        smartSubsample: false  // Preserve detail
+      })
       .toFile(outWebp)
     
-    // Generate AVIF version  
+    // Generate AVIF version with higher quality
     await sharp(f)
       .resize({ width: 1920, withoutEnlargement: true })
-      .avif({ quality: 48 })
+      .avif({ 
+        quality: 75,           // Increased from 48 to 75
+        effort: 6              // Better compression
+      })
       .toFile(outAvif)
     
     const webpStats = fs.statSync(outWebp)
