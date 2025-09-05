@@ -165,6 +165,9 @@ export function Timeline() {
   const timelineData = getTimelineData()
   const [rainbowProgress, setRainbowProgress] = useState(0)
   const [scrollVelocity, setScrollVelocity] = useState(0)
+  const isTicking = useRef(false)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   
   // Refs for precise tracking
   const timelineRef = useRef<HTMLDivElement>(null)
@@ -185,81 +188,85 @@ export function Timeline() {
 
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!timelineRef.current) return
-
-      const currentTime = Date.now()
-      const currentScrollY = window.scrollY
-      
-      // Calculate velocity for animation effects
-      const deltaTime = currentTime - lastScrollTime.current
-      const deltaY = currentScrollY - lastScrollY.current
-      const velocity = deltaTime > 0 ? Math.abs(deltaY / deltaTime) : 0
-      
-      lastScrollTime.current = currentTime
-      lastScrollY.current = currentScrollY
-
-      // Update scrolling state
-      setScrollVelocity(velocity)
-
-      // Clear existing timeout
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current)
-      }
-
-      scrollTimeout.current = setTimeout(() => {
-        setScrollVelocity(0)
-      }, 150)
-
-      const viewportHeight = window.innerHeight
-      const viewportCenter = viewportHeight * 0.4 // Slightly above center for better feel
-      
-      // Calculate rainbow progress based on visible nodes
-      let newActiveIndex = -1
-      let newProgress = 0
-      let closestDistance = Infinity
-      
-      const nodes = Object.entries(nodeRefs.current)
-      
-      for (let i = 0; i < nodes.length; i++) {
-        const [, element] = nodes[i]
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          const nodeCenter = rect.top + rect.height / 2
-          const distance = Math.abs(nodeCenter - viewportCenter)
-          
-          // Check if this node is closest to the viewport center
-          if (distance < closestDistance && rect.bottom > 0 && rect.top < viewportHeight) {
-            closestDistance = distance
-            newActiveIndex = i
-            
-            // Calculate progress based on how far through the visible nodes we are
-            // Plus interpolation for smooth in-between states
-            const nodeProgress = i / Math.max(1, nodes.length - 1)
-            const interpolation = Math.max(0, Math.min(1, (viewportCenter - rect.top) / rect.height))
-            newProgress = nodeProgress + (interpolation / nodes.length)
-          }
-        }
-      }
-      
-      // Clamp progress and make it more responsive
-      newProgress = Math.max(0, Math.min(1, newProgress))
-      
-      // Update states with immediate responsiveness
-      setRainbowProgress(newProgress)
-      setActiveNodeIndex(newActiveIndex)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Initial check
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (scrollTimeout.current) {
-        clearTimeout(scrollTimeout.current)
+    // Respect prefers-reduced-motion
+    if (typeof window !== 'undefined') {
+      const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+      setPrefersReducedMotion(media.matches)
+      const onChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+      if (media.addEventListener) media.addEventListener('change', onChange)
+      else media.addListener(onChange)
+      return () => {
+        if (media.removeEventListener) media.removeEventListener('change', onChange)
+        else media.removeListener(onChange)
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setRainbowProgress(0)
+      setActiveNodeIndex(-1)
+      if (observerRef.current) observerRef.current.disconnect()
+      return
+    }
+
+    // Throttle velocity updates only
+    const onScroll = () => {
+      if (isTicking.current) return
+      isTicking.current = true
+      requestAnimationFrame(() => {
+        isTicking.current = false
+        const currentTime = Date.now()
+        const currentScrollY = window.scrollY
+        const deltaTime = currentTime - lastScrollTime.current
+        const deltaY = currentScrollY - lastScrollY.current
+        const velocity = deltaTime > 0 ? Math.abs(deltaY / deltaTime) : 0
+        lastScrollTime.current = currentTime
+        lastScrollY.current = currentScrollY
+        setScrollVelocity(velocity)
+        if (scrollTimeout.current) clearTimeout(scrollTimeout.current)
+        scrollTimeout.current = setTimeout(() => setScrollVelocity(0), 150)
+      })
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    // IntersectionObserver to set active index and progress
+    const total = timelineData.length
+    const observer = new IntersectionObserver((entries) => {
+      // Find the most centered intersecting entry
+      const viewportCenter = (observer.root as Element | null)?.clientHeight
+        ? ((observer.root as Element).clientHeight / 2)
+        : (window.innerHeight / 2)
+      let best: { idx: number; distance: number } | null = null
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        const target = entry.target as HTMLElement
+        const idxAttr = target.getAttribute('data-node-index')
+        if (!idxAttr) continue
+        const idx = parseInt(idxAttr, 10)
+        const rect = entry.boundingClientRect
+        const nodeCenter = rect.top + rect.height / 2
+        const distance = Math.abs(nodeCenter - viewportCenter)
+        if (!best || distance < best.distance) best = { idx, distance }
+      }
+      if (best && total > 1) {
+        setActiveNodeIndex(best.idx)
+        setRainbowProgress(best.idx / (total - 1))
+      }
+    }, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0.2 })
+
+    observerRef.current = observer
+    // Observe nodes
+    Object.entries(nodeRefs.current).forEach(([_, el]) => {
+      if (el) observer.observe(el)
+    })
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current)
+      observer.disconnect()
+    }
+  }, [prefersReducedMotion, timelineData.length])
 
   const getNodeColors = (index: number) => {
     const colorSchemes = [
@@ -373,9 +380,9 @@ export function Timeline() {
                     style={{ 
                       top: `${rainbowProgress * 100}%`,
                       transform: 'translateY(-50%)',
-                      width: `${Math.max(16, Math.min(22, 16 + scrollVelocity * 1.5))}px`,
-                      height: `${Math.max(16, Math.min(22, 16 + scrollVelocity * 1.5))}px`,
-                      boxShadow: `0 0 ${Math.max(24, Math.min(36, 24 + scrollVelocity * 3))}px rgba(16, 185, 129, ${Math.max(0.4, Math.min(0.8, 0.4 + scrollVelocity * 0.1))})`
+                      width: '18px',
+                      height: '18px',
+                      boxShadow: '0 0 28px rgba(16, 185, 129, 0.55)'
                     }}
                   />
                 )}
@@ -392,6 +399,7 @@ export function Timeline() {
                       key={node.id}
                       className="relative transition-all duration-300 pl-12 sm:pl-16"
                       ref={(el) => registerNodeRef(node.id, el)}
+                      data-node-index={index}
                     >
                       {/* Timeline circle - absolutely positioned to align with line and text */}
                       <div className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-50 w-6 h-6 sm:w-8 sm:h-8">

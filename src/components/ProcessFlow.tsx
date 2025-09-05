@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef, Suspense, useMemo, useCallback } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { parseProcessUrl } from '@/data/skillProcessMap'
@@ -8,37 +9,37 @@ import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
 import { SideDrawer } from '@/components/SideDrawer'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
-import { StakeholderAlignment } from '@/app/process/(components)/drawers/StakeholderAlignment'
-import { PersonaJourneyMapping } from '@/app/process/(components)/drawers/PersonaJourneyMapping'
-import { CompetitiveAnalysis } from '@/app/process/(components)/drawers/CompetitiveAnalysis'
-import { SystemAnalysis } from '@/app/process/(components)/drawers/SystemAnalysis'
-import { WhatIsUserResearch } from '@/app/process/(components)/drawers/WhatIsUserResearch'
-import { WhyResearchFirst } from '@/app/process/(components)/drawers/WhyResearchFirst'
-import { ChooseRightMethod } from '@/app/process/(components)/drawers/ChooseRightMethod'
-import { WhyWePrioritize } from '@/app/process/(components)/drawers/WhyWePrioritize'
-import { HowWePrioritize } from '@/app/process/(components)/drawers/HowWePrioritize'
-import { OpportunityBacklog } from '@/app/process/(components)/drawers/OpportunityBacklog'
-import { TechnicalDebtTriage } from '@/app/process/(components)/drawers/TechnicalDebtTriage'
-import { UXResearchInsightsIntake } from '@/app/process/(components)/drawers/UXResearchInsightsIntake'
-import { Wireframes } from '@/app/process/(components)/drawers/Wireframes'
-import { ClickablePrototypes } from '@/app/process/(components)/drawers/ClickablePrototypes'
-import { DesignSystems } from '@/app/process/(components)/drawers/DesignSystems'
-import { SprintPlanningBacklogGrooming } from '@/app/process/(components)/drawers/SprintPlanningBacklogGrooming'
-import { ReleasePlanningCutCandidate } from '@/app/process/(components)/drawers/ReleasePlanningCutCandidate'
-import { DevHandoffPackages } from '@/app/process/(components)/drawers/DevHandoffPackages'
-import { StakeholderDemosAcceptance } from '@/app/process/(components)/drawers/StakeholderDemosAcceptance'
-import { DailyDesignQA } from '@/app/process/(components)/drawers/DailyDesignQA'
-import { FigmaProductParityAudit } from '@/app/process/(components)/drawers/FigmaProductParityAudit'
-import { AccessibilityPerformanceQA } from '@/app/process/(components)/drawers/AccessibilityPerformanceQA'
-import { AnalyticsEventsTrackingSpec } from '@/app/process/(components)/drawers/AnalyticsEventsTrackingSpec'
-import { CrossFunctionalRiskAssessment } from '@/app/process/(components)/drawers/CrossFunctionalRiskAssessment'
-import { ReleaseReadinessReview } from '@/app/process/(components)/drawers/ReleaseReadinessReview'
-import { IncidentRollbackPlan } from '@/app/process/(components)/drawers/IncidentRollbackPlan'
-import { PostReleaseMonitoringBugSmash } from '@/app/process/(components)/drawers/PostReleaseMonitoringBugSmash'
-import { InstrumentationDrawer } from '@/app/process/(components)/drawers/InstrumentationDrawer'
-import { ExperimentationDrawer } from '@/app/process/(components)/drawers/ExperimentationDrawer'
-import { PerformanceQualityDrawer } from '@/app/process/(components)/drawers/PerformanceQualityDrawer'
-import { ContinuousImprovementDrawer } from '@/app/process/(components)/drawers/ContinuousImprovementDrawer'
+const StakeholderAlignment = dynamic(() => import('@/app/process/(components)/drawers/StakeholderAlignment').then(m => m.StakeholderAlignment), { ssr: false })
+const PersonaJourneyMapping = dynamic(() => import('@/app/process/(components)/drawers/PersonaJourneyMapping').then(m => m.PersonaJourneyMapping), { ssr: false })
+const CompetitiveAnalysis = dynamic(() => import('@/app/process/(components)/drawers/CompetitiveAnalysis').then(m => m.CompetitiveAnalysis), { ssr: false })
+const SystemAnalysis = dynamic(() => import('@/app/process/(components)/drawers/SystemAnalysis').then(m => m.SystemAnalysis), { ssr: false })
+const WhatIsUserResearch = dynamic(() => import('@/app/process/(components)/drawers/WhatIsUserResearch').then(m => m.WhatIsUserResearch), { ssr: false })
+const WhyResearchFirst = dynamic(() => import('@/app/process/(components)/drawers/WhyResearchFirst').then(m => m.WhyResearchFirst), { ssr: false })
+const ChooseRightMethod = dynamic(() => import('@/app/process/(components)/drawers/ChooseRightMethod').then(m => m.ChooseRightMethod), { ssr: false })
+const WhyWePrioritize = dynamic(() => import('@/app/process/(components)/drawers/WhyWePrioritize').then(m => m.WhyWePrioritize), { ssr: false })
+const HowWePrioritize = dynamic(() => import('@/app/process/(components)/drawers/HowWePrioritize').then(m => m.HowWePrioritize), { ssr: false })
+const OpportunityBacklog = dynamic(() => import('@/app/process/(components)/drawers/OpportunityBacklog').then(m => m.OpportunityBacklog), { ssr: false })
+const TechnicalDebtTriage = dynamic(() => import('@/app/process/(components)/drawers/TechnicalDebtTriage').then(m => m.TechnicalDebtTriage), { ssr: false })
+const UXResearchInsightsIntake = dynamic(() => import('@/app/process/(components)/drawers/UXResearchInsightsIntake').then(m => m.UXResearchInsightsIntake), { ssr: false })
+const Wireframes = dynamic(() => import('@/app/process/(components)/drawers/Wireframes').then(m => m.Wireframes), { ssr: false })
+const ClickablePrototypes = dynamic(() => import('@/app/process/(components)/drawers/ClickablePrototypes').then(m => m.ClickablePrototypes), { ssr: false })
+const DesignSystems = dynamic(() => import('@/app/process/(components)/drawers/DesignSystems').then(m => m.DesignSystems), { ssr: false })
+const SprintPlanningBacklogGrooming = dynamic(() => import('@/app/process/(components)/drawers/SprintPlanningBacklogGrooming').then(m => m.SprintPlanningBacklogGrooming), { ssr: false })
+const ReleasePlanningCutCandidate = dynamic(() => import('@/app/process/(components)/drawers/ReleasePlanningCutCandidate').then(m => m.ReleasePlanningCutCandidate), { ssr: false })
+const DevHandoffPackages = dynamic(() => import('@/app/process/(components)/drawers/DevHandoffPackages').then(m => m.DevHandoffPackages), { ssr: false })
+const StakeholderDemosAcceptance = dynamic(() => import('@/app/process/(components)/drawers/StakeholderDemosAcceptance').then(m => m.StakeholderDemosAcceptance), { ssr: false })
+const DailyDesignQA = dynamic(() => import('@/app/process/(components)/drawers/DailyDesignQA').then(m => m.DailyDesignQA), { ssr: false })
+const FigmaProductParityAudit = dynamic(() => import('@/app/process/(components)/drawers/FigmaProductParityAudit').then(m => m.FigmaProductParityAudit), { ssr: false })
+const AccessibilityPerformanceQA = dynamic(() => import('@/app/process/(components)/drawers/AccessibilityPerformanceQA').then(m => m.AccessibilityPerformanceQA), { ssr: false })
+const AnalyticsEventsTrackingSpec = dynamic(() => import('@/app/process/(components)/drawers/AnalyticsEventsTrackingSpec').then(m => m.AnalyticsEventsTrackingSpec), { ssr: false })
+const CrossFunctionalRiskAssessment = dynamic(() => import('@/app/process/(components)/drawers/CrossFunctionalRiskAssessment').then(m => m.CrossFunctionalRiskAssessment), { ssr: false })
+const ReleaseReadinessReview = dynamic(() => import('@/app/process/(components)/drawers/ReleaseReadinessReview').then(m => m.ReleaseReadinessReview), { ssr: false })
+const IncidentRollbackPlan = dynamic(() => import('@/app/process/(components)/drawers/IncidentRollbackPlan').then(m => m.IncidentRollbackPlan), { ssr: false })
+const PostReleaseMonitoringBugSmash = dynamic(() => import('@/app/process/(components)/drawers/PostReleaseMonitoringBugSmash').then(m => m.PostReleaseMonitoringBugSmash), { ssr: false })
+const InstrumentationDrawer = dynamic(() => import('@/app/process/(components)/drawers/InstrumentationDrawer').then(m => m.InstrumentationDrawer), { ssr: false })
+const ExperimentationDrawer = dynamic(() => import('@/app/process/(components)/drawers/ExperimentationDrawer').then(m => m.ExperimentationDrawer), { ssr: false })
+const PerformanceQualityDrawer = dynamic(() => import('@/app/process/(components)/drawers/PerformanceQualityDrawer').then(m => m.PerformanceQualityDrawer), { ssr: false })
+const ContinuousImprovementDrawer = dynamic(() => import('@/app/process/(components)/drawers/ContinuousImprovementDrawer').then(m => m.ContinuousImprovementDrawer), { ssr: false })
 import { IAFlowsPanel } from '@/components/IAFlowsPanel'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
