@@ -320,15 +320,15 @@ export function Timeline() {
     <section className="relative overflow-hidden">
       <div className="relative">
         {/* Section Header */}
-        <div className="mb-16">
+        <div className="mb-10 sm:mb-16">
           <Heading id="my-journey">My Journey</Heading>
-          <p className="text-zinc-600 dark:text-zinc-400 max-w-3xl mb-8">
+          <p className="text-zinc-600 dark:text-zinc-400 max-w-3xl mb-6 sm:mb-8 text-sm sm:text-base">
             A decade of building user-centered solutions across industries, 
             from startups to enterprise clients. Each role shaped my approach 
             to AI-powered product strategy.
           </p>
           
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
             <Button 
               variant="outline" 
               href="/services#my-process"
@@ -348,13 +348,13 @@ export function Timeline() {
         </div>
 
         {/* Timeline */}
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <div 
               className="space-y-16 relative"
               ref={registerTimelineRef}
             >
               {/* Timeline line with responsive rainbow effect */}
-              <div className="absolute left-6 top-0 bottom-0 w-1 bg-zinc-200 dark:bg-zinc-700 rounded-full z-10">
+              <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-px sm:w-1 bg-zinc-200 dark:bg-zinc-700 rounded-full z-10">
                 {/* Responsive rainbow gradient line */}
                 <div 
                   className="absolute top-0 left-0 w-full rounded-full transition-all duration-200 ease-out z-20"
@@ -382,7 +382,7 @@ export function Timeline() {
               </div>
               
               {/* Timeline nodes */}
-              <div className="space-y-20">
+              <div className="space-y-10 sm:space-y-20">
                 {timelineData.map((node, index) => {
                   const colors = getNodeColors(index)
                   const isActive = activeNodeIndex === index
@@ -390,20 +390,20 @@ export function Timeline() {
                   return (
                     <div 
                       key={node.id}
-                      className="relative transition-all duration-300 pl-16"
+                      className="relative transition-all duration-300 pl-12 sm:pl-16"
                       ref={(el) => registerNodeRef(node.id, el)}
                     >
                       {/* Timeline circle - absolutely positioned to align with line and text */}
-                      <div className="absolute left-2 w-8 h-8 top-1/2 transform -translate-y-1/2 z-50">
+                      <div className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-50 w-6 h-6 sm:w-8 sm:h-8">
                         {/* Glow rings for active node */}
                         {isActive && (
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className={`absolute w-12 h-12 rounded-full ${colors.cardBg} animate-pulse opacity-60`} />
-                            <div className={`absolute w-8 h-8 rounded-full ${colors.cardBg} animate-pulse opacity-40`} style={{ animationDelay: '0.5s' }} />
+                            <div className={`absolute w-10 h-10 sm:w-12 sm:h-12 rounded-full ${colors.cardBg} animate-pulse opacity-60`} />
+                            <div className={`absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full ${colors.cardBg} animate-pulse opacity-40`} style={{ animationDelay: '0.5s' }} />
                           </div>
                         )}
                         
-                        <div className={`w-8 h-8 rounded-full border-3 bg-white dark:bg-zinc-900 relative z-40 transition-all duration-300 ${
+                        <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 sm:border-3 bg-white dark:bg-zinc-900 relative z-40 transition-all duration-300 ${
                           isActive
                             ? `${colors.border} ${colors.shadow} shadow-xl ${colors.bg} scale-110`
                             : 'border-zinc-300 dark:border-zinc-600 scale-100'
@@ -416,9 +416,9 @@ export function Timeline() {
                           : 'bg-white dark:bg-zinc-800/30 shadow-md border border-zinc-200 dark:border-zinc-700 scale-100'
                       }`}>
                         {/* Title header - no top padding */}
-                        <div className="flex items-start justify-between gap-4 px-6 py-3">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between gap-2 sm:gap-4 px-4 sm:px-6 py-3">
                           <div className="flex-1">
-                            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white leading-tight">
+                            <h3 className="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-white leading-tight">
                               {node.title}
                             </h3>
                           </div>
@@ -439,11 +439,11 @@ export function Timeline() {
                         </div>
                         
                         {/* Content section */}
-                        <div className="px-6 pb-3 space-y-3">
-                          <p className="text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+                        <div className="px-4 sm:px-6 pb-3 space-y-3">
+                          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium">
                             {node.client} • {node.period}
                           </p>
-                          <p className="text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                          <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
                             {node.description}
                           </p>
                           {/* Service/Skill chips */}
@@ -461,7 +461,7 @@ export function Timeline() {
                           )}
                           {/* Only show call-to-action for actual case studies */}
                           {node.link !== '#' && (
-                            <div className="flex items-center justify-between pt-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-1">
                               <Link 
                                 href={node.link}
                                 className={`inline-flex items-center text-sm font-semibold transition-all duration-300 hover:gap-2 group ${
