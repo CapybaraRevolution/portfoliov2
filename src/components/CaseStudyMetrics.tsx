@@ -7,6 +7,8 @@ export interface MetricData {
   previousStat?: string
   change?: string
   changeType?: 'increase' | 'decrease'
+  // Optional: force positive (green) styling even for decreases (e.g., debt ↓)
+  positive?: boolean
   description?: string
 }
 
@@ -27,12 +29,25 @@ export function CaseStudyMetrics({
     const numericValue = parseInt(change.replace(/[^0-9]/g, ''))
     return numericValue >= 90
   }
+  // Responsive columns: 1 on small, 2 on md when exactly two metrics, else 3 on md+
+  const gridColsClass = metrics.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'
+
   return (
     <div className={className}>
       <h3 className="text-base font-semibold text-zinc-900 dark:text-white">{title}</h3>
-      <dl className="mt-5 grid grid-cols-1 divide-zinc-200 dark:divide-zinc-700 overflow-hidden rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 md:grid-cols-3 md:divide-x md:divide-y-0">
+      <dl className={clsx(
+        "mt-5 grid grid-cols-1 divide-zinc-200 dark:divide-zinc-700 overflow-hidden rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 md:divide-x md:divide-y-0",
+        gridColsClass
+      )}>
         {metrics.map((item) => {
           const isExceptional = isExceptionalMetric(item.change)
+          const isPositive = item.positive ?? (item.changeType === 'increase')
+          const showUpArrow = isPositive || item.changeType === 'increase'
+          const srText = isPositive
+            ? 'Improved by'
+            : item.changeType === 'increase'
+              ? 'Increased by'
+              : 'Decreased by'
           return (
           <div key={item.name} className={clsx(
             "px-4 py-5 sm:p-6 relative",
@@ -54,19 +69,18 @@ export function CaseStudyMetrics({
                   className={clsx(
                     isExceptional && item.changeType === 'increase'
                       ? 'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white shadow-lg animate-pulse'
-                      : item.changeType === 'increase' 
-                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' 
+                      : isPositive
+                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400'
                         : 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400',
                     'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0',
                   )}
                 >
-                  {item.changeType === 'increase' ? (
+                  {showUpArrow ? (
                     <ArrowUpIcon aria-hidden="true" className="mr-0.5 -ml-1 size-5 shrink-0 self-center" />
                   ) : (
                     <ArrowDownIcon aria-hidden="true" className="mr-0.5 -ml-1 size-5 shrink-0 self-center" />
                   )}
-
-                  <span className="sr-only"> {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
+                  <span className="sr-only"> {srText} </span>
                   {item.change}
                 </div>
               )}
