@@ -142,9 +142,16 @@ export function AccessibilityPerformanceQA({ className, onClose }: Accessibility
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Relying solely on automated testing (catches only 30-40%), testing accessibility as an afterthought, ignoring mobile performance constraints, accepting violations for &quot;edge cases,&quot; testing with single assistive technology
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Relying solely on automated testing (catches only 30-40%)",
+              "Testing accessibility as an afterthought",
+              "Ignoring mobile performance constraints",
+              "Accepting violations for &quot;edge cases&quot;",
+              "Testing with single assistive technology"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

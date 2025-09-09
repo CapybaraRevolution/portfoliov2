@@ -146,9 +146,18 @@ export function TechnicalDebtTriage({ className, onClose }: TechnicalDebtTriageP
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            Perfectionism pursuit: Trying to eliminate all debt instead of managing to acceptable levels · Business disconnection: Discussing debt in technical terms rather than business impact · Tool over-reliance: Depending solely on automated analysis without architectural assessment · Big bang refactoring: Attempting massive rewrites instead of incremental improvement · Debt hiding: Underestimating or ignoring debt to appear more productive · Allocation erosion: Allowing feature pressure to eliminate debt paydown time · Metric gaming: Fixing easy issues to improve metrics while ignoring critical debt
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Perfectionism pursuit: Trying to eliminate all debt instead of managing to acceptable levels",
+              "Business disconnection: Discussing debt in technical terms rather than business impact",
+              "Tool over-reliance: Depending solely on automated analysis without architectural assessment",
+              "Big bang refactoring: Attempting massive rewrites instead of incremental improvement",
+              "Debt hiding: Underestimating or ignoring debt to appear more productive",
+              "Allocation erosion: Allowing feature pressure to eliminate debt paydown time",
+              "Metric gaming: Fixing easy issues to improve metrics while ignoring critical debt"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

@@ -138,9 +138,16 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Avoid over-engineering the backlog with excessive detail upfront—maintain appropriate fidelity based on timeline proximity. Don't let the backlog become a graveyard of stale items; regularly purge outdated requirements and reassess priorities based on current business context. Resist the temptation to plan too far ahead in detail, as market conditions and technical discoveries will inevitably shift priorities. Prevent stakeholder bypass behaviors by ensuring the backlog remains the authoritative source for all development work, not a parallel system to urgent requests. Finally, don't sacrifice quality for quantity—a smaller, well-maintained backlog with clear priorities outperforms a massive, unwieldy collection of poorly defined opportunities.
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Over-engineering the backlog with excessive detail upfront—maintain appropriate fidelity based on timeline proximity",
+              "Letting the backlog become a graveyard of stale items; regularly purge outdated requirements and reassess priorities",
+              "Planning too far ahead in detail, as market conditions and technical discoveries will inevitably shift priorities",
+              "Allowing stakeholder bypass behaviors by ensuring the backlog remains the authoritative source for all development work",
+              "Sacrificing quality for quantity—a smaller, well-maintained backlog outperforms a massive, unwieldy collection"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

@@ -1,44 +1,45 @@
 'use client'
 
 import React, { useState, useEffect, useRef, Suspense, useMemo, useCallback } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { parseProcessUrl, getNavigationAnalytics } from '@/data/skillProcessMap'
+import { parseProcessUrl } from '@/data/skillProcessMap'
 import { motion, useInView } from 'framer-motion'
 import { NavigationChip } from '@/components/NavigationChip'
 import { SideDrawer } from '@/components/SideDrawer'
 import { ComponentDrawer } from '@/components/ComponentDrawer'
-import { StakeholderAlignment } from '@/app/process/(components)/drawers/StakeholderAlignment'
-import { PersonaJourneyMapping } from '@/app/process/(components)/drawers/PersonaJourneyMapping'
-import { CompetitiveAnalysis } from '@/app/process/(components)/drawers/CompetitiveAnalysis'
-import { SystemAnalysis } from '@/app/process/(components)/drawers/SystemAnalysis'
-import { WhatIsUserResearch } from '@/app/process/(components)/drawers/WhatIsUserResearch'
-import { WhyResearchFirst } from '@/app/process/(components)/drawers/WhyResearchFirst'
-import { ChooseRightMethod } from '@/app/process/(components)/drawers/ChooseRightMethod'
-import { WhyWePrioritize } from '@/app/process/(components)/drawers/WhyWePrioritize'
-import { HowWePrioritize } from '@/app/process/(components)/drawers/HowWePrioritize'
-import { OpportunityBacklog } from '@/app/process/(components)/drawers/OpportunityBacklog'
-import { TechnicalDebtTriage } from '@/app/process/(components)/drawers/TechnicalDebtTriage'
-import { UXResearchInsightsIntake } from '@/app/process/(components)/drawers/UXResearchInsightsIntake'
-import { Wireframes } from '@/app/process/(components)/drawers/Wireframes'
-import { ClickablePrototypes } from '@/app/process/(components)/drawers/ClickablePrototypes'
-import { DesignSystems } from '@/app/process/(components)/drawers/DesignSystems'
-import { SprintPlanningBacklogGrooming } from '@/app/process/(components)/drawers/SprintPlanningBacklogGrooming'
-import { ReleasePlanningCutCandidate } from '@/app/process/(components)/drawers/ReleasePlanningCutCandidate'
-import { DevHandoffPackages } from '@/app/process/(components)/drawers/DevHandoffPackages'
-import { StakeholderDemosAcceptance } from '@/app/process/(components)/drawers/StakeholderDemosAcceptance'
-import { DailyDesignQA } from '@/app/process/(components)/drawers/DailyDesignQA'
-import { FigmaProductParityAudit } from '@/app/process/(components)/drawers/FigmaProductParityAudit'
-import { AccessibilityPerformanceQA } from '@/app/process/(components)/drawers/AccessibilityPerformanceQA'
-import { AnalyticsEventsTrackingSpec } from '@/app/process/(components)/drawers/AnalyticsEventsTrackingSpec'
-import { CrossFunctionalRiskAssessment } from '@/app/process/(components)/drawers/CrossFunctionalRiskAssessment'
-import { ReleaseReadinessReview } from '@/app/process/(components)/drawers/ReleaseReadinessReview'
-import { IncidentRollbackPlan } from '@/app/process/(components)/drawers/IncidentRollbackPlan'
-import { PostReleaseMonitoringBugSmash } from '@/app/process/(components)/drawers/PostReleaseMonitoringBugSmash'
-import { InstrumentationDrawer } from '@/app/process/(components)/drawers/InstrumentationDrawer'
-import { ExperimentationDrawer } from '@/app/process/(components)/drawers/ExperimentationDrawer'
-import { PerformanceQualityDrawer } from '@/app/process/(components)/drawers/PerformanceQualityDrawer'
-import { ContinuousImprovementDrawer } from '@/app/process/(components)/drawers/ContinuousImprovementDrawer'
+const StakeholderAlignment = dynamic(() => import('@/app/process/(components)/drawers/StakeholderAlignment').then(m => m.StakeholderAlignment), { ssr: false })
+const PersonaJourneyMapping = dynamic(() => import('@/app/process/(components)/drawers/PersonaJourneyMapping').then(m => m.PersonaJourneyMapping), { ssr: false })
+const CompetitiveAnalysis = dynamic(() => import('@/app/process/(components)/drawers/CompetitiveAnalysis').then(m => m.CompetitiveAnalysis), { ssr: false })
+const SystemAnalysis = dynamic(() => import('@/app/process/(components)/drawers/SystemAnalysis').then(m => m.SystemAnalysis), { ssr: false })
+const WhatIsUserResearch = dynamic(() => import('@/app/process/(components)/drawers/WhatIsUserResearch').then(m => m.WhatIsUserResearch), { ssr: false })
+const WhyResearchFirst = dynamic(() => import('@/app/process/(components)/drawers/WhyResearchFirst').then(m => m.WhyResearchFirst), { ssr: false })
+const ChooseRightMethod = dynamic(() => import('@/app/process/(components)/drawers/ChooseRightMethod').then(m => m.ChooseRightMethod), { ssr: false })
+const WhyWePrioritize = dynamic(() => import('@/app/process/(components)/drawers/WhyWePrioritize').then(m => m.WhyWePrioritize), { ssr: false })
+const HowWePrioritize = dynamic(() => import('@/app/process/(components)/drawers/HowWePrioritize').then(m => m.HowWePrioritize), { ssr: false })
+const OpportunityBacklog = dynamic(() => import('@/app/process/(components)/drawers/OpportunityBacklog').then(m => m.OpportunityBacklog), { ssr: false })
+const TechnicalDebtTriage = dynamic(() => import('@/app/process/(components)/drawers/TechnicalDebtTriage').then(m => m.TechnicalDebtTriage), { ssr: false })
+const UXResearchInsightsIntake = dynamic(() => import('@/app/process/(components)/drawers/UXResearchInsightsIntake').then(m => m.UXResearchInsightsIntake), { ssr: false })
+const Wireframes = dynamic(() => import('@/app/process/(components)/drawers/Wireframes').then(m => m.Wireframes), { ssr: false })
+const ClickablePrototypes = dynamic(() => import('@/app/process/(components)/drawers/ClickablePrototypes').then(m => m.ClickablePrototypes), { ssr: false })
+const DesignSystems = dynamic(() => import('@/app/process/(components)/drawers/DesignSystems').then(m => m.DesignSystems), { ssr: false })
+const SprintPlanningBacklogGrooming = dynamic(() => import('@/app/process/(components)/drawers/SprintPlanningBacklogGrooming').then(m => m.SprintPlanningBacklogGrooming), { ssr: false })
+const ReleasePlanningCutCandidate = dynamic(() => import('@/app/process/(components)/drawers/ReleasePlanningCutCandidate').then(m => m.ReleasePlanningCutCandidate), { ssr: false })
+const DevHandoffPackages = dynamic(() => import('@/app/process/(components)/drawers/DevHandoffPackages').then(m => m.DevHandoffPackages), { ssr: false })
+const StakeholderDemosAcceptance = dynamic(() => import('@/app/process/(components)/drawers/StakeholderDemosAcceptance').then(m => m.StakeholderDemosAcceptance), { ssr: false })
+const DailyDesignQA = dynamic(() => import('@/app/process/(components)/drawers/DailyDesignQA').then(m => m.DailyDesignQA), { ssr: false })
+const FigmaProductParityAudit = dynamic(() => import('@/app/process/(components)/drawers/FigmaProductParityAudit').then(m => m.FigmaProductParityAudit), { ssr: false })
+const AccessibilityPerformanceQA = dynamic(() => import('@/app/process/(components)/drawers/AccessibilityPerformanceQA').then(m => m.AccessibilityPerformanceQA), { ssr: false })
+const AnalyticsEventsTrackingSpec = dynamic(() => import('@/app/process/(components)/drawers/AnalyticsEventsTrackingSpec').then(m => m.AnalyticsEventsTrackingSpec), { ssr: false })
+const CrossFunctionalRiskAssessment = dynamic(() => import('@/app/process/(components)/drawers/CrossFunctionalRiskAssessment').then(m => m.CrossFunctionalRiskAssessment), { ssr: false })
+const ReleaseReadinessReview = dynamic(() => import('@/app/process/(components)/drawers/ReleaseReadinessReview').then(m => m.ReleaseReadinessReview), { ssr: false })
+const IncidentRollbackPlan = dynamic(() => import('@/app/process/(components)/drawers/IncidentRollbackPlan').then(m => m.IncidentRollbackPlan), { ssr: false })
+const PostReleaseMonitoringBugSmash = dynamic(() => import('@/app/process/(components)/drawers/PostReleaseMonitoringBugSmash').then(m => m.PostReleaseMonitoringBugSmash), { ssr: false })
+const InstrumentationDrawer = dynamic(() => import('@/app/process/(components)/drawers/InstrumentationDrawer').then(m => m.InstrumentationDrawer), { ssr: false })
+const ExperimentationDrawer = dynamic(() => import('@/app/process/(components)/drawers/ExperimentationDrawer').then(m => m.ExperimentationDrawer), { ssr: false })
+const PerformanceQualityDrawer = dynamic(() => import('@/app/process/(components)/drawers/PerformanceQualityDrawer').then(m => m.PerformanceQualityDrawer), { ssr: false })
+const ContinuousImprovementDrawer = dynamic(() => import('@/app/process/(components)/drawers/ContinuousImprovementDrawer').then(m => m.ContinuousImprovementDrawer), { ssr: false })
 import { IAFlowsPanel } from '@/components/IAFlowsPanel'
 import { PMDashboard } from '@/components/PMDashboard'
 import { AccordionPanel } from '@/components/AccordionPanel'
@@ -131,105 +132,6 @@ function slugToTitle(slug: string): string {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }
-
-// Helper function to determine if any element should be highlighted
-const isElementHighlighted = (elementId: string, highlightedTarget: string | null, currentStepId: number, isHighlightActive: boolean = false): boolean => {
-  if (!highlightedTarget || !isHighlightActive) return false
-  
-  // Direct target matching for new deep-linking system
-  return elementId === highlightedTarget
-}
-
-// Legacy function for backward compatibility with existing skill-based highlighting
-const isCardHighlighted = (cardSlug: string, highlightedTarget: string | null, currentStepId: number, isHighlightActive: boolean = false): boolean => {
-  return isElementHighlighted(cardSlug, highlightedTarget, currentStepId, isHighlightActive)
-}
-
-// Map standardized skill IDs to card slugs for each step (kept for legacy skill highlighting)
-const skillToCardMapping: Record<string, Record<string, string[]>> = {
-    '1': { // Discovery & Strategy
-      'stakeholder-alignment': ['stakeholder-management', 'communication'],
-      'persona-journey-mapping': ['user-research', 'design-thinking'],
-      'competitive-analysis': ['competitive-analysis', 'market-research-analysis'],
-      'system-analysis': ['systems-architecture', 'technical-feasibility-analysis', 'api-integration-design'],
-      'product-vision': ['product-vision'],
-      'product-discovery': ['product-discovery', 'user-research'],
-      'okrs-goal-setting': ['okrs-goal-setting'],
-      'user-research': ['user-research', 'persona-journey-mapping'],
-      'design-thinking': ['design-thinking', 'persona-journey-mapping'],
-      'communication': ['communication', 'stakeholder-alignment'],
-      'stakeholder-management': ['stakeholder-management', 'stakeholder-alignment'],
-      'market-research-analysis': ['market-research-analysis', 'competitive-analysis'],
-      'product-market-fit': ['product-market-fit'],
-      'cross-functional-leadership': ['cross-functional-leadership'],
-      'technical-feasibility-analysis': ['technical-feasibility-analysis', 'system-analysis'],
-      'api-integration-design': ['api-integration-design', 'system-analysis']
-    },
-    '2': { // Strategy & Planning
-      'product-roadmapping': ['product-roadmapping'],
-      'feature-prioritization': ['feature-prioritization', 'deployment-1', 'deployment-2', 'deployment-3'],
-      'go-to-market-strategy': ['go-to-market-strategy'],
-      'monetization-pricing': ['monetization-pricing'],
-      'growth-strategy': ['growth-strategy'],
-      'project-management': ['project-management', 'deployment-4', 'deployment-5'],
-      'release-planning': ['release-planning', 'deployment-6'],
-      'influencing-without-authority': ['influencing-without-authority'],
-      // Deployment-specific mappings
-      'deployment-1': ['feature-prioritization'],
-      'deployment-2': ['feature-prioritization'], 
-      'deployment-3': ['feature-prioritization'],
-      'deployment-4': ['project-management'],
-      'deployment-5': ['project-management'],
-      'deployment-6': ['release-planning']
-    },
-    '3': { // Design & Prototyping
-      'wireframing': ['wireframing', 'wireframes'],
-      'clickable-prototypes': ['prototyping', 'usability-testing'],
-      'design-systems': ['ux-design-principles', 'systems-architecture'],
-      'prototyping': ['prototyping', 'clickable-prototypes'],
-      'requirements-definition': ['requirements-definition'],
-      'product-requirement-docs': ['product-requirement-docs'],
-      'ai-agent-design': ['ai-agent-design'],
-      'usability-testing': ['usability-testing', 'clickable-prototypes']
-    },
-    '4': { // Build & Ship
-      'systems-architecture': ['systems-architecture'],
-      'software-development-lifecycle': ['software-development-lifecycle'],
-      'api-integration-design': ['api-integration-design'],
-      'product-requirement-docs': ['product-requirement-docs'],
-      'generative-ai-integration': ['generative-ai-integration'],
-      'prompt-engineering': ['prompt-engineering'],
-      'ai-model-fine-tuning': ['ai-model-fine-tuning'],
-      'agile-methodologies': ['agile-methodologies'],
-      'cross-functional-leadership': ['cross-functional-leadership'],
-      'operations-scaling': ['operations-scaling'],
-      'iterative-development': ['iterative-development']
-    },
-    '5': { // Launch & Optimization
-      'instrumentation': ['data-analytics-metrics', 'ab-testing-experimentation'],
-      'experimentation': ['ab-testing-experimentation', 'data-driven-decision-making'],
-      'performance-quality': ['technical-feasibility-analysis', 'usability-testing'],
-      'continuous-improvement': ['iterative-development', 'data-driven-decision-making'],
-      // Additional step 5 skills
-      'data-analytics-metrics': ['data-analytics-metrics', 'instrumentation'],
-      'ab-testing-experimentation': ['ab-testing-experimentation', 'experimentation'],
-      'data-driven-decision-making': ['data-driven-decision-making', 'experimentation', 'continuous-improvement'],
-      'usability-testing': ['usability-testing', 'performance-quality'],
-      'product-market-fit': ['product-market-fit'],
-      'growth-strategy': ['growth-strategy'],
-      'storytelling-presentation': ['storytelling-presentation'],
-      'operations-scaling': ['operations-scaling'],
-      'iterative-development': ['iterative-development', 'continuous-improvement'],
-      // Step5 specific items (generic mappings for launch & optimization items)
-      'step5-item-1': ['data-analytics-metrics', 'instrumentation'],
-      'step5-item-2': ['ab-testing-experimentation'],
-      'step5-item-3': ['usability-testing'],
-      'step5-item-4': ['data-driven-decision-making'],
-      'step5-item-5': ['operations-scaling'],
-      'step5-item-6': ['iterative-development']
-    }
-  }
-
 const processSteps: ProcessStep[] = [
   {
     id: 1,
@@ -238,7 +140,7 @@ const processSteps: ProcessStep[] = [
     description: 'Before I draw a single box or line, I map the terrain - your goals, your users, and the tech guardrails we can\'t ignore.',
     skills: ['User Interviews', 'Stakeholder Alignment', 'Market Research', 'Competitive Analysis', 'Opportunity Framing'],
     cta: {
-      text: 'See a real discovery charter →',
+      text: 'See Projects Where I Used These Skills →',
       href: '/work/overview?skills=Product%20Vision'
     }
   },
@@ -249,8 +151,8 @@ const processSteps: ProcessStep[] = [
     description: 'Insight turns into blueprint - clear flows, a ruthlessly prioritised backlog, and a timeline everyone can believe.',
     skills: ['Roadmapping', 'Information Architecture', 'User Flows', 'Release Planning', 'Risk Surfacing'],
     cta: {
-      text: 'View a roadmap sample →',
-      href: '/work/overview?skills=Roadmapping'
+      text: 'See Projects Where I Used These Skills →',
+      href: '/work/overview?skills=Roadmap'
     }
   },
   {
@@ -260,7 +162,7 @@ const processSteps: ProcessStep[] = [
     description: 'Ideas become tangibles - wireframes, interactive prototypes, and a living design system.',
     skills: ['Wireframing', 'Prototyping', 'Design Systems', 'Accessibility', 'A/B Testing'],
     cta: {
-      text: 'Test a live prototype →',
+      text: 'See Projects Where I Used These Skills →',
       href: '/work/overview?skills=Prototyping'
     }
   },
@@ -271,8 +173,8 @@ const processSteps: ProcessStep[] = [
     description: 'Design isn\'t done at hand-off. I pair with engineers and QA to ship pixel-perfect, test-covered increments.',
     skills: ['Cross-team Facilitation', 'Scope Negotiation', 'QA Collaboration', 'Event Instrumentation'],
     cta: {
-      text: 'Read a sprint report →',
-      href: '/work/overview?skills=Cross-team%20Facilitation'
+      text: 'See Projects Where I Used These Skills →',
+      href: '/work/overview?skills=System%20Design'
     }
   },
   {
@@ -282,8 +184,8 @@ const processSteps: ProcessStep[] = [
     description: 'After launch, we measure, learn, and iterate – using data and experiments to keep moving the needle.',
     skills: ['KPI Dashboards', 'Funnel Analysis', 'Conversion Optimisation', 'AI Prompt Design'],
     cta: {
-      text: 'See optimisation case study →',
-      href: '/work/overview?skills=Funnel%20Analysis'
+      text: 'See Projects Where I Used These Skills →',
+      href: '/work/overview?skills=Product%20Analytics'
     }
   }
 ]
@@ -693,7 +595,7 @@ function ProgressTracker({
             {/* Pulse animation for active step - only on client */}
             {step.id === activeStep && isMounted && (
               <motion.div
-                className="absolute -inset-2 rounded-lg bg-emerald-500/10 dark:bg-emerald-400/10"
+                className="absolute -inset-2 rounded-lg bg-emerald-500/10 dark:bg-emerald-400/10 pointer-events-none"
                 animate={{
                   scale: [1, 1.2, 1],
                   opacity: [0.3, 0.1, 0.3]
@@ -931,8 +833,7 @@ function Step1Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
-            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id, isHighlightActive)}
-            data-highlight-target={card.slug}
+            
           />
         ))}
       </div>
@@ -1329,23 +1230,15 @@ function PrioritizationPanel({ highlightedSkillId, isHighlightActive }: { highli
                   {/* Main content row */}
                   <tr 
                     data-deployment-index={index}
-                    data-highlight-target={`deployment-${deployment.id}`}
                     className={`deployment-row-main cursor-pointer transition-transform transition-opacity duration-200 ease-out ${
                       hoveredIndex === index ? 'bg-zinc-50 dark:bg-zinc-800/50' : ''
-                    } ${
-                      isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2, isHighlightActive) 
-                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50' 
-                        : ''
                     } ${
                       isAnimating || !isLoaded
                         ? 'transform translate-y-12 opacity-0' 
                         : 'transform translate-y-0 opacity-100'
                     }`}
                     style={{
-                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`,
-                      ...(isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2, isHighlightActive) ? {
-                        animation: 'highlight-pulse 2s ease-in-out 4'
-                      } : {})
+                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
                     onMouseEnter={() => setHoveredIndex(index)}
@@ -1399,10 +1292,7 @@ function PrioritizationPanel({ highlightedSkillId, isHighlightActive }: { highli
                         : 'transform translate-y-0 opacity-100'
                     }`}
                     style={{
-                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`,
-                      ...(isElementHighlighted(`deployment-${deployment.id}`, highlightedSkillId, 2, isHighlightActive) ? {
-                        animation: 'highlight-pulse 2s ease-in-out 4'
-                      } : {})
+                      transitionDelay: isAnimating || !isLoaded ? '0ms' : `${index * 75}ms`
                     }}
                     onClick={() => handleDeploymentClick(deployment)}
                     onMouseEnter={() => setHoveredIndex(index)}
@@ -1714,8 +1604,7 @@ function Step3Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
-            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id, isHighlightActive)}
-            data-highlight-target={card.slug}
+            
           />
         ))}
       </div>
@@ -2144,15 +2033,7 @@ function Step4Layout({
                 {currentItems.map((item) => (
                   <tr 
                     key={item.id} 
-                    data-highlight-target={`step5-item-${item.id}`}
-                    className={`group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer ${
-                      isElementHighlighted(`step5-item-${item.id}`, highlightedSkillId, 5, isHighlightActive) 
-                        ? 'bg-emerald-50 dark:bg-emerald-900/20 ring-2 ring-emerald-500/50' 
-                        : ''
-                    }`}
-                    style={isElementHighlighted(`step5-item-${item.id}`, highlightedSkillId, 5, isHighlightActive) ? {
-                      animation: 'highlight-pulse 2s ease-in-out 4'
-                    } : undefined}
+                    className={`group hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors duration-150 cursor-pointer`}
                     onClick={() => onCardClick(item.slug)}
                   >
                     <td className="py-4 pr-8 pl-4 sm:pl-6">
@@ -2305,8 +2186,7 @@ function Step5Layout({
             icon={card.icon}
             pattern={card.pattern}
             onClick={() => onCardClick(card.slug)}
-            isHighlighted={isCardHighlighted(card.slug, highlightedSkillId, step.id, isHighlightActive)}
-            data-highlight-target={card.slug}
+            
           />
         ))}
       </div>
@@ -2373,160 +2253,41 @@ function ProcessFlowContent() {
   const [selectedDrawer, setSelectedDrawer] = useState<string | null>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   
-  // State for skill highlighting
-  const [highlightedSkillId, setHighlightedSkillId] = useState<string | null>(null)
-  const [isHighlightActive, setIsHighlightActive] = useState(false)
-  const highlightTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  // Highlighting disabled
   
   // State for tab parameter (Step 2)
   const [initialTab, setInitialTab] = useState<string | null>(null)
 
-  // URL parameter handling with deep-linking support
+  // URL parameter handling (highlight disabled)
   useEffect(() => {
     const urlParams = parseProcessUrl(searchParams)
     const panel = searchParams.get('panel')
     const open = searchParams.get('open')
-    
-    // Priority: highlight parameter takes precedence (no auto-open drawers)
-    if (urlParams.highlight) {
-      // Clear any open drawers when highlight is present
-      setIsDrawerOpen(false)
-      setSelectedDrawer(null)
-      
-      // Set highlight state
-      setHighlightedSkillId(urlParams.highlight)
-      setIsHighlightActive(true)
-      
-      // Start highlight timeout (8 seconds)
-      if (highlightTimeoutRef.current) {
-        clearTimeout(highlightTimeoutRef.current)
-      }
-      highlightTimeoutRef.current = setTimeout(() => {
-        setIsHighlightActive(false)
-      }, 8000)
-      
-      // Scroll into view after a brief delay to ensure rendering
-      setTimeout(() => {
-        const highlightedElement = document.querySelector(`[data-highlight-target="${urlParams.highlight}"]`)
-        if (highlightedElement) {
-          highlightedElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          })
-          
-          // Set ARIA focus for keyboard users
-          const focusTarget = highlightedElement.querySelector('h3, h4, .card-title, [role="button"]') as HTMLElement
-          if (focusTarget) {
-            focusTarget.focus()
-            focusTarget.setAttribute('aria-live', 'polite')
-            focusTarget.setAttribute('aria-describedby', 'highlight-instructions')
-          }
-        }
-      }, 100)
-      
-      // Analytics: track skill-to-process navigation
-      try {
-        const { skillProcessMap } = require('@/data/skillProcessMap')
-        const skillId = Object.entries(skillProcessMap)
-          .find(([_, mapping]: [string, any]) => mapping.target === urlParams.highlight)?.[0]
-        
-        if (skillId) {
-          const analytics = getNavigationAnalytics(skillId)
-          if (analytics) {
-            // TODO: Replace with actual analytics implementation
-            console.log('Analytics: skill_to_process_nav', analytics)
-          }
-        }
-      } catch (error) {
-        console.warn('Analytics tracking failed:', error)
-      }
-    }
-    // Handle legacy panel/open parameters (auto-open drawers)
-    else if (panel) {
+
+    if (panel) {
       setSelectedDrawer(panel)
       setIsDrawerOpen(true)
-      setHighlightedSkillId(null)
-      setIsHighlightActive(false)
-    }
-    else if (open) {
+    } else if (open) {
       setSelectedDrawer(open)
       setIsDrawerOpen(true)
-      setHighlightedSkillId(null)
-      setIsHighlightActive(false)
     } else {
       setIsDrawerOpen(false)
       setSelectedDrawer(null)
-      if (!urlParams.highlight) {
-        setHighlightedSkillId(null)
-
-        setIsHighlightActive(false)
-      }
     }
-    
-    // Handle step parameter
+
     if (urlParams.step) {
       setActiveStep(urlParams.step)
     }
-    
-    // Handle tab parameter
+
     setInitialTab(urlParams.tab)
   }, [searchParams])
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (highlightTimeoutRef.current) {
-        clearTimeout(highlightTimeoutRef.current)
-      }
-    }
-  }, [])
+  // No highlight cleanup needed
 
-  // Esc key handler to clear highlights
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isHighlightActive) {
-        setIsHighlightActive(false)
-        if (highlightTimeoutRef.current) {
-          clearTimeout(highlightTimeoutRef.current)
-        }
-      }
-    }
-
-    document.addEventListener('keydown', handleEscKey)
-    return () => document.removeEventListener('keydown', handleEscKey)
-  }, [isHighlightActive])
-
-  // Clear highlight when step changes
-  useEffect(() => {
-    if (isHighlightActive) {
-      setIsHighlightActive(false)
-      if (highlightTimeoutRef.current) {
-        clearTimeout(highlightTimeoutRef.current)
-      }
-    }
-  }, [activeStep])
-
-  // Enhanced card click handler with analytics
+  // Basic card click passthrough
   const handleCardClickWithAnalytics = useCallback((title: string) => {
-    // Analytics: track highlight click
-    if (isHighlightActive && highlightedSkillId) {
-      console.log('Analytics: process_highlight_click', {
-        target: title,
-        highlightedSkill: highlightedSkillId
-      })
-    }
-    
-    // Clear highlight when user clicks
-    if (isHighlightActive) {
-      setIsHighlightActive(false)
-      if (highlightTimeoutRef.current) {
-        clearTimeout(highlightTimeoutRef.current)
-      }
-    }
-    
-    // Proceed with normal card click
     handleCardClick(title)
-  }, [isHighlightActive, highlightedSkillId])
+  }, [])
 
   // Drawer handlers for all steps
   const handleCardClick = (title: string) => {
@@ -2556,7 +2317,10 @@ function ProcessFlowContent() {
     // Remove panel parameter from URL
     const url = new URL(window.location.href)
     url.searchParams.delete('panel')
+    url.searchParams.delete('open') // legacy param
     window.history.pushState(null, '', url.toString())
+
+    // No highlight to clear
   }
 
   // Handle URL hash sync
@@ -2575,12 +2339,23 @@ function ProcessFlowContent() {
 
   const handleStepClick = (stepId: number) => {
     setActiveStep(stepId)
-    
-    // Update URL without causing a jump
-    window.history.replaceState(null, '', `#step-${stepId}`)
-    
+
+    // Close any open drawers and strip drawer params
+    setIsDrawerOpen(false)
+    setSelectedDrawer(null)
+    try {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('panel')
+      url.searchParams.delete('open')
+      // Keep URL param in sync so future searchParam changes don't reset the step
+      url.searchParams.set('step', String(stepId))
+      // Also keep hash in sync for anchor navigation
+      url.hash = `step-${stepId}`
+      window.history.replaceState(null, '', url.toString())
+    } catch {}
+
     // Maintain scroll position by scrolling to top smoothly
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    try { window.scrollTo({ top: 0, behavior: 'auto' }) } catch {}
   }
 
   const currentStep = processSteps.find(step => step.id === activeStep) || processSteps[0]
@@ -2604,24 +2379,14 @@ function ProcessFlowContent() {
           step={currentStep}
           selectedDrawer={selectedDrawer}
           isDrawerOpen={isDrawerOpen}
-          onCardClick={handleCardClick}
+          onCardClick={handleCardClickWithAnalytics}
           onDrawerClose={handleDrawerClose}
-          highlightedSkillId={highlightedSkillId}
-          isHighlightActive={isHighlightActive}
+          highlightedSkillId={null}
+          isHighlightActive={false}
           initialTab={initialTab}
         />
         
-        {/* Hidden ARIA live region for screen reader announcements */}
-        <div 
-          id="highlight-instructions" 
-          className="sr-only" 
-          aria-live="polite"
-        >
-          {isHighlightActive && highlightedSkillId ? 
-            `Highlighted: ${slugToTitle(highlightedSkillId)} - press Enter to open details.` : 
-            ''
-          }
-        </div>
+        {/* Highlight disabled */}
         
         {/* Skills and CTA */}
         <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">

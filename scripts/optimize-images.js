@@ -2,14 +2,15 @@ import fs from 'fs'
 import path from 'path'
 import sharp from 'sharp'
 
-const root = 'public/images/case-studies'
+const root = 'public/images'
+const MAX_W = 2880  // Increased from 1920 for better Retina support
 
 const walk = (d) => fs.readdirSync(d).flatMap(f => {
   const p = path.join(d, f)
   return fs.statSync(p).isDirectory() ? walk(p) : [p]
 })
 
-console.log('🖼️  Optimizing case study images...')
+console.log('🖼️  Optimizing images...')
 
 for (const f of walk(root)) {
   if (!/\.(jpe?g|png)$/i.test(f)) continue
@@ -23,16 +24,24 @@ for (const f of walk(root)) {
   const outAvif = f.replace(/\.(jpe?g|png)$/i, '.avif')
   
   try {
-    // Generate WebP version
+    // Generate WebP version with adaptive quality based on source size
+    const webpQuality = stats.size > 500 * 1024 ? 85 : 90  // 85% for files over 500KB, 90% for smaller
     await sharp(f)
-      .resize({ width: 1920, withoutEnlargement: true })
-      .webp({ quality: 78 })
+      .resize({ width: MAX_W, withoutEnlargement: true })
+      .webp({ 
+        quality: webpQuality,  // Adaptive quality for size optimization
+        effort: 6,             // Better compression algorithm
+        smartSubsample: false  // Preserve detail
+      })
       .toFile(outWebp)
     
-    // Generate AVIF version  
+    // Generate AVIF version with optimized quality
     await sharp(f)
-      .resize({ width: 1920, withoutEnlargement: true })
-      .avif({ quality: 48 })
+      .resize({ width: MAX_W, withoutEnlargement: true })
+      .avif({ 
+        quality: 70,           // 70 is plenty crisp, smaller than 75
+        effort: 6              // Better compression
+      })
       .toFile(outAvif)
     
     const webpStats = fs.statSync(outWebp)

@@ -143,9 +143,18 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Framework rigidity: Applying frameworks without considering context or exceptions · Over-precision: Creating false accuracy with excessive decimal places in scoring · Gaming the system: Manipulating inputs to achieve desired prioritization outcomes · Single framework dependence: Using one framework for all situations regardless of fit · Calibration drift: Allowing scoring interpretations to diverge over time · Documentation gaps: Failing to record rationale for future learning · Stakeholder exclusion: Not involving key perspectives in scoring processes
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Framework rigidity: Applying frameworks without considering context or exceptions",
+              "Over-precision: Creating false accuracy with excessive decimal places in scoring",
+              "Gaming the system: Manipulating inputs to achieve desired prioritization outcomes",
+              "Single framework dependence: Using one framework for all situations regardless of fit",
+              "Calibration drift: Allowing scoring interpretations to diverge over time",
+              "Documentation gaps: Failing to record rationale for future learning",
+              "Stakeholder exclusion: Not involving key perspectives in scoring processes"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

@@ -133,9 +133,16 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Treating review as rubber stamp exercise, missing key stakeholder sign-offs, unclear go/no-go criteria, accepting &quot;almost ready&quot; status, skipping documentation updates
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Treating review as rubber stamp exercise",
+              "Missing key stakeholder sign-offs",
+              "Unclear go/no-go criteria",
+              "Accepting \"almost ready\" status",
+              "Skipping documentation updates"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

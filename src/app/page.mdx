@@ -22,12 +22,16 @@ export const sections = [
 <HeroPattern />
 
 <div className="not-prose mb-12 flex justify-center">
-  <EnhancedPhoto 
-    src={kyleMcGrawPhoto}
-    alt="Kyle McGraw - Product Manager & UX Designer"
-    width={320}
-    height={400}
-  />
+  <div className="w-full max-w-[420px]">
+    <EnhancedPhoto 
+      src={kyleMcGrawPhoto}
+      alt="Kyle McGraw - Product Manager & UX Designer"
+      width={320}
+      height={400}
+      priority
+      sizes="(max-width: 640px) 80vw, 420px"
+    />
+  </div>
 </div>
 
 # Who Am I?
@@ -35,10 +39,10 @@ export const sections = [
 My name is Kyle McGraw, and I&apos;m a Product Manager & UX Designer. I help companies build better digital products through user-centered design, strategic thinking, and data-driven decision making. With expertise in product management, UX design, and business analysis, I bridge the gap between user needs and business goals. {{ className: 'lead' }}
 
 <div className="not-prose mt-6 mb-16 flex gap-3">
-  <Button href="/case-studies/ecommerce" arrow="right">
+  <Button href="/work/overview" arrow="right">
     <>View My Work</>
   </Button>
-  <Button href="/contact" variant="outline">
+  <Button href="https://www.linkedin.com/in/kyleryanmcgraw/" variant="outline">
     <>Let&apos;s Connect</>
   </Button>
 </div>
@@ -58,3 +62,4 @@ I specialize in transforming complex business requirements into intuitive user e
 <Timeline />
 
 <Testimonials />
+export const dynamic = 'error'

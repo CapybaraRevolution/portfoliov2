@@ -9,12 +9,15 @@ import {
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 import { GridPattern } from '@/components/GridPattern'
+import { IMAGE_SIZES } from '@/lib/imageSizes'
 
 interface EnhancedPhotoProps {
   src: any
   alt: string
   width: number
   height: number
+  priority?: boolean
+  sizes?: string
 }
 
 function ElectricalPattern({
@@ -157,7 +160,7 @@ function FloatingParticles() {
   )
 }
 
-export function EnhancedPhoto({ src, alt, width, height }: EnhancedPhotoProps) {
+export function EnhancedPhoto({ src, alt, width, height, priority = false, sizes = IMAGE_SIZES.contentMax1200 }: EnhancedPhotoProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   let mouseX = useMotionValue(0)
@@ -229,12 +232,13 @@ export function EnhancedPhoto({ src, alt, width, height }: EnhancedPhotoProps) {
           <Image
             src={src}
             alt={alt}
-            className="relative z-10 object-cover transition-all duration-700 group-hover:scale-[1.02]"
-            priority
+            className="relative z-10 w-full h-auto transition-all duration-700 group-hover:scale-[1.02]"
+            priority={priority}
             placeholder="blur"
             width={width}
             height={height}
-            style={{ width, height }}
+            sizes={sizes}
+            quality={90}
           />
           
           {/* Subtle Overlay for Integration */}

@@ -1,7 +1,7 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { CaseImage, CaseMetric, Video } from '@/components/mdx/CaseStudyComponents'
-import { Row, Col, MediaGroup, MediaVideo, MediaImage } from '@/components/mdx'
+import { CaseImage } from '@/components/mdx/CaseStudyComponents'
+import { MediaGroup, MediaVideo } from '@/components/mdx'
 
 export const metadata = {
   title: 'Old Skool Game Studios - Case Study',
@@ -15,32 +15,23 @@ export default function OldSkoolCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data from the content strategist brief
+  // Key outcome metrics (percent improvements only)
   const metrics = [
     {
       name: 'Avg session length (non-EN)',
       stat: '+13%',
-      previousStat: 'baseline',
       change: '+13%',
       changeType: 'increase',
-      description: '3 months post-localization fixes'
+      description: 'Measured 3 months after localization fixes'
     },
     {
       name: 'Design inconsistency debt',
       stat: '-14%',
-      previousStat: 'baseline',
       change: '-14%',
-      changeType: 'increase',
+      changeType: 'decrease',
+      positive: true,
       description: 'Tracked via design-QA checklist across four titles'
-    },
-    {
-      name: 'Qualitative satisfaction',
-      stat: '↑',
-      previousStat: 'baseline',
-      change: 'Improved',
-      changeType: 'increase',
-      description: '44% of Playtesters described UI as "more polished" and "easier to read"'
-    },
+    }
   ]
   
   return (
@@ -58,16 +49,6 @@ export default function OldSkoolCaseStudy() {
 
         <p>Old Skool builds browser-based casino games with rich themes. The art landed; the UX needed structure.<br />
         I led research and systematic design improvements—fixing localization issues, tightening interaction patterns, and standardizing components—resulting in <strong>+13% session length in non-English locales</strong> and a <strong>14% reduction in design inconsistency debt</strong> tracked via our design-QA checklist.</p>
-      </div>
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>At-a-glance</h3>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
-        <CaseMetric label="Avg session length (non-EN)" value="+13%" context="3 months post-fix" />
-        <CaseMetric label="Design inconsistency debt" value="-14%" context="Checklist items across 2 titles" />
-        <CaseMetric label="Qualitative satisfaction" value="↑" context="Playtests noted 'more polished', 'easier to read'" />
       </div>
 
       <div className="prose prose-zinc dark:prose-invert max-w-none">
@@ -104,7 +85,7 @@ export default function OldSkoolCaseStudy() {
       </div>
 
       <div className="max-w-2xl mx-auto my-8">
-        <MediaGroup title="Live example">
+        <MediaGroup title="Microanimation example">
           <MediaVideo
             src="/images/case-studies/old-skool/OldSkoolmicroanimation1.mp4"
             label="Micro-interactions"
@@ -157,3 +138,4 @@ export default function OldSkoolCaseStudy() {
     </CaseStudyViewer>
   )
 }
+export const dynamic = 'error'

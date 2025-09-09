@@ -142,9 +142,16 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Auditing only after development completion, ignoring responsive design breakpoints, accepting &quot;close enough&quot; implementations, missing micro-interactions and animations, insufficient documentation of approved variations
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Auditing only after development completion",
+              "Ignoring responsive design breakpoints",
+              "Accepting \"close enough\" implementations",
+              "Missing micro-interactions and animations",
+              "Insufficient documentation of approved variations"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

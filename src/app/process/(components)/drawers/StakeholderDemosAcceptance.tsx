@@ -141,9 +141,17 @@ export function StakeholderDemosAcceptance({ className, onClose }: StakeholderDe
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Using sprint reviews as first-time acceptance, presenting incomplete work, focusing on technical features instead of business value, creating adversarial atmosphere, ignoring stakeholder feedback, information overload through unstructured presentations
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Using sprint reviews as first-time acceptance",
+              "Presenting incomplete work",
+              "Focusing on technical features instead of business value",
+              "Creating adversarial atmosphere",
+              "Ignoring stakeholder feedback",
+              "Information overload through unstructured presentations"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

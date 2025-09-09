@@ -135,9 +135,16 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Skipping refinement sessions, relying blindly on numeric prioritization without strategic context, ignoring WIP limits, vague Definition of Done, neglecting cross-team dependencies in planning
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Skipping refinement sessions",
+              "Relying blindly on numeric prioritization without strategic context",
+              "Ignoring WIP limits",
+              "Vague Definition of Done",
+              "Neglecting cross-team dependencies in planning"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

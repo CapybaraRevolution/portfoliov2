@@ -198,7 +198,7 @@ export function generateProcessUrl(skillId: string): string {
 
   const params = new URLSearchParams()
   params.set('step', mapping.step.toString())
-  params.set('highlight', mapping.target)
+  // Highlight disabled: only step (and optional tab)
   
   if (mapping.tab) {
     params.set('tab', mapping.tab)

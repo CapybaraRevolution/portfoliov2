@@ -138,9 +138,16 @@ export function DevHandoffPackages({ className, onClose }: DevHandoffPackagesPro
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Overloading with excessive detail, maintaining divergent sources when design changes aren&apos;t propagated, ignoring platform nuances (mobile vs web), lack of developer input during design, missing visual acceptance criteria in Definition of Done
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Overloading with excessive detail",
+              "Maintaining divergent sources when design changes aren't propagated",
+              "Ignoring platform nuances (mobile vs web)",
+              "Lack of developer input during design",
+              "Missing visual acceptance criteria in Definition of Done"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

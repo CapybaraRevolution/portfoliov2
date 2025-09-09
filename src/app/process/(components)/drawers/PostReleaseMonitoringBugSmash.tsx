@@ -143,9 +143,16 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Monitoring metrics without user context, delayed bug triage leading to cascading issues, ignoring edge case feedback, treating monitoring as purely technical activity, missing cross-functional collaboration in post-release reviews
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Monitoring metrics without user context",
+              "Delayed bug triage leading to cascading issues",
+              "Ignoring edge case feedback",
+              "Treating monitoring as purely technical activity",
+              "Missing cross-functional collaboration in post-release reviews"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

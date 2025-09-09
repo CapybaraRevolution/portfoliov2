@@ -141,9 +141,17 @@ export function CrossFunctionalRiskAssessment({ className, onClose }: CrossFunct
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Conducting risk assessment only at project start, missing cross-functional perspectives, creating generic non-actionable risks, failing to assign clear ownership, over-focusing on technical risks only, lack of regular risk register maintenance
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Conducting risk assessment only at project start",
+              "Missing cross-functional perspectives",
+              "Creating generic non-actionable risks",
+              "Failing to assign clear ownership",
+              "Over-focusing on technical risks only",
+              "Lack of regular risk register maintenance"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

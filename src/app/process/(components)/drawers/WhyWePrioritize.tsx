@@ -140,9 +140,18 @@ export function WhyWePrioritize({ className, onClose }: WhyWePrioritizeProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Analysis paralysis: Over-analyzing options instead of making timely decisions with 80% confidence · HiPPO dominance: Allowing the Highest Paid Person's Opinion to override data-driven prioritization · Static prioritization: Failing to regularly reassess priorities as conditions change · Perfect information seeking: Waiting for complete data instead of using probabilistic decision-making · Silo-based decisions: Prioritizing within departments rather than across the portfolio · Ignoring technical debt: Focusing only on features while accumulating crippling technical debt · Metric gaming: Manipulating scoring to justify predetermined decisions
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Analysis paralysis: Over-analyzing options instead of making timely decisions with 80% confidence",
+              "HiPPO dominance: Allowing the Highest Paid Person's Opinion to override data-driven prioritization",
+              "Static prioritization: Failing to regularly reassess priorities as conditions change",
+              "Perfect information seeking: Waiting for complete data instead of using probabilistic decision-making",
+              "Silo-based decisions: Prioritizing within departments rather than across the portfolio",
+              "Ignoring technical debt: Focusing only on features while accumulating crippling technical debt",
+              "Metric gaming: Manipulating scoring to justify predetermined decisions"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

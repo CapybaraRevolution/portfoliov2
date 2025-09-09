@@ -127,9 +127,15 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Deep, skinny hierarchies (&gt;3–4 levels), facet bloat, dead-end pages, desktop-only patterns
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Deep, skinny hierarchies (>3–4 levels)",
+              "Facet bloat",
+              "Dead-end pages",
+              "Desktop-only patterns"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}

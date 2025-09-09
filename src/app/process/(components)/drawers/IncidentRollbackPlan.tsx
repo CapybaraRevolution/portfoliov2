@@ -142,9 +142,17 @@ export function IncidentRollbackPlan({ className, onClose }: IncidentRollbackPla
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Creating runbooks without testing them, unclear rollback decision criteria, missing communication templates, inadequate monitoring coverage, blame-focused incident reviews, over-complex escalation matrices
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Creating runbooks without testing them",
+              "Unclear rollback decision criteria",
+              "Missing communication templates",
+              "Inadequate monitoring coverage",
+              "Blame-focused incident reviews",
+              "Over-complex escalation matrices"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}
