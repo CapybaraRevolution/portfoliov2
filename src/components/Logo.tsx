@@ -3,8 +3,8 @@
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import logoLight from '@/images/KyleMcGraw_Logo_Light.svg'
-import logoDark from '@/images/KyleMcGraw_Logo_Dark.svg'
+import logoLight from '@/images/logos/KyleMcGraw_Logo_Light.svg'
+import logoDark from '@/images/logos/KyleMcGraw_Logo_Dark.svg'
 
 interface LogoProps {
   className?: string
