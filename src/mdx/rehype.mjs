@@ -109,15 +109,16 @@ function getSections(node) {
   return sections
 }
 
+function getExportsForTree(tree) {
+  return {
+    sections: `[${getSections(tree).join()}]`,
+  }
+}
+
 export const rehypePlugins = [
-  mdxAnnotations.rehype,
+  mdxAnnotations?.rehype,
   rehypeParseCodeBlocks,
   rehypeShiki,
   rehypeSlugify,
-  [
-    rehypeAddMDXExports,
-    (tree) => ({
-      sections: `[${getSections(tree).join()}]`,
-    }),
-  ],
-]
+  [rehypeAddMDXExports, getExportsForTree],
+].filter(Boolean)

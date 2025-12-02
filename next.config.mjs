@@ -16,7 +16,10 @@ const nextConfig = {
   // Perf + security niceties
   reactStrictMode: true,
   poweredByHeader: false,
-  images: { formats: ['image/avif', 'image/webp'] },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [{ protocol: 'https', hostname: 'assets.aceternity.com' }],
+  },
 
   // Reduce bundle size for common libs (adjust list to what you actually use)
   experimental: {
