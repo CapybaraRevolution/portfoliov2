@@ -1,6 +1,7 @@
 "use client"
 
 import { NumberTicker } from '@/components/ui/number-ticker'
+import { ShineBorder } from '@/components/ui/shine-border'
 import clsx from 'clsx'
 
 export interface ImpactMetricProps {
@@ -15,12 +16,11 @@ export interface ImpactMetricProps {
 export function ImpactMetric({ label, value, suffix, description, className, highlight }: ImpactMetricProps) {
   const isHighlighted = Boolean(highlight)
 
-  return (
+  const content = (
     <div
       className={clsx(
         'rounded-2xl border border-zinc-900/5 bg-white/70 p-6 shadow-sm transition dark:border-white/10 dark:bg-zinc-900/60',
-        isHighlighted &&
-          'border-emerald-200/60 shadow-[0_0_0_1px_rgba(16,185,129,0.25),0_25px_80px_-45px_rgba(16,185,129,0.6)] bg-gradient-to-br from-emerald-50/80 via-white to-emerald-100/70 dark:from-emerald-500/15 dark:via-zinc-900 dark:to-emerald-900/25',
+        isHighlighted && 'border-transparent bg-white/90 shadow-lg dark:bg-zinc-900/70',
         className,
       )}
     >
@@ -52,4 +52,6 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
       ) : null}
     </div>
   )
+
+  return isHighlighted ? <ShineBorder className="rounded-2xl">{content}</ShineBorder> : content
 }
