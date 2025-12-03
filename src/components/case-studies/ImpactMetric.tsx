@@ -20,7 +20,7 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
     <div
       className={clsx(
         'rounded-2xl border border-zinc-900/5 bg-white/70 p-6 shadow-sm transition dark:border-white/10 dark:bg-zinc-900/60',
-        isHighlighted && 'border-transparent bg-white/90 shadow-lg dark:bg-zinc-900/70',
+        isHighlighted && 'border-zinc-900/10 bg-white/90 shadow-lg dark:border-white/15 dark:bg-zinc-900/70',
         className,
       )}
     >
