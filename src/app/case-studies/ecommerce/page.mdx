@@ -1,36 +1,16 @@
-import { ImpactSection } from '@/components/case-studies/ImpactSection';
+import { ImpactSection } from '@/components/case-studies/ImpactSection'
+import { ecommerceMetrics } from './metrics'
 
 export const metadata = {
   title: 'E-commerce Platform Redesign - Case Study',
   description: 'How I increased conversion rates by 34% and reduced cart abandonment by 28% through user research and strategic UX improvements.',
-};
-
-const metrics = [
-  {
-    label: 'Increase in demo requests',
-    value: 127,
-    suffix: '%',
-    description: 'After redesigning onboarding, pricing, and mobile flows.',
-  },
-  {
-    label: 'Faster sign-ups',
-    value: 2.3,
-    suffix: 'x',
-    description: 'Reduced friction across the signup funnel with clearer affordances.',
-  },
-  {
-    label: 'Decrease in time-to-ship',
-    value: 38,
-    suffix: '%',
-    description: 'Cut iteration cycles with better tooling, reuse, and workflow clarity.',
-  },
-];
+}
 
 # E-commerce Platform Redesign
 
 A comprehensive redesign of a mid-market e-commerce platform that increased conversion rates by 34% and reduced cart abandonment by 28% over six months.
 
-<ImpactSection metrics={metrics} />
+<ImpactSection metrics={ecommerceMetrics} />
 
 ## Project Overview
 
