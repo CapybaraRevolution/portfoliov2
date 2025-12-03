@@ -20,7 +20,7 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
     <div
       className={clsx(
         'rounded-2xl border border-zinc-900/5 bg-white/70 p-6 shadow-sm transition dark:border-white/10 dark:bg-zinc-900/60',
-        isHighlighted && 'border-zinc-900/10 bg-white/90 shadow-lg dark:border-white/15 dark:bg-zinc-900/70',
+        isHighlighted && 'border-transparent bg-white/90 shadow-lg dark:border-white/15 dark:bg-zinc-900/70',
         className,
       )}
     >
@@ -53,5 +53,12 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
     </div>
   )
 
-  return isHighlighted ? <ShineBorder className="rounded-2xl">{content}</ShineBorder> : content
+  return isHighlighted ? (
+    <div className="relative rounded-2xl">
+      <ShineBorder className="rounded-2xl absolute inset-0" />
+      <div className="relative">{content}</div>
+    </div>
+  ) : (
+    content
+  )
 }
