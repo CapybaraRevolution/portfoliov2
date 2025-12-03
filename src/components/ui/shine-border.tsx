@@ -17,11 +17,18 @@ export function ShineBorder({ children, className, durationMs = 4000, shineColor
 
   return (
     <div className={clsx('relative overflow-hidden rounded-2xl', className)}>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[inherit] p-[1px] [mask:linear-gradient(#000,#000)_content-box,linear-gradient(#000,#000)] [mask-composite:exclude] [--shine-duration:4000ms] animate-[shine-spin_var(--shine-duration)_linear_infinite]"
-        style={{ background: `conic-gradient(${stops.join(',')})` }}
-      />
+      <div className="pointer-events-none absolute inset-0 rounded-[inherit]">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 rounded-[inherit] p-[1px] [mask:linear-gradient(#000,#000)_content-box,linear-gradient(#000,#000)] [mask-composite:exclude] [--shine-duration:4000ms] animate-[shine-spin_var(--shine-duration)_linear_infinite]"
+          style={{ background: `conic-gradient(${stops.join(',')})` }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 rounded-[inherit] blur-[10px] opacity-50"
+          style={{ background: `conic-gradient(${stops.join(',')})` }}
+        />
+      </div>
       <div className="relative rounded-[inherit]">{children}</div>
       <style>
         {`@keyframes shine-spin { 
