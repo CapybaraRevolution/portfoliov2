@@ -7,7 +7,8 @@ import { usePathname } from 'next/navigation'
 import { useRef } from 'react'
 
 import { Button } from '@/components/Button'
-import { useIsInsideMobileNavigation } from '@/components/MobileNavigation'
+import { ContactDrawer } from '@/components/ContactDrawer'
+import { useIsInsideMobileNavigation, useMobileNavigationStore } from '@/components/MobileNavigation'
 import { useSectionStore } from '@/components/SectionProvider'
 import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
@@ -261,6 +262,7 @@ export const navigation: Array<NavGroup> = [
 ]
 
 export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
+  let { close } = useMobileNavigationStore()
   return (
     <nav {...props}>
       <ul role="list">
@@ -293,14 +295,15 @@ export function Navigation(props: React.ComponentPropsWithoutRef<'nav'>) {
           />
         ))}
         <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-          <CloseButton
-            as={Button}
-            href="/contact"
-            variant="filled"
-            className="w-full"
-          >
-            Contact
-          </CloseButton>
+          <ContactDrawer>
+            <Button
+              variant="filled"
+              className="w-full"
+              onClick={close}
+            >
+              Contact
+            </Button>
+          </ContactDrawer>
         </li>
       </ul>
     </nav>

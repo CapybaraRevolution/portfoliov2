@@ -1,5 +1,8 @@
+'use client'
+
 import clsx from 'clsx'
 import Link from 'next/link'
+import { forwardRef } from 'react'
 
 function ArrowIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -34,61 +37,57 @@ type ButtonProps = {
   | (React.ComponentPropsWithoutRef<'button'> & { href?: undefined })
 )
 
-export function Button({
-  variant = 'primary',
-  className,
-  children,
-  arrow,
-  ...props
-}: ButtonProps) {
-  className = clsx(
-    'inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition',
-    variantStyles[variant],
-    className,
-  )
+export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  function Button({ variant = 'primary', className, children, arrow, ...props }, ref) {
+    className = clsx(
+      'inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition',
+      variantStyles[variant],
+      className,
+    )
 
-  let arrowIcon = (
-    <ArrowIcon
-      className={clsx(
-        'mt-0.5 h-5 w-5',
-        variant === 'text' && 'relative top-px',
-        arrow === 'left' && '-ml-1 rotate-180',
-        arrow === 'right' && '-mr-1',
-      )}
-    />
-  )
+    let arrowIcon = (
+      <ArrowIcon
+        className={clsx(
+          'mt-0.5 h-5 w-5',
+          variant === 'text' && 'relative top-px',
+          arrow === 'left' && '-ml-1 rotate-180',
+          arrow === 'right' && '-mr-1',
+        )}
+      />
+    )
 
-  let inner = (
-    <>
-      {arrow === 'left' && arrowIcon}
-      {children}
-      {arrow === 'right' && arrowIcon}
-    </>
-  )
+    let inner = (
+      <>
+        {arrow === 'left' && arrowIcon}
+        {children}
+        {arrow === 'right' && arrowIcon}
+      </>
+    )
 
-  if (typeof props.href === 'undefined') {
+    if (typeof props.href === 'undefined') {
+      return (
+        <button className={className} {...props} ref={ref as React.Ref<HTMLButtonElement>}>
+          {inner}
+        </button>
+      )
+    }
+
+    // Check if href is external
+    const hrefString = typeof props.href === 'string' ? props.href : props.href.toString()
+    const isExternal = hrefString.startsWith('http://') || hrefString.startsWith('https://') || hrefString.startsWith('mailto:')
+    
+    if (isExternal) {
+      return (
+        <a className={className} href={hrefString} target="_blank" rel="noopener noreferrer" ref={ref as React.Ref<HTMLAnchorElement>}>
+          {inner}
+        </a>
+      )
+    }
+
     return (
-      <button className={className} {...props}>
+      <Link className={className} {...props} ref={ref as React.Ref<HTMLAnchorElement>}>
         {inner}
-      </button>
+      </Link>
     )
   }
-
-  // Check if href is external
-  const hrefString = typeof props.href === 'string' ? props.href : props.href.toString()
-  const isExternal = hrefString.startsWith('http://') || hrefString.startsWith('https://') || hrefString.startsWith('mailto:')
-  
-  if (isExternal) {
-    return (
-      <a className={className} href={hrefString} target="_blank" rel="noopener noreferrer">
-        {inner}
-      </a>
-    )
-  }
-
-  return (
-    <Link className={className} {...props}>
-      {inner}
-    </Link>
-  )
-}
+)

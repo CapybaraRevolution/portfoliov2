@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
+import { useScroll } from 'motion/react'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { AIBadge } from '@/components/ui/AIBadge'
 import { NavigationChip } from '@/components/NavigationChip'
+import { TracingBeam } from '@/components/ui/tracing-beam'
+import { NeonGradientCard } from '@/components/ui/neon-gradient-card'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 
 interface TimelineNode {
@@ -163,18 +166,18 @@ export function Timeline() {
   
   // Get timeline data from case studies
   const timelineData = getTimelineData()
-  const [rainbowProgress, setRainbowProgress] = useState(0)
-  const [scrollVelocity, setScrollVelocity] = useState(0)
-  const isTicking = useRef(false)
-  const observerRef = useRef<IntersectionObserver | null>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   
   // Refs for precise tracking
   const timelineRef = useRef<HTMLDivElement>(null)
   const nodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
-  const lastScrollTime = useRef(Date.now())
-  const lastScrollY = useRef(0)
-  const scrollTimeout = useRef<NodeJS.Timeout | undefined>(undefined)
+  
+  // Use scroll progress to determine active node based on beam position
+  // Track the timeline container - TracingBeam will track its own wrapper
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start start", "end start"],
+  })
 
   const registerNodeRef = useCallback((id: string, element: HTMLDivElement | null) => {
     nodeRefs.current[id] = element
@@ -202,129 +205,58 @@ export function Timeline() {
     }
   }, [])
 
+  // Calculate active node based on scroll progress (beam position)
   useEffect(() => {
     if (prefersReducedMotion) {
-      setRainbowProgress(0)
       setActiveNodeIndex(-1)
-      if (observerRef.current) observerRef.current.disconnect()
       return
     }
 
-    // Throttle velocity updates only
-    const onScroll = () => {
-      if (isTicking.current) return
-      isTicking.current = true
-      requestAnimationFrame(() => {
-        isTicking.current = false
-        const currentTime = Date.now()
-        const currentScrollY = window.scrollY
-        const deltaTime = currentTime - lastScrollTime.current
-        const deltaY = currentScrollY - lastScrollY.current
-        const velocity = deltaTime > 0 ? Math.abs(deltaY / deltaTime) : 0
-        lastScrollTime.current = currentTime
-        lastScrollY.current = currentScrollY
-        setScrollVelocity(velocity)
-        if (scrollTimeout.current) clearTimeout(scrollTimeout.current)
-        scrollTimeout.current = setTimeout(() => setScrollVelocity(0), 150)
-      })
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-
-    // IntersectionObserver to set active index and progress
+    const unsubscribe = scrollYProgress.on('change', (progress) => {
+      if (!timelineRef.current) return
+      
     const total = timelineData.length
-    const observer = new IntersectionObserver((entries) => {
-      // Find the most centered intersecting entry
-      const viewportCenter = (observer.root as Element | null)?.clientHeight
-        ? ((observer.root as Element).clientHeight / 2)
-        : (window.innerHeight / 2)
-      let best: { idx: number; distance: number } | null = null
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue
-        const target = entry.target as HTMLElement
-        const idxAttr = target.getAttribute('data-node-index')
-        if (!idxAttr) continue
-        const idx = parseInt(idxAttr, 10)
-        const rect = entry.boundingClientRect
-        const nodeCenter = rect.top + rect.height / 2
-        const distance = Math.abs(nodeCenter - viewportCenter)
-        if (!best || distance < best.distance) best = { idx, distance }
-      }
-      if (best && total > 1) {
-        setActiveNodeIndex(best.idx)
-        setRainbowProgress(best.idx / (total - 1))
-      }
-    }, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0.2 })
-
-    observerRef.current = observer
-    // Observe nodes
-    Object.entries(nodeRefs.current).forEach(([_, el]) => {
-      if (el) observer.observe(el)
+      if (total === 0) return
+      
+      // Calculate which node should be active based on scroll progress
+      // Map progress (0-1) to node indices (0 to total-1)
+      // Use a threshold approach: each node gets a portion of the scroll range
+      const nodeProgress = progress * total
+      const nodeIndex = Math.min(
+        Math.floor(nodeProgress),
+        total - 1
+      )
+      
+      // Also consider the next node if we're close to it
+      const remainder = nodeProgress - nodeIndex
+      const finalIndex = remainder > 0.3 && nodeIndex < total - 1 
+        ? nodeIndex + 1 
+        : nodeIndex
+      
+      setActiveNodeIndex(finalIndex >= 0 ? finalIndex : -1)
     })
 
     return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current)
-      observer.disconnect()
+      unsubscribe()
     }
-  }, [prefersReducedMotion, timelineData.length])
+  }, [prefersReducedMotion, timelineData.length, scrollYProgress])
 
-  const getNodeColors = (index: number) => {
+  // Get neon colors for active nodes (cycling through gradient colors)
+  const getNeonColors = (index: number) => {
     const colorSchemes = [
-      { 
-        border: 'border-emerald-500', 
-        shadow: 'shadow-emerald-500/60 dark:shadow-emerald-500/40', 
-        bg: 'bg-gradient-to-br from-emerald-500/30 to-blue-500/20', 
-        cardBg: 'bg-gradient-to-br from-emerald-500/10 to-blue-500/10 dark:from-emerald-500/5 dark:to-blue-500/5', 
-        cardBorder: 'border-emerald-500/30 dark:border-emerald-500/20' 
-      },
-      { 
-        border: 'border-blue-500', 
-        shadow: 'shadow-blue-500/60 dark:shadow-blue-500/40', 
-        bg: 'bg-gradient-to-br from-blue-500/30 to-rose-500/20', 
-        cardBg: 'bg-gradient-to-br from-blue-500/10 to-rose-500/10 dark:from-blue-500/5 dark:to-rose-500/5', 
-        cardBorder: 'border-blue-500/30 dark:border-blue-500/20' 
-      },
-      { 
-        border: 'border-rose-500', 
-        shadow: 'shadow-rose-500/60 dark:shadow-rose-500/40', 
-        bg: 'bg-gradient-to-br from-rose-500/30 to-purple-500/20', 
-        cardBg: 'bg-gradient-to-br from-rose-500/10 to-purple-500/10 dark:from-rose-500/5 dark:to-purple-500/5', 
-        cardBorder: 'border-rose-500/30 dark:border-rose-500/20' 
-      },
-      { 
-        border: 'border-purple-500', 
-        shadow: 'shadow-purple-500/60 dark:shadow-purple-500/40', 
-        bg: 'bg-gradient-to-br from-purple-500/30 to-emerald-500/20', 
-        cardBg: 'bg-gradient-to-br from-purple-500/10 to-emerald-500/10 dark:from-purple-500/5 dark:to-emerald-500/5', 
-        cardBorder: 'border-purple-500/30 dark:border-purple-500/20' 
-      },
-      { 
-        border: 'border-emerald-500', 
-        shadow: 'shadow-emerald-500/60 dark:shadow-emerald-500/40', 
-        bg: 'bg-gradient-to-br from-emerald-500/30 to-blue-500/20', 
-        cardBg: 'bg-gradient-to-br from-emerald-500/10 to-blue-500/10 dark:from-emerald-500/5 dark:to-blue-500/5', 
-        cardBorder: 'border-emerald-500/30 dark:border-emerald-500/20' 
-      },
-      { 
-        border: 'border-blue-500', 
-        shadow: 'shadow-blue-500/60 dark:shadow-blue-500/40', 
-        bg: 'bg-gradient-to-br from-blue-500/30 to-rose-500/20', 
-        cardBg: 'bg-gradient-to-br from-blue-500/10 to-rose-500/10 dark:from-blue-500/5 dark:to-rose-500/5', 
-        cardBorder: 'border-blue-500/30 dark:border-blue-500/20' 
-      },
-      { 
-        border: 'border-rose-500', 
-        shadow: 'shadow-rose-500/60 dark:shadow-rose-500/40', 
-        bg: 'bg-gradient-to-br from-rose-500/30 to-purple-500/20', 
-        cardBg: 'bg-gradient-to-br from-rose-500/10 to-purple-500/10 dark:from-rose-500/5 dark:to-purple-500/5', 
-        cardBorder: 'border-rose-500/30 dark:border-rose-500/20' 
-      }
+      { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
+      { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
+      { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
+      { firstColor: '#a855f7', secondColor: '#10b981' }, // purple to emerald
+      { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
+      { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
+      { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
     ]
     return colorSchemes[index % colorSchemes.length]
   }
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative">
       <div className="relative">
         {/* Section Header */}
         <div className="mb-10 sm:mb-16">
@@ -355,151 +287,113 @@ export function Timeline() {
         </div>
 
         {/* Timeline */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 overflow-visible">
+          <TracingBeam className="relative w-full">
             <div 
               className="space-y-16 relative"
               ref={registerTimelineRef}
             >
-              {/* Timeline line with responsive rainbow effect */}
-              <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-px sm:w-1 bg-zinc-200 dark:bg-zinc-700 rounded-full z-10">
-                {/* Responsive rainbow gradient line */}
-                <div 
-                  className="absolute top-0 left-0 w-full rounded-full transition-all duration-200 ease-out z-20"
-                  style={{ 
-                    height: `${rainbowProgress * 100}%`,
-                    background: rainbowProgress > 0 
-                      ? 'linear-gradient(to bottom, rgb(16 185 129), rgb(59 130 246), rgb(244 63 94), rgb(168 85 247))' 
-                      : 'transparent',
-                    opacity: rainbowProgress > 0 ? 1 : 0
-                  }}
-                />
-                {/* Responsive dot that follows progress */}
-                {rainbowProgress > 0 && (
-                  <div 
-                    className="absolute -left-1 rounded-full bg-gradient-to-br from-emerald-400 to-blue-500 shadow-lg transition-all duration-200 ease-out z-30"
-                    style={{ 
-                      top: `${rainbowProgress * 100}%`,
-                      transform: 'translateY(-50%)',
-                      width: '18px',
-                      height: '18px',
-                      boxShadow: '0 0 28px rgba(16, 185, 129, 0.55)'
-                    }}
-                  />
-                )}
-              </div>
-              
               {/* Timeline nodes */}
-              <div className="space-y-10 sm:space-y-20">
+              <div className="space-y-10 sm:space-y-20 pl-12 sm:pl-16">
                 {timelineData.map((node, index) => {
-                  const colors = getNodeColors(index)
                   const isActive = activeNodeIndex === index
+                  const neonColors = getNeonColors(index)
+                  
+                  // Node content
+                  const nodeContent = (
+                    <>
+                      {/* Title header with status badge in top-right corner */}
+                      <div className="relative mb-3">
+                        <h3 className="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-white leading-tight pr-20 -mt-0.5">
+                          {node.title}
+                        </h3>
+                        <span className={`absolute top-0 right-0 inline-flex items-center gap-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          node.status === 'Ongoing' 
+                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+                            : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                        }`}>
+                          <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
+                            node.status === 'Ongoing' 
+                              ? 'fill-emerald-500 animate-pulse' 
+                              : 'fill-zinc-400'
+                          }`}>
+                            <circle r={3} cx={3} cy={3} />
+                          </svg>
+                          {node.status}
+                        </span>
+                      </div>
+                      
+                      {/* Client and period */}
+                      <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium mb-3">
+                        {node.client} • {node.period}
+                      </p>
+                      
+                      {/* Description */}
+                      <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4">
+                        {node.description}
+                      </p>
+                      
+                      {/* Service/Skill chips */}
+                      {node.services.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {node.services.map((service) => (
+                            <NavigationChip 
+                              key={service} 
+                              skill={service}
+                              size="sm"
+                              variant="outline"
+                            />
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Call-to-action and badges */}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
+                        {node.link !== '#' && (
+                          <Link 
+                            href={node.link}
+                            className="inline-flex items-center text-sm font-semibold transition-all duration-300 hover:gap-2 group text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
+                          >
+                            View Case Study 
+                            <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
+                          </Link>
+                        )}
+                        {node.aiAccelerated && (
+                          <AIBadge size="sm">AI-Accelerated</AIBadge>
+                        )}
+                      </div>
+                    </>
+                  )
                   
                   return (
                     <div 
                       key={node.id}
-                      className="relative transition-all duration-300 pl-12 sm:pl-16"
+                      className="relative transition-all duration-300"
                       ref={(el) => registerNodeRef(node.id, el)}
                       data-node-index={index}
                     >
-                      {/* Timeline circle - absolutely positioned to align with line and text */}
-                      <div className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-50 w-6 h-6 sm:w-8 sm:h-8">
-                        {/* Glow rings for active node */}
-                        {isActive && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className={`absolute w-10 h-10 sm:w-12 sm:h-12 rounded-full ${colors.cardBg} animate-pulse opacity-60`} />
-                            <div className={`absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full ${colors.cardBg} animate-pulse opacity-40`} style={{ animationDelay: '0.5s' }} />
+                      {isActive ? (
+                        <NeonGradientCard
+                          className="transition-all duration-300 [&>div]:p-0"
+                          borderRadius={12}
+                          borderSize={2}
+                          neonColors={neonColors}
+                        >
+                          <div className="bg-white dark:bg-zinc-800/30 rounded-[10px] p-6 relative z-20">
+                            {nodeContent}
                           </div>
-                        )}
-                        
-                        <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 sm:border-3 bg-white dark:bg-zinc-900 relative z-40 transition-all duration-300 ${
-                          isActive
-                            ? `${colors.border} ${colors.shadow} shadow-xl ${colors.bg} scale-110`
-                            : 'border-zinc-300 dark:border-zinc-600 scale-100'
-                        }`} />
-                      </div>
-                      
-                      <div className={`rounded-xl transition-all duration-300 ${
-                        isActive 
-                          ? `${colors.cardBg} border ${colors.cardBorder} shadow-xl scale-105 translate-x-2` 
-                          : 'bg-white dark:bg-zinc-800/30 shadow-md border border-zinc-200 dark:border-zinc-700 scale-100'
-                      }`}>
-                        {/* Title header - no top padding */}
-                        <div className="flex flex-col sm:flex-row items-start sm:items-start justify-between gap-2 sm:gap-4 px-4 sm:px-6 py-3">
-                          <div className="flex-1">
-                            <h3 className="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-white leading-tight">
-                              {node.title}
-                            </h3>
-                          </div>
-                          <span className={`inline-flex items-center gap-x-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${
-                            node.status === 'Ongoing' 
-                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                              : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
-                          }`}>
-                            <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
-                              node.status === 'Ongoing' 
-                                ? 'fill-emerald-500 animate-pulse' 
-                                : 'fill-zinc-400'
-                            }`}>
-                              <circle r={3} cx={3} cy={3} />
-                            </svg>
-                            {node.status}
-                          </span>
+                        </NeonGradientCard>
+                      ) : (
+                        <div className="rounded-xl bg-white dark:bg-zinc-800/30 shadow-sm border border-zinc-200 dark:border-zinc-700 transition-all duration-300 p-6">
+                          {nodeContent}
                         </div>
-                        
-                        {/* Content section */}
-                        <div className="px-4 sm:px-6 pb-3 space-y-3">
-                          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-                            {node.client} • {node.period}
-                          </p>
-                          <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                            {node.description}
-                          </p>
-                          {/* Service/Skill chips */}
-                          {node.services.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                              {node.services.map((service) => (
-                                <NavigationChip 
-                                  key={service} 
-                                  skill={service}
-                                  size="sm"
-                                  variant="outline"
-                                />
-                              ))}
-                            </div>
-                          )}
-                          {/* Only show call-to-action for actual case studies */}
-                          {node.link !== '#' && (
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-1">
-                              <Link 
-                                href={node.link}
-                                className={`inline-flex items-center text-sm font-semibold transition-all duration-300 hover:gap-2 group ${
-                                  isActive 
-                                    ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300' 
-                                    : 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300'
-                                }`}
-                              >
-                                View Case Study 
-                                <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-                              </Link>
-                              {node.aiAccelerated && (
-                                <AIBadge size="sm">AI-Accelerated</AIBadge>
-                              )}
-                            </div>
-                          )}
-                          
-                          {/* For Future Focus, just show AI badge if applicable */}
-                          {node.link === '#' && node.aiAccelerated && (
-                            <div className="pt-1">
-                              <AIBadge size="sm">AI-Accelerated</AIBadge>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      )}
                     </div>
                   )
                 })}
               </div>
             </div>
+          </TracingBeam>
         </div>
       </div>
     </section>

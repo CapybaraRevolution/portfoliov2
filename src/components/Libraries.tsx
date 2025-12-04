@@ -2,11 +2,11 @@ import Image from 'next/image'
 
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
-import logoGo from '@/images/logos/go.svg'
-import logoNode from '@/images/logos/node.svg'
-import logoPhp from '@/images/logos/php.svg'
-import logoPython from '@/images/logos/python.svg'
-import logoRuby from '@/images/logos/ruby.svg'
+import logoGo from '@/images/tools/go.svg'
+import logoNode from '@/images/tools/node.svg'
+import logoPhp from '@/images/tools/php.svg'
+import logoPython from '@/images/tools/python.svg'
+import logoRuby from '@/images/tools/ruby.svg'
 
 const libraries = [
   {

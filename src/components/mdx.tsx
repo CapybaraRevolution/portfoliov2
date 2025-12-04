@@ -6,7 +6,8 @@ import { Heading } from '@/components/Heading'
 import { Prose } from '@/components/Prose'
 
 export const a = Link
-export { Button } from '@/components/Button'
+import { Button as ButtonPrimitive } from '@/components/Button'
+export const Button = (props: React.ComponentProps<typeof ButtonPrimitive>) => <ButtonPrimitive {...props} />
 export { CodeGroup, Code as code, Pre as pre } from '@/components/Code'
 export { MediaGroup, Video as MediaVideo, MediaImage } from '@/components/MediaGroup'
 export { Figure, Video, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'

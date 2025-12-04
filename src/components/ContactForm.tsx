@@ -1,33 +1,14 @@
 'use client'
 
 import { Button } from '@/components/Button'
-import { Chip } from '@/components/ui/Chip'
-import { AccordionPanel } from '@/components/AccordionPanel'
-import { HeroPattern } from '@/components/HeroPattern'
-import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import {
   motion,
-  useMotionTemplate,
-  useMotionValue,
-  type MotionValue,
 } from 'framer-motion'
-import { submitContactForm, type FormData } from './actions'
+import { submitContactForm, type FormData } from '@/app/contact/actions'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
-
-// Metadata will be handled by layout.tsx or moved to a separate file
 
 const engagementModels = [
   {
@@ -55,50 +36,6 @@ const engagementModels = [
     icon: '💡'
   }
 ]
-
-const projectTypes = [
-  'Product strategy & roadmap',
-  'UX research & usability testing', 
-  'IA, wireframes, and clickable prototypes',
-  'Design systems & documentation',
-  'Business analysis & process mapping'
-]
-
-const industries = [
-  'E-commerce',
-  'FinTech', 
-  'Healthcare',
-  'Enterprise SaaS',
-  'EdTech'
-]
-
-const faqItems = [
-  {
-    title: 'Rates & Billing',
-    content: 'Standard rate: CA$105/hr. Fixed-fee available for well-scoped deliverables. Invoicing: monthly, NET-15 from invoice date. Preferred payment: bank transfer/ACH; happy to use your vendor system.'
-  },
-  {
-    title: 'Process',
-    content: 'Measure → learn → improve. I work in one- to two-week sprints with weekly demos and fast feedback. Phases: Discovery & Strategy → Planning & Architecture → Design & Prototyping → Implementation Support → Launch & Optimisation. Want the deep dive? View my Process (opens in a new tab).'
-  },
-  {
-    title: 'Tools',
-    content: 'Figma, Miro, Jira/Asana, Notion/Confluence, Slack/Loom, Amplitude/GA4, Optimizely, Vercel, GitHub—happy to work in your stack. See the full list and how I use them: Explore Tools (opens in a new tab).'
-  },
-  {
-    title: 'NDAs & Security',
-    content: 'NDAs welcome. Client data is encrypted and compartmentalized; work happens in private repos/drives. Access is removed at wrap-up. I follow least-privilege access and keep credentials out of files.'
-  },
-  {
-    title: 'Location & Hours',
-    content: 'Vancouver, BC (Pacific Time). I overlap 9–5 PT and am flexible for critical meetings. Not interested in relocation; remote or occasional on-site is great.'
-  },
-  {
-    title: 'Availability',
-    content: 'Available immediately. Open to contract (part- or full-time), with the option to discuss full-time roles if it\'s the right fit.'
-  }
-]
-
 
 const timelineOptions = [
   { id: 'asap', name: 'ASAP' },
@@ -227,7 +164,7 @@ function WebsiteField({
   )
 }
 
-function ContactForm() {
+export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -646,138 +583,5 @@ function ContactForm() {
         I review every inquiry and aim to reply within 1 business day. Your details stay private and are never shared.
       </p>
     </form>
-  )
-}
-
-function ObfuscatedEmail() {
-  const [revealed, setRevealed] = useState(false)
-  
-  const handleClick = () => {
-    if (!revealed) {
-      setRevealed(true)
-      trackEvent('contact_email_revealed')
-    }
-    trackEvent('contact_email_clicked')
-    
-    // Compose email
-    window.location.href = 'mailto:kylemcgraw1993@gmail.com?subject=Project%20inquiry'
-  }
-
-  return (
-    <button
-      onClick={handleClick}
-      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium"
-    >
-      {revealed ? 'kylemcgraw1993@gmail.com' : 'Email me'}
-    </button>
-  )
-}
-
-function ContactContent() {
-  return (
-    <div className="relative">
-      <HeroPattern />
-      <BackgroundRippleEffect />
-      <div className="relative max-w-4xl mx-auto px-4 py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
-            Work With Me
-          </h1>
-          <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto">
-            I help teams ship user-centered products and measurable outcomes. If you&apos;ve got a problem worth solving, let&apos;s talk.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              href="https://calendly.com/kylemcgraw" 
-              variant="filled" 
-              arrow="right"
-              onClick={() => trackEvent('contact_calendar_clicked')}
-            >
-              Book a 30-min intro
-            </Button>
-            <ObfuscatedEmail />
-          </div>
-          
-          <div className="mt-6">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
-              Available immediately • Remote or hybrid
-            </span>
-          </div>
-        </div>
-
-        {/* Contact Form */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6">
-            Let&apos;s start a project
-          </h2>
-          <ContactForm />
-        </section>
-
-        {/* FAQ */}
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6">
-            Frequently asked questions
-          </h2>
-          <AccordionPanel items={faqItems} />
-        </section>
-      </div>
-    </div>
-  )
-}
-
-export default function ContactPage() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true)
-
-  return (
-    <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-      <div className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-300">
-          Contact drawer experiment
-        </div>
-        <h1 className="text-4xl font-bold text-zinc-900 dark:text-white sm:text-5xl">
-          Work With Me
-        </h1>
-        <p className="text-base text-zinc-600 dark:text-zinc-400 sm:text-lg">
-          All of the existing contact content now lives in a shadcn drawer. Open it to keep the flow in-context while preserving the full form and FAQ.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <DrawerTrigger asChild>
-            <Button
-              variant="filled"
-              arrow="right"
-              onClick={() => trackEvent('contact_drawer_opened')}
-            >
-              Open contact drawer
-            </Button>
-          </DrawerTrigger>
-          <Button
-            href="https://calendly.com/kylemcgraw"
-            variant="text"
-            onClick={() => trackEvent('contact_calendar_clicked')}
-          >
-            Book a 30-min intro
-          </Button>
-        </div>
-      </div>
-
-      <DrawerContent className="max-h-[95vh] overflow-hidden border-none bg-transparent px-3 pb-6 sm:px-6">
-        <DrawerHeader className="sr-only">
-          <DrawerTitle>Work With Me</DrawerTitle>
-          <DrawerDescription>Let&apos;s start a project</DrawerDescription>
-        </DrawerHeader>
-
-        <div className="relative max-h-[82vh] overflow-y-auto rounded-2xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-emerald-100/60 dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/10">
-          <ContactContent />
-        </div>
-
-        <DrawerFooter className="flex items-center justify-end pt-4">
-          <DrawerClose asChild>
-            <Button variant="secondary">Close drawer</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
   )
 }

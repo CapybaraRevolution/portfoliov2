@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface AccordionItem {
   title: string
-  content: string
+  content: string | React.ReactNode
 }
 
 interface AccordionPanelProps {

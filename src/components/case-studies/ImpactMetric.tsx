@@ -2,6 +2,7 @@
 
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { ShineBorder } from '@/components/ui/shine-border'
+import { AuroraText } from '@/components/ui/aurora-text'
 import clsx from 'clsx'
 
 export interface ImpactMetricProps {
@@ -24,9 +25,19 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
         className,
       )}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-        {label}
-      </p>
+      {isHighlighted ? (
+        <AuroraText
+          className="text-xs font-semibold uppercase tracking-wide"
+          colors={["#10b981", "#2dd4bf", "#38bdf8"]}
+          speed={1.2}
+        >
+          {label}
+        </AuroraText>
+      ) : (
+        <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+          {label}
+        </p>
+      )}
       <div
         className={clsx(
           'mt-3 flex items-baseline gap-2 text-4xl font-semibold',
@@ -54,9 +65,25 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
   )
 
   return isHighlighted ? (
-    <div className="relative rounded-2xl">
-      <ShineBorder className="rounded-2xl absolute inset-0" />
-      <div className="relative">{content}</div>
+    <div className="group relative">
+      {/* Animated shine border */}
+      <ShineBorder
+        className="rounded-2xl"
+        shineColor={["rgba(16, 185, 129, 0.8)", "rgba(20, 184, 166, 0.8)", "rgba(56, 189, 248, 0.8)"]}
+        borderWidth={2}
+        duration={10}
+      />
+
+      {/* Outer glow effect */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl opacity-50 blur-xl transition-opacity duration-300 group-hover:opacity-70"
+        style={{
+          background: 'radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.4), transparent 70%)',
+        }}
+      />
+
+      {/* Content with proper z-index */}
+      <div className="relative z-10">{content}</div>
     </div>
   ) : (
     content

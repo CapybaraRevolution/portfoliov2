@@ -1,41 +1,63 @@
 "use client"
 
-import clsx from 'clsx'
+import * as React from "react"
 
-interface ShineBorderProps {
-  children?: React.ReactNode
-  className?: string
-  durationMs?: number
+import { cn } from "@/lib/utils"
+
+interface ShineBorderProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Width of the border in pixels
+   * @default 1
+   */
+  borderWidth?: number
+  /**
+   * Duration of the animation in seconds
+   * @default 14
+   */
+  duration?: number
+  /**
+   * Color of the border, can be a single color or an array of colors
+   * @default "#000000"
+   */
+  shineColor?: string | string[]
 }
 
 /**
- * Subtle rotating stroke inspired by Magic UI.
- * Only renders a border sheen; interior uses the child's own background.
+ * Shine Border
+ *
+ * An animated background border effect component with configurable properties.
  */
-export function ShineBorder({ children, className, durationMs = 4000, shineColor }: ShineBorderProps) {
-  const stops = shineColor ?? ['#34d399', '#22d3ee', '#60a5fa', '#34d399']
-
+export function ShineBorder({
+  borderWidth = 1,
+  duration = 14,
+  shineColor = "#000000",
+  className,
+  style,
+  ...props
+}: ShineBorderProps) {
   return (
-    <div className={clsx('relative overflow-hidden rounded-2xl', className)}>
-      <div className="pointer-events-none absolute inset-0 rounded-[inherit]">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 rounded-[inherit] p-[1px] [mask:linear-gradient(#000,#000)_content-box,linear-gradient(#000,#000)] [mask-composite:exclude] [--shine-duration:4000ms] animate-[shine-spin_var(--shine-duration)_linear_infinite]"
-          style={{ background: `conic-gradient(${stops.join(',')})` }}
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 rounded-[inherit] blur-[10px] opacity-50"
-          style={{ background: `conic-gradient(${stops.join(',')})` }}
-        />
-      </div>
-      <div className="relative rounded-[inherit]">{children}</div>
-      <style>
-        {`@keyframes shine-spin { 
-            from { transform: rotate(0deg); } 
-            to { transform: rotate(360deg); } 
-          }`}
-      </style>
-    </div>
+    <div
+      style={
+        {
+          "--border-width": `${borderWidth}px`,
+          "--duration": `${duration}s`,
+          backgroundImage: `radial-gradient(transparent,transparent, ${
+            Array.isArray(shineColor) ? shineColor.join(",") : shineColor
+          },transparent,transparent)`,
+          backgroundSize: "300% 300%",
+          mask: `linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)`,
+          WebkitMask: `linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)`,
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+          padding: "var(--border-width)",
+          ...style,
+        } as React.CSSProperties
+      }
+      className={cn(
+        "motion-safe:animate-shine pointer-events-none absolute inset-0 size-full rounded-[inherit] will-change-[background-position]",
+        className
+      )}
+      {...props}
+    />
   )
 }
