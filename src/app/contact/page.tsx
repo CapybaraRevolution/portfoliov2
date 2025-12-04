@@ -673,12 +673,12 @@ function ObfuscatedEmail() {
   )
 }
 
-function ContactContent() {
+export function ContactContent() {
   return (
     <div className="relative">
       <HeroPattern />
       <BackgroundRippleEffect />
-      <div className="relative max-w-4xl mx-auto px-4 py-12">
+      <div className="relative max-w-4xl mx-auto px-4 pt-12 md:pt-6 pb-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
