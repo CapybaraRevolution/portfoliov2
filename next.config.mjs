@@ -24,6 +24,13 @@ const nextConfig = {
   // Reduce bundle size for common libs (adjust list to what you actually use)
   experimental: {
     optimizePackageImports: ['framer-motion', 'date-fns', '@headlessui/react'],
+    // Disable Turbopack for MDX compatibility
+    turbo: undefined,
+  },
+  
+  // Force webpack for MDX compatibility (Turbopack has issues with MDX loader serialization)
+  webpack: (config, { isServer }) => {
+    return config
   },
 
   // Keep your MDX tracing so content isn't pruned
