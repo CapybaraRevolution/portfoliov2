@@ -48,6 +48,8 @@
   --container-2xl: 40rem;
   --container-3xl: 50rem;
   --container-5xl: 66rem;
+
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
 }
 
 @layer base {
@@ -166,6 +168,46 @@
       transform: translateY(0) scale(1);
     }
   }
+
+  @keyframes emerald-ripple {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    30% {
+      opacity: 0.4;
+      transform: scale(1.05);
+    }
+    60% {
+      opacity: 0.2;
+      transform: scale(1.02);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounce-subtle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+
+  @keyframes cell-ripple {
+    0% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
   
   @media (prefers-reduced-motion: reduce) {
     [style*="timeline-bob"], 
@@ -175,7 +217,9 @@
     [style*="lightning-trace"],
     [style*="slideDown"],
     [style*="emeraldWaveReveal"],
-    [style*="fadeInUp"] {
+    [style*="fadeInUp"],
+    [style*="emerald-ripple"],
+    .animate-\[bounce-subtle_3s_ease-in-out_infinite\] {
       animation: none !important;
     }
   }
