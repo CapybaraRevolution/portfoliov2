@@ -129,12 +129,6 @@ const DivGrid = ({
         const hasRipple = clickedCell && distance > 0 && distance < 5;
         const rippleIntensity = clickedCell ? Math.max(0, 1 - distance / 5) : 0;
         
-        // Calculate emerald border color intensity based on distance
-        const emeraldBorderOpacity = hasRipple ? rippleIntensity * 0.6 : 0;
-        const emeraldBorderColor = hasRipple 
-          ? `rgba(16, 185, 129, ${emeraldBorderOpacity})` 
-          : borderColor;
-        
         return (
           <div
             key={idx}
@@ -145,8 +139,7 @@ const DivGrid = ({
             )}
             style={{
               backgroundColor: fillColor,
-              borderColor: emeraldBorderColor,
-              transition: 'border-color 200ms ease-out',
+              borderColor: borderColor,
               ...style,
             }}
             onClick={
