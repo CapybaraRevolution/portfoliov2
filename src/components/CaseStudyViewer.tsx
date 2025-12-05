@@ -1,12 +1,13 @@
 import { CaseStudyHeader } from '@/components/CaseStudyHeader'
-import { CaseStudyMetrics, type MetricData } from '@/components/CaseStudyMetrics'
+import { ImpactSection } from '@/components/case-studies/ImpactSection'
+import { type ImpactMetricProps } from '@/components/case-studies/ImpactMetric'
 import { NavigationChip } from '@/components/NavigationChip'
 import { ToolPill } from '@/components/ui/ToolPill'
 import { type CaseStudyMetadata } from '@/lib/caseStudies'
 
 interface CaseStudyViewerProps {
   caseStudy: CaseStudyMetadata
-  metrics?: MetricData[]
+  metrics?: ImpactMetricProps[]
   children: React.ReactNode
 }
 
@@ -18,7 +19,7 @@ export function CaseStudyViewer({ caseStudy, metrics, children }: CaseStudyViewe
       
       {/* Metrics Section */}
       {metrics && metrics.length > 0 && (
-        <CaseStudyMetrics metrics={metrics} className="mb-12" />
+        <ImpactSection title="Results" metrics={metrics} className="mb-12" contained />
       )}
 
       {/* Services & Tools Section */}
