@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { forwardRef } from 'react'
 
+import { ContactDrawer } from '@/components/ContactDrawer'
 import { Button } from '@/components/Button'
 import { Logo } from '@/components/Logo'
 import {
@@ -110,9 +111,11 @@ export const Header = forwardRef<
           <ThemeToggle />
         </div>
         <div className="hidden min-[416px]:contents">
-          <Button href="/contact">
-            Contact
-          </Button>
+          <ContactDrawer>
+            <Button>
+              Contact
+            </Button>
+          </ContactDrawer>
         </div>
       </div>
     </motion.div>
