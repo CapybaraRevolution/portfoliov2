@@ -59,26 +59,6 @@ export const disciplines = ['All', 'UX', 'Strategy', 'PM', 'Business Analysis'] 
 
 export const projects: Project[] = [
   {
-    id: 'ecommerce-platform',
-    title: 'E-commerce Platform Redesign',
-    description: 'Increased conversion rates by 34% and reduced cart abandonment by 28% through user research and strategic UX improvements.',
-    category: 'UX',
-    skills: [
-      'User Interviews',
-      'Journey Mapping',
-      'Wireframing',
-      'Prototyping',
-      'Funnel Analysis',
-      'A/B Testing',
-      'Competitive Analysis'
-    ],
-    ai: false,
-    href: '/case-studies/ecommerce',
-    client: 'Mid-market fashion retailer',
-    timeline: '6 months',
-    status: 'completed'
-  },
-  {
     id: 'fintech-mobile-app',
     title: 'FinTech Mobile App',
     description: 'Comprehensive audit and clickable prototypes to secure funding by clarifying product vision to investors.',
@@ -95,24 +75,6 @@ export const projects: Project[] = [
     href: '/case-studies/fintech',
     client: 'Confidential',
     timeline: '2024–Present',
-    status: 'ongoing'
-  },
-  {
-    id: 'saas-dashboard',
-    title: 'SaaS Dashboard',
-    description: 'Strategic IA redesign that streamlined donor experience and internal operations while aligning diverse stakeholders.',
-    category: 'Strategy',
-    skills: [
-      'Stakeholder Alignment',
-      'Opportunity Framing',
-      'Wireframing',
-      'Journey Mapping',
-      'Cross-team Facilitation'
-    ],
-    ai: false,
-    href: '/case-studies/saas',
-    client: 'BC Cancer Foundation',
-    timeline: '2023–Present',
     status: 'ongoing'
   },
   {
@@ -148,7 +110,7 @@ export const projects: Project[] = [
       'Cross-team Facilitation'
     ],
     ai: true,
-    href: '/case-studies/saas',
+    href: '/case-studies/avatar-generations',
     client: 'Navigator Games',
     timeline: '2021–2023',
     status: 'completed'

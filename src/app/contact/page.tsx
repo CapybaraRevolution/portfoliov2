@@ -4,6 +4,7 @@ import { Button } from '@/components/Button'
 import { Chip } from '@/components/ui/Chip'
 import { AccordionPanel } from '@/components/AccordionPanel'
 import { HeroPattern } from '@/components/HeroPattern'
+import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import {
   motion,
@@ -15,6 +16,16 @@ import { submitContactForm, type FormData } from './actions'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
 
 // Metadata will be handled by layout.tsx or moved to a separate file
 
@@ -350,7 +361,7 @@ function ContactForm() {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-8 pointer-events-auto">
 
       {/* Basic Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -662,56 +673,111 @@ function ObfuscatedEmail() {
   )
 }
 
-export default function ContactPage() {
+export function ContactContent() {
   return (
-    <>
+    <div className="relative">
       <HeroPattern />
-      <div className="relative max-w-4xl mx-auto px-4 py-12">
-      {/* Hero Section */}
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4">
+      <BackgroundRippleEffect />
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-12 md:pt-6 pb-12 pointer-events-none">
+        {/* Hero Section */}
+        <div className="text-center mb-16 relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4 pointer-events-none">
+            Work With Me
+          </h1>
+          <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto pointer-events-none">
+            I help teams ship user-centered products and measurable outcomes. If you&apos;ve got a problem worth solving, let&apos;s talk.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto">
+            <Button 
+              href="https://calendly.com/kylemcgraw" 
+              variant="filled" 
+              arrow="right"
+              onClick={() => trackEvent('contact_calendar_clicked')}
+            >
+              Book a 30-min intro
+            </Button>
+            <ObfuscatedEmail />
+          </div>
+          
+          <div className="mt-6">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400 pointer-events-none">
+              Available immediately • Remote or hybrid
+            </span>
+          </div>
+        </div>
+
+        {/* Contact Form */}
+        <section className="mb-16 pointer-events-auto">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 pointer-events-none">
+            Let&apos;s start a project
+          </h2>
+          <ContactForm />
+        </section>
+
+        {/* FAQ */}
+        <section className="mb-16 pointer-events-auto">
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 pointer-events-none">
+            Frequently asked questions
+          </h2>
+          <AccordionPanel items={faqItems} />
+        </section>
+      </div>
+    </div>
+  )
+}
+
+export default function ContactPage() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true)
+
+  return (
+    <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+      <div className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-4 px-4 py-16 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-300">
+          Contact drawer experiment
+        </div>
+        <h1 className="text-4xl font-bold text-zinc-900 dark:text-white sm:text-5xl">
           Work With Me
         </h1>
-        <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-8 max-w-2xl mx-auto">
-          I help teams ship user-centered products and measurable outcomes. If you&apos;ve got a problem worth solving, let&apos;s talk.
+        <p className="text-base text-zinc-600 dark:text-zinc-400 sm:text-lg">
+          All of the existing contact content now lives in a shadcn drawer. Open it to keep the flow in-context while preserving the full form and FAQ.
         </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button 
-            href="https://calendly.com/kylemcgraw" 
-            variant="filled" 
-            arrow="right"
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <DrawerTrigger asChild>
+            <Button
+              variant="filled"
+              arrow="right"
+              onClick={() => trackEvent('contact_drawer_opened')}
+            >
+              Open contact drawer
+            </Button>
+          </DrawerTrigger>
+          <Button
+            href="https://calendly.com/kylemcgraw"
+            variant="text"
             onClick={() => trackEvent('contact_calendar_clicked')}
           >
             Book a 30-min intro
           </Button>
-          <ObfuscatedEmail />
-        </div>
-        
-        <div className="mt-6">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
-            Available immediately • Remote or hybrid
-          </span>
         </div>
       </div>
 
-      {/* Contact Form */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6">
-          Let&apos;s start a project
-        </h2>
-        <ContactForm />
-      </section>
+      <DrawerContent className="max-h-[95vh] overflow-hidden border-none bg-transparent px-3 pb-6 sm:px-6">
+        <DrawerHeader className="sr-only">
+          <DrawerTitle>Work With Me</DrawerTitle>
+          <DrawerDescription>Let&apos;s start a project</DrawerDescription>
+        </DrawerHeader>
 
-      {/* FAQ */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6">
-          Frequently asked questions
-        </h2>
-        <AccordionPanel items={faqItems} />
-      </section>
+        <div className="relative max-h-[82vh] overflow-y-auto rounded-2xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-emerald-100/60 dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/10">
+          <ContactContent />
+        </div>
 
-      </div>
-    </>
+        <DrawerFooter className="flex items-center justify-end pt-4">
+          <DrawerClose asChild>
+            <Button variant="secondary">Close drawer</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   )
 }

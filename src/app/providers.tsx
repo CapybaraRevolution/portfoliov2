@@ -2,6 +2,7 @@
 
 import { ThemeProvider, useTheme } from 'next-themes'
 import { useEffect } from 'react'
+import { ContactDrawerProvider } from '@/components/ContactDrawer'
 
 function ThemeWatcher() {
   let { resolvedTheme, setTheme } = useTheme()
@@ -51,10 +52,12 @@ function ChunkErrorHandler() {
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
       <ThemeWatcher />
       <ChunkErrorHandler />
+      <ContactDrawerProvider>
       {children}
+      </ContactDrawerProvider>
     </ThemeProvider>
   )
 }
