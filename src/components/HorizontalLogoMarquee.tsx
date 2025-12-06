@@ -50,7 +50,7 @@ export function HorizontalLogoMarquee() {
             from early-stage startups to established enterprises.
           </p>
           
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200/50 bg-zinc-50/50 dark:border-zinc-800/50 dark:bg-zinc-900/50 py-8">
+          <div className="relative overflow-hidden rounded-2xl border border-zinc-200/50 bg-gradient-to-br from-zinc-100 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 py-8 backdrop-blur-sm">
             {/* Gradient fade at left and right */}
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
@@ -68,7 +68,7 @@ export function HorizontalLogoMarquee() {
                     alt={client.name}
                     width={160}
                     height={64}
-                    className="max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105"
+                    className="max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105 dark:brightness-0 dark:invert group-hover:brightness-100 group-hover:invert-0"
                   />
                 </div>
               ))}
@@ -87,7 +87,7 @@ export function HorizontalLogoMarquee() {
                     alt={client.name}
                     width={160}
                     height={64}
-                    className="max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105"
+                    className="max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105 dark:brightness-0 dark:invert group-hover:brightness-100 group-hover:invert-0"
                   />
                 </div>
               ))}

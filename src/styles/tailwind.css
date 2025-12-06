@@ -275,6 +275,15 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  /* Marquee animation utilities */
+  .animate-marquee {
+    animation: var(--animate-marquee);
+  }
+
+  .animate-marquee-vertical {
+    animation: var(--animate-marquee-vertical);
+  }
   
   /* Service category utility classes */
   .bg-token-pm { background-color: rgb(var(--color-token-pm) / 0.1); }
