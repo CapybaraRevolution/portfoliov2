@@ -12,7 +12,9 @@ import { CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/r
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
 import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
-import Link from 'next/link'
+import { AccordionPanel } from '@/components/AccordionPanel'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import { useContactFormPersistence, getInitialContactFormState } from '@/hooks/useContactFormPersistence'
 
 // Engagement models without emojis
 const engagementModels = [
@@ -47,6 +49,34 @@ const STEPS = [
   { id: 5, name: 'Review' },
 ]
 
+// FAQ items
+const faqItems = [
+  {
+    title: 'Rates & Billing',
+    content: 'Standard rate: CA$105/hr. Fixed-fee available for well-scoped deliverables. Invoicing: monthly, NET-15 from invoice date. Preferred payment: bank transfer/ACH; happy to use your vendor system.'
+  },
+  {
+    title: 'Process',
+    content: 'Measure → learn → improve. I work in one- to two-week sprints with weekly demos and fast feedback. Phases: Discovery & Strategy → Planning & Architecture → Design & Prototyping → Implementation Support → Launch & Optimisation.'
+  },
+  {
+    title: 'Tools',
+    content: 'Figma, Miro, Jira/Asana, Notion/Confluence, Slack/Loom, Amplitude/GA4, Optimizely, Vercel, GitHub—happy to work in your stack.'
+  },
+  {
+    title: 'NDAs & Security',
+    content: 'NDAs welcome. Client data is encrypted and compartmentalized; work happens in private repos/drives. Access is removed at wrap-up. I follow least-privilege access and keep credentials out of files.'
+  },
+  {
+    title: 'Location & Hours',
+    content: 'Vancouver, BC (Pacific Time). I overlap 9–5 PT and am flexible for critical meetings. Not interested in relocation; remote or occasional on-site is great.'
+  },
+  {
+    title: 'Availability',
+    content: 'Available immediately. Open to contract (part- or full-time), with the option to discuss full-time roles if it\'s the right fit.'
+  }
+]
+
 // Input component with validation
 function InputField({ 
   id, 
@@ -70,9 +100,12 @@ function InputField({
   onBlur: () => void
   error?: string
   warning?: string
+  success?: boolean
+  onFocus?: () => void
 }) {
   const hasError = !!error
   const hasWarning = !!warning && !hasError
+  const hasSuccess = success && !hasError && !hasWarning
   const hasValidation = hasError || hasWarning
 
   return (
@@ -90,6 +123,7 @@ function InputField({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          onFocus={onFocus}
           aria-invalid={hasError}
           aria-describedby={hasValidation ? `${id}-message` : undefined}
           className={`col-start-1 row-start-1 block w-full rounded-md px-3 py-2.5 text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors ${
@@ -97,6 +131,8 @@ function InputField({
               ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-500/50 placeholder:text-red-400/70 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 pr-10'
               : hasWarning
               ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 pr-10'
+              : hasSuccess
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 pr-10'
               : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
           }`}
         />
@@ -110,6 +146,12 @@ function InputField({
           <ExclamationCircleIcon
             aria-hidden="true"
             className="pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-amber-500"
+          />
+        )}
+        {hasSuccess && (
+          <CheckCircleIcon
+            aria-hidden="true"
+            className="pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-emerald-500"
           />
         )}
       </div>
@@ -128,21 +170,27 @@ function WebsiteField({
   label, 
   value, 
   onChange, 
-  onBlur 
+  onBlur,
+  success
 }: {
   id: string
   label: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onBlur: () => void
+  success?: boolean
 }) {
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
         {label} <span className="text-zinc-400 dark:text-zinc-500">(optional)</span>
       </label>
-      <div className="mt-2 flex">
-        <div className="flex shrink-0 items-center rounded-l-md bg-zinc-100 dark:bg-zinc-700 px-3 text-sm text-zinc-500 dark:text-zinc-400 border border-r-0 border-zinc-300 dark:border-zinc-600">
+      <div className="mt-2 flex relative">
+        <div className={`flex shrink-0 items-center rounded-l-md px-3 text-sm border border-r-0 transition-colors ${
+          success
+            ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-500/50'
+            : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400 border-zinc-300 dark:border-zinc-600'
+        }`}>
           https://
         </div>
         <input
@@ -153,8 +201,18 @@ function WebsiteField({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className="-ml-px block w-full grow rounded-r-md bg-white dark:bg-zinc-800 px-3 py-2.5 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          className={`-ml-px block w-full grow rounded-r-md px-3 py-2.5 text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors pr-10 ${
+            success
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20'
+              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+          }`}
         />
+        {success && (
+          <CheckCircleIcon
+            aria-hidden="true"
+            className="absolute right-3 top-1/2 -translate-y-1/2 size-5 text-emerald-500 pointer-events-none"
+          />
+        )}
       </div>
     </div>
   )
@@ -228,13 +286,21 @@ function ProjectStep({
   success,
   onProjectChange,
   onSuccessChange,
-  errors
+  onProjectBlur,
+  onSuccessBlur,
+  warnings,
+  projectSuccess,
+  successFieldSuccess
 }: { 
   project: string
   success: string
   onProjectChange: (value: string) => void
   onSuccessChange: (value: string) => void
-  errors: { project?: string }
+  onProjectBlur: () => void
+  onSuccessBlur: () => void
+  warnings: { project?: string }
+  projectSuccess?: boolean
+  successFieldSuccess?: boolean
 }) {
   return (
     <div className="space-y-6">
@@ -251,20 +317,31 @@ function ProjectStep({
         <label htmlFor="project" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
           Project description
         </label>
-        <textarea
-          id="project"
-          rows={4}
-          placeholder="Tell me about your project, goals, and what you're hoping to achieve..."
-          value={project}
-          onChange={(e) => onProjectChange(e.target.value)}
-          className={`w-full px-3 py-2.5 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none ${
-            errors.project
-              ? 'bg-red-50 dark:bg-red-900/20 border border-red-500/50 focus:ring-red-400/20'
-              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-          }`}
-        />
-        {errors.project && (
-          <p className="mt-2 text-sm text-red-400">{errors.project}</p>
+        <div className="relative">
+          <textarea
+            id="project"
+            rows={4}
+            placeholder="Tell me about your project, goals, and what you're hoping to achieve..."
+            value={project}
+            onChange={(e) => onProjectChange(e.target.value)}
+            onBlur={onProjectBlur}
+            className={`w-full px-3 py-2.5 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none pr-10 ${
+              warnings.project
+                ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20'
+                : projectSuccess
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20'
+                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+            }`}
+          />
+          {projectSuccess && (
+            <CheckCircleIcon
+              aria-hidden="true"
+              className="absolute right-3 top-3 size-5 text-emerald-500 pointer-events-none"
+            />
+          )}
+        </div>
+        {warnings.project && (
+          <p className="mt-2 text-sm text-amber-600 dark:text-amber-500">{warnings.project}</p>
         )}
       </div>
 
@@ -272,14 +349,27 @@ function ProjectStep({
         <label htmlFor="success" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
           Success looks like... <span className="text-zinc-400 dark:text-zinc-500">(optional)</span>
         </label>
-        <textarea
-          id="success"
-          rows={2}
-          placeholder="What would success look like for this project?"
-          value={success}
-          onChange={(e) => onSuccessChange(e.target.value)}
-          className="w-full px-3 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm resize-none"
-        />
+        <div className="relative">
+          <textarea
+            id="success"
+            rows={2}
+            placeholder="What would success look like for this project?"
+            value={success}
+            onChange={(e) => onSuccessChange(e.target.value)}
+            onBlur={onSuccessBlur}
+            className={`w-full px-3 py-2.5 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none pr-10 ${
+              successFieldSuccess
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20'
+                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+            }`}
+          />
+          {successFieldSuccess && (
+            <CheckCircleIcon
+              aria-hidden="true"
+              className="absolute right-3 top-3 size-5 text-emerald-500 pointer-events-none"
+            />
+          )}
+        </div>
       </div>
     </div>
   )
@@ -290,12 +380,18 @@ function CompanyStep({
   company,
   website,
   onCompanyChange,
-  onWebsiteChange
+  onWebsiteChange,
+  onCompanyBlur,
+  onWebsiteBlur,
+  success
 }: { 
   company: string
   website: string
   onCompanyChange: (value: string) => void
   onWebsiteChange: (value: string) => void
+  onCompanyBlur: () => void
+  onWebsiteBlur: () => void
+  success: { company?: boolean; website?: boolean }
 }) {
   return (
     <div className="space-y-6">
@@ -314,7 +410,8 @@ function CompanyStep({
         placeholder="Your company name"
         value={company}
         onChange={(e) => onCompanyChange(e.target.value)}
-        onBlur={() => {}}
+        onBlur={onCompanyBlur}
+        success={success.company}
       />
       
       <WebsiteField
@@ -322,7 +419,8 @@ function CompanyStep({
         label="Website"
         value={website}
         onChange={(e) => onWebsiteChange(e.target.value)}
-        onBlur={() => {}}
+        onBlur={onWebsiteBlur}
+        success={success.website}
       />
     </div>
   )
@@ -334,7 +432,10 @@ function PersonalStep({
   email,
   onNameChange,
   onEmailChange,
+  onEmailFocus,
+  warnings,
   errors,
+  success,
   touched,
   onBlur
 }: { 
@@ -342,7 +443,10 @@ function PersonalStep({
   email: string
   onNameChange: (value: string) => void
   onEmailChange: (value: string) => void
-  errors: { name?: string; email?: string }
+  onEmailFocus: () => void
+  warnings: { name?: string; email?: string }
+  errors: { email?: string }
+  success: { name?: boolean; email?: boolean }
   touched: { name?: boolean; email?: boolean }
   onBlur: (field: 'name' | 'email') => void
 }) {
@@ -365,7 +469,9 @@ function PersonalStep({
         value={name}
         onChange={(e) => onNameChange(e.target.value)}
         onBlur={() => onBlur('name')}
+        warning={touched.name ? warnings.name : undefined}
         error={touched.name ? errors.name : undefined}
+        success={touched.name ? success.name : undefined}
       />
       
       <InputField
@@ -376,8 +482,11 @@ function PersonalStep({
         placeholder="you@example.com"
         value={email}
         onChange={(e) => onEmailChange(e.target.value)}
+        onFocus={onEmailFocus}
         onBlur={() => onBlur('email')}
+        warning={touched.email ? warnings.email : undefined}
         error={touched.email ? errors.email : undefined}
+        success={touched.email ? success.email : undefined}
       />
     </div>
   )
@@ -508,9 +617,12 @@ function ObfuscatedEmail() {
 }
 
 export function ContactContent() {
-  const [hasStarted, setHasStarted] = useState(false)
-  const [currentStep, setCurrentStep] = useState(1)
-  const [formData, setFormData] = useState<FormData>({
+  // Restore initial state from localStorage synchronously (lazy initialization)
+  const initialState = getInitialContactFormState()
+  
+  const [hasStarted, setHasStarted] = useState(initialState?.hasStarted ?? false)
+  const [currentStep, setCurrentStep] = useState(initialState?.currentStep ?? 1)
+  const [formData, setFormData] = useState<FormData>(initialState?.formData ?? {
     name: '',
     email: '',
     company: '',
@@ -521,22 +633,120 @@ export function ContactContent() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null)
-  const [touched, setTouched] = useState<{ name?: boolean; email?: boolean }>({})
+  const [touched, setTouched] = useState<{ 
+    name?: boolean
+    email?: boolean
+    company?: boolean
+    website?: boolean
+    project?: boolean
+    success?: boolean
+  }>(initialState?.touched ?? {})
+  const [validationAttempted, setValidationAttempted] = useState<{ project?: boolean }>(initialState?.validationAttempted ?? {})
+  const [emailFocused, setEmailFocused] = useState(initialState?.emailFocused ?? false)
+  const [showFAQs, setShowFAQs] = useState(initialState?.showFAQs ?? false)
   const confettiRef = useRef<ConfettiRef>(null)
-  const rippleRef = useRef<{ triggerRipple: () => void } | null>(null)
+  const faqRef = useRef<HTMLDivElement>(null)
+  
+  // Clear state function
+  const handleClearState = useCallback(() => {
+    setHasStarted(false)
+    setCurrentStep(1)
+    setFormData({
+      name: '',
+      email: '',
+      company: '',
+      website: '',
+      project: '',
+      success: '',
+      engagement: ''
+    })
+    setTouched({})
+    setValidationAttempted({})
+    setEmailFocused(false)
+    setShowFAQs(false)
+  }, [])
+  
+  // Use persistence hook - saves state automatically when it changes
+  // Skip initial restore since we're using lazy initialization in useState
+  const { clearState } = useContactFormPersistence({
+    hasStarted,
+    currentStep,
+    formData,
+    touched,
+    validationAttempted,
+    emailFocused,
+    showFAQs,
+    skipInitialRestore: !!initialState, // Skip if we already restored from localStorage
+    onClear: handleClearState,
+  })
 
   // Email validation
   const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
 
-  // Compute errors
-  const errors = useMemo(() => {
-    const errs: { name?: string; email?: string; project?: string } = {}
-    if (!formData.name.trim()) errs.name = 'Name is required'
-    if (!formData.email.trim()) errs.email = 'Email is required'
-    else if (!emailRegex.test(formData.email)) errs.email = 'Please enter a valid email'
-    if (currentStep === 2 && !formData.project.trim()) errs.project = 'Please describe your project'
-    return errs
-  }, [formData, emailRegex, currentStep])
+  // Compute warnings, errors, and success states separately
+  // Warnings: empty required fields (yellow/amber state)
+  // Errors: invalid email format only (red state)
+  // Success: valid fields that have been touched/blurred (emerald/green state)
+  // Optional fields: show success if they have content AND have been touched
+  const { warnings, errors, success } = useMemo(() => {
+    const warns: { name?: string; email?: string; project?: string } = {}
+    const errs: { email?: string } = {}
+    const successStates: { 
+      name?: boolean
+      email?: boolean
+      project?: boolean
+      company?: boolean
+      website?: boolean
+      success?: boolean
+    } = {}
+    
+    // Name: warning when empty and touched, success when filled and touched
+    if (touched.name) {
+      if (!formData.name.trim()) {
+        warns.name = 'Name is required'
+      } else {
+        successStates.name = true
+      }
+    }
+    
+    // Email: warning when empty and touched, error when invalid format (only after blur), success when valid
+    if (touched.email) {
+      if (!formData.email.trim()) {
+        warns.email = 'Email is required'
+      } else if (!emailFocused && !emailRegex.test(formData.email)) {
+        // Only show error when field is not focused (user has clicked out)
+        errs.email = 'Please enter a valid email address'
+      } else if (emailRegex.test(formData.email)) {
+        successStates.email = true
+      }
+    }
+    
+    // Project: warning when empty and validation attempted, success when filled
+    if (validationAttempted.project) {
+      if (!formData.project.trim()) {
+        warns.project = 'Please describe your project'
+      } else {
+        successStates.project = true
+      }
+    }
+    
+    // Company: success when filled and touched (optional field)
+    if (touched.company && formData.company.trim()) {
+      successStates.company = true
+    }
+    
+    // Website: success when filled and touched (optional field)
+    if (touched.website && formData.website.trim()) {
+      successStates.website = true
+    }
+    
+    // Success field: success when filled and touched (optional field)
+    if (touched.success && formData.success.trim()) {
+      successStates.success = true
+    }
+    
+    return { warnings: warns, errors: errs, success: successStates }
+  }, [formData, emailRegex, touched, validationAttempted, emailFocused])
 
   // Can proceed to next step?
   const canProceed = useCallback(() => {
@@ -564,17 +774,50 @@ export function ContactContent() {
   }, [])
 
   const handleNext = useCallback(() => {
-    if (currentStep < 5 && canProceed()) {
-      setCurrentStep(currentStep + 1)
-      trackEvent('contact_step_completed', { step: currentStep })
+    if (currentStep < 5) {
+      // Mark validation as attempted for the current step before checking if we can proceed
+      if (currentStep === 2) {
+        setValidationAttempted(prev => ({ ...prev, project: true }))
+      }
+      
+      if (canProceed()) {
+        setCurrentStep(currentStep + 1)
+        trackEvent('contact_step_completed', { step: currentStep })
+        // Clear validation attempted state when successfully proceeding (field is now valid)
+        if (currentStep === 2) {
+          setValidationAttempted(prev => ({ ...prev, project: false }))
+        }
+      }
     }
   }, [currentStep, canProceed])
 
   const handleBack = useCallback(() => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
+      // Clear validation attempted state when going back to step 2
+      if (currentStep === 3) {
+        setValidationAttempted(prev => ({ ...prev, project: false }))
+      }
+    } else if (currentStep === 1) {
+      // If on step 1, reset to initial state (show Begin button again)
+      clearState() // Clear persisted state
+      setHasStarted(false)
+      setCurrentStep(1)
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        website: '',
+        project: '',
+        success: '',
+        engagement: ''
+      })
+      setTouched({})
+      setValidationAttempted({})
+      setEmailFocused(false)
+      setSubmitResult(null)
     }
-  }, [currentStep])
+  }, [currentStep, clearState])
 
   const handleStepClick = useCallback((stepId: number) => {
     if (stepId < currentStep) {
@@ -598,6 +841,8 @@ export function ContactContent() {
           colors: ['#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'],
         })
         trackContactFormSubmission(formData)
+        // Clear persisted state on successful submission
+        clearState()
       }
     } catch (error) {
       console.error('Form submission error:', error)
@@ -610,9 +855,37 @@ export function ContactContent() {
     }
   }
 
-  const handleBlur = (field: 'name' | 'email') => {
+  const handleBlur = (field: 'name' | 'email' | 'company' | 'website' | 'success') => {
     setTouched(prev => ({ ...prev, [field]: true }))
+    if (field === 'email') {
+      setEmailFocused(false)
+    }
   }
+
+  const handleEmailFocus = useCallback(() => {
+    setEmailFocused(true)
+  }, [])
+
+  const handleProjectBlur = useCallback(() => {
+    // Mark validation as attempted when user blurs the field
+    // This will show error if field is empty
+    setValidationAttempted(prev => ({ ...prev, project: true }))
+    setTouched(prev => ({ ...prev, project: true }))
+  }, [])
+
+  const toggleFAQs = useCallback(() => {
+    setShowFAQs(prev => {
+      const newState = !prev
+      if (newState) {
+        // Scroll to FAQs after they expand
+        setTimeout(() => {
+          faqRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+        trackEvent('contact_faqs_expanded')
+      }
+      return newState
+    })
+  }, [])
 
   // Render step content
   const renderStepContent = () => {
@@ -627,12 +900,16 @@ export function ContactContent() {
       case 2:
         return (
           <ProjectStep
-            project={formData.project}
-            success={formData.success}
-            onProjectChange={(value) => setFormData({ ...formData, project: value })}
-            onSuccessChange={(value) => setFormData({ ...formData, success: value })}
-            errors={errors}
-          />
+          project={formData.project}
+          success={formData.success}
+          onProjectChange={(value) => setFormData({ ...formData, project: value })}
+          onSuccessChange={(value) => setFormData({ ...formData, success: value })}
+          onProjectBlur={handleProjectBlur}
+          onSuccessBlur={() => handleBlur('success')}
+          warnings={warnings}
+          projectSuccess={success.project}
+          successFieldSuccess={success.success}
+        />
         )
       case 3:
         return (
@@ -641,6 +918,9 @@ export function ContactContent() {
             website={formData.website}
             onCompanyChange={(value) => setFormData({ ...formData, company: value })}
             onWebsiteChange={(value) => setFormData({ ...formData, website: value })}
+            onCompanyBlur={() => handleBlur('company')}
+            onWebsiteBlur={() => handleBlur('website')}
+            success={success}
           />
         )
       case 4:
@@ -650,7 +930,10 @@ export function ContactContent() {
             email={formData.email}
             onNameChange={(value) => setFormData({ ...formData, name: value })}
             onEmailChange={(value) => setFormData({ ...formData, email: value })}
+            onEmailFocus={handleEmailFocus}
+            warnings={warnings}
             errors={errors}
+            success={success}
             touched={touched}
             onBlur={handleBlur}
           />
@@ -674,9 +957,9 @@ export function ContactContent() {
       <BackgroundRippleEffect />
       <Confetti ref={confettiRef} manualstart className="fixed inset-0 pointer-events-none z-50" />
       
-      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-12 md:pt-8 pb-32">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-12 md:pt-8 pb-32 pointer-events-none">
         {/* Hero Section - Always visible */}
-        <div className="text-center mb-12 relative z-10">
+        <div className="text-center mb-12 relative z-10 pointer-events-none">
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4 pointer-events-none">
             Work With Me
           </h1>
@@ -725,22 +1008,24 @@ export function ContactContent() {
         <AnimatePresence>
           {!hasStarted && !submitResult && (
             <motion.div 
-              className="flex justify-center mt-16 mb-8"
+              className="flex justify-center mt-16 mb-8 pointer-events-auto relative z-20"
               initial={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
               <div className="relative">
                 {/* Subtle ambient glow */}
-                <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-rose-500/10 via-violet-500/10 to-blue-500/10 blur-2xl animate-pulse" />
+                <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-rose-500/10 via-violet-500/10 to-blue-500/10 blur-2xl animate-pulse pointer-events-none" />
                 
-                <RainbowButton
-                  size="lg"
-                  onClick={handleBegin}
-                  className="relative text-white dark:text-zinc-900 px-12 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-shadow"
-                >
-                  Begin
-                </RainbowButton>
+                <div className="dark:[&_button]:!bg-[linear-gradient(#18181b,#18181b),linear-gradient(#18181b_50%,rgba(24,24,27,0.6)_80%,rgba(24,24,27,0)),linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] dark:[&_button]:!text-white">
+                  <RainbowButton
+                    size="lg"
+                    onClick={handleBegin}
+                    className="relative text-white dark:text-white px-12 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-shadow"
+                  >
+                    Begin
+                  </RainbowButton>
+                </div>
               </div>
             </motion.div>
           )}
@@ -754,7 +1039,7 @@ export function ContactContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-              className="space-y-8"
+              className="space-y-8 pointer-events-auto relative z-20"
             >
               {/* Progress Stepper */}
               <motion.div
@@ -833,20 +1118,47 @@ export function ContactContent() {
           )}
         </AnimatePresence>
 
-        {/* FAQs Link */}
+        {/* FAQs Toggle */}
         <motion.div 
-          className="text-center mt-12"
+          className="text-center mt-12 pointer-events-auto relative z-20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.4 }}
         >
-          <Link 
-            href="/contact/faq" 
-            className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+          <button
+            onClick={toggleFAQs}
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
           >
-            Have questions? Check out the FAQs →
-          </Link>
+            Have questions? Check out the FAQs
+            <motion.div
+              animate={{ rotate: showFAQs ? 180 : 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <ChevronDownIcon className="size-4" />
+            </motion.div>
+          </button>
         </motion.div>
+
+        {/* FAQs Section - Expands inline */}
+        <AnimatePresence>
+          {showFAQs && (
+            <motion.div
+              ref={faqRef}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              className="overflow-hidden pointer-events-auto relative z-20"
+            >
+              <div className="pt-8 pb-4">
+                <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6 text-center">
+                  Frequently Asked Questions
+                </h2>
+                <AccordionPanel items={faqItems} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Fixed Bottom Navigation */}
@@ -863,15 +1175,10 @@ export function ContactContent() {
               <button
                 type="button"
                 onClick={handleBack}
-                disabled={currentStep === 1}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-                  currentStep === 1
-                    ? 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
-                    : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
-                }`}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
               >
                 <ChevronLeftIcon className="size-5" />
-                Back
+                {currentStep === 1 ? 'Start Over' : 'Back'}
               </button>
               
               <button
