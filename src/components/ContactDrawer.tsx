@@ -58,8 +58,8 @@ function ContactDrawerContent() {
         {/* Floating drag handle above the drawer - positioned to be visible on mobile with proper spacing */}
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[60] pointer-events-none md:-top-8 md:top-4">
           <div className="group flex flex-col items-center gap-2">
-            {/* Interactive drag handle with bounce and glow */}
-            <div className="relative h-1.5 w-24 rounded-full bg-zinc-200 dark:bg-zinc-500 cursor-grab active:cursor-grabbing transition-all duration-300 hover:scale-110 hover:bg-emerald-300/40 dark:hover:bg-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.4)] dark:hover:shadow-[0_0_16px_rgba(16,185,129,0.8)] animate-[bounce-subtle_3s_ease-in-out_infinite] pointer-events-auto shadow-lg">
+            {/* Interactive drag handle with bounce and glow - larger on mobile */}
+            <div className="relative h-2 w-32 md:h-1.5 md:w-24 rounded-full bg-zinc-200 dark:bg-zinc-500 cursor-grab active:cursor-grabbing transition-all duration-300 hover:scale-110 hover:bg-emerald-300/40 dark:hover:bg-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.4)] dark:hover:shadow-[0_0_16px_rgba(16,185,129,0.8)] animate-[bounce-subtle_3s_ease-in-out_infinite] pointer-events-auto shadow-lg md:shadow-md">
               <div className="absolute inset-0 rounded-full bg-emerald-400/20 dark:bg-emerald-500/40 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
             {/* Subtle hint text - hidden on mobile to save space */}
