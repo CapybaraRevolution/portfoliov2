@@ -6,13 +6,22 @@ import {
   DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer'
 import { Button } from '@/components/Button'
-import { ContactContent } from '@/app/contact/page'
 import { trackEvent } from '@/components/GoogleAnalytics'
+import dynamic from 'next/dynamic'
+
+// Dynamically import ContactContent to avoid circular deps
+const ContactContent = dynamic(() => import('@/app/contact/page').then(mod => ({ default: mod.ContactContent })), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="animate-spin w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full" />
+    </div>
+  )
+})
 
 type ContactDrawerContextType = {
   open: boolean

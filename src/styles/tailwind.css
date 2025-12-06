@@ -50,6 +50,13 @@
   --container-5xl: 66rem;
 
   --animate-background-position-spin: background-position-spin 3000ms infinite alternate;
+  
+  /* Rainbow button colors */
+  --color-1: #ec4899;
+  --color-2: #8b5cf6;
+  --color-3: #3b82f6;
+  --color-4: #10b981;
+  --color-5: #f59e0b;
 }
 
 @keyframes background-position-spin {
@@ -219,6 +226,18 @@
     }
   }
   
+  @keyframes rainbow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
   @media (prefers-reduced-motion: reduce) {
     [style*="timeline-bob"], 
     [style*="photo-breathe"],
@@ -229,7 +248,8 @@
     [style*="emeraldWaveReveal"],
     [style*="fadeInUp"],
     [style*="emerald-ripple"],
-    .animate-\[bounce-subtle_3s_ease-in-out_infinite\] {
+    .animate-\[bounce-subtle_3s_ease-in-out_infinite\],
+    .animate-rainbow {
       animation: none !important;
     }
   }
@@ -285,6 +305,7 @@
 }
 
 @theme inline {
+  --animate-rainbow: rainbow 3s linear infinite;
   --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
 
   @keyframes cell-ripple {
@@ -317,6 +338,24 @@
     }
     to {
       transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+
+  /* Rainbow Button Animation */
+  --color-1: hsl(0 100% 63%);
+  --color-2: hsl(270 100% 63%);
+  --color-3: hsl(210 100% 63%);
+  --color-4: hsl(195 100% 63%);
+  --color-5: hsl(90 100% 63%);
+  
+  --animate-rainbow: rainbow 4s linear infinite;
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
     }
   }
 }

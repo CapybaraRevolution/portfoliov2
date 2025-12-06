@@ -1,78 +1,21 @@
 'use client'
 
 import { Button } from '@/components/Button'
-import { Chip } from '@/components/ui/Chip'
-import { AccordionPanel } from '@/components/AccordionPanel'
 import { HeroPattern } from '@/components/HeroPattern'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
-import { useState, useEffect, useRef, useMemo } from 'react'
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  type MotionValue,
-} from 'framer-motion'
+import { RainbowButton } from '@/components/ui/rainbow-button'
+import { ContactStepper } from '@/components/ContactStepper'
+import { useState, useRef, useMemo, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { submitContactForm, type FormData } from './actions'
-import { CheckCircleIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
 import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
+import { AccordionPanel } from '@/components/AccordionPanel'
+import { ChevronDownIcon } from '@heroicons/react/24/outline'
 
-// Metadata will be handled by layout.tsx or moved to a separate file
-
-const engagementModels = [
-  {
-    title: 'Short-term Consulting',
-    subtitle: '2–12 weeks',
-    description: 'Audits, strategy, experiments',
-    icon: '🎯'
-  },
-  {
-    title: 'Contract Projects',
-    subtitle: '3–12 months', 
-    description: 'From discovery to launch',
-    icon: '🚀'
-  },
-  {
-    title: 'Full-time Product Roles',
-    subtitle: 'When you need an owner',
-    description: 'Embedded team leadership',
-    icon: '👥'
-  },
-  {
-    title: 'Advisory',
-    subtitle: 'Periodic guidance',
-    description: 'Checkpoints and decision support',
-    icon: '💡'
-  }
-]
-
-const projectTypes = [
-  'Product strategy & roadmap',
-  'UX research & usability testing', 
-  'IA, wireframes, and clickable prototypes',
-  'Design systems & documentation',
-  'Business analysis & process mapping'
-]
-
-const industries = [
-  'E-commerce',
-  'FinTech', 
-  'Healthcare',
-  'Enterprise SaaS',
-  'EdTech'
-]
-
+// FAQ items
 const faqItems = [
   {
     title: 'Rates & Billing',
@@ -80,11 +23,11 @@ const faqItems = [
   },
   {
     title: 'Process',
-    content: 'Measure → learn → improve. I work in one- to two-week sprints with weekly demos and fast feedback. Phases: Discovery & Strategy → Planning & Architecture → Design & Prototyping → Implementation Support → Launch & Optimisation. Want the deep dive? View my Process (opens in a new tab).'
+    content: 'Measure → learn → improve. I work in one- to two-week sprints with weekly demos and fast feedback. Phases: Discovery & Strategy → Planning & Architecture → Design & Prototyping → Implementation Support → Launch & Optimisation.'
   },
   {
     title: 'Tools',
-    content: 'Figma, Miro, Jira/Asana, Notion/Confluence, Slack/Loom, Amplitude/GA4, Optimizely, Vercel, GitHub—happy to work in your stack. See the full list and how I use them: Explore Tools (opens in a new tab).'
+    content: 'Figma, Miro, Jira/Asana, Notion/Confluence, Slack/Loom, Amplitude/GA4, Optimizely, Vercel, GitHub—happy to work in your stack.'
   },
   {
     title: 'NDAs & Security',
@@ -100,19 +43,37 @@ const faqItems = [
   }
 ]
 
-
-const timelineOptions = [
-  { id: 'asap', name: 'ASAP' },
-  { id: '2-4weeks', name: '2–4 weeks' },
-  { id: '1-3months', name: '1–3 months' },
-  { id: '3months+', name: '3+ months' },
+// Engagement models without emojis
+const engagementModels = [
+  {
+    title: 'Short-term Consulting',
+    subtitle: '2–12 weeks',
+    description: 'Audits, strategy, experiments',
+  },
+  {
+    title: 'Contract Projects',
+    subtitle: '3–12 months', 
+    description: 'From discovery to launch',
+  },
+  {
+    title: 'Full-time Product Roles',
+    subtitle: 'When you need an owner',
+    description: 'Embedded team leadership',
+  },
+  {
+    title: 'Advisory',
+    subtitle: 'Periodic guidance',
+    description: 'Checkpoints and decision support',
+  }
 ]
 
-const budgetOptions = [
-  { id: '5k-15k', name: '$5K-15K' },
-  { id: '15k-50k', name: '$15K-50K' },
-  { id: '50k-100k', name: '$50K-100K' },
-  { id: '100k+', name: '$100K+' },
+// Step definitions
+const STEPS = [
+  { id: 1, name: 'Engagement' },
+  { id: 2, name: 'Project' },
+  { id: 3, name: 'Company' },
+  { id: 4, name: 'About You' },
+  { id: 5, name: 'Review' },
 ]
 
 // Input component with validation
@@ -160,7 +121,7 @@ function InputField({
           onBlur={onBlur}
           aria-invalid={hasError}
           aria-describedby={hasValidation ? `${id}-message` : undefined}
-          className={`col-start-1 row-start-1 block w-full rounded-md px-3 py-2 text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors ${
+          className={`col-start-1 row-start-1 block w-full rounded-md px-3 py-2.5 text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors ${
             hasError
               ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-500/50 placeholder:text-red-400/70 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 pr-10'
               : hasWarning
@@ -221,362 +182,121 @@ function WebsiteField({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          className="-ml-px block w-full grow rounded-r-md bg-white dark:bg-zinc-800 px-3 py-2 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          className="-ml-px block w-full grow rounded-r-md bg-white dark:bg-zinc-800 px-3 py-2.5 text-zinc-900 dark:text-zinc-100 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
         />
       </div>
     </div>
   )
 }
 
-function ContactForm() {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    company: '',
-    website: '',
-    project: '',
-    timeline: '',
-    budget: '',
-    success: '',
-    engagement: ''
-  })
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null)
-  const [errors, setErrors] = useState<Partial<FormData>>({})
-  const [warnings, setWarnings] = useState<Partial<FormData>>({})
-  const [touched, setTouched] = useState<Partial<Record<keyof FormData, boolean>>>({})
-  const [showSubmitErrors, setShowSubmitErrors] = useState(false)
-  const formRef = useRef<HTMLFormElement>(null)
-  const confettiRef = useRef<ConfettiRef>(null)
-
-  // Email validation regex
-  const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
-
-  // Check if required field is empty (for warnings on blur)
-  const isRequiredFieldEmpty = (name: keyof FormData, value: string) => {
-    const requiredFields = ['name', 'email', 'project', 'timeline', 'budget', 'engagement']
-    return requiredFields.includes(name) && value.trim() === ''
-  }
-
-  // Update warnings and errors when form data changes
-  useEffect(() => {
-    const newWarnings: Partial<FormData> = {}
-    const newErrors: Partial<FormData> = {}
-    
-    Object.keys(formData).forEach((key) => {
-      const fieldName = key as keyof FormData
-      const value = formData[fieldName]
-      
-      if (touched[fieldName]) {
-        // Only show email validation error on blur/change
-        if (fieldName === 'email') {
-          if (value.trim() !== '' && !emailRegex.test(value)) {
-            newErrors[fieldName] = 'Please enter a valid email address'
-          }
-        }
-        
-        // Show warnings for empty required fields (but not errors until submit)
-        if (!showSubmitErrors && isRequiredFieldEmpty(fieldName, value)) {
-          newWarnings[fieldName] = 'This field is required'
-        }
-      }
-    })
-    
-    setWarnings(newWarnings)
-    setErrors(newErrors)
-  }, [formData, touched, showSubmitErrors, emailRegex])
-
-  // Form validation - check if all required fields are filled and email is valid
-  const isFormValid = formData.name.trim() !== '' && 
-                     formData.email.trim() !== '' && 
-                     emailRegex.test(formData.email) &&
-                     formData.project.trim() !== '' &&
-                     formData.timeline !== '' &&
-                     formData.budget !== '' &&
-                     formData.engagement !== ''
-
-  // Handle field blur (mark as touched)
-  const handleBlur = (fieldName: keyof FormData) => {
-    setTouched(prev => ({ ...prev, [fieldName]: true }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    // Show submit errors if form is invalid
-    if (!isFormValid) {
-      setShowSubmitErrors(true)
-      // Mark all required fields as touched to show validation
-      setTouched({
-        name: true,
-        email: true,
-        project: true,
-        timeline: true,
-        budget: true,
-        engagement: true,
-        company: touched.company || false,
-        website: touched.website || false,
-        success: touched.success || false,
-      })
-      return
-    }
-
-    setIsSubmitting(true)
-    setSubmitResult(null)
-
-    try {
-      // Add client-side timeout as fallback (35 seconds - slightly longer than server timeout)
-      const timeoutPromise = new Promise<{ success: boolean; message: string }>((_, reject) => {
-        setTimeout(() => {
-          reject(new Error('Request took too long. Please check your connection and try again.'))
-        }, 35000)
-      })
-
-      const result = await Promise.race([
-        submitContactForm(formData),
-        timeoutPromise
-      ])
-      
-      setSubmitResult(result)
-      
-      if (result.success) {
-        // Fire confetti celebration!
-        confettiRef.current?.fire({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'],
-        })
-        
-        // Reset form on success
-        setFormData({
-          name: '',
-          email: '',
-          company: '',
-          website: '',
-          project: '',
-          timeline: '',
-          budget: '',
-          success: '',
-          engagement: ''
-        })
-        
-        // Reset validation states
-        setTouched({})
-        setErrors({})
-        setWarnings({})
-        setShowSubmitErrors(false)
-        
-        // Track form submission with detailed analytics
-        trackContactFormSubmission(formData)
-      }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      setSubmitResult({
-        success: false,
-        message: error instanceof Error 
-          ? error.message 
-          : 'An error occurred while submitting the form. Please try again.'
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
+// Step 1: Engagement Type
+function EngagementStep({ 
+  value, 
+  onChange 
+}: { 
+  value: string
+  onChange: (value: string) => void 
+}) {
   return (
-    <>
-      <Confetti ref={confettiRef} manualstart className="fixed inset-0 pointer-events-none z-50" />
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-8 pointer-events-auto">
+    <div className="space-y-4">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          How would you like to work together?
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Select the engagement model that best fits your needs
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {engagementModels.map((model) => (
+          <label
+            key={model.title}
+            aria-label={model.title}
+            aria-description={`${model.subtitle} - ${model.description}`}
+            className={`group relative flex rounded-xl border p-4 transition-all duration-200 cursor-pointer ${
+              value === model.title
+                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 ring-1 ring-emerald-500'
+                : 'border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 hover:border-emerald-300 dark:hover:border-emerald-700'
+            }`}
+          >
+            <input
+              type="radio"
+              name="engagement"
+              value={model.title}
+              checked={value === model.title}
+              onChange={(e) => onChange(e.target.value)}
+              className="sr-only"
+            />
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                  {model.title}
+                </span>
+                {value === model.title && (
+                  <CheckCircleIcon className="size-5 text-emerald-500 flex-shrink-0" />
+                )}
+              </div>
+              <span className="block text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-1">
+                {model.subtitle}
+              </span>
+              <span className="block text-sm text-zinc-600 dark:text-zinc-400">
+                {model.description}
+              </span>
+            </div>
+          </label>
+        ))}
+      </div>
+    </div>
+  )
+}
 
-      {/* Basic Information */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InputField
-          id="name"
-          label="Name"
-          required
-          placeholder="Your full name"
-          value={formData.name}
-          onChange={(e) => setFormData({...formData, name: e.target.value})}
-          onBlur={() => handleBlur('name')}
-          error={showSubmitErrors && !formData.name.trim() ? 'Name is required' : undefined}
-          warning={warnings.name}
-        />
-        <InputField
-          id="email"
-          label="Email"
-          type="email"
-          required
-          placeholder="you@example.com"
-          value={formData.email}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
-          onBlur={() => handleBlur('email')}
-          error={errors.email || (showSubmitErrors && !formData.email.trim() ? 'Email is required' : undefined)}
-          warning={!errors.email ? warnings.email : undefined}
-        />
+// Step 2: Project Details
+function ProjectStep({ 
+  project,
+  success,
+  onProjectChange,
+  onSuccessChange,
+  errors
+}: { 
+  project: string
+  success: string
+  onProjectChange: (value: string) => void
+  onSuccessChange: (value: string) => void
+  errors: { project?: string }
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          What are we working on?
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Tell me about your project and goals
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InputField
-          id="company"
-          label="Company"
-          placeholder="Your company name"
-          value={formData.company}
-          onChange={(e) => setFormData({...formData, company: e.target.value})}
-          onBlur={() => handleBlur('company')}
-        />
-        <WebsiteField
-          id="website"
-          label="Website"
-          value={formData.website}
-          onChange={(e) => setFormData({...formData, website: e.target.value})}
-          onBlur={() => handleBlur('website')}
-        />
-      </div>
-
-      {/* Project Description */}
       <div>
         <label htmlFor="project" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-          What are we working on?
+          Project description
         </label>
-        <div className="grid grid-cols-1">
-          <textarea
-            id="project"
-            required
-            rows={3}
-            placeholder="Tell me about your project, goals, and what you're hoping to achieve..."
-            value={formData.project}
-            onChange={(e) => setFormData({...formData, project: e.target.value})}
-            onBlur={() => handleBlur('project')}
-            aria-invalid={!!errors.project}
-            aria-describedby={errors.project ? 'project-error' : undefined}
-            className={`col-start-1 row-start-1 w-full px-3 py-2 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none ${
-              (showSubmitErrors && !formData.project.trim()) || errors.project
-                ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-500/50 placeholder:text-red-400/70 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 pr-10'
-                : warnings.project
-                ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 pr-10'
-                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
-            }`}
-          />
-          {((showSubmitErrors && !formData.project.trim()) || errors.project) && (
-            <ExclamationCircleIcon
-              aria-hidden="true"
-              className="pointer-events-none col-start-1 row-start-1 mr-3 mt-3 size-5 self-start justify-self-end text-red-400"
-            />
-          )}
-          {warnings.project && !((showSubmitErrors && !formData.project.trim()) || errors.project) && (
-            <ExclamationCircleIcon
-              aria-hidden="true"
-              className="pointer-events-none col-start-1 row-start-1 mr-3 mt-3 size-5 self-start justify-self-end text-amber-500"
-            />
-          )}
-        </div>
-        {(showSubmitErrors && !formData.project.trim()) && (
-          <p id="project-error" className="mt-2 text-sm text-red-400">
-            Project description is required
-          </p>
-        )}
-        {warnings.project && !(showSubmitErrors && !formData.project.trim()) && (
-          <p id="project-error" className="mt-2 text-sm text-amber-600 dark:text-amber-500">
-            {warnings.project}
-          </p>
+        <textarea
+          id="project"
+          rows={4}
+          placeholder="Tell me about your project, goals, and what you're hoping to achieve..."
+          value={project}
+          onChange={(e) => onProjectChange(e.target.value)}
+          className={`w-full px-3 py-2.5 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none ${
+            errors.project
+              ? 'bg-red-50 dark:bg-red-900/20 border border-red-500/50 focus:ring-red-400/20'
+              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+          }`}
+        />
+        {errors.project && (
+          <p className="mt-2 text-sm text-red-400">{errors.project}</p>
         )}
       </div>
 
-      {/* Timeline Radio Group */}
-      <fieldset aria-label="Choose timeline">
-        <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">Timeline</div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {timelineOptions.map((option) => (
-            <label
-              key={option.id}
-              aria-label={option.name}
-              className="group relative flex items-center justify-center rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 p-3 has-checked:border-emerald-500 has-checked:bg-emerald-50 dark:has-checked:bg-emerald-900/20 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-emerald-500 transition-all duration-200 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-700"
-            >
-              <input
-                value={option.name}
-                checked={formData.timeline === option.name}
-                onChange={(e) => setFormData({...formData, timeline: e.target.value})}
-                name="timeline"
-                type="radio"
-                className="absolute inset-0 appearance-none focus:outline-none"
-              />
-              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{option.name}</span>
-            </label>
-          ))}
-        </div>
-        {showSubmitErrors && !formData.timeline && (
-          <p className="mt-2 text-sm text-red-400">Please select a timeline</p>
-        )}
-      </fieldset>
-
-      {/* Budget Radio Group */}
-      <fieldset aria-label="Choose budget range">
-        <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">Budget range</div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {budgetOptions.map((option) => (
-            <label
-              key={option.id}
-              aria-label={option.name}
-              className="group relative flex items-center justify-center rounded-md border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 p-3 has-checked:border-emerald-500 has-checked:bg-emerald-50 dark:has-checked:bg-emerald-900/20 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-emerald-500 transition-all duration-200 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-700"
-            >
-              <input
-                value={option.name}
-                checked={formData.budget === option.name}
-                onChange={(e) => setFormData({...formData, budget: e.target.value})}
-                name="budget"
-                type="radio"
-                className="absolute inset-0 appearance-none focus:outline-none"
-              />
-              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{option.name}</span>
-            </label>
-          ))}
-        </div>
-        {showSubmitErrors && !formData.budget && (
-          <p className="mt-2 text-sm text-red-400">Please select a budget range</p>
-        )}
-      </fieldset>
-
-      {/* Engagement Type Radio Group */}
-      <fieldset aria-label="Choose engagement type">
-        <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">How would you like to work together?</div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {engagementModels.map((model) => (
-            <label
-              key={model.title}
-              aria-label={model.title}
-              aria-description={`${model.subtitle} - ${model.description}`}
-              className="group relative flex rounded-2xl border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 p-4 has-checked:border-emerald-500 has-checked:bg-emerald-50 dark:has-checked:bg-emerald-900/20 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-emerald-500 transition-all duration-200 cursor-pointer hover:border-emerald-300 dark:hover:border-emerald-700"
-            >
-              <input
-                value={model.title}
-                checked={formData.engagement === model.title}
-                onChange={(e) => setFormData({...formData, engagement: e.target.value})}
-                name="engagement"
-                type="radio"
-                className="absolute inset-0 appearance-none focus:outline-none"
-              />
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-lg">{model.icon}</span>
-                  <span className="text-base font-semibold text-zinc-900 dark:text-zinc-100">{model.title}</span>
-                </div>
-                <span className="block text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-1">{model.subtitle}</span>
-                <span className="block text-sm text-zinc-600 dark:text-zinc-400">{model.description}</span>
-              </div>
-              <CheckCircleIcon
-                aria-hidden="true"
-                className="invisible size-5 text-emerald-500 flex-shrink-0 group-has-checked:visible"
-              />
-            </label>
-          ))}
-        </div>
-        {showSubmitErrors && !formData.engagement && (
-          <p className="mt-2 text-sm text-red-400">Please select how you&apos;d like to work together</p>
-        )}
-      </fieldset>
-
-      {/* Success Definition */}
       <div>
         <label htmlFor="success" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
           Success looks like... <span className="text-zinc-400 dark:text-zinc-500">(optional)</span>
@@ -584,18 +304,164 @@ function ContactForm() {
         <textarea
           id="success"
           rows={2}
-          className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-          value={formData.success}
-          onChange={(e) => setFormData({...formData, success: e.target.value})}
+          placeholder="What would success look like for this project?"
+          value={success}
+          onChange={(e) => onSuccessChange(e.target.value)}
+          className="w-full px-3 py-2.5 border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm resize-none"
         />
+      </div>
+    </div>
+  )
+}
+
+// Step 3: Company Details
+function CompanyStep({ 
+  company,
+  website,
+  onCompanyChange,
+  onWebsiteChange
+}: { 
+  company: string
+  website: string
+  onCompanyChange: (value: string) => void
+  onWebsiteChange: (value: string) => void
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          Tell me about your company
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Both fields are optional — skip if you prefer
+        </p>
+      </div>
+
+      <InputField
+        id="company"
+        label="Company name"
+        placeholder="Your company name"
+        value={company}
+        onChange={(e) => onCompanyChange(e.target.value)}
+        onBlur={() => {}}
+      />
+      
+      <WebsiteField
+        id="website"
+        label="Website"
+        value={website}
+        onChange={(e) => onWebsiteChange(e.target.value)}
+        onBlur={() => {}}
+      />
+    </div>
+  )
+}
+
+// Step 4: Personal Details
+function PersonalStep({ 
+  name,
+  email,
+  onNameChange,
+  onEmailChange,
+  errors,
+  touched,
+  onBlur
+}: { 
+  name: string
+  email: string
+  onNameChange: (value: string) => void
+  onEmailChange: (value: string) => void
+  errors: { name?: string; email?: string }
+  touched: { name?: boolean; email?: boolean }
+  onBlur: (field: 'name' | 'email') => void
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          Lastly, some information about you
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          So I know who to reply to
+        </p>
+      </div>
+
+      <InputField
+        id="name"
+        label="Your name"
+        required
+        placeholder="Your full name"
+        value={name}
+        onChange={(e) => onNameChange(e.target.value)}
+        onBlur={() => onBlur('name')}
+        error={touched.name ? errors.name : undefined}
+      />
+      
+      <InputField
+        id="email"
+        label="Email address"
+        type="email"
+        required
+        placeholder="you@example.com"
+        value={email}
+        onChange={(e) => onEmailChange(e.target.value)}
+        onBlur={() => onBlur('email')}
+        error={touched.email ? errors.email : undefined}
+      />
+    </div>
+  )
+}
+
+// Step 5: Review
+function ReviewStep({ 
+  formData,
+  isSubmitting,
+  onSubmit
+}: { 
+  formData: FormData
+  isSubmitting: boolean
+  onSubmit: () => void
+}) {
+  const items = [
+    { label: 'Engagement type', value: formData.engagement },
+    { label: 'Project', value: formData.project },
+    { label: 'Success looks like', value: formData.success || 'Not provided' },
+    { label: 'Company', value: formData.company || 'Not provided' },
+    { label: 'Website', value: formData.website ? `https://${formData.website}` : 'Not provided' },
+    { label: 'Name', value: formData.name },
+    { label: 'Email', value: formData.email },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center mb-6">
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          Review your inquiry
+        </h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Make sure everything looks good before sending
+        </p>
+      </div>
+
+      <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 space-y-3">
+        {items.map((item) => (
+          <div key={item.label} className="flex flex-col sm:flex-row sm:justify-between gap-1 py-2 border-b border-zinc-200 dark:border-zinc-700 last:border-0">
+            <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+              {item.label}
+            </span>
+            <span className="text-sm text-zinc-900 dark:text-zinc-100 sm:text-right max-w-[280px] break-words">
+              {item.value.length > 100 ? `${item.value.slice(0, 100)}...` : item.value}
+            </span>
+          </div>
+        ))}
       </div>
 
       <motion.div 
-        className="flex justify-center"
-        animate={isFormValid ? {
+        className="flex justify-center pt-4"
+        animate={{
           scale: [1, 1.01, 1],
           y: [0, -1, 0]
-        } : {}}
+        }}
         transition={{
           duration: 4,
           repeat: Infinity,
@@ -603,33 +469,27 @@ function ContactForm() {
         }}
       >
         <div className="relative group">
-          {/* Ambient glow effect when form is valid */}
-          {isFormValid && !isSubmitting && (
-            <motion.div 
-              className="absolute -inset-3 rounded-lg bg-emerald-500/20 dark:bg-emerald-400/20 blur-xl"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.6, 0.3]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-          )}
+          <motion.div 
+            className="absolute -inset-3 rounded-lg bg-emerald-500/20 dark:bg-emerald-400/20 blur-xl"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.3, 0.6, 0.3]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
           
           <Button 
-            type="submit" 
+            type="button"
+            onClick={onSubmit}
             variant="secondary"
-            className={`relative px-8 py-3 transition-all duration-500 transform ${
-              !isFormValid 
-                ? 'bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-500 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-600' 
-                : 'bg-emerald-50/80 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 hover:border-emerald-400 dark:hover:border-emerald-400/70 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-400/20'
-            }`}
+            className="relative px-8 py-3 bg-emerald-50/80 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 hover:bg-emerald-100/80 dark:hover:bg-emerald-900/30 hover:border-emerald-400 dark:hover:border-emerald-400/70 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-400/20 transition-all duration-500 transform"
             disabled={isSubmitting}
           >
-            <span className={`relative z-10 transition-all duration-300 font-medium ${isFormValid ? 'text-emerald-700 dark:text-emerald-300' : ''}`}>
+            <span className="relative z-10 font-medium">
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
                   <motion.div
@@ -646,33 +506,11 @@ function ContactForm() {
           </Button>
         </div>
       </motion.div>
-      
-      {/* Success/Error Message */}
-      {submitResult && (
-        <div 
-          className={`p-4 rounded-md ${
-            submitResult.success 
-              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800' 
-              : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800'
-          }`}
-          aria-live="polite"
-        >
-          {submitResult.message}
-          {submitResult.success && (
-            <div className="mt-2">
-              <Button href="https://calendly.com/kylemcgraw" variant="text">
-                Book intro call
-              </Button>
-            </div>
-          )}
-        </div>
-      )}
-      
+
       <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
         I review every inquiry and aim to reply within 1 business day. Your details stay private and are never shared.
       </p>
-    </form>
-    </>
+    </div>
   )
 }
 
@@ -685,15 +523,13 @@ function ObfuscatedEmail() {
       trackEvent('contact_email_revealed')
     }
     trackEvent('contact_email_clicked')
-    
-    // Compose email
     window.location.href = 'mailto:kylemcgraw1993@gmail.com?subject=Project%20inquiry'
   }
 
   return (
     <button
       onClick={handleClick}
-      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium"
+      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium transition-colors"
     >
       {revealed ? 'kylemcgraw1993@gmail.com' : 'Email me'}
     </button>
@@ -701,13 +537,190 @@ function ObfuscatedEmail() {
 }
 
 export function ContactContent() {
+  const [hasStarted, setHasStarted] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    company: '',
+    website: '',
+    project: '',
+    success: '',
+    engagement: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null)
+  const [touched, setTouched] = useState<{ name?: boolean; email?: boolean }>({})
+  const [showFAQs, setShowFAQs] = useState(false)
+  const confettiRef = useRef<ConfettiRef>(null)
+  const faqRef = useRef<HTMLDivElement>(null)
+
+  // Email validation
+  const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
+
+  // Compute errors
+  const errors = useMemo(() => {
+    const errs: { name?: string; email?: string; project?: string } = {}
+    if (!formData.name.trim()) errs.name = 'Name is required'
+    if (!formData.email.trim()) errs.email = 'Email is required'
+    else if (!emailRegex.test(formData.email)) errs.email = 'Please enter a valid email'
+    if (currentStep === 2 && !formData.project.trim()) errs.project = 'Please describe your project'
+    return errs
+  }, [formData, emailRegex, currentStep])
+
+  // Can proceed to next step?
+  const canProceed = useCallback(() => {
+    switch (currentStep) {
+      case 1:
+        return formData.engagement !== ''
+      case 2:
+        return formData.project.trim() !== ''
+      case 3:
+        return true // Both fields optional
+      case 4:
+        return formData.name.trim() !== '' && formData.email.trim() !== '' && emailRegex.test(formData.email)
+      case 5:
+        return true
+      default:
+        return false
+    }
+  }, [currentStep, formData, emailRegex])
+
+  const handleBegin = useCallback(() => {
+    setHasStarted(true)
+    trackEvent('contact_form_started')
+    // Trigger ripple on the background grid (we'll emit a custom event)
+    window.dispatchEvent(new CustomEvent('trigger-contact-ripple'))
+  }, [])
+
+  const handleNext = useCallback(() => {
+    if (currentStep < 5 && canProceed()) {
+      setCurrentStep(currentStep + 1)
+      trackEvent('contact_step_completed', { step: currentStep })
+    }
+  }, [currentStep, canProceed])
+
+  const handleBack = useCallback(() => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+    }
+  }, [currentStep])
+
+  const handleStepClick = useCallback((stepId: number) => {
+    if (stepId < currentStep) {
+      setCurrentStep(stepId)
+    }
+  }, [currentStep])
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true)
+    setSubmitResult(null)
+
+    try {
+      const result = await submitContactForm(formData)
+      setSubmitResult(result)
+      
+      if (result.success) {
+        confettiRef.current?.fire({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'],
+        })
+        trackContactFormSubmission(formData)
+      }
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setSubmitResult({
+        success: false,
+        message: error instanceof Error ? error.message : 'An error occurred. Please try again.'
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleBlur = (field: 'name' | 'email') => {
+    setTouched(prev => ({ ...prev, [field]: true }))
+  }
+
+  const toggleFAQs = useCallback(() => {
+    setShowFAQs(prev => {
+      const newState = !prev
+      if (newState) {
+        // Scroll to FAQs after they expand
+        setTimeout(() => {
+          faqRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+        trackEvent('contact_faqs_expanded')
+      }
+      return newState
+    })
+  }, [])
+
+  // Render step content
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <EngagementStep
+            value={formData.engagement}
+            onChange={(value) => setFormData({ ...formData, engagement: value })}
+          />
+        )
+      case 2:
+        return (
+          <ProjectStep
+            project={formData.project}
+            success={formData.success}
+            onProjectChange={(value) => setFormData({ ...formData, project: value })}
+            onSuccessChange={(value) => setFormData({ ...formData, success: value })}
+            errors={errors}
+          />
+        )
+      case 3:
+        return (
+          <CompanyStep
+            company={formData.company}
+            website={formData.website}
+            onCompanyChange={(value) => setFormData({ ...formData, company: value })}
+            onWebsiteChange={(value) => setFormData({ ...formData, website: value })}
+          />
+        )
+      case 4:
+        return (
+          <PersonalStep
+            name={formData.name}
+            email={formData.email}
+            onNameChange={(value) => setFormData({ ...formData, name: value })}
+            onEmailChange={(value) => setFormData({ ...formData, email: value })}
+            errors={errors}
+            touched={touched}
+            onBlur={handleBlur}
+          />
+        )
+      case 5:
+        return (
+          <ReviewStep
+            formData={formData}
+            isSubmitting={isSubmitting}
+            onSubmit={handleSubmit}
+          />
+        )
+      default:
+        return null
+    }
+  }
+
   return (
-    <div className="relative">
+    <div className="relative min-h-screen">
       <HeroPattern />
       <BackgroundRippleEffect />
-      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-12 md:pt-6 pb-12 pointer-events-none">
-        {/* Hero Section */}
-        <div className="text-center mb-16 relative z-10">
+      <Confetti ref={confettiRef} manualstart className="fixed inset-0 pointer-events-none z-50" />
+      
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pt-12 md:pt-8 pb-32">
+        {/* Hero Section - Always visible */}
+        <div className="text-center mb-12 relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-4 pointer-events-none">
             Work With Me
           </h1>
@@ -715,96 +728,244 @@ export function ContactContent() {
             I help teams ship user-centered products and measurable outcomes. If you&apos;ve got a problem worth solving, let&apos;s talk.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto">
-            <Button 
-              href="https://calendly.com/kylemcgraw" 
-              variant="filled" 
-              arrow="right"
-              onClick={() => trackEvent('contact_calendar_clicked')}
-            >
-              Book a 30-min intro
-            </Button>
-            <ObfuscatedEmail />
-          </div>
-          
-          <div className="mt-6">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400 pointer-events-none">
-              Available immediately • Remote or hybrid
+          {/* Buttons - Fade out when started */}
+          <AnimatePresence>
+            {!hasStarted && (
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto"
+                initial={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <Button 
+                  href="https://calendly.com/kylemcgraw" 
+                  variant="filled" 
+                  arrow="right"
+                  onClick={() => trackEvent('contact_calendar_clicked')}
+                >
+                  Book a 30-min intro
+                </Button>
+                <ObfuscatedEmail />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Availability Pill - Animates position */}
+          <motion.div 
+            className="pointer-events-none"
+            layout
+            animate={{
+              marginTop: hasStarted ? '0rem' : '1.5rem'
+            }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
+              Available immediately · Remote or hybrid
             </span>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Contact Form */}
-        <section className="mb-16 pointer-events-auto">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 pointer-events-none">
-            Let&apos;s start a project
-          </h2>
-          <ContactForm />
-        </section>
+        {/* Begin Button - Large and enticing */}
+        <AnimatePresence>
+          {!hasStarted && !submitResult && (
+            <motion.div 
+              className="flex justify-center mt-16 mb-8"
+              initial={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="relative">
+                {/* Subtle ambient glow */}
+                <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-rose-500/10 via-violet-500/10 to-blue-500/10 blur-2xl animate-pulse" />
+                
+                <RainbowButton
+                  size="lg"
+                  onClick={handleBegin}
+                  className="relative text-white dark:text-zinc-900 px-12 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-shadow"
+                >
+                  Begin
+                </RainbowButton>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* FAQ */}
-        <section className="mb-16 pointer-events-auto">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white mb-6 pointer-events-none">
-            Frequently asked questions
-          </h2>
-          <AccordionPanel items={faqItems} />
-        </section>
+        {/* Form Wizard */}
+        <AnimatePresence mode="wait">
+          {hasStarted && !submitResult && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+              className="space-y-8"
+            >
+              {/* Progress Stepper */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.4 }}
+              >
+                <ContactStepper
+                  steps={STEPS}
+                  currentStep={currentStep}
+                  onStepClick={handleStepClick}
+                />
+              </motion.div>
+
+              {/* Step Content */}
+              <motion.div 
+                className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 md:p-8 shadow-lg"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.4 }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentStep}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {renderStepContent()}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Success Message */}
+        <AnimatePresence>
+          {submitResult && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4 }}
+              className="mt-8"
+            >
+              <div 
+                className={`p-6 rounded-xl text-center ${
+                  submitResult.success 
+                    ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800' 
+                    : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800'
+                }`}
+              >
+                <p className="text-lg font-medium mb-4">{submitResult.message}</p>
+                {submitResult.success && (
+                  <div className="space-y-3">
+                    <Button href="https://calendly.com/kylemcgraw" variant="filled" arrow="right">
+                      Book an intro call
+                    </Button>
+                  </div>
+                )}
+                {!submitResult.success && (
+                  <Button 
+                    variant="secondary"
+                    onClick={() => {
+                      setSubmitResult(null)
+                      setCurrentStep(5)
+                    }}
+                  >
+                    Try again
+                  </Button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* FAQs Toggle */}
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+        >
+          <button
+            onClick={toggleFAQs}
+            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+          >
+            Have questions? Check out the FAQs
+            <motion.div
+              animate={{ rotate: showFAQs ? 180 : 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            >
+              <ChevronDownIcon className="size-4" />
+            </motion.div>
+          </button>
+        </motion.div>
+
+        {/* FAQs Section - Expands inline */}
+        <AnimatePresence>
+          {showFAQs && (
+            <motion.div
+              ref={faqRef}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="pt-8 pb-4">
+                <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6 text-center">
+                  Frequently Asked Questions
+                </h2>
+                <AccordionPanel items={faqItems} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
+
+      {/* Fixed Bottom Navigation */}
+      <AnimatePresence>
+        {hasStarted && !submitResult && currentStep < 5 && (
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800"
+          >
+            <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+              <button
+                type="button"
+                onClick={handleBack}
+                disabled={currentStep === 1}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  currentStep === 1
+                    ? 'text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
+                    : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                }`}
+              >
+                <ChevronLeftIcon className="size-5" />
+                Back
+              </button>
+              
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={!canProceed()}
+                className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-all ${
+                  canProceed()
+                    ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-md hover:shadow-lg'
+                    : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-400 dark:text-zinc-500 cursor-not-allowed'
+                }`}
+              >
+                Continue
+                <ChevronRightIcon className="size-5" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
 
 export default function ContactPage() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true)
-
-  return (
-    <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-      <div className="mx-auto flex min-h-screen max-w-3xl flex-col items-center justify-center gap-4 px-4 py-16 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-300">
-          Contact drawer experiment
-        </div>
-        <h1 className="text-4xl font-bold text-zinc-900 dark:text-white sm:text-5xl">
-          Work With Me
-        </h1>
-        <p className="text-base text-zinc-600 dark:text-zinc-400 sm:text-lg">
-          All of the existing contact content now lives in a shadcn drawer. Open it to keep the flow in-context while preserving the full form and FAQ.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <DrawerTrigger asChild>
-            <Button
-              variant="filled"
-              arrow="right"
-              onClick={() => trackEvent('contact_drawer_opened')}
-            >
-              Open contact drawer
-            </Button>
-          </DrawerTrigger>
-          <Button
-            href="https://calendly.com/kylemcgraw"
-            variant="text"
-            onClick={() => trackEvent('contact_calendar_clicked')}
-          >
-            Book a 30-min intro
-          </Button>
-        </div>
-      </div>
-
-      <DrawerContent className="max-h-[95vh] overflow-hidden border-none bg-transparent px-3 pb-6 sm:px-6">
-        <DrawerHeader className="sr-only">
-          <DrawerTitle>Work With Me</DrawerTitle>
-          <DrawerDescription>Let&apos;s start a project</DrawerDescription>
-        </DrawerHeader>
-
-        <div className="relative max-h-[82vh] overflow-y-auto rounded-2xl border border-zinc-200 bg-white shadow-2xl ring-1 ring-emerald-100/60 dark:border-zinc-800 dark:bg-zinc-900 dark:ring-white/10">
-          <ContactContent />
-        </div>
-
-        <DrawerFooter className="flex items-center justify-end pt-4">
-          <DrawerClose asChild>
-            <Button variant="secondary">Close drawer</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
-  )
+  return <ContactContent />
 }
