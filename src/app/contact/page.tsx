@@ -16,6 +16,7 @@ import { submitContactForm, type FormData } from './actions'
 import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
+import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
 import {
   Drawer,
   DrawerClose,
@@ -247,6 +248,7 @@ function ContactForm() {
   const [touched, setTouched] = useState<Partial<Record<keyof FormData, boolean>>>({})
   const [showSubmitErrors, setShowSubmitErrors] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
+  const confettiRef = useRef<ConfettiRef>(null)
 
   // Email validation regex
   const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
@@ -339,6 +341,14 @@ function ContactForm() {
       setSubmitResult(result)
       
       if (result.success) {
+        // Fire confetti celebration!
+        confettiRef.current?.fire({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'],
+        })
+        
         // Reset form on success
         setFormData({
           name: '',
@@ -375,7 +385,9 @@ function ContactForm() {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="space-y-8 pointer-events-auto">
+    <>
+      <Confetti ref={confettiRef} manualstart className="fixed inset-0 pointer-events-none z-50" />
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-8 pointer-events-auto">
 
       {/* Basic Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -660,6 +672,7 @@ function ContactForm() {
         I review every inquiry and aim to reply within 1 business day. Your details stay private and are never shared.
       </p>
     </form>
+    </>
   )
 }
 
