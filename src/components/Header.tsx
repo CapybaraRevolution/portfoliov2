@@ -76,7 +76,7 @@ export const Header = forwardRef<
       <div className="flex items-center gap-5 lg:hidden">
         <MobileNavigation />
         <CloseButton as={Link} href="/" aria-label="Home">
-          <Logo className="h-8 sm:h-6" />
+          <Logo className="h-9 sm:h-6" />
         </CloseButton>
       </div>
       <div className="flex items-center gap-5">
