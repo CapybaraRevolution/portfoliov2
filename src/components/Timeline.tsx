@@ -359,7 +359,7 @@ export function Timeline() {
 
   const timelineContent = (
     <div className="relative space-y-16">
-      <div className="space-y-10 pl-4 sm:space-y-20 sm:pl-16">
+      <div className={`space-y-10 sm:space-y-20 ${shouldRenderBeam ? 'pl-4 sm:pl-16' : 'md:pl-4 md:pl-16'}`}>
         {timelineData.map((node, index) => {
           const isActive = activeNodeIndex === index
           const neonColors = getNeonColors(index)
@@ -500,7 +500,7 @@ export function Timeline() {
           {shouldRenderBeam ? (
             <TracingBeam className="relative w-full overflow-visible">{timelineContent}</TracingBeam>
           ) : (
-            <div className="relative w-full overflow-visible border-l border-zinc-200/70 pl-4 dark:border-zinc-800/70 sm:pl-6">
+            <div className="relative w-full overflow-visible md:border-l md:border-zinc-200/70 md:pl-4 md:dark:border-zinc-800/70 md:pl-6">
               {timelineContent}
             </div>
           )}
