@@ -440,18 +440,20 @@ export function Timeline() {
               ref={(el) => registerNodeRef(index, el)}
               data-node-index={index}
             >
-              {/* Always render both, use opacity to transition smoothly */}
-              <div className="absolute inset-0 -z-10">
+              {/* Neon gradient card - always rendered, opacity transitions */}
+              <div 
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                  isActive ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'
+                }`}
+              >
                 <NeonGradientCard
-                  className="transition-opacity duration-700 ease-in-out [&>div]:p-0"
+                  className="[&>div]:p-0"
                   borderRadius={12}
                   borderSize={2}
                   neonColors={neonColors}
                   style={{
                     '--neon-first-color': neonColors.firstColor,
                     '--neon-second-color': neonColors.secondColor,
-                    opacity: isActive ? 1 : 0,
-                    pointerEvents: isActive ? 'auto' : 'none',
                   } as React.CSSProperties}
                 >
                   <div className="relative z-20 rounded-[10px] bg-white p-6 dark:bg-zinc-800/30">
@@ -459,9 +461,10 @@ export function Timeline() {
                   </div>
                 </NeonGradientCard>
               </div>
+              {/* Regular card - always rendered, opacity transitions */}
               <div 
-                className={`rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-opacity duration-700 ease-in-out dark:border-zinc-700 dark:bg-zinc-800/30 ${
-                  isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                className={`relative rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-opacity duration-700 ease-in-out dark:border-zinc-700 dark:bg-zinc-800/30 ${
+                  isActive ? 'opacity-0 pointer-events-none' : 'opacity-100 z-0'
                 }`}
               >
                 {nodeContent}
