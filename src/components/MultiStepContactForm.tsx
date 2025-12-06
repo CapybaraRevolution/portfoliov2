@@ -35,6 +35,14 @@ const engagementModels = [
 
 const TOTAL_STEPS = 5
 
+const STEPS = [
+  { id: 1, name: 'Engagement' },
+  { id: 2, name: 'Project' },
+  { id: 3, name: 'Company' },
+  { id: 4, name: 'Personal' },
+  { id: 5, name: 'Review' },
+]
+
 export function MultiStepContactForm() {
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<FormData>({
@@ -43,8 +51,6 @@ export function MultiStepContactForm() {
     company: '',
     website: '',
     project: '',
-    timeline: '',
-    budget: '',
     success: '',
     engagement: ''
   })
@@ -351,7 +357,7 @@ export function MultiStepContactForm() {
     <>
       <Confetti ref={confettiRef} manualstart className="fixed inset-0 pointer-events-none z-50" />
       <div className="space-y-8">
-        <ContactStepper currentStep={currentStep} totalSteps={TOTAL_STEPS} />
+        <ContactStepper steps={STEPS} currentStep={currentStep} />
         
         <AnimatePresence mode="wait">
           <motion.div
