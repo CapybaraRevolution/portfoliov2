@@ -1172,7 +1172,7 @@ export function ContactContent() {
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             className="fixed bottom-0 left-0 right-0 z-[50] bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 md:z-40"
           >
-            <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center md:pb-4 pb-20">
+            <div className="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center md:py-4 md:pb-4 pb-4">
               <button
                 type="button"
                 onClick={handleBack}
