@@ -472,7 +472,6 @@ function PersonalStep({
         onChange={(e) => onNameChange(e.target.value)}
         onBlur={() => onBlur('name')}
         warning={touched.name ? warnings.name : undefined}
-        error={touched.name ? errors.name : undefined}
         success={touched.name ? success.name : undefined}
       />
       
