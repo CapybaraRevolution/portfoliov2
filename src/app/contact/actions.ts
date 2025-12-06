@@ -16,7 +16,19 @@ export interface FormData {
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
+// Helper function to add timeout to promises
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error('Request timeout')), timeoutMs)
+    ),
+  ])
+}
+
 export async function submitContactForm(formData: FormData) {
+  console.log('submitContactForm called with:', { name: formData.name, email: formData.email })
+  
   try {
     // Basic validation
     if (!formData.name || !formData.email || !formData.project) {
@@ -82,8 +94,8 @@ ${formData.success || 'Not provided'}
 Submitted via kylemcgraw.com contact form
     `.trim()
 
-    // Send email using Resend
-    const { data, error } = await resend!.emails.send({
+    // Send email using Resend with timeout (30 seconds)
+    const sendEmailPromise = resend.emails.send({
       from: 'Portfolio Contact Form <onboarding@resend.dev>',
       to: ['kylemcgraw1993@gmail.com'],
       replyTo: formData.email,
@@ -91,6 +103,8 @@ Submitted via kylemcgraw.com contact form
       html: emailHtml,
       text: emailText,
     })
+
+    const { data, error } = await withTimeout(sendEmailPromise, 30000)
 
     if (error) {
       console.error('Email sending error:', error)
@@ -105,9 +119,15 @@ Submitted via kylemcgraw.com contact form
     }
   } catch (error) {
     console.error('Form submission error:', error)
+    const errorMessage = error instanceof Error 
+      ? error.message === 'Request timeout'
+        ? 'The request took too long. Please try again.'
+        : error.message
+      : 'An error occurred while sending your message. Please try again.'
+    
     return { 
       success: false, 
-      message: error instanceof Error ? error.message : 'An error occurred while sending your message. Please try again.' 
+      message: errorMessage
     }
   }
 }

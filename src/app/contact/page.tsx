@@ -324,7 +324,18 @@ function ContactForm() {
     setSubmitResult(null)
 
     try {
-      const result = await submitContactForm(formData)
+      // Add client-side timeout as fallback (35 seconds - slightly longer than server timeout)
+      const timeoutPromise = new Promise<{ success: boolean; message: string }>((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Request took too long. Please check your connection and try again.'))
+        }, 35000)
+      })
+
+      const result = await Promise.race([
+        submitContactForm(formData),
+        timeoutPromise
+      ])
+      
       setSubmitResult(result)
       
       if (result.success) {
@@ -351,9 +362,12 @@ function ContactForm() {
         trackContactFormSubmission(formData)
       }
     } catch (error) {
+      console.error('Form submission error:', error)
       setSubmitResult({
         success: false,
-        message: 'An error occurred while submitting the form'
+        message: error instanceof Error 
+          ? error.message 
+          : 'An error occurred while submitting the form. Please try again.'
       })
     } finally {
       setIsSubmitting(false)
