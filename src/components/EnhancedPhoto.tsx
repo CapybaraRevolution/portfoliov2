@@ -7,7 +7,7 @@ import {
   type MotionValue,
 } from 'framer-motion'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { GridPattern } from '@/components/GridPattern'
 import { IMAGE_SIZES } from '@/lib/imageSizes'
 
