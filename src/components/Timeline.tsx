@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { useScroll } from 'motion/react'
 import { Button } from '@/components/Button'
@@ -164,8 +164,8 @@ const getTimelineData = (): TimelineNode[] => {
 export function Timeline() {
   const [activeNodeIndex, setActiveNodeIndex] = useState(-1)
   
-  // Get timeline data from case studies
-  const timelineData = getTimelineData()
+  // Memoize timeline data to avoid recalculating on every render
+  const timelineData = useMemo(() => getTimelineData(), [])
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   
   // Refs for precise tracking
@@ -206,16 +206,24 @@ export function Timeline() {
   }, [])
 
   // Calculate active node based on scroll progress (beam position)
+  // Throttle updates to reduce re-renders on mobile
   useEffect(() => {
     if (prefersReducedMotion) {
       setActiveNodeIndex(-1)
       return
     }
 
-    const unsubscribe = scrollYProgress.on('change', (progress) => {
+    let rafId: number | null = null
+    let lastProgress = -1
+
+    const updateActiveNode = (progress: number) => {
+      // Throttle: only update if progress changed significantly (0.05 threshold)
+      if (Math.abs(progress - lastProgress) < 0.05) return
+      lastProgress = progress
+
       if (!timelineRef.current) return
       
-    const total = timelineData.length
+      const total = timelineData.length
       if (total === 0) return
       
       // Calculate which node should be active based on scroll progress
@@ -234,26 +242,41 @@ export function Timeline() {
         : nodeIndex
       
       setActiveNodeIndex(finalIndex >= 0 ? finalIndex : -1)
+    }
+
+    const unsubscribe = scrollYProgress.on('change', (progress) => {
+      // Use requestAnimationFrame to batch updates
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+      rafId = requestAnimationFrame(() => {
+        updateActiveNode(progress)
+      })
     })
 
     return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
       unsubscribe()
     }
   }, [prefersReducedMotion, timelineData.length, scrollYProgress])
 
+  // Memoize neon colors to avoid recalculating
+  const colorSchemes = useMemo(() => [
+    { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
+    { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
+    { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
+    { firstColor: '#a855f7', secondColor: '#10b981' }, // purple to emerald
+    { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
+    { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
+    { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
+  ], [])
+
   // Get neon colors for active nodes (cycling through gradient colors)
-  const getNeonColors = (index: number) => {
-    const colorSchemes = [
-      { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
-      { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
-      { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
-      { firstColor: '#a855f7', secondColor: '#10b981' }, // purple to emerald
-      { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
-      { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
-      { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
-    ]
+  const getNeonColors = useCallback((index: number) => {
     return colorSchemes[index % colorSchemes.length]
-  }
+  }, [colorSchemes])
 
   return (
     <section className="relative">

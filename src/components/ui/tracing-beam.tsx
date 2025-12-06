@@ -30,19 +30,19 @@ export const TracingBeam = ({
     }
   }, []);
 
+  // Reduce animation complexity on mobile for better performance
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  const springConfig = isMobile 
+    ? { stiffness: 300, damping: 60 } // Lighter config for mobile
+    : { stiffness: 500, damping: 90 } // Full config for desktop
+
   const y1 = useSpring(
     useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
-    {
-      stiffness: 500,
-      damping: 90,
-    },
+    springConfig,
   );
   const y2 = useSpring(
     useTransform(scrollYProgress, [0, 1], [50, svgHeight - 200]),
-    {
-      stiffness: 500,
-      damping: 90,
-    },
+    springConfig,
   );
 
   return (

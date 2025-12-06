@@ -88,10 +88,19 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
     }
 
     updateDimensions()
-    window.addEventListener("resize", updateDimensions)
+    
+    // Throttle resize listener for better performance
+    let timeoutId: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(updateDimensions, 150) // Throttle to 150ms
+    }
+    
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      window.removeEventListener("resize", updateDimensions)
+      window.removeEventListener("resize", handleResize)
+      clearTimeout(timeoutId)
     }
   }, [])
 

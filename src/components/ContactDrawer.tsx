@@ -46,15 +46,15 @@ function ContactDrawerContent() {
           <DrawerDescription>Let&apos;s start a project</DrawerDescription>
         </DrawerHeader>
 
-        {/* Floating drag handle above the drawer - not clipped by border radius */}
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-[60] pointer-events-none">
+        {/* Floating drag handle above the drawer - positioned to be visible on mobile */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-[60] pointer-events-none md:-top-8">
           <div className="group flex flex-col items-center gap-2">
             {/* Interactive drag handle with bounce and glow */}
             <div className="relative h-1.5 w-24 rounded-full bg-zinc-200 dark:bg-zinc-500 cursor-grab active:cursor-grabbing transition-all duration-300 hover:scale-110 hover:bg-emerald-300/40 dark:hover:bg-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.4)] dark:hover:shadow-[0_0_16px_rgba(16,185,129,0.8)] animate-[bounce-subtle_3s_ease-in-out_infinite] pointer-events-auto shadow-lg">
               <div className="absolute inset-0 rounded-full bg-emerald-400/20 dark:bg-emerald-500/40 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
-            {/* Subtle hint text */}
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            {/* Subtle hint text - hidden on mobile to save space */}
+            <p className="hidden md:block text-xs text-zinc-500 dark:text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
               Drag down to close
             </p>
           </div>

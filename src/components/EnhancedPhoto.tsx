@@ -163,8 +163,19 @@ function FloatingParticles() {
 export function EnhancedPhoto({ src, alt, width, height, priority = false, sizes = IMAGE_SIZES.contentMax1200 }: EnhancedPhotoProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   let mouseX = useMotionValue(0)
   let mouseY = useMotionValue(0)
+
+  // Detect mobile to reduce animation complexity
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   function onMouseMove({
     currentTarget,
@@ -204,16 +215,20 @@ export function EnhancedPhoto({ src, alt, width, height, priority = false, sizes
              animationDelay: '2s'
            }} />
 
-      {/* Lightning Traces */}
-      <LightningTraces />
+      {/* Lightning Traces - disabled on mobile for performance */}
+      {!isMobile && <LightningTraces />}
       
-      {/* Floating Electrical Particles */}
-      <FloatingParticles />
+      {/* Floating Electrical Particles - disabled on mobile for performance */}
+      {!isMobile && <FloatingParticles />}
       
       {/* Main Photo Container */}
       <div className="relative">
-        {/* Electrical Pattern Overlay */}
-        <ElectricalPattern mouseX={mouseX} mouseY={mouseY} />
+        {/* Electrical Pattern Overlay - simplified on mobile */}
+        {!isMobile ? (
+          <ElectricalPattern mouseX={mouseX} mouseY={mouseY} />
+        ) : (
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-emerald-500/10 via-blue-500/5 to-purple-500/10" />
+        )}
         
         {/* Photo with Enhanced Styling */}
         <motion.div
