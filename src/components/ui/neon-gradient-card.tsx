@@ -84,33 +84,48 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
     const updateDimensions = () => {
       if (containerRef.current) {
         const { offsetWidth, offsetHeight } = containerRef.current
-        setDimensions({ width: offsetWidth, height: offsetHeight })
+        // Only update if dimensions actually changed to prevent unnecessary re-renders
+        setDimensions((prev) => {
+          if (prev.width === offsetWidth && prev.height === offsetHeight) {
+            return prev
+          }
+          return { width: offsetWidth, height: offsetHeight }
+        })
       }
     }
 
+    // Initial measurement
     updateDimensions()
     
-    // Throttle resize listener for better performance
+    // Use ResizeObserver for better performance than window resize
+    let resizeObserver: ResizeObserver | null = null
+    if (containerRef.current && 'ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(() => {
+        updateDimensions()
+      })
+      resizeObserver.observe(containerRef.current)
+    }
+    
+    // Fallback to window resize if ResizeObserver not available
     let timeoutId: NodeJS.Timeout
     const handleResize = () => {
       clearTimeout(timeoutId)
-      timeoutId = setTimeout(updateDimensions, 150) // Throttle to 150ms
+      timeoutId = setTimeout(updateDimensions, 150)
     }
     
-    window.addEventListener("resize", handleResize)
+    if (!resizeObserver) {
+      window.addEventListener("resize", handleResize)
+    }
 
     return () => {
-      window.removeEventListener("resize", handleResize)
-      clearTimeout(timeoutId)
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+      } else {
+        window.removeEventListener("resize", handleResize)
+        clearTimeout(timeoutId)
+      }
     }
   }, [])
-
-  useEffect(() => {
-    if (containerRef.current) {
-      const { offsetWidth, offsetHeight } = containerRef.current
-      setDimensions({ width: offsetWidth, height: offsetHeight })
-    }
-  }, [children])
 
   return (
     <div
