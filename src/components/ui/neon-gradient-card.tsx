@@ -71,7 +71,7 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   ...props
 }) => {
   const contentRadius = Math.max(borderRadius - borderSize, 0)
-  const cardStyle: CSSProperties = {
+  const cardStyle: CSSProperties & Record<string, string | number> = {
     "--border-size": `${borderSize}px`,
     "--border-radius": `${borderRadius}px`,
     "--neon-first-color": neonColors.firstColor,
