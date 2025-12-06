@@ -22,7 +22,7 @@ export function HorizontalLogoMarquee() {
   // 1. Add the logo file to src/images/logos/
   // 2. Import it at the top: import newLogo from '@/images/logos/your-logo.png'
   // 3. Add it to the clients array below with: { name: 'Company Name', logo: newLogo }
-  const clients = [
+  const allClients = [
     { name: 'Jigsaw Technologies', logo: jigsawLogo },
     { name: 'Breeze Mortgage Hub', logo: breezeLogo },
     { name: 'BC Cancer Foundation', logo: bccfLogo },
@@ -34,6 +34,11 @@ export function HorizontalLogoMarquee() {
     { name: 'Old Skool Studios', logo: oldSkoolLogo },
     { name: 'Houston Ballet', logo: houstonBalletLogo },
   ]
+
+  // Split clients into two rows going opposite directions
+  // With 10 unique logos, we can split them evenly
+  const row1Clients = allClients.slice(0, 5)
+  const row2Clients = allClients.slice(5)
 
   return (
     <section className="mt-20">
@@ -52,7 +57,7 @@ export function HorizontalLogoMarquee() {
             
             {/* First row - scrolling left to right */}
             <Marquee pauseOnHover className="[--duration:30s] mb-4">
-              {clients.map((client) => (
+              {row1Clients.map((client) => (
                 <div
                   key={`row1-${client.name}`}
                   className="group flex h-20 w-40 shrink-0 items-center justify-center px-6"
@@ -71,7 +76,7 @@ export function HorizontalLogoMarquee() {
             
             {/* Second row - scrolling right to left (reverse) */}
             <Marquee pauseOnHover reverse className="[--duration:35s]">
-              {clients.map((client) => (
+              {row2Clients.map((client) => (
                 <div
                   key={`row2-${client.name}`}
                   className="group flex h-20 w-40 shrink-0 items-center justify-center px-6"
