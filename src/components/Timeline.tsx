@@ -358,8 +358,8 @@ export function Timeline() {
   )
 
   const timelineContent = (
-    <div className="relative space-y-16">
-      <div className={`space-y-10 sm:space-y-20 ${shouldRenderBeam ? 'pl-4 sm:pl-16' : 'md:pl-4 md:pl-16'}`}>
+    <div className="relative space-y-16 overflow-visible">
+      <div className={`space-y-10 sm:space-y-20 overflow-visible ${shouldRenderBeam ? 'pl-4 sm:pl-16' : 'md:pl-4 md:pl-16'}`}>
         {timelineData.map((node, index) => {
           const isActive = activeNodeIndex === index
           const neonColors = getNeonColors(index)
@@ -436,26 +436,36 @@ export function Timeline() {
           return (
             <div
               key={node.id}
-              className="relative overflow-visible transition-opacity duration-200 sm:transition-all sm:duration-300"
+              className="relative overflow-visible"
               ref={(el) => registerNodeRef(index, el)}
               data-node-index={index}
             >
-              {isActive ? (
+              {/* Always render both, use opacity to transition smoothly */}
+              <div className="absolute inset-0 -z-10">
                 <NeonGradientCard
-                  className="transition-opacity duration-200 [&>div]:p-0 sm:transition-all sm:duration-300"
+                  className="transition-opacity duration-700 ease-in-out [&>div]:p-0"
                   borderRadius={12}
                   borderSize={2}
                   neonColors={neonColors}
+                  style={{
+                    '--neon-first-color': neonColors.firstColor,
+                    '--neon-second-color': neonColors.secondColor,
+                    opacity: isActive ? 1 : 0,
+                    pointerEvents: isActive ? 'auto' : 'none',
+                  } as React.CSSProperties}
                 >
                   <div className="relative z-20 rounded-[10px] bg-white p-6 dark:bg-zinc-800/30">
                     {nodeContent}
                   </div>
                 </NeonGradientCard>
-              ) : (
-                <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-opacity duration-200 dark:border-zinc-700 dark:bg-zinc-800/30 sm:transition-all sm:duration-300">
-                  {nodeContent}
-                </div>
-              )}
+              </div>
+              <div 
+                className={`rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-opacity duration-700 ease-in-out dark:border-zinc-700 dark:bg-zinc-800/30 ${
+                  isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                }`}
+              >
+                {nodeContent}
+              </div>
             </div>
           )
         })}
@@ -464,8 +474,8 @@ export function Timeline() {
   )
 
   return (
-    <section className="relative">
-      <div className="relative">
+    <section className="relative overflow-visible">
+      <div className="relative overflow-visible">
         {/* Section Header */}
         <div className="mb-10 sm:mb-16">
           <Heading id="my-journey">My Journey</Heading>
