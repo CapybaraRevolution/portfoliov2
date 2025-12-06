@@ -88,7 +88,9 @@ function InputField({
   onChange, 
   onBlur, 
   error,
-  warning 
+  warning,
+  success,
+  onFocus
 }: {
   id: string
   label: string
