@@ -7,6 +7,7 @@ import {
 import { NavigationChip } from '@/components/NavigationChip'
 import { generateProcessUrl } from '@/data/skillProcessMap'
 import { Button } from '@/components/Button'
+import { ContactDrawer } from '@/components/ContactDrawer'
 
 const services = [
   {
@@ -181,9 +182,17 @@ export function SimplifiedServicesGrid() {
 
               <div className="mt-8 flex flex-col gap-3 border-t border-zinc-900/5 pt-6 dark:border-white/10">
                 <div className="flex flex-wrap gap-3">
-                  <Button href={service.ctaHref} variant="outline" arrow="right">
-                    {service.ctaLabel}
-                  </Button>
+                  {service.ctaHref === '/contact' ? (
+                    <ContactDrawer>
+                      <Button variant="outline" arrow="right">
+                        {service.ctaLabel}
+                      </Button>
+                    </ContactDrawer>
+                  ) : (
+                    <Button href={service.ctaHref} variant="outline" arrow="right">
+                      {service.ctaLabel}
+                    </Button>
+                  )}
                   <Button href={service.processHref} variant="text" arrow="right">
                     How this fits into my process
                   </Button>

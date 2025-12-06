@@ -11,7 +11,6 @@ import { Button } from '@/components/Button'
 
 // Import client logos
 import jigsawLogo from '@/images/logos/Jixaw-Technologies_Logo.png'
-import breezeLogo from '@/images/logos/Breeze-logo.png'
 import bccfLogo from '@/images/logos/BCCF_Logo_Colour.png'
 import socialFundLogo from '@/images/logos/Social-Finance-Fund_logo.png'
 import paramountLogo from '@/images/logos/Paramount_Global_Logo 1.png'
@@ -37,9 +36,11 @@ export function HorizontalLogoMarquee() {
   // 1. Add the logo file to src/images/logos/
   // 2. Import it at the top: import newLogo from '@/images/logos/your-logo.png'
   // 3. Add it to the clients array below with: { name: 'Company Name', logo: newLogo }
+  // Logos that should remain light on hover in dark mode
+  const logosThatStayLight = ['Public Theatre', 'Old Skool Studios', 'Houston Ballet']
+
   const allClients = [
     { name: 'Jigsaw Technologies', logo: jigsawLogo },
-    { name: 'Breeze Mortgage Hub', logo: breezeLogo },
     { name: 'BC Cancer Foundation', logo: bccfLogo },
     { name: 'Social Finance Fund', logo: socialFundLogo },
     { name: 'Paramount Global', logo: paramountLogo },
@@ -51,7 +52,7 @@ export function HorizontalLogoMarquee() {
   ]
 
   // Split clients into two rows going opposite directions
-  // With 10 unique logos, we can split them evenly
+  // With 9 unique logos, split them 5 and 4
   const row1Clients = allClients.slice(0, 5)
   const row2Clients = allClients.slice(5)
 
@@ -73,11 +74,11 @@ export function HorizontalLogoMarquee() {
             {/* First row - scrolling left to right */}
             <Marquee pauseOnHover className="[--duration:30s] mb-4">
               {row1Clients.map((client) => {
-                const logoSrc = typeof client.logo === 'string' ? client.logo : client.logo.src || client.logo
+                const shouldStayLight = logosThatStayLight.includes(client.name)
                 return (
                   <div
                     key={`row1-${client.name}`}
-                    className="group relative flex h-20 w-40 shrink-0 items-center justify-center px-6"
+                    className="group flex h-20 w-40 shrink-0 items-center justify-center px-6"
                     title={client.name}
                   >
                     <Image
@@ -90,29 +91,12 @@ export function HorizontalLogoMarquee() {
                         // In light mode: use brightness/contrast to make white logos visible
                         // Lower brightness darkens white logos, higher contrast makes them stand out
                         !isDark && "grayscale brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
-                        // In dark mode: keep logos in grayscale
-                        isDark && "grayscale group-hover:grayscale-0"
+                        // In dark mode: revert to original styling for most logos
+                        // For logos that should stay light on hover, use invert approach
+                        isDark && !shouldStayLight && "grayscale opacity-80 brightness-110 group-hover:grayscale-0 group-hover:opacity-100 group-hover:brightness-100",
+                        isDark && shouldStayLight && "grayscale brightness-0 invert opacity-70 group-hover:grayscale-0"
                       )}
                     />
-                    {/* Light grey mask overlay in dark mode that fades on hover */}
-                    {isDark && (
-                      <div 
-                        className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 group-hover:opacity-0"
-                        style={{
-                          background: 'rgba(212, 212, 212, 0.5)',
-                          maskImage: `url(${logoSrc})`,
-                          WebkitMaskImage: `url(${logoSrc})`,
-                          maskSize: 'contain',
-                          WebkitMaskSize: 'contain',
-                          maskRepeat: 'no-repeat',
-                          WebkitMaskRepeat: 'no-repeat',
-                          maskPosition: 'center',
-                          WebkitMaskPosition: 'center',
-                          maxHeight: '4rem',
-                          width: '100%'
-                        }}
-                      />
-                    )}
                   </div>
                 )
               })}
@@ -121,11 +105,11 @@ export function HorizontalLogoMarquee() {
             {/* Second row - scrolling right to left (reverse) */}
             <Marquee pauseOnHover reverse className="[--duration:35s]">
               {row2Clients.map((client) => {
-                const logoSrc = typeof client.logo === 'string' ? client.logo : client.logo.src || client.logo
+                const shouldStayLight = logosThatStayLight.includes(client.name)
                 return (
                   <div
                     key={`row2-${client.name}`}
-                    className="group relative flex h-20 w-40 shrink-0 items-center justify-center px-6"
+                    className="group flex h-20 w-40 shrink-0 items-center justify-center px-6"
                     title={client.name}
                   >
                     <Image
@@ -138,29 +122,12 @@ export function HorizontalLogoMarquee() {
                         // In light mode: use brightness/contrast to make white logos visible
                         // Lower brightness darkens white logos, higher contrast makes them stand out
                         !isDark && "grayscale brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
-                        // In dark mode: keep logos in grayscale
-                        isDark && "grayscale group-hover:grayscale-0"
+                        // In dark mode: revert to original styling for most logos
+                        // For logos that should stay light on hover, use invert approach
+                        isDark && !shouldStayLight && "grayscale opacity-80 brightness-110 group-hover:grayscale-0 group-hover:opacity-100 group-hover:brightness-100",
+                        isDark && shouldStayLight && "grayscale brightness-0 invert opacity-70 group-hover:grayscale-0"
                       )}
                     />
-                    {/* Light grey mask overlay in dark mode that fades on hover */}
-                    {isDark && (
-                      <div 
-                        className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 group-hover:opacity-0"
-                        style={{
-                          background: 'rgba(212, 212, 212, 0.5)',
-                          maskImage: `url(${logoSrc})`,
-                          WebkitMaskImage: `url(${logoSrc})`,
-                          maskSize: 'contain',
-                          WebkitMaskSize: 'contain',
-                          maskRepeat: 'no-repeat',
-                          WebkitMaskRepeat: 'no-repeat',
-                          maskPosition: 'center',
-                          WebkitMaskPosition: 'center',
-                          maxHeight: '4rem',
-                          width: '100%'
-                        }}
-                      />
-                    )}
                   </div>
                 )
               })}

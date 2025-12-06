@@ -6,6 +6,7 @@ export const metadata = {
 import { ProcessRedirect } from '@/components/ProcessRedirect'
 import { SimplifiedServicesGrid } from '@/components/SimplifiedServicesGrid'
 import { Button } from '@/components/Button'
+import { ContactDrawer } from '@/components/ContactDrawer'
 
 <ProcessRedirect />
 
@@ -23,9 +24,11 @@ import { Button } from '@/components/Button'
       a confident next move.
     </p>
     <div className="mt-8 flex flex-wrap gap-4">
-      <Button href="/contact" arrow="right">
-        Schedule a call
-      </Button>
+      <ContactDrawer>
+        <Button arrow="right">
+          Schedule a call
+        </Button>
+      </ContactDrawer>
       <Button href="/work/overview" variant="secondary" arrow="right">
         View case studies
       </Button>
@@ -164,9 +167,11 @@ import { Button } from '@/components/Button'
       design the smallest step that unlocks your next decision.
     </p>
     <div className="mt-8 flex flex-wrap justify-center gap-4">
-      <Button href="/contact" arrow="right">
-        Schedule a call
-      </Button>
+      <ContactDrawer>
+        <Button arrow="right">
+          Schedule a call
+        </Button>
+      </ContactDrawer>
       <Button href="/work/overview" variant="secondary" arrow="right">
         View case studies
       </Button>
