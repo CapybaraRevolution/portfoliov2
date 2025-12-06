@@ -276,13 +276,13 @@
     -webkit-line-clamp: 3;
   }
 
-  /* Marquee animation utilities */
+  /* Marquee animation utilities - ensure animations are applied */
   .animate-marquee {
-    animation: var(--animate-marquee);
+    animation: marquee var(--duration, 40s) linear infinite;
   }
 
   .animate-marquee-vertical {
-    animation: var(--animate-marquee-vertical);
+    animation: marquee-vertical var(--duration, 40s) linear infinite;
   }
   
   /* Service category utility classes */
