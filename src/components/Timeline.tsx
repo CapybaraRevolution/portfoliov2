@@ -1,15 +1,18 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { useScroll } from 'motion/react'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { AIBadge } from '@/components/ui/AIBadge'
-import { NavigationChip } from '@/components/NavigationChip'
-import { TracingBeam } from '@/components/ui/tracing-beam'
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card'
 import { getAllCaseStudies } from '@/lib/caseStudies'
+
+const TracingBeam = dynamic(
+  () => import('@/components/ui/tracing-beam').then(mod => mod.TracingBeam),
+  { ssr: false, loading: () => <div className="relative w-full" /> }
+)
 
 interface TimelineNode {
   id: string
@@ -21,6 +24,14 @@ interface TimelineNode {
   status: 'Ongoing' | 'Completed'
   aiAccelerated?: boolean
   services: string[]
+}
+
+function ServiceBadge({ label }: { label: string }) {
+  return (
+    <span className="rounded-full border border-emerald-100/80 bg-white/80 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200">
+      {label}
+    </span>
+  )
 }
 
 // Map legacy service strings to standardized skill names
@@ -162,121 +173,250 @@ const getTimelineData = (): TimelineNode[] => {
 }
 
 export function Timeline() {
-  const [activeNodeIndex, setActiveNodeIndex] = useState(-1)
-  
-  // Memoize timeline data to avoid recalculating on every render
   const timelineData = useMemo(() => getTimelineData(), [])
+  const [activeNodeIndex, setActiveNodeIndex] = useState(-1)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-  
-  // Refs for precise tracking
-  const timelineRef = useRef<HTMLDivElement>(null)
-  const nodeRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
-  
-  // Use scroll progress to determine active node based on beam position
-  // Track the timeline container - TracingBeam will track its own wrapper
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start start", "end start"],
-  })
+  const [shouldRenderBeam, setShouldRenderBeam] = useState(false)
+  const nodeRefs = useRef<Array<HTMLDivElement | null>>([])
 
-  const registerNodeRef = useCallback((id: string, element: HTMLDivElement | null) => {
-    nodeRefs.current[id] = element
-  }, [])
-
-  const registerTimelineRef = useCallback((element: HTMLDivElement | null) => {
-    if (element) {
-      timelineRef.current = element
-    }
-  }, [])
-
-
+  // Respect prefers-reduced-motion to avoid unnecessary work on low-powered devices
   useEffect(() => {
-    // Respect prefers-reduced-motion
-    if (typeof window !== 'undefined') {
-      const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-      setPrefersReducedMotion(media.matches)
-      const onChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
-      if (media.addEventListener) media.addEventListener('change', onChange)
-      else media.addListener(onChange)
-      return () => {
-        if (media.removeEventListener) media.removeEventListener('change', onChange)
-        else media.removeListener(onChange)
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handleChange = (event: MediaQueryListEvent) => {
+      setPrefersReducedMotion(event.matches)
+    }
+
+    setPrefersReducedMotion(media.matches)
+
+    if (media.addEventListener) {
+      media.addEventListener('change', handleChange)
+    } else {
+      media.addListener(handleChange)
+    }
+
+    return () => {
+      if (media.removeEventListener) {
+        media.removeEventListener('change', handleChange)
+      } else {
+        media.removeListener(handleChange)
       }
     }
   }, [])
 
-  // Calculate active node based on scroll progress (beam position)
-  // Throttle updates to reduce re-renders on mobile
+  // Lazily highlight cards based on which ones are actually visible instead of tracking scroll position every frame.
   useEffect(() => {
     if (prefersReducedMotion) {
       setActiveNodeIndex(-1)
       return
     }
 
-    let rafId: number | null = null
-    let lastProgress = -1
+    const visibleNodes = new Map<number, number>()
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = Number(
+            (entry.target as HTMLElement).dataset.nodeIndex ?? -1
+          )
+          if (Number.isNaN(index) || index < 0) {
+            return
+          }
 
-    const updateActiveNode = (progress: number) => {
-      // Throttle: only update if progress changed significantly (0.05 threshold)
-      if (Math.abs(progress - lastProgress) < 0.05) return
-      lastProgress = progress
+          if (entry.isIntersecting) {
+            visibleNodes.set(index, entry.intersectionRatio)
+          } else {
+            visibleNodes.delete(index)
+          }
+        })
 
-      if (!timelineRef.current) return
-      
-      const total = timelineData.length
-      if (total === 0) return
-      
-      // Calculate which node should be active based on scroll progress
-      // Map progress (0-1) to node indices (0 to total-1)
-      // Use a threshold approach: each node gets a portion of the scroll range
-      const nodeProgress = progress * total
-      const nodeIndex = Math.min(
-        Math.floor(nodeProgress),
-        total - 1
-      )
-      
-      // Also consider the next node if we're close to it
-      const remainder = nodeProgress - nodeIndex
-      const finalIndex = remainder > 0.3 && nodeIndex < total - 1 
-        ? nodeIndex + 1 
-        : nodeIndex
-      
-      setActiveNodeIndex(finalIndex >= 0 ? finalIndex : -1)
-    }
+        if (!visibleNodes.size) {
+          return
+        }
 
-    const unsubscribe = scrollYProgress.on('change', (progress) => {
-      // Use requestAnimationFrame to batch updates
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId)
+        const [nextIndex] = [...visibleNodes.entries()].sort(
+          (a, b) => b[1] - a[1]
+        )[0]
+
+        setActiveNodeIndex((current) =>
+          current === nextIndex ? current : nextIndex
+        )
+      },
+      {
+        rootMargin: '-10% 0px -35% 0px',
+        threshold: [0.25, 0.4, 0.6],
       }
-      rafId = requestAnimationFrame(() => {
-        updateActiveNode(progress)
-      })
+    )
+
+    nodeRefs.current.forEach((node) => {
+      if (node) {
+        observer.observe(node)
+      }
     })
 
-    return () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId)
-      }
-      unsubscribe()
+    return () => observer.disconnect()
+  }, [prefersReducedMotion, timelineData.length])
+
+  // Only render the motion-heavy tracing beam when we actually have the room (desktop) and the user hasn't opted out.
+  useEffect(() => {
+    if (prefersReducedMotion || typeof window === 'undefined') {
+      setShouldRenderBeam(false)
+      return
     }
-  }, [prefersReducedMotion, timelineData.length, scrollYProgress])
+
+    const media = window.matchMedia('(min-width: 768px)')
+    const applyCurrentPreference = () => setShouldRenderBeam(media.matches)
+    const handleChange = (event: MediaQueryListEvent) =>
+      setShouldRenderBeam(event.matches)
+
+    applyCurrentPreference()
+
+    if (media.addEventListener) {
+      media.addEventListener('change', handleChange)
+    } else {
+      media.addListener(handleChange)
+    }
+
+    return () => {
+      if (media.removeEventListener) {
+        media.removeEventListener('change', handleChange)
+      } else {
+        media.removeListener(handleChange)
+      }
+    }
+  }, [prefersReducedMotion])
 
   // Memoize neon colors to avoid recalculating
-  const colorSchemes = useMemo(() => [
-    { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
-    { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
-    { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
-    { firstColor: '#a855f7', secondColor: '#10b981' }, // purple to emerald
-    { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
-    { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
-    { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
-  ], [])
+  const colorSchemes = useMemo(
+    () => [
+      { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
+      { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
+      { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
+      { firstColor: '#a855f7', secondColor: '#10b981' }, // purple to emerald
+      { firstColor: '#10b981', secondColor: '#3b82f6' }, // emerald to blue
+      { firstColor: '#3b82f6', secondColor: '#f43f5e' }, // blue to rose
+      { firstColor: '#f43f5e', secondColor: '#a855f7' }, // rose to purple
+    ],
+    []
+  )
 
   // Get neon colors for active nodes (cycling through gradient colors)
-  const getNeonColors = useCallback((index: number) => {
-    return colorSchemes[index % colorSchemes.length]
-  }, [colorSchemes])
+  const getNeonColors = useCallback(
+    (index: number) => {
+      return colorSchemes[index % colorSchemes.length]
+    },
+    [colorSchemes]
+  )
+
+  const timelineContent = (
+    <div className="relative space-y-16">
+      <div className="space-y-10 pl-12 sm:space-y-20 sm:pl-16">
+        {timelineData.map((node, index) => {
+          const isActive = activeNodeIndex === index
+          const neonColors = getNeonColors(index)
+
+          const nodeContent = (
+            <>
+              {/* Title header with status badge in top-right corner */}
+              <div className="relative mb-3">
+                <h3 className="text-lg font-semibold leading-tight text-zinc-900 dark:text-white sm:text-xl">
+                  {node.title}
+                </h3>
+                <span
+                  className={`absolute right-0 top-0 inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                    node.status === 'Ongoing'
+                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+                      : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                  }`}
+                >
+                  <svg
+                    viewBox="0 0 6 6"
+                    aria-hidden="true"
+                    className={`size-1.5 ${
+                      node.status === 'Ongoing'
+                        ? 'animate-pulse fill-emerald-500'
+                        : 'fill-zinc-400'
+                    }`}
+                  >
+                    <circle r={3} cx={3} cy={3} />
+                  </svg>
+                  {node.status}
+                </span>
+              </div>
+
+              {/* Client and period */}
+              <p className="mb-3 text-xs font-medium text-zinc-600 dark:text-zinc-400 sm:text-sm">
+                {node.client} • {node.period}
+              </p>
+
+              {/* Description */}
+              <p className="mb-4 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 sm:text-base">
+                {node.description}
+              </p>
+
+              {/* Service/Skill chips */}
+              {node.services.length > 0 && (
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {node.services.map((service) => (
+                    <ServiceBadge
+                      key={`${node.id}-${service}`}
+                      label={service}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Call-to-action and badges */}
+              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                {node.link !== '#' && (
+                  <Link
+                    href={node.link}
+                    className="group inline-flex items-center text-sm font-semibold text-emerald-600 transition-all duration-300 hover:gap-2 dark:text-emerald-400"
+                  >
+                    View Case Study
+                    <span className="ml-1 transition-transform group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                )}
+                {node.aiAccelerated && <AIBadge size="sm">AI-Accelerated</AIBadge>}
+              </div>
+            </>
+          )
+
+          return (
+            <div
+              key={node.id}
+              className="relative transition-all duration-300"
+              ref={(el) => {
+                nodeRefs.current[index] = el
+              }}
+              data-node-index={index}
+            >
+              {isActive ? (
+                <NeonGradientCard
+                  className="transition-all duration-300 [&>div]:p-0"
+                  borderRadius={12}
+                  borderSize={2}
+                  neonColors={neonColors}
+                >
+                  <div className="relative z-20 rounded-[10px] bg-white p-6 dark:bg-zinc-800/30">
+                    {nodeContent}
+                  </div>
+                </NeonGradientCard>
+              ) : (
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-300 dark:border-zinc-700 dark:bg-zinc-800/30">
+                  {nodeContent}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
 
   return (
     <section className="relative">
@@ -284,139 +424,41 @@ export function Timeline() {
         {/* Section Header */}
         <div className="mb-10 sm:mb-16">
           <Heading id="my-journey">My Journey</Heading>
-          <p className="text-zinc-600 dark:text-zinc-400 max-w-3xl mb-6 sm:mb-8 text-sm sm:text-base">
-            A decade of building user-centered solutions across industries, 
-            from startups to enterprise clients. Each role shaped my approach 
+          <p className="mb-6 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400 sm:mb-8 sm:text-base">
+            A decade of building user-centered solutions across industries,
+            from startups to enterprise clients. Each role shaped my approach
             to AI-powered product strategy.
           </p>
-          
+
           <div className="flex flex-wrap gap-3 sm:gap-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               href="/services#my-process"
               className="group"
             >
               Learn More
-              <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+              <span className="ml-2 transition-transform group-hover:translate-x-1">
+                →
+              </span>
             </Button>
-            <Button 
-              href="/services"
-              className="group"
-            >
+            <Button href="/services" className="group">
               View Services
-              <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+              <span className="ml-2 transition-transform group-hover:translate-x-1">
+                →
+              </span>
             </Button>
           </div>
         </div>
 
         {/* Timeline */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 overflow-visible">
-          <TracingBeam className="relative w-full">
-            <div 
-              className="space-y-16 relative"
-              ref={registerTimelineRef}
-            >
-              {/* Timeline nodes */}
-              <div className="space-y-10 sm:space-y-20 pl-12 sm:pl-16">
-                {timelineData.map((node, index) => {
-                  const isActive = activeNodeIndex === index
-                  const neonColors = getNeonColors(index)
-                  
-                  // Node content
-                  const nodeContent = (
-                    <>
-                      {/* Title header with status badge in top-right corner */}
-                      <div className="relative mb-3">
-                        <h3 className="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-white leading-tight pr-20 -mt-0.5">
-                          {node.title}
-                        </h3>
-                        <span className={`absolute top-0 right-0 inline-flex items-center gap-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          node.status === 'Ongoing' 
-                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                            : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
-                        }`}>
-                          <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
-                            node.status === 'Ongoing' 
-                              ? 'fill-emerald-500 animate-pulse' 
-                              : 'fill-zinc-400'
-                          }`}>
-                            <circle r={3} cx={3} cy={3} />
-                          </svg>
-                          {node.status}
-                        </span>
-                      </div>
-                      
-                      {/* Client and period */}
-                      <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium mb-3">
-                        {node.client} • {node.period}
-                      </p>
-                      
-                      {/* Description */}
-                      <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4">
-                        {node.description}
-                      </p>
-                      
-                      {/* Service/Skill chips */}
-                      {node.services.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {node.services.map((service) => (
-                            <NavigationChip 
-                              key={service} 
-                              skill={service}
-                              size="sm"
-                              variant="outline"
-                            />
-                          ))}
-                        </div>
-                      )}
-                      
-                      {/* Call-to-action and badges */}
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
-                        {node.link !== '#' && (
-                          <Link 
-                            href={node.link}
-                            className="inline-flex items-center text-sm font-semibold transition-all duration-300 hover:gap-2 group text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300"
-                          >
-                            View Case Study 
-                            <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-                          </Link>
-                        )}
-                        {node.aiAccelerated && (
-                          <AIBadge size="sm">AI-Accelerated</AIBadge>
-                        )}
-                      </div>
-                    </>
-                  )
-                  
-                  return (
-                    <div 
-                      key={node.id}
-                      className="relative transition-all duration-300"
-                      ref={(el) => registerNodeRef(node.id, el)}
-                      data-node-index={index}
-                    >
-                      {isActive ? (
-                        <NeonGradientCard
-                          className="transition-all duration-300 [&>div]:p-0"
-                          borderRadius={12}
-                          borderSize={2}
-                          neonColors={neonColors}
-                        >
-                          <div className="bg-white dark:bg-zinc-800/30 rounded-[10px] p-6 relative z-20">
-                            {nodeContent}
-                          </div>
-                        </NeonGradientCard>
-                      ) : (
-                        <div className="rounded-xl bg-white dark:bg-zinc-800/30 shadow-sm border border-zinc-200 dark:border-zinc-700 transition-all duration-300 p-6">
-                          {nodeContent}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
+        <div className="mx-auto max-w-4xl overflow-visible px-4 sm:px-6">
+          {shouldRenderBeam ? (
+            <TracingBeam className="relative w-full">{timelineContent}</TracingBeam>
+          ) : (
+            <div className="relative w-full border-l border-zinc-200/70 pl-4 dark:border-zinc-800/70 sm:pl-6">
+              {timelineContent}
             </div>
-          </TracingBeam>
+          )}
         </div>
       </div>
     </section>

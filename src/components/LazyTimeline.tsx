@@ -4,10 +4,16 @@ import { useEffect, useState, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 // Lazy load Timeline component when it comes into view
-const Timeline = dynamic(() => import('@/components/Timeline').then(mod => ({ default: mod.Timeline })), {
-  loading: () => <div className="h-96 animate-pulse bg-zinc-100 dark:bg-zinc-800 rounded-lg" />,
-  ssr: true,
-})
+const Timeline = dynamic(
+  () => import('@/components/Timeline').then(mod => ({ default: mod.Timeline })),
+  {
+    loading: () => (
+      <div className="h-96 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+    ),
+    // Avoid rendering the interactive timeline during SSR so it never blocks TTFB.
+    ssr: false,
+  }
+)
 
 export function LazyTimeline() {
   const [shouldLoad, setShouldLoad] = useState(false)
