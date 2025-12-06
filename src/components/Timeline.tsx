@@ -207,56 +207,77 @@ export function Timeline() {
     }
   }, [])
 
-  // Lazily highlight cards based on which ones are actually visible instead of tracking scroll position every frame.
+  // Track the card closest to our focus line (roughly upper third of the viewport)
+  // using a lightweight rAF loop so the neon state never lags behind scroll position.
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || typeof window === 'undefined') {
       setActiveNodeIndex(-1)
       return
     }
 
-    const visibleNodes = new Map<number, number>()
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const index = Number(
-            (entry.target as HTMLElement).dataset.nodeIndex ?? -1
-          )
-          if (Number.isNaN(index) || index < 0) {
-            return
-          }
+    let frameId: number | null = null
 
-          if (entry.isIntersecting) {
-            visibleNodes.set(index, entry.intersectionRatio)
-          } else {
-            visibleNodes.delete(index)
-          }
-        })
+    const measureAndSetActive = () => {
+      const viewportHeight = window.innerHeight || 0
+      const focusLine = viewportHeight * 0.35 // keep highlight slightly above center
+      let closestIndex = -1
+      let smallestDistance = Number.POSITIVE_INFINITY
 
-        if (!visibleNodes.size) {
-          return
+      nodeRefs.current.forEach((node, index) => {
+        if (!node) return
+        const rect = node.getBoundingClientRect()
+        const nodeCenter = rect.top + rect.height / 2
+        const distance = Math.abs(nodeCenter - focusLine)
+
+        if (distance < smallestDistance) {
+          smallestDistance = distance
+          closestIndex = index
         }
+      })
 
-        const [nextIndex] = [...visibleNodes.entries()].sort(
-          (a, b) => b[1] - a[1]
-        )[0]
-
+      if (closestIndex !== -1) {
         setActiveNodeIndex((current) =>
-          current === nextIndex ? current : nextIndex
+          current === closestIndex ? current : closestIndex
         )
-      },
-      {
-        rootMargin: '-10% 0px -35% 0px',
-        threshold: [0.25, 0.4, 0.6],
       }
-    )
+    }
 
-    nodeRefs.current.forEach((node) => {
-      if (node) {
-        observer.observe(node)
+    const scheduleMeasurement = () => {
+      if (frameId !== null) return
+      frameId = window.requestAnimationFrame(() => {
+        frameId = null
+        measureAndSetActive()
+      })
+    }
+
+    scheduleMeasurement()
+
+    const onScroll = () => scheduleMeasurement()
+    const onResize = () => scheduleMeasurement()
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
+
+    let resizeObserver: ResizeObserver | null = null
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(() => scheduleMeasurement())
+      nodeRefs.current.forEach((node) => {
+        if (node) {
+          resizeObserver!.observe(node)
+        }
+      })
+    }
+
+    return () => {
+      if (frameId !== null) {
+        window.cancelAnimationFrame(frameId)
       }
-    })
-
-    return () => observer.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+      }
+    }
   }, [prefersReducedMotion, timelineData.length])
 
   // Only render the motion-heavy tracing beam when we actually have the room (desktop) and the user hasn't opted out.
