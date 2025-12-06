@@ -74,6 +74,7 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   style,
   ...props
 }) => {
+  const contentRadius = Math.max(borderRadius - borderSize, 0)
   return (
     <div
       style={
@@ -82,30 +83,29 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
           "--border-radius": `${borderRadius}px`,
           "--neon-first-color": neonColors.firstColor,
           "--neon-second-color": neonColors.secondColor,
-          "--card-content-radius": `${borderRadius - borderSize}px`,
-          padding: `${borderSize}px`,
+          borderRadius,
+          padding: borderSize,
           ...style,
         } as CSSProperties & Record<string, string | number>
       }
       className={cn(
-        "relative z-10 size-full rounded-[var(--border-radius)] bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))]",
+        "relative z-10 isolate size-full rounded-[var(--border-radius)]",
+        "bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))]",
+        "before:pointer-events-none before:absolute before:-inset-8 before:-z-10 before:rounded-[var(--border-radius)]",
+        "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:opacity-35 before:blur-3xl before:content-['']",
+        "after:pointer-events-none after:absolute after:inset-0 after:-z-[1] after:rounded-[var(--border-radius)]",
+        "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:200%_200%]",
+        "after:animate-background-position-spin after:content-['']",
         className
       )}
       {...props}
     >
       <div
         className={cn(
-          "relative size-full min-h-[inherit] rounded-[var(--card-content-radius)] bg-white/95 p-6 dark:bg-neutral-900/70",
-          "before:absolute before:inset-0 before:-z-10 before:block",
-          "before:rounded-[var(--border-radius)] before:content-['']",
-          "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:bg-[length:100%_200%]",
-          "before:animate-background-position-spin",
-          "after:absolute after:inset-0 after:-z-10 after:block",
-          "after:rounded-[var(--border-radius)] after:blur-xl after:content-['']",
-          "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%] after:opacity-80",
-          "after:animate-background-position-spin",
-          "break-words"
+          "relative z-10 size-full min-h-[inherit] break-words bg-white/95 p-6",
+          "dark:bg-neutral-900"
         )}
+        style={{ borderRadius: contentRadius }}
       >
         {children}
       </div>
