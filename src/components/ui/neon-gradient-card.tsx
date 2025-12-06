@@ -80,27 +80,47 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
+    if (!containerRef.current) return
+
     const updateDimensions = () => {
       if (containerRef.current) {
         const { offsetWidth, offsetHeight } = containerRef.current
-        setDimensions({ width: offsetWidth, height: offsetHeight })
+        setDimensions((prev) => {
+          // Only update if dimensions actually changed to avoid unnecessary re-renders
+          if (prev.width !== offsetWidth || prev.height !== offsetHeight) {
+            return { width: offsetWidth, height: offsetHeight }
+          }
+          return prev
+        })
       }
     }
 
+    // Initial measurement
     updateDimensions()
     
-    // Throttle resize listener for better performance
-    let timeoutId: NodeJS.Timeout
-    const handleResize = () => {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(updateDimensions, 150) // Throttle to 150ms
-    }
-    
-    window.addEventListener("resize", handleResize)
+    // Use ResizeObserver for better performance on mobile (more efficient than window resize)
+    if (typeof ResizeObserver !== 'undefined') {
+      const resizeObserver = new ResizeObserver(() => {
+        updateDimensions()
+      })
+      resizeObserver.observe(containerRef.current)
 
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      clearTimeout(timeoutId)
+      return () => {
+        resizeObserver.disconnect()
+      }
+    } else {
+      // Fallback to throttled resize listener for older browsers
+      let timeoutId: NodeJS.Timeout
+      const handleResize = () => {
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(updateDimensions, 200) // Throttle to 200ms for mobile
+      }
+      window.addEventListener("resize", handleResize, { passive: true })
+
+      return () => {
+        window.removeEventListener("resize", handleResize)
+        clearTimeout(timeoutId)
+      }
     }
   }, [])
 
@@ -130,14 +150,14 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
         } as CSSProperties
       }
       className={cn(
-        "relative z-10 size-full rounded-[var(--border-radius)]",
+        "relative z-10 size-full overflow-visible rounded-[var(--border-radius)]",
         className
       )}
       {...props}
     >
       <div
         className={cn(
-          "relative size-full min-h-[inherit] rounded-[var(--card-content-radius)] bg-gray-100 p-6",
+          "relative size-full min-h-[inherit] overflow-visible rounded-[var(--card-content-radius)] bg-gray-100 p-6",
           "before:absolute before:-top-[var(--border-size)] before:-left-[var(--border-size)] before:-z-10 before:block",
           "before:h-[var(--pseudo-element-height)] before:w-[var(--pseudo-element-width)] before:rounded-[var(--border-radius)] before:content-['']",
           "before:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] before:bg-[length:100%_200%]",
