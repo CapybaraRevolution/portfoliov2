@@ -207,27 +207,39 @@ export function Timeline() {
     }
   }, [])
 
+  // Store observer in a ref so it persists across renders
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const visibleNodesRef = useRef<Map<number, number>>(new Map())
+  const rafIdRef = useRef<number | null>(null)
+
   // Lazily highlight cards based on which ones are actually visible instead of tracking scroll position every frame.
   useEffect(() => {
     if (prefersReducedMotion) {
       setActiveNodeIndex(-1)
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+        observerRef.current = null
+      }
       return
     }
 
     // Detect mobile to use simpler intersection observer settings
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
-    const visibleNodes = new Map<number, number>()
-    let rafId: number | null = null
-    
+    // Clean up existing observer
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+
+    // Create new observer
     const observer = new IntersectionObserver(
       (entries) => {
         // Use requestAnimationFrame to batch updates and reduce work on mobile
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId)
+        if (rafIdRef.current !== null) {
+          cancelAnimationFrame(rafIdRef.current)
         }
         
-        rafId = requestAnimationFrame(() => {
+        rafIdRef.current = requestAnimationFrame(() => {
           entries.forEach((entry) => {
             const index = Number(
               (entry.target as HTMLElement).dataset.nodeIndex ?? -1
@@ -237,23 +249,22 @@ export function Timeline() {
             }
 
             if (entry.isIntersecting) {
-              visibleNodes.set(index, entry.intersectionRatio)
+              visibleNodesRef.current.set(index, entry.intersectionRatio)
             } else {
-              visibleNodes.delete(index)
+              visibleNodesRef.current.delete(index)
             }
           })
 
-          if (!visibleNodes.size) {
+          if (!visibleNodesRef.current.size) {
+            setActiveNodeIndex(-1)
             return
           }
 
-          const [nextIndex] = [...visibleNodes.entries()].sort(
+          const [nextIndex] = [...visibleNodesRef.current.entries()].sort(
             (a, b) => b[1] - a[1]
           )[0]
 
-          setActiveNodeIndex((current) =>
-            current === nextIndex ? current : nextIndex
-          )
+          setActiveNodeIndex(nextIndex)
         })
       },
       {
@@ -263,6 +274,9 @@ export function Timeline() {
       }
     )
 
+    observerRef.current = observer
+
+    // Observe all current nodes
     nodeRefs.current.forEach((node) => {
       if (node) {
         observer.observe(node)
@@ -270,12 +284,27 @@ export function Timeline() {
     })
 
     return () => {
-      observer.disconnect()
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId)
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+        observerRef.current = null
       }
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+      visibleNodesRef.current.clear()
     }
   }, [prefersReducedMotion, timelineData.length])
+
+  // Register node refs and observe them as they're added
+  const registerNodeRef = useCallback((index: number, element: HTMLDivElement | null) => {
+    nodeRefs.current[index] = element
+    
+    // Observe the element if observer exists and we're not in reduced motion
+    if (element && observerRef.current && !prefersReducedMotion) {
+      observerRef.current.observe(element)
+    }
+  }, [prefersReducedMotion])
 
   // Only render the motion-heavy tracing beam when we actually have the room (desktop) and the user hasn't opted out.
   useEffect(() => {
@@ -408,9 +437,7 @@ export function Timeline() {
             <div
               key={node.id}
               className="relative overflow-visible transition-opacity duration-200 sm:transition-all sm:duration-300"
-              ref={(el) => {
-                nodeRefs.current[index] = el
-              }}
+              ref={(el) => registerNodeRef(index, el)}
               data-node-index={index}
             >
               {isActive ? (
