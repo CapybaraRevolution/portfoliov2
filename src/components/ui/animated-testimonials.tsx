@@ -153,8 +153,8 @@ export const AnimatedTestimonials = ({
             </AnimatePresence>
           </div>
         </div>
-        <div className="relative flex flex-col h-80 py-4">
-          <div className="flex-1 overflow-y-auto">
+        <div className="relative flex flex-col py-4">
+          <div className="flex-1">
             <motion.div
               key={active}
               initial={{
@@ -180,7 +180,7 @@ export const AnimatedTestimonials = ({
               <p className="text-sm text-gray-500 dark:text-neutral-500">
                 {testimonials[active].designation}
               </p>
-              <motion.p className="mt-8 text-lg text-gray-500 dark:text-neutral-300">
+              <motion.p className="mt-8 text-lg text-gray-500 dark:text-neutral-300 leading-relaxed">
                 {testimonials[active].quote.split(" ").map((word, index) => (
                   <motion.span
                     key={index}
