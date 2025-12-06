@@ -1,6 +1,13 @@
 "use client"
 
-import { CSSProperties, ReactElement, ReactNode } from "react"
+import {
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -70,41 +77,80 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   style,
   ...props
 }) => {
-  const contentRadius = Math.max(borderRadius - borderSize, 0)
-  const cardStyle: CSSProperties & Record<string, string | number> = {
-    "--border-size": `${borderSize}px`,
-    "--border-radius": `${borderRadius}px`,
-    "--neon-first-color": neonColors.firstColor,
-    "--neon-second-color": neonColors.secondColor,
-    borderRadius,
-    padding: borderSize,
-    ...style,
-  }
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const { offsetWidth, offsetHeight } = containerRef.current
+        setDimensions({ width: offsetWidth, height: offsetHeight })
+      }
+    }
+
+    updateDimensions()
+    
+    // Throttle resize listener for better performance
+    let timeoutId: NodeJS.Timeout
+    const handleResize = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(updateDimensions, 150) // Throttle to 150ms
+    }
+    
+    window.addEventListener("resize", handleResize)
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      clearTimeout(timeoutId)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (containerRef.current) {
+      const { offsetWidth, offsetHeight } = containerRef.current
+      setDimensions({ width: offsetWidth, height: offsetHeight })
+    }
+  }, [children])
 
   return (
     <div
-      style={cardStyle}
+      ref={containerRef}
+      style={
+        {
+          "--border-size": `${borderSize}px`,
+          "--border-radius": `${borderRadius}px`,
+          "--neon-first-color": neonColors.firstColor,
+          "--neon-second-color": neonColors.secondColor,
+          "--card-width": `${dimensions.width}px`,
+          "--card-height": `${dimensions.height}px`,
+          "--card-content-radius": `${borderRadius - borderSize}px`,
+          "--pseudo-element-background-image": `linear-gradient(0deg, ${neonColors.firstColor}, ${neonColors.secondColor})`,
+          "--pseudo-element-width": `${dimensions.width + borderSize * 2}px`,
+          "--pseudo-element-height": `${dimensions.height + borderSize * 2}px`,
+          "--after-blur": `${dimensions.width / 3}px`,
+          ...style,
+        } as CSSProperties & Record<string, string | number>
+      }
       className={cn(
-        "relative z-10 isolate size-full rounded-[var(--border-radius)]",
-        // Solid background (same as inactive state) - gradient only shows as border/glow
-        "bg-white dark:bg-zinc-800/30",
-        // Outer glow blur effect that emanates outward
-        "before:pointer-events-none before:absolute before:-inset-8 before:-z-10 before:rounded-[var(--border-radius)]",
-        "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:opacity-35 before:blur-3xl before:content-['']",
-        // Gradient border layer - positioned to create border effect
-        "after:pointer-events-none after:absolute after:-inset-[var(--border-size)] after:-z-[1] after:rounded-[var(--border-radius)]",
-        "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:200%_200%]",
-        "after:animate-background-position-spin after:content-['']",
+        "relative z-10 size-full rounded-[var(--border-radius)]",
         className
       )}
       {...props}
     >
       <div
         className={cn(
-          "relative z-10 size-full min-h-[inherit] break-words bg-white p-6",
-          "dark:bg-zinc-800/30"
+          "relative size-full min-h-[inherit] rounded-[var(--card-content-radius)] bg-white p-6",
+          "before:absolute before:-top-[var(--border-size)] before:-left-[var(--border-size)] before:-z-10 before:block",
+          "before:h-[var(--pseudo-element-height)] before:w-[var(--pseudo-element-width)] before:rounded-[var(--border-radius)] before:content-['']",
+          "before:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] before:bg-[length:100%_200%]",
+          "before:animate-background-position-spin",
+          "after:absolute after:-top-[var(--border-size)] after:-left-[var(--border-size)] after:-z-10 after:block",
+          "after:h-[var(--pseudo-element-height)] after:w-[var(--pseudo-element-width)] after:rounded-[var(--border-radius)] after:blur-[var(--after-blur)] after:content-['']",
+          "after:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%] after:opacity-80",
+          "after:animate-background-position-spin",
+          "dark:bg-zinc-800/30",
+          "break-words"
         )}
-        style={{ borderRadius: contentRadius }}
       >
         {children}
       </div>
