@@ -50,7 +50,9 @@ export function HorizontalLogoMarquee() {
             from early-stage startups to established enterprises.
           </p>
           
-          <div className="relative overflow-hidden rounded-2xl border border-zinc-200/50 bg-gradient-to-br from-zinc-100 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 py-8 backdrop-blur-sm">
+          <div className="relative overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 via-white to-zinc-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 py-8 shadow-sm">
+            {/* Subtle pattern overlay for better logo contrast */}
+            <div className="pointer-events-none absolute inset-0 opacity-[0.02] dark:opacity-[0.03] bg-[radial-gradient(circle_at_1px_1px,rgb(0,0,0)_1px,transparent_0)] [background-size:24px_24px]" />
             {/* Gradient fade at left and right */}
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
@@ -68,7 +70,7 @@ export function HorizontalLogoMarquee() {
                     alt={client.name}
                     width={160}
                     height={64}
-                    className="max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105 dark:brightness-0 dark:invert group-hover:brightness-100 group-hover:invert-0"
+                    className="max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105 brightness-90 dark:brightness-110 contrast-110 dark:contrast-90 group-hover:brightness-100 group-hover:contrast-100"
                   />
                 </div>
               ))}
@@ -87,7 +89,7 @@ export function HorizontalLogoMarquee() {
                     alt={client.name}
                     width={160}
                     height={64}
-                    className="max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105 dark:brightness-0 dark:invert group-hover:brightness-100 group-hover:invert-0"
+                    className="max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105 brightness-90 dark:brightness-110 contrast-110 dark:contrast-90 group-hover:brightness-100 group-hover:contrast-100"
                   />
                 </div>
               ))}
