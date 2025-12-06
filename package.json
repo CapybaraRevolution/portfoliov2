@@ -22,6 +22,7 @@
     "@next/mdx": "^16.0.6",
     "@sindresorhus/slugify": "^2.2.1",
     "@supabase/supabase-js": "^2.55.0",
+    "@tabler/icons-react": "^3.35.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/typography": "^0.5.16",
     "@types/dompurify": "^3.0.5",
@@ -59,6 +60,7 @@
     "typescript": "^5.8.3",
     "unist-util-filter": "^5.0.1",
     "unist-util-visit": "^5.0.0",
+    "vaul": "^1.1.2",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
