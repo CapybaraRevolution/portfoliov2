@@ -5,43 +5,14 @@ import { HeroPattern } from '@/components/HeroPattern'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
 import { RainbowButton } from '@/components/ui/rainbow-button'
 import { ContactStepper } from '@/components/ContactStepper'
-import { useState, useRef, useMemo, useCallback } from 'react'
+import { useState, useRef, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { submitContactForm, type FormData } from './actions'
 import { CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
 import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
 import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
-import { AccordionPanel } from '@/components/AccordionPanel'
-import { ChevronDownIcon } from '@heroicons/react/24/outline'
-
-// FAQ items
-const faqItems = [
-  {
-    title: 'Rates & Billing',
-    content: 'Standard rate: CA$105/hr. Fixed-fee available for well-scoped deliverables. Invoicing: monthly, NET-15 from invoice date. Preferred payment: bank transfer/ACH; happy to use your vendor system.'
-  },
-  {
-    title: 'Process',
-    content: 'Measure → learn → improve. I work in one- to two-week sprints with weekly demos and fast feedback. Phases: Discovery & Strategy → Planning & Architecture → Design & Prototyping → Implementation Support → Launch & Optimisation.'
-  },
-  {
-    title: 'Tools',
-    content: 'Figma, Miro, Jira/Asana, Notion/Confluence, Slack/Loom, Amplitude/GA4, Optimizely, Vercel, GitHub—happy to work in your stack.'
-  },
-  {
-    title: 'NDAs & Security',
-    content: 'NDAs welcome. Client data is encrypted and compartmentalized; work happens in private repos/drives. Access is removed at wrap-up. I follow least-privilege access and keep credentials out of files.'
-  },
-  {
-    title: 'Location & Hours',
-    content: 'Vancouver, BC (Pacific Time). I overlap 9–5 PT and am flexible for critical meetings. Not interested in relocation; remote or occasional on-site is great.'
-  },
-  {
-    title: 'Availability',
-    content: 'Available immediately. Open to contract (part- or full-time), with the option to discuss full-time roles if it\'s the right fit.'
-  }
-]
+import Link from 'next/link'
 
 // Engagement models without emojis
 const engagementModels = [
@@ -551,9 +522,8 @@ export function ContactContent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null)
   const [touched, setTouched] = useState<{ name?: boolean; email?: boolean }>({})
-  const [showFAQs, setShowFAQs] = useState(false)
   const confettiRef = useRef<ConfettiRef>(null)
-  const faqRef = useRef<HTMLDivElement>(null)
+  const rippleRef = useRef<{ triggerRipple: () => void } | null>(null)
 
   // Email validation
   const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
@@ -643,20 +613,6 @@ export function ContactContent() {
   const handleBlur = (field: 'name' | 'email') => {
     setTouched(prev => ({ ...prev, [field]: true }))
   }
-
-  const toggleFAQs = useCallback(() => {
-    setShowFAQs(prev => {
-      const newState = !prev
-      if (newState) {
-        // Scroll to FAQs after they expand
-        setTimeout(() => {
-          faqRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }, 100)
-        trackEvent('contact_faqs_expanded')
-      }
-      return newState
-    })
-  }, [])
 
   // Render step content
   const renderStepContent = () => {
@@ -877,47 +833,20 @@ export function ContactContent() {
           )}
         </AnimatePresence>
 
-        {/* FAQs Toggle */}
+        {/* FAQs Link */}
         <motion.div 
           className="text-center mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.4 }}
         >
-          <button
-            onClick={toggleFAQs}
-            className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+          <Link 
+            href="/contact/faq" 
+            className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
           >
-            Have questions? Check out the FAQs
-            <motion.div
-              animate={{ rotate: showFAQs ? 180 : 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-            >
-              <ChevronDownIcon className="size-4" />
-            </motion.div>
-          </button>
+            Have questions? Check out the FAQs →
+          </Link>
         </motion.div>
-
-        {/* FAQs Section - Expands inline */}
-        <AnimatePresence>
-          {showFAQs && (
-            <motion.div
-              ref={faqRef}
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="pt-8 pb-4">
-                <h2 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6 text-center">
-                  Frequently Asked Questions
-                </h2>
-                <AccordionPanel items={faqItems} />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* Fixed Bottom Navigation */}

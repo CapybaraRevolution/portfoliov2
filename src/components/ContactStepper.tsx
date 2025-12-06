@@ -7,30 +7,20 @@ interface Step {
   name: string
 }
 
-// Support both API styles: 
-// 1. steps array + currentStep (new API)
-// 2. currentStep + totalSteps (legacy API from MultiStepContactForm)
 interface ContactStepperProps {
-  steps?: Step[]
+  steps: Step[]
   currentStep: number
-  totalSteps?: number
   onStepClick?: (stepId: number) => void
 }
 
-export function ContactStepper({ steps, currentStep, totalSteps, onStepClick }: ContactStepperProps) {
-  // Generate steps array if not provided (legacy API support)
-  const stepList = steps || Array.from({ length: totalSteps || 5 }, (_, i) => ({ 
-    id: i + 1, 
-    name: `Step ${i + 1}` 
-  }))
-  
+export function ContactStepper({ steps, currentStep, onStepClick }: ContactStepperProps) {
   return (
     <nav aria-label="Progress" className="flex items-center justify-center">
       <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-        Step {currentStep} of {stepList.length}
+        Step {currentStep} of {steps.length}
       </p>
       <ol role="list" className="ml-6 flex items-center space-x-3">
-        {stepList.map((step) => {
+        {steps.map((step) => {
           const isComplete = step.id < currentStep
           const isCurrent = step.id === currentStep
           const isClickable = step.id < currentStep && onStepClick
