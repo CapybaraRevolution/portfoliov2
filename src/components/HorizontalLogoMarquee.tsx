@@ -1,6 +1,9 @@
 'use client'
 
 import Image from 'next/image'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 import { Heading } from '@/components/Heading'
 import { Marquee } from '@/components/ui/marquee'
 
@@ -17,6 +20,16 @@ import oldSkoolLogo from '@/images/logos/OldSkoolStudios.png'
 import houstonBalletLogo from '@/images/logos/HoustonBallet.svg'
 
 export function HorizontalLogoMarquee() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Prevent hydration mismatch by waiting for mount
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDark = mounted && resolvedTheme === 'dark'
+
   // Add your client logos here!
   // To add a new logo:
   // 1. Add the logo file to src/images/logos/
@@ -68,7 +81,14 @@ export function HorizontalLogoMarquee() {
                     alt={client.name}
                     width={160}
                     height={64}
-                    className="max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105"
+                    className={cn(
+                      "max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105",
+                      // In light mode: use brightness/contrast to make white logos visible
+                      // Lower brightness darkens white logos, higher contrast makes them stand out
+                      !isDark && "brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
+                      // In dark mode: slightly brighten logos for better visibility
+                      isDark && "opacity-80 brightness-110 group-hover:opacity-100 group-hover:brightness-100"
+                    )}
                   />
                 </div>
               ))}
@@ -87,7 +107,14 @@ export function HorizontalLogoMarquee() {
                     alt={client.name}
                     width={160}
                     height={64}
-                    className="max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105"
+                    className={cn(
+                      "max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105",
+                      // In light mode: use brightness/contrast to make white logos visible
+                      // Lower brightness darkens white logos, higher contrast makes them stand out
+                      !isDark && "brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
+                      // In dark mode: slightly brighten logos for better visibility
+                      isDark && "opacity-80 brightness-110 group-hover:opacity-100 group-hover:brightness-100"
+                    )}
                   />
                 </div>
               ))}
