@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Heading } from '@/components/Heading'
 import { Marquee } from '@/components/ui/marquee'
+import { ContactDrawer } from '@/components/ContactDrawer'
+import { Button } from '@/components/Button'
 
 // Import client logos
 import jigsawLogo from '@/images/logos/Jixaw-Technologies_Logo.png'
@@ -70,54 +72,98 @@ export function HorizontalLogoMarquee() {
             
             {/* First row - scrolling left to right */}
             <Marquee pauseOnHover className="[--duration:30s] mb-4">
-              {row1Clients.map((client) => (
-                <div
-                  key={`row1-${client.name}`}
-                  className="group flex h-20 w-40 shrink-0 items-center justify-center px-6"
-                  title={client.name}
-                >
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    width={160}
-                    height={64}
-                    className={cn(
-                      "max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105",
-                      // In light mode: use brightness/contrast to make white logos visible
-                      // Lower brightness darkens white logos, higher contrast makes them stand out
-                      !isDark && "brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
-                      // In dark mode: slightly brighten logos for better visibility
-                      isDark && "opacity-80 brightness-110 group-hover:opacity-100 group-hover:brightness-100"
+              {row1Clients.map((client) => {
+                const logoSrc = typeof client.logo === 'string' ? client.logo : client.logo.src || client.logo
+                return (
+                  <div
+                    key={`row1-${client.name}`}
+                    className="group relative flex h-20 w-40 shrink-0 items-center justify-center px-6"
+                    title={client.name}
+                  >
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      width={160}
+                      height={64}
+                      className={cn(
+                        "max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105",
+                        // In light mode: use brightness/contrast to make white logos visible
+                        // Lower brightness darkens white logos, higher contrast makes them stand out
+                        !isDark && "grayscale brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
+                        // In dark mode: keep logos in grayscale
+                        isDark && "grayscale group-hover:grayscale-0"
+                      )}
+                    />
+                    {/* Light grey mask overlay in dark mode that fades on hover */}
+                    {isDark && (
+                      <div 
+                        className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 group-hover:opacity-0"
+                        style={{
+                          background: 'rgba(212, 212, 212, 0.5)',
+                          maskImage: `url(${logoSrc})`,
+                          WebkitMaskImage: `url(${logoSrc})`,
+                          maskSize: 'contain',
+                          WebkitMaskSize: 'contain',
+                          maskRepeat: 'no-repeat',
+                          WebkitMaskRepeat: 'no-repeat',
+                          maskPosition: 'center',
+                          WebkitMaskPosition: 'center',
+                          maxHeight: '4rem',
+                          width: '100%'
+                        }}
+                      />
                     )}
-                  />
-                </div>
-              ))}
+                  </div>
+                )
+              })}
             </Marquee>
             
             {/* Second row - scrolling right to left (reverse) */}
             <Marquee pauseOnHover reverse className="[--duration:35s]">
-              {row2Clients.map((client) => (
-                <div
-                  key={`row2-${client.name}`}
-                  className="group flex h-20 w-40 shrink-0 items-center justify-center px-6"
-                  title={client.name}
-                >
-                  <Image
-                    src={client.logo}
-                    alt={client.name}
-                    width={160}
-                    height={64}
-                    className={cn(
-                      "max-h-16 w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:scale-105",
-                      // In light mode: use brightness/contrast to make white logos visible
-                      // Lower brightness darkens white logos, higher contrast makes them stand out
-                      !isDark && "brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
-                      // In dark mode: slightly brighten logos for better visibility
-                      isDark && "opacity-80 brightness-110 group-hover:opacity-100 group-hover:brightness-100"
+              {row2Clients.map((client) => {
+                const logoSrc = typeof client.logo === 'string' ? client.logo : client.logo.src || client.logo
+                return (
+                  <div
+                    key={`row2-${client.name}`}
+                    className="group relative flex h-20 w-40 shrink-0 items-center justify-center px-6"
+                    title={client.name}
+                  >
+                    <Image
+                      src={client.logo}
+                      alt={client.name}
+                      width={160}
+                      height={64}
+                      className={cn(
+                        "max-h-16 w-full object-contain transition-all duration-300 group-hover:scale-105",
+                        // In light mode: use brightness/contrast to make white logos visible
+                        // Lower brightness darkens white logos, higher contrast makes them stand out
+                        !isDark && "grayscale brightness-[0.3] contrast-150 drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100 group-hover:drop-shadow-none",
+                        // In dark mode: keep logos in grayscale
+                        isDark && "grayscale group-hover:grayscale-0"
+                      )}
+                    />
+                    {/* Light grey mask overlay in dark mode that fades on hover */}
+                    {isDark && (
+                      <div 
+                        className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 group-hover:opacity-0"
+                        style={{
+                          background: 'rgba(212, 212, 212, 0.5)',
+                          maskImage: `url(${logoSrc})`,
+                          WebkitMaskImage: `url(${logoSrc})`,
+                          maskSize: 'contain',
+                          WebkitMaskSize: 'contain',
+                          maskRepeat: 'no-repeat',
+                          WebkitMaskRepeat: 'no-repeat',
+                          maskPosition: 'center',
+                          WebkitMaskPosition: 'center',
+                          maxHeight: '4rem',
+                          width: '100%'
+                        }}
+                      />
                     )}
-                  />
-                </div>
-              ))}
+                  </div>
+                )
+              })}
             </Marquee>
           </div>
           
@@ -125,12 +171,11 @@ export function HorizontalLogoMarquee() {
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
               Ready to add your company to this list?
             </p>
-            <a 
-              href="/contact" 
-              className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition text-emerald-500 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-500"
-            >
-              Let&apos;s work together →
-            </a>
+            <ContactDrawer>
+              <Button variant="text" arrow="right">
+                Let&apos;s work together
+              </Button>
+            </ContactDrawer>
           </div>
         </div>
       </div>

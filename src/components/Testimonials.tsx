@@ -1,4 +1,6 @@
 import { Heading } from '@/components/Heading'
+import { ContactDrawer } from '@/components/ContactDrawer'
+import { Button } from '@/components/Button'
 
 interface Testimonial {
   content: string
@@ -77,12 +79,11 @@ export function Testimonials() {
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-3">
               Ready to create your success story?
             </p>
-            <a 
-              href="/contact" 
-              className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition text-emerald-500 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-500"
-            >
-              Start your project →
-            </a>
+            <ContactDrawer>
+              <Button variant="text" arrow="right">
+                Start your project
+              </Button>
+            </ContactDrawer>
           </div>
         </div>
       </div>
