@@ -4,10 +4,15 @@ import { useEffect, useState, useRef } from 'react'
 import dynamic from 'next/dynamic'
 
 // Lazy load AnimatedTestimonialsWrapper component when it comes into view
-const AnimatedTestimonialsWrapper = dynamic(() => import('@/components/AnimatedTestimonialsWrapper').then(mod => ({ default: mod.AnimatedTestimonialsWrapper })), {
-  loading: () => <div className="h-64 animate-pulse bg-zinc-100 dark:bg-zinc-800 rounded-lg" />,
-  ssr: true,
-})
+const AnimatedTestimonialsWrapper = dynamic(
+  () => import('@/components/AnimatedTestimonialsWrapper').then(mod => ({ default: mod.AnimatedTestimonialsWrapper })),
+  {
+    loading: () => (
+      <div className="h-64 animate-pulse rounded-lg bg-zinc-100 dark:bg-zinc-800" />
+    ),
+    ssr: false,
+  }
+)
 
 export function LazyTestimonials() {
   const [shouldLoad, setShouldLoad] = useState(false)
