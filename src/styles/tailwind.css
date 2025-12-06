@@ -49,10 +49,7 @@
   --container-3xl: 50rem;
   --container-5xl: 66rem;
 
-  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
   --animate-background-position-spin: background-position-spin 3000ms infinite alternate;
-  --animate-marquee: marquee var(--duration) linear infinite;
-  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
 }
 
 @keyframes background-position-spin {
@@ -64,23 +61,6 @@
   }
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
-  }
-}
-
-@keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
-  }
-}
 
 @layer base {
   :root {
@@ -276,15 +256,6 @@
     -webkit-line-clamp: 3;
   }
 
-  /* Marquee animation utilities - ensure animations are applied */
-  .animate-marquee {
-    animation: marquee var(--duration, 40s) linear infinite;
-  }
-
-  .animate-marquee-vertical {
-    animation: marquee-vertical var(--duration, 40s) linear infinite;
-  }
-  
   /* Service category utility classes */
   .bg-token-pm { background-color: rgb(var(--color-token-pm) / 0.1); }
   .text-token-pm { color: rgb(var(--color-token-pm)); }
@@ -310,5 +281,42 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+  }
+}
+
+@theme inline {
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
+
+  @keyframes cell-ripple {
+    0% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
+
+  --animate-marquee: marquee var(--duration) linear infinite;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
   }
 }
