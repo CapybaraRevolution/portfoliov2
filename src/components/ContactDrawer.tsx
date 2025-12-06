@@ -49,14 +49,14 @@ function ContactDrawerContent() {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerContent className="overflow-visible border-none bg-white dark:bg-zinc-900 px-0">
+      <DrawerContent className="overflow-visible border-t-4 border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-0">
         <DrawerHeader className="sr-only absolute inset-0 pointer-events-none p-0 m-0 gap-0 h-0 overflow-hidden">
           <DrawerTitle>Work With Me</DrawerTitle>
           <DrawerDescription>Let&apos;s start a project</DrawerDescription>
         </DrawerHeader>
 
-        {/* Floating drag handle above the drawer - positioned to be visible on mobile */}
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-[60] pointer-events-none md:-top-8">
+        {/* Floating drag handle above the drawer - positioned to be visible on mobile with proper spacing */}
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[60] pointer-events-none md:-top-8 md:top-4">
           <div className="group flex flex-col items-center gap-2">
             {/* Interactive drag handle with bounce and glow */}
             <div className="relative h-1.5 w-24 rounded-full bg-zinc-200 dark:bg-zinc-500 cursor-grab active:cursor-grabbing transition-all duration-300 hover:scale-110 hover:bg-emerald-300/40 dark:hover:bg-emerald-500/50 hover:shadow-[0_0_12px_rgba(16,185,129,0.4)] dark:hover:shadow-[0_0_16px_rgba(16,185,129,0.8)] animate-[bounce-subtle_3s_ease-in-out_infinite] pointer-events-auto shadow-lg">
@@ -83,17 +83,17 @@ function ContactDrawerContent() {
         </div>
 
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 relative pt-0 border-t-2 border-zinc-300 dark:border-zinc-700">
+        <div className="flex-1 overflow-y-auto bg-white dark:bg-zinc-900 relative pt-8 md:pt-0">
           {/* Bottom fade gradient for scroll context - desktop only */}
           <div className="hidden md:block pointer-events-none sticky bottom-0 left-0 right-0 h-0 z-10 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-zinc-900 dark:via-zinc-900/80 dark:to-transparent" />
           
-          <div className="relative mx-auto max-w-4xl px-4 sm:px-6 min-h-full pb-6 md:pb-6 pb-24">
+          <div className="relative mx-auto max-w-4xl px-4 sm:px-6 min-h-full pb-32 md:pb-6">
             <ContactContent />
           </div>
         </div>
 
-        {/* Mobile: Bottom sticky Close button */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 pointer-events-auto p-4 bg-gradient-to-t from-white via-white/95 to-white/80 dark:from-zinc-900 dark:via-zinc-900/95 dark:to-zinc-900/80 backdrop-blur-sm border-t border-zinc-200/50 dark:border-zinc-800/50">
+        {/* Mobile: Bottom sticky Close button - only show when form is not active */}
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-[45] pointer-events-auto p-4 bg-gradient-to-t from-white via-white/95 to-white/80 dark:from-zinc-900 dark:via-zinc-900/95 dark:to-zinc-900/80 backdrop-blur-sm border-t border-zinc-200/50 dark:border-zinc-800/50">
           <div className="max-w-4xl mx-auto">
             <DrawerClose asChild>
               <Button 

@@ -72,8 +72,8 @@ export default async function RootLayout({
   let allSections = Object.fromEntries(allSectionsEntries)
 
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className="flex min-h-full bg-white antialiased dark:bg-zinc-900">
+    <html lang="en" className="h-full overflow-x-hidden" suppressHydrationWarning>
+      <body className="flex min-h-full bg-white antialiased dark:bg-zinc-900 overflow-x-hidden">
         <Providers>
           <AdminProvider>
             <div className="w-full">
