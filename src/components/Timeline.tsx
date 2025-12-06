@@ -207,75 +207,72 @@ export function Timeline() {
     }
   }, [])
 
-  // Track the card closest to our focus line (roughly upper third of the viewport)
-  // using a lightweight rAF loop so the neon state never lags behind scroll position.
+  // Lazily highlight cards based on which ones are actually visible instead of tracking scroll position every frame.
   useEffect(() => {
-    if (prefersReducedMotion || typeof window === 'undefined') {
+    if (prefersReducedMotion) {
       setActiveNodeIndex(-1)
       return
     }
 
-    let frameId: number | null = null
+    // Detect mobile to use simpler intersection observer settings
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
-    const measureAndSetActive = () => {
-      const viewportHeight = window.innerHeight || 0
-      const focusLine = viewportHeight * 0.35 // keep highlight slightly above center
-      let closestIndex = -1
-      let smallestDistance = Number.POSITIVE_INFINITY
-
-      nodeRefs.current.forEach((node, index) => {
-        if (!node) return
-        const rect = node.getBoundingClientRect()
-        const nodeCenter = rect.top + rect.height / 2
-        const distance = Math.abs(nodeCenter - focusLine)
-
-        if (distance < smallestDistance) {
-          smallestDistance = distance
-          closestIndex = index
+    const visibleNodes = new Map<number, number>()
+    let rafId: number | null = null
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Use requestAnimationFrame to batch updates and reduce work on mobile
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId)
         }
-      })
+        
+        rafId = requestAnimationFrame(() => {
+          entries.forEach((entry) => {
+            const index = Number(
+              (entry.target as HTMLElement).dataset.nodeIndex ?? -1
+            )
+            if (Number.isNaN(index) || index < 0) {
+              return
+            }
 
-      if (closestIndex !== -1) {
-        setActiveNodeIndex((current) =>
-          current === closestIndex ? current : closestIndex
-        )
+            if (entry.isIntersecting) {
+              visibleNodes.set(index, entry.intersectionRatio)
+            } else {
+              visibleNodes.delete(index)
+            }
+          })
+
+          if (!visibleNodes.size) {
+            return
+          }
+
+          const [nextIndex] = [...visibleNodes.entries()].sort(
+            (a, b) => b[1] - a[1]
+          )[0]
+
+          setActiveNodeIndex((current) =>
+            current === nextIndex ? current : nextIndex
+          )
+        })
+      },
+      {
+        // Simpler settings for mobile to reduce computation
+        rootMargin: isMobile ? '-5% 0px -20% 0px' : '-10% 0px -35% 0px',
+        threshold: isMobile ? [0.3] : [0.25, 0.4, 0.6],
       }
-    }
+    )
 
-    const scheduleMeasurement = () => {
-      if (frameId !== null) return
-      frameId = window.requestAnimationFrame(() => {
-        frameId = null
-        measureAndSetActive()
-      })
-    }
-
-    scheduleMeasurement()
-
-    const onScroll = () => scheduleMeasurement()
-    const onResize = () => scheduleMeasurement()
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onResize)
-
-    let resizeObserver: ResizeObserver | null = null
-    if ('ResizeObserver' in window) {
-      resizeObserver = new ResizeObserver(() => scheduleMeasurement())
-      nodeRefs.current.forEach((node) => {
-        if (node) {
-          resizeObserver!.observe(node)
-        }
-      })
-    }
+    nodeRefs.current.forEach((node) => {
+      if (node) {
+        observer.observe(node)
+      }
+    })
 
     return () => {
-      if (frameId !== null) {
-        window.cancelAnimationFrame(frameId)
-      }
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onResize)
-      if (resizeObserver) {
-        resizeObserver.disconnect()
+      observer.disconnect()
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
       }
     }
   }, [prefersReducedMotion, timelineData.length])
@@ -333,7 +330,7 @@ export function Timeline() {
 
   const timelineContent = (
     <div className="relative space-y-16">
-      <div className="space-y-10 pl-12 sm:space-y-20 sm:pl-16">
+      <div className="space-y-10 pl-4 sm:space-y-20 sm:pl-16">
         {timelineData.map((node, index) => {
           const isActive = activeNodeIndex === index
           const neonColors = getNeonColors(index)
@@ -410,7 +407,7 @@ export function Timeline() {
           return (
             <div
               key={node.id}
-              className="relative transition-all duration-300"
+              className="relative overflow-visible transition-opacity duration-200 sm:transition-all sm:duration-300"
               ref={(el) => {
                 nodeRefs.current[index] = el
               }}
@@ -418,7 +415,7 @@ export function Timeline() {
             >
               {isActive ? (
                 <NeonGradientCard
-                  className="transition-all duration-300 [&>div]:p-0"
+                  className="transition-opacity duration-200 [&>div]:p-0 sm:transition-all sm:duration-300"
                   borderRadius={12}
                   borderSize={2}
                   neonColors={neonColors}
@@ -428,7 +425,7 @@ export function Timeline() {
                   </div>
                 </NeonGradientCard>
               ) : (
-                <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-300 dark:border-zinc-700 dark:bg-zinc-800/30">
+                <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-opacity duration-200 dark:border-zinc-700 dark:bg-zinc-800/30 sm:transition-all sm:duration-300">
                   {nodeContent}
                 </div>
               )}
@@ -474,9 +471,9 @@ export function Timeline() {
         {/* Timeline */}
         <div className="mx-auto max-w-4xl overflow-visible px-4 sm:px-6">
           {shouldRenderBeam ? (
-            <TracingBeam className="relative w-full">{timelineContent}</TracingBeam>
+            <TracingBeam className="relative w-full overflow-visible">{timelineContent}</TracingBeam>
           ) : (
-            <div className="relative w-full border-l border-zinc-200/70 pl-4 dark:border-zinc-800/70 sm:pl-6">
+            <div className="relative w-full overflow-visible border-l border-zinc-200/70 pl-4 dark:border-zinc-800/70 sm:pl-6">
               {timelineContent}
             </div>
           )}
