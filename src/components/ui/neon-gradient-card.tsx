@@ -4,9 +4,6 @@ import {
   CSSProperties,
   ReactElement,
   ReactNode,
-  useEffect,
-  useRef,
-  useState,
 } from "react"
 
 import { cn } from "@/lib/utils"
@@ -77,91 +74,35 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
   style,
   ...props
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (containerRef.current) {
-        const { offsetWidth, offsetHeight } = containerRef.current
-        // Only update if dimensions actually changed to prevent unnecessary re-renders
-        setDimensions((prev) => {
-          if (prev.width === offsetWidth && prev.height === offsetHeight) {
-            return prev
-          }
-          return { width: offsetWidth, height: offsetHeight }
-        })
-      }
-    }
-
-    // Initial measurement
-    updateDimensions()
-    
-    // Use ResizeObserver for better performance than window resize
-    let resizeObserver: ResizeObserver | null = null
-    if (containerRef.current && 'ResizeObserver' in window) {
-      resizeObserver = new ResizeObserver(() => {
-        updateDimensions()
-      })
-      resizeObserver.observe(containerRef.current)
-    }
-    
-    // Fallback to window resize if ResizeObserver not available
-    let timeoutId: NodeJS.Timeout
-    const handleResize = () => {
-      clearTimeout(timeoutId)
-      timeoutId = setTimeout(updateDimensions, 150)
-    }
-    
-    if (!resizeObserver) {
-      window.addEventListener("resize", handleResize)
-    }
-
-    return () => {
-      if (resizeObserver) {
-        resizeObserver.disconnect()
-      } else {
-        window.removeEventListener("resize", handleResize)
-        clearTimeout(timeoutId)
-      }
-    }
-  }, [])
-
   return (
     <div
-      ref={containerRef}
       style={
         {
           "--border-size": `${borderSize}px`,
           "--border-radius": `${borderRadius}px`,
           "--neon-first-color": neonColors.firstColor,
           "--neon-second-color": neonColors.secondColor,
-          "--card-width": `${dimensions.width}px`,
-          "--card-height": `${dimensions.height}px`,
           "--card-content-radius": `${borderRadius - borderSize}px`,
-          "--pseudo-element-background-image": `linear-gradient(0deg, ${neonColors.firstColor}, ${neonColors.secondColor})`,
-          "--pseudo-element-width": `${dimensions.width + borderSize * 2}px`,
-          "--pseudo-element-height": `${dimensions.height + borderSize * 2}px`,
-          "--after-blur": `${dimensions.width / 3}px`,
+          padding: `${borderSize}px`,
           ...style,
         } as CSSProperties & Record<string, string | number>
       }
       className={cn(
-        "relative z-10 size-full rounded-[var(--border-radius)]",
+        "relative z-10 size-full rounded-[var(--border-radius)] bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))]",
         className
       )}
       {...props}
     >
       <div
         className={cn(
-          "relative size-full min-h-[inherit] rounded-[var(--card-content-radius)]",
-          "before:absolute before:-top-[var(--border-size)] before:-left-[var(--border-size)] before:-z-10 before:block",
-          "before:h-[var(--pseudo-element-height)] before:w-[var(--pseudo-element-width)] before:rounded-[var(--border-radius)] before:content-['']",
-          "before:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] before:bg-[length:100%_200%]",
+          "relative size-full min-h-[inherit] rounded-[var(--card-content-radius)] bg-white/95 p-6 dark:bg-neutral-900/70",
+          "before:absolute before:inset-0 before:-z-10 before:block",
+          "before:rounded-[var(--border-radius)] before:content-['']",
+          "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:bg-[length:100%_200%]",
           "before:animate-background-position-spin",
-          "after:absolute after:-top-[var(--border-size)] after:-left-[var(--border-size)] after:-z-10 after:block",
-          "after:h-[var(--pseudo-element-height)] after:w-[var(--pseudo-element-width)] after:rounded-[var(--border-radius)] after:blur-[var(--after-blur)] after:content-['']",
-          "after:bg-[linear-gradient(0deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%] after:opacity-80",
+          "after:absolute after:inset-0 after:-z-10 after:block",
+          "after:rounded-[var(--border-radius)] after:blur-xl after:content-['']",
+          "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:100%_200%] after:opacity-80",
           "after:animate-background-position-spin",
           "break-words"
         )}
