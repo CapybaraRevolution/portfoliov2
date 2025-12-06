@@ -86,20 +86,25 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
       style={cardStyle}
       className={cn(
         "relative z-10 isolate size-full rounded-[var(--border-radius)]",
-        "bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))]",
-        "before:pointer-events-none before:absolute before:-inset-8 before:-z-10 before:rounded-[var(--border-radius)]",
-        "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:opacity-35 before:blur-3xl before:content-['']",
-        "after:pointer-events-none after:absolute after:inset-0 after:-z-[1] after:rounded-[var(--border-radius)]",
-        "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:200%_200%]",
-        "after:animate-background-position-spin after:content-['']",
+        // Card background stays solid (same as inactive state) - no gradient fill
+        "bg-white dark:bg-zinc-800/30",
+        // External glow effect using box-shadow that emanates outward
+        "shadow-[0_0_15px_var(--neon-first-color),0_0_30px_var(--neon-first-color),0_0_45px_var(--neon-second-color)]",
+        // Gradient border using pseudo-element - creates border by being behind and larger
+        "before:pointer-events-none before:absolute before:-inset-[var(--border-size)] before:-z-[1] before:rounded-[var(--border-radius)]",
+        "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:bg-[length:200%_200%]",
+        "before:animate-background-position-spin before:content-['']",
+        // Outer glow blur effect that emanates further out
+        "after:pointer-events-none after:absolute after:-inset-6 after:-z-10 after:rounded-[var(--border-radius)]",
+        "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:opacity-50 after:blur-2xl after:content-['']",
         className
       )}
       {...props}
     >
       <div
         className={cn(
-          "relative z-10 size-full min-h-[inherit] break-words bg-white/95 p-6",
-          "dark:bg-neutral-900/70"
+          "relative z-10 size-full min-h-[inherit] break-words bg-white p-6",
+          "dark:bg-zinc-800/30"
         )}
         style={{ borderRadius: contentRadius }}
       >
