@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const BackgroundRippleEffect = ({
@@ -17,6 +17,24 @@ export const BackgroundRippleEffect = ({
   } | null>(null);
   const [rippleKey, setRippleKey] = useState(0);
   const ref = useRef<any>(null);
+
+  // Listen for custom event to trigger center ripple (e.g., from contact form "Begin" button)
+  useEffect(() => {
+    const handleTriggerRipple = () => {
+      // Calculate center of the grid
+      const totalCols = Math.max(cols, 80);
+      const centerRow = Math.floor(rows / 2);
+      const centerCol = Math.floor(totalCols / 2);
+      
+      setClickedCell({ row: centerRow, col: centerCol });
+      setRippleKey((k) => k + 1);
+    };
+
+    window.addEventListener('trigger-contact-ripple', handleTriggerRipple);
+    return () => {
+      window.removeEventListener('trigger-contact-ripple', handleTriggerRipple);
+    };
+  }, [rows, cols]);
 
   return (
     <div

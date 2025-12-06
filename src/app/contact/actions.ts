@@ -8,8 +8,6 @@ export interface FormData {
   company: string
   website: string
   project: string
-  timeline: string
-  budget: string
   success: string
   engagement: string
 }
@@ -59,8 +57,6 @@ export async function submitContactForm(formData: FormData) {
       <p><strong>Email:</strong> ${formData.email}</p>
       <p><strong>Company:</strong> ${formData.company || 'Not provided'}</p>
       <p><strong>Website:</strong> ${formData.website ? `https://${formData.website}` : 'Not provided'}</p>
-      <p><strong>Timeline:</strong> ${formData.timeline}</p>
-      <p><strong>Budget:</strong> ${formData.budget}</p>
       <p><strong>Engagement Type:</strong> ${formData.engagement}</p>
       
       <h3>Project Description:</h3>
@@ -80,8 +76,6 @@ Name: ${formData.name}
 Email: ${formData.email}
 Company: ${formData.company || 'Not provided'}
 Website: ${formData.website ? `https://${formData.website}` : 'Not provided'}
-Timeline: ${formData.timeline}
-Budget: ${formData.budget}
 Engagement Type: ${formData.engagement}
 
 Project Description:
