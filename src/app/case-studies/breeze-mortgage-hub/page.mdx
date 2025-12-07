@@ -52,7 +52,7 @@ export default function BreezeMortgageHubCaseStudy() {
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} heroImage={heroImage}>
       
-      {/* The Mess - 50/50 layout with animated beam */}
+      {/* The Mess - 50/50 layout with animated beam (text left) */}
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <div className="prose prose-zinc dark:prose-invert max-w-none">
@@ -61,16 +61,19 @@ export default function BreezeMortgageHubCaseStudy() {
             <p>There was also an AI-shaped hole in the roadmap. Not "add AI because it's 2025," but grounded opportunities for categorization, classification, and guidance that could remove friction from the most tedious parts of the mortgage application process. None of that was framed yet.</p>
             <p>The harder part: we weren't just fixing the present. We also needed a clear future scope and a roadmap that wouldn't collapse under its own complexity.</p>
           </div>
-          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 overflow-hidden">
+          <div className="rounded-xl overflow-hidden">
             <AnimatedBeamMultipleOutputDemo className="h-[400px]" />
           </div>
         </div>
       </section>
 
-      {/* My Role - 50/50 layout with animated beam */}
+      {/* My Role - 50/50 layout with animated beam (text right, flipped) */}
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <div className="rounded-xl overflow-hidden order-2 lg:order-1">
+            <AnimatedBeamDemo />
+          </div>
+          <div className="prose prose-zinc dark:prose-invert max-w-none order-1 lg:order-2">
             <h2 id="my-role" className="mt-0">My Role</h2>
             <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build.</p>
             <p><strong>What I optimized for:</strong></p>
@@ -79,9 +82,6 @@ export default function BreezeMortgageHubCaseStudy() {
               <li>Consistent patterns and component behavior (so the UI has "design DNA," not vibes)</li>
               <li>Requirements that are dev-ready (so shipping doesn't become an interpretive sport)</li>
             </ul>
-          </div>
-          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 overflow-hidden">
-            <AnimatedBeamDemo />
           </div>
         </div>
       </section>
