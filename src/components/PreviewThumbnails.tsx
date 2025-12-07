@@ -108,7 +108,7 @@ export function MilestoneStripPreview({ className = "" }: PreviewProps) {
         {/* Milestones */}
         <div className="flex items-center space-x-4">
           <div className="flex flex-col items-center">
-            <div className="w-8 h-8 bg-emerald-600 dark:bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs font-medium">
+            <div className="w-8 h-8 bg-emerald-700 dark:bg-emerald-600 rounded-full flex items-center justify-center text-white text-xs font-medium">
               M1
             </div>
             <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">MVP</div>

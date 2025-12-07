@@ -79,7 +79,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
             
             {/* Magnifying Glass Icon */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full bg-white/90 dark:bg-zinc-900/90 flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white">
+              <div className="w-14 h-14 rounded-full bg-white/90 dark:bg-zinc-900/90 flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white">
                 <MagnifyingGlassIcon className="w-6 h-6 text-zinc-600 dark:text-zinc-300 group-hover:text-white transition-colors" />
               </div>
             </div>

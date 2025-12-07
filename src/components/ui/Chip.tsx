@@ -72,7 +72,7 @@ export function Chip({
       category 
         ? CATEGORY_COLORS[category]
         : selected
-        ? 'bg-emerald-500 text-white ring-1 ring-emerald-500'
+        ? 'bg-emerald-600 text-white ring-1 ring-emerald-600'
         : 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300'
     ),
     outline: clsx(

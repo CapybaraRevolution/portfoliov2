@@ -14,6 +14,7 @@ import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 import { CloseButton } from '@headlessui/react'
+import { LinkRippleButton } from '@/components/ui/ripple-button'
 
 interface NavGroup {
   title: string
@@ -61,7 +62,37 @@ function NavLink({
   active?: boolean
   isAnchorLink?: boolean
 }) {
-  const isOverview = children === 'Overview' && href.includes('/work/overview')
+  const isOverview = children === 'Overview' && href.includes('/work/overview') && !isAnchorLink
+  
+  // Render Overview as a MagicUI ghosted ripple button
+  if (isOverview) {
+    return (
+      <LinkRippleButton
+        href={href}
+        aria-current={active ? 'page' : undefined}
+        rippleColor={active ? "rgba(16, 185, 129, 0.2)" : "rgba(0, 0, 0, 0.1)"}
+        duration="500ms"
+        className={clsx(
+          'inline-flex items-center justify-center rounded-md text-xs font-medium transition-colors',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50',
+          'disabled:pointer-events-none disabled:opacity-50',
+          'border border-zinc-900/10 dark:border-white/10',
+          active
+            ? 'bg-emerald-50/50 text-emerald-700 hover:bg-emerald-100/50 dark:bg-emerald-400/10 dark:text-emerald-400 dark:border-emerald-400/20 dark:hover:bg-emerald-400/15'
+            : 'bg-transparent text-zinc-700 hover:bg-zinc-100/50 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white',
+          'h-7 px-3 py-1',
+          'mx-2 my-1',
+        )}
+      >
+        <span className="truncate">{children}</span>
+        {tag && (
+          <Tag variant="small" color="zinc">
+            {tag}
+          </Tag>
+        )}
+      </LinkRippleButton>
+    )
+  }
   
   return (
     <CloseButton
@@ -72,11 +103,7 @@ function NavLink({
         'flex justify-between gap-2 py-1 pr-3 text-sm transition',
         isAnchorLink ? 'pl-7' : 'pl-4',
         active
-          ? isOverview
-            ? 'text-emerald-600 dark:text-emerald-400 font-medium'
-            : 'text-zinc-900 dark:text-white'
-          : isOverview
-          ? 'text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium'
+          ? 'text-zinc-900 dark:text-white'
           : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white',
       )}
     >
@@ -183,6 +210,16 @@ function NavigationGroup({
       >
         {group.title}
       </motion.h2>
+      {/* Render Overview button separately outside the list container */}
+      {group.links
+        .filter((link) => link.title === 'Overview' && link.href.includes('/work/overview'))
+        .map((link) => (
+          <div key={link.href} className="mt-3 mb-2">
+            <NavLink href={link.href} active={link.href === pathname}>
+              {link.title}
+            </NavLink>
+          </div>
+        ))}
       <div className="relative mt-3 pl-2">
         <AnimatePresence initial={!isInsideMobileNavigation}>
           {isActiveGroup && (
@@ -199,41 +236,43 @@ function NavigationGroup({
           )}
         </AnimatePresence>
         <ul role="list" className="border-l border-transparent">
-          {group.links.map((link) => (
-            <motion.li key={link.href} layout="position" className="relative">
-              <NavLink href={link.href} active={link.href === pathname}>
-                {link.title}
-              </NavLink>
-              <AnimatePresence mode="popLayout" initial={false}>
-                {link.href === pathname && sections.length > 0 && (
-                  <motion.ul
-                    role="list"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                      opacity: 1,
-                      transition: { delay: 0.1 },
-                    }}
-                    exit={{
-                      opacity: 0,
-                      transition: { duration: 0.15 },
-                    }}
-                  >
-                    {sections.map((section) => (
-                      <li key={section.id}>
-                        <NavLink
-                          href={`${link.href}#${section.id}`}
-                          tag={section.tag}
-                          isAnchorLink
-                        >
-                          {section.title}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </motion.li>
-          ))}
+          {group.links
+            .filter((link) => !(link.title === 'Overview' && link.href.includes('/work/overview')))
+            .map((link) => (
+              <motion.li key={link.href} layout="position" className="relative">
+                <NavLink href={link.href} active={link.href === pathname}>
+                  {link.title}
+                </NavLink>
+                <AnimatePresence mode="popLayout" initial={false}>
+                  {link.href === pathname && sections.length > 0 && (
+                    <motion.ul
+                      role="list"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        opacity: 1,
+                        transition: { delay: 0.1 },
+                      }}
+                      exit={{
+                        opacity: 0,
+                        transition: { duration: 0.15 },
+                      }}
+                    >
+                      {sections.map((section) => (
+                        <li key={section.id}>
+                          <NavLink
+                            href={`${link.href}#${section.id}`}
+                            tag={section.tag}
+                            isAnchorLink
+                          >
+                            {section.title}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+              </motion.li>
+            ))}
         </ul>
       </div>
     </li>

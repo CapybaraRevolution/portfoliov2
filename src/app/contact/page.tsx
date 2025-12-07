@@ -1188,7 +1188,7 @@ export function ContactContent() {
                 disabled={!canProceed()}
                 className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-all ${
                   canProceed()
-                    ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-md hover:shadow-lg'
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-md hover:shadow-lg'
                     : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-400 dark:text-zinc-500 cursor-not-allowed'
                 }`}
               >

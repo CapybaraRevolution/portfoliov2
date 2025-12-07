@@ -24,7 +24,7 @@ export function FilterChip({
         size === 'sm' ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-sm',
         // State variants - ghost when inactive, filled when active
         active
-          ? 'border-emerald-500 bg-emerald-500 text-white shadow-sm hover:bg-emerald-600 hover:border-emerald-600'
+          ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 hover:border-emerald-700'
           : 'border-zinc-300 bg-transparent text-zinc-700 hover:border-emerald-300 hover:text-emerald-700 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-emerald-500 dark:hover:text-emerald-400',
         className
       )}

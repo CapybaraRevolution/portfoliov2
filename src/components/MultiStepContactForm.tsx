@@ -415,7 +415,7 @@ export function MultiStepContactForm() {
                 disabled={!canProceed}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
                   canProceed
-                    ? 'bg-emerald-500 text-white hover:bg-emerald-600'
+                    ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                     : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-600 cursor-not-allowed'
                 }`}
               >

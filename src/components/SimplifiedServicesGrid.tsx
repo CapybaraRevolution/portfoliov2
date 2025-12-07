@@ -125,7 +125,7 @@ export function SimplifiedServicesGrid() {
               className="group flex h-full flex-col rounded-2xl border border-zinc-900/5 bg-white/80 p-6 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg dark:border-white/10 dark:bg-zinc-900/60 dark:hover:border-emerald-500/40"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex size-12 items-center justify-center rounded-xl bg-emerald-500 text-white shadow-sm">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
                   <service.icon aria-hidden="true" className="size-6" />
                 </div>
                 <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/30">

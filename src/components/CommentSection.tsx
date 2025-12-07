@@ -319,7 +319,7 @@ export function CommentSection({
         {/* Comment Composer */}
         <div className="flex items-start space-x-4">
           <div className="shrink-0">
-            <div className="flex size-10 rounded-full bg-emerald-500 text-white items-center justify-center">
+            <div className="flex size-10 rounded-full bg-emerald-600 text-white items-center justify-center">
               <ChatBubbleLeftEllipsisIcon className="size-5" />
             </div>
           </div>
@@ -410,7 +410,7 @@ export function CommentSection({
                   <button
                     type="submit"
                     disabled={isSubmitting || !newComment.trim()}
-                    className="inline-flex items-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="inline-flex items-center rounded-md bg-emerald-700 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     Post Comment
                   </button>

@@ -185,7 +185,7 @@ export function DrawerLayout({
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href={caseStudyFilters ? `${caseStudyUrl}?${caseStudyFilters}` : caseStudyUrl}
-              className="inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center justify-center px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-lg transition-colors"
             >
               View case studies →
             </a>
