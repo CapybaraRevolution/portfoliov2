@@ -38,7 +38,7 @@ export function Lens({
   isStatic = false,
   position = { x: 0, y: 0 },
   defaultPosition,
-  duration = 0.1,
+  duration = 0.15,
   lensColor = "black",
   ariaLabel = "Zoom Area",
 }: LensProps) {
@@ -51,16 +51,17 @@ export function Lens({
 
   const [isHovering, setIsHovering] = useState(false)
   const [isTouching, setIsTouching] = useState(false)
-  const [lensActive, setLensActive] = useState(false)
+  const [isActive, setIsActive] = useState(false)
   const [mousePosition, setMousePosition] = useState<Position>(position)
+  const [touchStartPosition, setTouchStartPosition] = useState<Position | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const touchStartRef = useRef<Position | null>(null)
+  const touchStartTimeRef = useRef<number>(0)
 
   const currentPosition = useMemo(() => {
     if (isStatic) return position
-    if (defaultPosition && !isHovering && !lensActive) return defaultPosition
+    if (defaultPosition && !isHovering && !isActive) return defaultPosition
     return mousePosition
-  }, [isStatic, position, defaultPosition, isHovering, lensActive, mousePosition])
+  }, [isStatic, position, defaultPosition, isHovering, isActive, mousePosition])
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -71,48 +72,70 @@ export function Lens({
   }, [])
 
   const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
     const touch = e.touches[0]
-    const touchPos = {
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top,
-    }
+    if (!touch || !containerRef.current) return
     
-    // If lens is already active, toggle it off
-    if (lensActive) {
-      setLensActive(false)
-      setIsTouching(false)
-      return
-    }
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = touch.clientX - rect.left
+    const y = touch.clientY - rect.top
     
-    // Otherwise, activate lens and set position
-    touchStartRef.current = touchPos
-    setMousePosition(touchPos)
-    setLensActive(true)
+    touchStartTimeRef.current = Date.now()
+    setTouchStartPosition({ x, y })
+    setMousePosition({ x, y })
     setIsTouching(true)
-  }, [lensActive])
+    
+    // Toggle lens on/off
+    setIsActive((prev) => !prev)
+    
+    // Prevent scrolling while interacting with lens
+    e.preventDefault()
+  }, [])
 
   const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    if (!lensActive || !isTouching) return
+    if (!isActive || !containerRef.current) return
     
-    e.preventDefault() // Prevent scrolling while dragging
-    const rect = e.currentTarget.getBoundingClientRect()
     const touch = e.touches[0]
-    setMousePosition({
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top,
-    })
-  }, [lensActive, isTouching])
+    if (!touch) return
+    
+    const rect = containerRef.current.getBoundingClientRect()
+    const x = touch.clientX - rect.left
+    const y = touch.clientY - rect.top
+    
+    setMousePosition({ x, y })
+    
+    // Prevent scrolling while dragging lens
+    e.preventDefault()
+  }, [isActive])
 
-  const handleTouchEnd = useCallback(() => {
+  const handleTouchEnd = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const touchDuration = Date.now() - touchStartTimeRef.current
+    
+    // If it was a quick tap (< 200ms) and didn't move much, toggle off
+    if (touchDuration < 200 && touchStartPosition) {
+      const touch = e.changedTouches[0]
+      if (touch && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect()
+        const x = touch.clientX - rect.left
+        const y = touch.clientY - rect.top
+        const distance = Math.sqrt(
+          Math.pow(x - touchStartPosition.x, 2) + Math.pow(y - touchStartPosition.y, 2)
+        )
+        
+        // If moved less than 10px, it's a tap - toggle off
+        if (distance < 10 && isActive) {
+          setIsActive(false)
+        }
+      }
+    }
+    
     setIsTouching(false)
-    touchStartRef.current = null
-  }, [])
+    setTouchStartPosition(null)
+  }, [isActive, touchStartPosition])
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       setIsHovering(false)
-      setLensActive(false)
+      setIsActive(false)
     }
   }, [])
 
@@ -127,16 +150,22 @@ export function Lens({
 
     return (
       <motion.div
-        initial={{ opacity: 0, scale: 0.58 }}
+        initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        transition={{ duration }}
-        className="absolute inset-0 overflow-hidden"
+        exit={{ opacity: 0, scale: 0.85 }}
+        transition={{ 
+          duration,
+          type: "spring",
+          stiffness: 300,
+          damping: 30
+        }}
+        className="absolute inset-0 overflow-hidden touch-none"
         style={{
           maskImage,
           WebkitMaskImage: maskImage,
           transformOrigin: `${x}px ${y}px`,
           zIndex: 50,
+          pointerEvents: "none",
         }}
       >
         <div
@@ -144,6 +173,7 @@ export function Lens({
           style={{
             transform: `scale(${zoomFactor})`,
             transformOrigin: `${x}px ${y}px`,
+            transition: "transform 0.1s ease-out",
           }}
         >
           {children}
@@ -152,12 +182,12 @@ export function Lens({
     )
   }, [currentPosition, lensSize, lensColor, zoomFactor, children, duration, maskImage])
 
-  const showLens = isHovering || lensActive
+  const shouldShowLens = isHovering || isActive
 
   return (
     <div
       ref={containerRef}
-      className="relative z-20 overflow-hidden rounded-xl touch-none"
+      className="relative z-20 overflow-hidden rounded-xl touch-pan-y"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onMouseMove={handleMouseMove}
@@ -168,13 +198,18 @@ export function Lens({
       role="region"
       aria-label={ariaLabel}
       tabIndex={0}
+      style={{
+        touchAction: isActive ? "none" : "pan-y",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+      }}
     >
       {children}
       {isStatic || defaultPosition ? (
         LensContent
       ) : (
-        <AnimatePresence mode="popLayout">
-          {showLens && LensContent}
+        <AnimatePresence mode="wait">
+          {shouldShowLens && LensContent}
         </AnimatePresence>
       )}
     </div>
