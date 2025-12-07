@@ -11,6 +11,15 @@ export const metadata = {
   description: 'Transforming an incomplete product into a modern AI-enabled mortgage experience.',
 }
 
+export const sections = [
+  { title: 'The Mess', id: 'the-mess' },
+  { title: 'My Role', id: 'my-role' },
+  { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
+  { title: 'Where AI Fit', id: 'where-ai-fit' },
+  { title: 'What Shipped', id: 'what-shipped' },
+  { title: 'Learnings', id: 'learnings' },
+]
+
 export default function BreezeMortgageHubCaseStudy() {
   const caseStudy = getCaseStudyBySlug('breeze-mortgage-hub')
   
@@ -30,7 +39,7 @@ export default function BreezeMortgageHubCaseStudy() {
     {
       label: 'Investor Momentum',
       value: 180,
-      suffix: '%↑',
+      suffix: '%',
       description: 'More meetings, less explanation after interactive prototypes',
       highlight: true,
     },
@@ -57,7 +66,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <div className="prose prose-zinc dark:prose-invert max-w-none">
-            <h2 id="the-mess" className="mt-0">The Mess</h2>
+            <h2 id="the-mess" className="mt-0 scroll-mt-24">The Mess</h2>
             <p>When I joined, the product was a mix of scattered wireframes, half-formed requirements, and a beta that looked and behaved like it had missed a few years of the internet. The value proposition wasn't landing, the flows didn't line up with user goals, and "what happens next" depended on who you asked that day.</p>
             <p>There was also an AI-shaped hole in the roadmap. Not "add AI because it's 2025," but grounded opportunities for categorization, classification, and guidance that could remove friction from the most tedious parts of the mortgage application process. None of that was framed yet.</p>
             <p>The harder part: we weren't just fixing the present. We also needed a clear future scope and a roadmap that wouldn't collapse under its own complexity.</p>
@@ -75,7 +84,7 @@ export default function BreezeMortgageHubCaseStudy() {
             <AnimatedBeamDemo />
           </div>
           <div className="prose prose-zinc dark:prose-invert max-w-none order-1 lg:order-2">
-            <h2 id="my-role" className="mt-0">My Role</h2>
+            <h2 id="my-role" className="mt-0 scroll-mt-24">My Role</h2>
             <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build.</p>
             <p>The work helped move Breeze from "we have ideas" to "we have a product story investors can actually experience."</p>
             <p><strong>What I optimized for:</strong></p>
@@ -96,7 +105,7 @@ export default function BreezeMortgageHubCaseStudy() {
       {/* How I Created Clarity */}
       <section className="mb-16">
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h2 id="how-i-created-clarity">How I Created Clarity</h2>
+          <h2 id="how-i-created-clarity" className="scroll-mt-24">How I Created Clarity</h2>
           <p>I began with discovery, an audit of what existed, and competitive scanning across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
         </div>
@@ -138,7 +147,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
           <div className="lg:col-span-3 prose prose-zinc dark:prose-invert max-w-none">
-            <h2 id="where-ai-fit" className="mt-0">Where AI Fit (Practical, Not Performative)</h2>
+            <h2 id="where-ai-fit" className="mt-0 scroll-mt-24">Where AI Fit (Practical, Not Performative)</h2>
             <p>We identified areas where AI could reduce grunt work without introducing risk:</p>
             <ul>
               <li>Smart form assist to reduce typing and rework</li>
@@ -160,7 +169,7 @@ export default function BreezeMortgageHubCaseStudy() {
       {/* What Shipped */}
       <section className="mb-16">
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h2 id="what-shipped">What Shipped</h2>
+          <h2 id="what-shipped" className="scroll-mt-24">What Shipped</h2>
           <p>This wasn't a single handoff file. It was a connected package:</p>
           <ul>
             <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
@@ -174,7 +183,7 @@ export default function BreezeMortgageHubCaseStudy() {
       {/* Learnings */}
       <section>
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h2 id="learnings">Learnings</h2>
+          <h2 id="learnings" className="scroll-mt-24">Learnings</h2>
           <ol>
             <li><strong>In early-stage products, clarity beats velocity.</strong> Wireframes and prototypes prevent expensive "fast" mistakes later.</li>
             <li><strong>Investors don't want a whitepaper.</strong> They want to feel the product. Interactive prototypes compress explanation time.</li>

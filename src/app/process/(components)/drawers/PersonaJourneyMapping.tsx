@@ -158,7 +158,7 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
         title="Personas"
         summary="Turn anecdotes into patterns we can design for—and measure."
         tools={tools}
-        caseStudyUrl="/case-studies/fintech"
+        caseStudyUrl="/case-studies/breeze-mortgage-hub"
         enableComments={true}
         itemId="persona-journey-mapping"
       >

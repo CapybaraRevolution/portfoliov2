@@ -134,7 +134,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Breeze Mortgage Hub",
-    descriptiveTitle: "Fintech Platform",
+    descriptiveTitle: "Mortgage Platform",
     client: "Breeze",
     description: "Secured $2.3M Series A funding by transforming an incomplete product into a modern, AI-enabled mortgage experience",
     slug: "breeze-mortgage-hub",

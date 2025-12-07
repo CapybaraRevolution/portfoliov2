@@ -72,7 +72,7 @@ export const projects: Project[] = [
       'Risk Surfacing'
     ],
     ai: true,
-    href: '/case-studies/fintech',
+    href: '/case-studies/breeze-mortgage-hub',
     client: 'Confidential',
     timeline: '2024–Present',
     status: 'ongoing'
