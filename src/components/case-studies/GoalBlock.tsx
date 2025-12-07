@@ -20,7 +20,7 @@ export function GoalBlock({ goal, goalDetail, className = '' }: GoalBlockProps) 
         </AuroraText>
       </h2>
       {goalDetail && (
-        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl">
+        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl italic">
           {goalDetail}
         </p>
       )}

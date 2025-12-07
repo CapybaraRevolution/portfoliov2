@@ -135,7 +135,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   {
     title: "Breeze Mortgage Hub",
     descriptiveTitle: "Fintech Platform",
-    client: "Breeze Mortgage Hub",
+    client: "Breeze",
     description: "Secured $2.3M Series A funding by transforming an incomplete product into a modern, AI-enabled mortgage experience",
     slug: "breeze-mortgage-hub",
     category: "UX",
@@ -143,13 +143,13 @@ export const caseStudies: CaseStudyMetadata[] = [
     role: "UX Lead, Business Analyst & AI Strategist",
     engagementType: "Contract",
     location: "Remote",
-    timeline: "2024–Present",
-    status: "Ongoing",
+    timeline: "2024 – September 2025",
+    status: "Completed",
     tools: ["Figma", "AI Tools"],
     services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
     order: 1,
-    goal: "Transform a messy beta into a shippable mortgage hub with a clear navigation model and a scalable design system.",
-    goalDetail: "The outcome wasn't \"prettier screens.\" It was a buildable product with fewer interpretation gaps, clearer state, and a UI that could scale without inventing new rules every week."
+    goal: "Transforming an incomplete product into a modern AI-enabled mortgage experience.",
+    goalDetail: "The outcome wasn't \"prettier screens.\" It was transforming a messy beta into a buildable product with fewer interpretation gaps, a scalable design system, and clearer information architecture."
   },
   {
     title: "AMFA Class Filter Redesign",

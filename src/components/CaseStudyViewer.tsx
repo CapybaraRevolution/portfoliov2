@@ -14,16 +14,25 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 interface CaseStudyViewerProps {
   caseStudy: CaseStudyMetadata
   metrics?: ImpactMetricProps[] | null
+  /** Optional hero image element to render above the goal block */
+  heroImage?: React.ReactNode
   children: React.ReactNode
 }
 
-export function CaseStudyViewer({ caseStudy, metrics, children }: CaseStudyViewerProps) {
+export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: CaseStudyViewerProps) {
   const [servicesExpanded, setServicesExpanded] = useState(false)
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
       <CaseStudyHeader caseStudy={caseStudy} className="mb-12" />
+
+      {/* Optional Hero Image - renders above goal */}
+      {heroImage && (
+        <div className="mb-8">
+          {heroImage}
+        </div>
+      )}
 
       {/* Goal Block - renders before Results */}
       {caseStudy.goal && (

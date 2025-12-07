@@ -1,11 +1,13 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { Figure, CaseImage, Video } from '@/components/mdx/CaseStudyComponents'
-import { MediaGroup, MediaVideo } from '@/components/mdx'
+import { Figure, CaseImage } from '@/components/mdx/CaseStudyComponents'
+import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
+import { AnimatedBeamMultipleOutputDemo } from '@/components/ui/multiple-inputs'
+import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
-  description: 'Transform a messy beta into a shippable mortgage hub with a clear navigation model and a scalable design system.',
+  description: 'Transforming an incomplete product into a modern AI-enabled mortgage experience.',
 }
 
 export default function BreezeMortgageHubCaseStudy() {
@@ -39,151 +41,141 @@ export default function BreezeMortgageHubCaseStudy() {
     }
   ]
 
+  const heroImage = (
+    <CaseImage
+      src="/images/case-studies/breeze-mortgage-hub/breeze-logo.png"
+      alt="Breeze Mortgage Hub logo"
+      variant="logo"
+    />
+  )
+
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
-      <CaseImage
-        src="/images/case-studies/breeze-mortgage-hub/breeze-logo.png"
-        alt="Breeze Mortgage Hub logo"
-        variant="logo"
-      />
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          The work helped move Breeze from "we have ideas" to "we have a product story investors can actually experience." That mattered because time wasn't on our side, and clarity was the fastest way to buy runway.
-        </p>
-
-        <hr />
-
-        <h2 id="the-mess">The Mess</h2>
-
-        <p>When I joined, the product was a mix of scattered wireframes, half-formed requirements, and a beta that looked and behaved like it had missed a few years of the internet. The value proposition wasn't landing, the flows didn't line up with user goals, and "what happens next" depended on who you asked that day.</p>
-
-        <p>There was also an AI-shaped hole in the roadmap. Not "add AI because it's 2025," but grounded opportunities for categorization, classification, and guidance that could remove friction from the most tedious parts of the mortgage application process. None of that was framed yet.</p>
-
-        <p>The harder part: we weren't just fixing the present. We also needed a clear future scope and a roadmap that wouldn't collapse under its own complexity.</p>
-
-        <hr />
-
-        <h2 id="my-role">My Role</h2>
-
-        <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build.</p>
-
-        <p><strong>What I optimized for:</strong></p>
-        <ul>
-          <li>Clear information architecture and navigation (so people stop getting lost)</li>
-          <li>Consistent patterns and component behavior (so the UI has "design DNA," not vibes)</li>
-          <li>Requirements that are dev-ready (so shipping doesn't become an interpretive sport)</li>
-        </ul>
-
-        <hr />
-
-        <h2 id="how-i-created-clarity">How I Created Clarity</h2>
-
-        <p>I began with discovery, an audit of what existed, and competitive scanning across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
-
-        <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
-
-        <p>From there, I designed a full system—not isolated screens:</p>
-
-        <ul>
-          <li>End-to-end critical paths (application → documents → review → payments)</li>
-          <li>Component patterns for form fields, validation, status, and progressive disclosure (so the UI stays calm even when the process isn't)</li>
-          <li>Clickable prototypes with meaningful states and transitions (not "happy path theatre")</li>
-        </ul>
-
-        <hr />
-
-        <h2 id="where-ai-fit">Where AI Fit (Practical, Not Performative)</h2>
-
-        <p>We identified areas where AI could reduce grunt work without introducing risk:</p>
-        <ul>
-          <li>Smart form assist to reduce typing and rework</li>
-          <li>Predictive document classification so humans aren't forced to play foul detective</li>
-          <li>Lightweight conversational guidance for complex steps</li>
-          <li>An "Ask Breeze" helper for drafting broker-to-client messages and document text, with the broker approving before sending</li>
-        </ul>
-
-        <hr />
-
-        <h2 id="what-shipped">What Shipped</h2>
-
-        <p>This wasn't a single handoff file. It was a connected package:</p>
-
-        <ul>
-          <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
-          <li>A componentized design system foundation with interaction rules and states</li>
-          <li>UX artifacts (journeys, IA maps, decision notes) anchored to user outcomes</li>
-          <li>Dev-friendly acceptance criteria and requirements for high-risk or ambiguous areas</li>
-        </ul>
-      </div>
-
-      {/* Visual Storyline - Hero Flow Candidates */}
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} heroImage={heroImage}>
       
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/client-profile.png"
-        alt="Client profile with persistent stage indicator"
-        caption="Client Profile + Stage Indicator — A persistent stage indicator keeps brokers oriented across deep client workflows. The goal: fewer 'where am I?' moments and more forward motion."
-      />
+      {/* The Mess - 50/50 layout with animated beam */}
+      <section className="mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <h2 id="the-mess" className="mt-0">The Mess</h2>
+            <p>When I joined, the product was a mix of scattered wireframes, half-formed requirements, and a beta that looked and behaved like it had missed a few years of the internet. The value proposition wasn't landing, the flows didn't line up with user goals, and "what happens next" depended on who you asked that day.</p>
+            <p>There was also an AI-shaped hole in the roadmap. Not "add AI because it's 2025," but grounded opportunities for categorization, classification, and guidance that could remove friction from the most tedious parts of the mortgage application process. None of that was framed yet.</p>
+            <p>The harder part: we weren't just fixing the present. We also needed a clear future scope and a roadmap that wouldn't collapse under its own complexity.</p>
+          </div>
+          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 overflow-hidden">
+            <AnimatedBeamMultipleOutputDemo className="h-[400px]" />
+          </div>
+        </div>
+      </section>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/broker-dashboard.png"
-        alt="Broker workflow dashboard showing pipeline status"
-        caption="Broker Workflow Dashboard — A dashboard that turns pipeline status into action. Brokers can see what's stuck and what needs attention without opening twenty tabs."
-      />
+      {/* My Role - 50/50 layout with animated beam */}
+      <section className="mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <h2 id="my-role" className="mt-0">My Role</h2>
+            <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build.</p>
+            <p><strong>What I optimized for:</strong></p>
+            <ul>
+              <li>Clear information architecture and navigation (so people stop getting lost)</li>
+              <li>Consistent patterns and component behavior (so the UI has "design DNA," not vibes)</li>
+              <li>Requirements that are dev-ready (so shipping doesn't become an interpretive sport)</li>
+            </ul>
+          </div>
+          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 overflow-hidden">
+            <AnimatedBeamDemo />
+          </div>
+        </div>
+      </section>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/clients-by-stage.png"
-        alt="Clients filtered by stage drilldown view"
-        caption="Clients-by-Stage Drilldown — Same data, sharper focus. Filter by stage and work the queue like a workflow, not like a scavenger hunt."
-      />
+      {/* Quote Block */}
+      <QuoteBlock>
+        The work helped move Breeze from "we have ideas" to "we have a product story investors can actually experience." That mattered because time wasn't on our side, and clarity was the fastest way to buy runway.
+      </QuoteBlock>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/esign-flow.png"
-        alt="E-Sign flow builder interface"
-        caption="E-Sign Flow Builder — A DocuSign-style flow with predictable, reusable building blocks: templates, signers, order, and notifications."
-      />
+      {/* How I Created Clarity */}
+      <section className="mb-16">
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h2 id="how-i-created-clarity">How I Created Clarity</h2>
+          <p>I began with discovery, an audit of what existed, and competitive scanning across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
+          <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
+        </div>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/document-signing.png"
-        alt="Document signing view"
-        caption="Document Signing View — The signing experience stays simple on the surface while the system tracks required fields and progress behind the scenes."
-      />
+        {/* Carousel placeholder - will be implemented with actual images */}
+        <div className="my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Figure
+            src="/images/case-studies/breeze-mortgage-hub/broker-dashboard.png"
+            alt="Broker workflow dashboard"
+            caption="Dashboard that turns pipeline status into action"
+          />
+          <Figure
+            src="/images/case-studies/breeze-mortgage-hub/clients-by-stage.png"
+            alt="Clients by stage view"
+            caption="Filter by stage and work the queue"
+          />
+          <Figure
+            src="/images/case-studies/breeze-mortgage-hub/client-profile.png"
+            alt="Client profile with stage indicator"
+            caption="Persistent stage indicator keeps brokers oriented"
+          />
+        </div>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/document-checklist.png"
-        alt="Client document upload checklist"
-        caption="Client Document Upload Checklist — Upload documents through a guided checklist that clarifies what's needed, why it's needed, and what 'done' looks like."
-      />
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>From there, I designed a full system—not isolated screens:</p>
+          <ul>
+            <li>End-to-end critical paths (application → documents → review → payments)</li>
+            <li>Component patterns for form fields, validation, status, and progressive disclosure (so the UI stays calm even when the process isn't)</li>
+            <li>Clickable prototypes with meaningful states and transitions (not "happy path theatre")</li>
+          </ul>
+        </div>
+      </section>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/channels-creation.png"
-        alt="Channels creation flow"
-        caption="Channels Creation Flow — Jakob's Law on purpose: familiar patterns reduce the learning curve and make collaboration feel obvious."
-      />
+      {/* Where AI Fit - 60/40 layout */}
+      <section className="mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+          <div className="lg:col-span-3 prose prose-zinc dark:prose-invert max-w-none">
+            <h2 id="where-ai-fit" className="mt-0">Where AI Fit (Practical, Not Performative)</h2>
+            <p>We identified areas where AI could reduce grunt work without introducing risk:</p>
+            <ul>
+              <li>Smart form assist to reduce typing and rework</li>
+              <li>Predictive document classification so humans aren't forced to play foul detective</li>
+              <li>Lightweight conversational guidance for complex steps</li>
+              <li>An "Ask Breeze" helper for drafting broker-to-client messages and document text, with the broker approving before sending</li>
+            </ul>
+          </div>
+          <div className="lg:col-span-2">
+            <Figure
+              src="/images/case-studies/breeze-mortgage-hub/aitools.png"
+              alt="AI tools integration"
+              caption="AI was used where it adds real leverage: pre-fill, doc recognition, and guidance."
+            />
+          </div>
+        </div>
+      </section>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/channels-view.png"
-        alt="Channels view interface"
-        caption="Channels View — Once created, channels behave consistently. The UI doesn't punish users for having more than one conversation at a time."
-      />
+      {/* What Shipped */}
+      <section className="mb-16">
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h2 id="what-shipped">What Shipped</h2>
+          <p>This wasn't a single handoff file. It was a connected package:</p>
+          <ul>
+            <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
+            <li>A componentized design system foundation with interaction rules and states</li>
+            <li>UX artifacts (journeys, IA maps, decision notes) anchored to user outcomes</li>
+            <li>Dev-friendly acceptance criteria and requirements for high-risk or ambiguous areas</li>
+          </ul>
+        </div>
+      </section>
 
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/marketing-analytics.png"
-        alt="Marketing hub analytics dashboard"
-        caption="Marketing Hub Analytics Dashboard — High-level complexity, low-friction scanning. The UI surfaces what matters first and keeps detail optional."
-      />
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <hr />
-
-        <h2 id="learnings">Learnings</h2>
-
-        <ol>
-          <li><strong>In early-stage products, clarity beats velocity.</strong> Wireframes and prototypes prevent expensive "fast" mistakes later.</li>
-          <li><strong>Investors don't want a whitepaper.</strong> They want to feel the product. Interactive prototypes compress explanation time.</li>
-          <li><strong>Mortgages are complex. The UX job is to keep the experience calm and predictable</strong> while the system carries the complexity: clear status, clear steps, the right guidance, and low cognitive load.</li>
-        </ol>
-      </div>
+      {/* Learnings */}
+      <section>
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h2 id="learnings">Learnings</h2>
+          <ol>
+            <li><strong>In early-stage products, clarity beats velocity.</strong> Wireframes and prototypes prevent expensive "fast" mistakes later.</li>
+            <li><strong>Investors don't want a whitepaper.</strong> They want to feel the product. Interactive prototypes compress explanation time.</li>
+            <li><strong>Mortgages are complex. The UX job is to keep the experience calm and predictable</strong> while the system carries the complexity: clear status, clear steps, the right guidance, and low cognitive load.</li>
+          </ol>
+        </div>
+      </section>
     </CaseStudyViewer>
   )
 }
