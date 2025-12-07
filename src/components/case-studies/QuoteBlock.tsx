@@ -11,15 +11,21 @@ interface QuoteBlockProps {
 
 export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
   const ref = useRef<HTMLQuoteElement>(null)
+  const hasAnimatedRef = useRef(false)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 1.2", "start 0.5"],
+    offset: ["start 1.5", "start 0.5"],
   })
 
   const words = children.split(" ")
   const [revealedWords, setRevealedWords] = useState<Set<number>>(new Set())
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // Only animate once - if we've already fully animated, don't update
+    if (hasAnimatedRef.current) {
+      return
+    }
+
     const newRevealed = new Set<number>()
     words.forEach((_, i) => {
       const start = i / words.length
@@ -27,6 +33,12 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
         newRevealed.add(i)
       }
     })
+    
+    // Mark as animated once all words are revealed
+    if (newRevealed.size === words.length) {
+      hasAnimatedRef.current = true
+    }
+    
     setRevealedWords(newRevealed)
   })
 
