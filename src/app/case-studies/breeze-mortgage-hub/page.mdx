@@ -7,6 +7,9 @@ import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
 import { ImageGallery } from '@/components/ui/image-gallery'
 import { Heading } from '@/components/Heading'
 import { Compare } from '@/components/ui/compare'
+import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
+import { AIFeaturesBento } from '@/components/case-studies/breeze/AIFeaturesBento'
+import { Sparkles, FileText, MessageCircle, Bot } from 'lucide-react'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
@@ -137,26 +140,16 @@ export default function BreezeMortgageHubCaseStudy() {
         </div>
       </section>
 
-      {/* Where AI Fit - 60/40 layout */}
+      {/* Where AI Fit */}
       <section className="mb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-          <div className="lg:col-span-3 prose prose-zinc dark:prose-invert max-w-none">
-            <Heading id="where-ai-fit" level={2} label="AI Integration & Design">Practical AI</Heading>
-            <p>We identified areas where AI could reduce grunt work without introducing risk:</p>
-            <ul>
-              <li>Smart form assist to reduce typing and rework</li>
-              <li>Predictive document classification so humans aren't forced to play foul detective</li>
-              <li>Lightweight conversational guidance for complex steps</li>
-              <li>An "Ask Breeze" helper for drafting broker-to-client messages and document text, with the broker approving before sending</li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <Figure
-              src="/images/case-studies/breeze-mortgage-hub/aitools.png"
-              alt="AI tools integration"
-              caption="AI was used where it adds real leverage: pre-fill, doc recognition, and guidance."
-            />
-          </div>
+        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
+          <Heading id="where-ai-fit" level={2} label="AI Integration & Design">Practical AI</Heading>
+          <p>We identified areas where AI could reduce grunt work without introducing risk. The goal was to assist with real end-user experiences—like predictive document classification, so humans can spend more time confirming instead of individually classifying bulk document uploads (T4/tax forms, income statements, proof of employment, etc.).</p>
+        </div>
+
+        {/* Bento Grid showcasing AI features */}
+        <div className="my-12">
+          <AIFeaturesBento />
         </div>
       </section>
 
