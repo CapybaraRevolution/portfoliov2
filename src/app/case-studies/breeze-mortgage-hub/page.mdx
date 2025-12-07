@@ -5,6 +5,8 @@ import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { IntegrationIconCloud } from '@/components/ui/integration-icon-cloud'
 import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
 import { ImageGallery } from '@/components/ui/image-gallery'
+import { Heading } from '@/components/Heading'
+import { Compare } from '@/components/ui/compare'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
@@ -15,7 +17,7 @@ export const sections = [
   { title: 'The Mess', id: 'the-mess' },
   { title: 'My Role', id: 'my-role' },
   { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
-  { title: 'Where AI Fit', id: 'where-ai-fit' },
+  { title: 'Practical AI', id: 'where-ai-fit' },
   { title: 'What Shipped', id: 'what-shipped' },
   { title: 'Learnings', id: 'learnings' },
 ]
@@ -102,35 +104,27 @@ export default function BreezeMortgageHubCaseStudy() {
         Without time on our side, Clarity was the fastest way to buy runway.
       </QuoteBlock>
 
+      {/* Before and After Comparison */}
+      <div className="my-12 mb-16">
+        <div className="p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 overflow-hidden">
+          <Compare
+            firstImage="/images/case-studies/breeze-mortgage-hub/breezebefore.png"
+            secondImage="/images/case-studies/breeze-mortgage-hub/breezeafter.png"
+            firstImageClassName="object-contain object-center w-full h-full"
+            secondImageClassname="object-contain object-center w-full h-full"
+            className="w-full aspect-[3/2] md:aspect-[16/10]"
+            slideMode="drag"
+            initialSliderPercentage={50}
+          />
+        </div>
+      </div>
+
       {/* How I Created Clarity */}
       <section className="mb-16">
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h2 id="how-i-created-clarity" className="scroll-mt-24">How I Created Clarity</h2>
+          <Heading id="how-i-created-clarity" level={2} label="Before and After">How I Created Clarity</Heading>
           <p>I began with discovery, an audit of what existed, and competitive scanning across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
-        </div>
-
-        {/* Image Gallery with lightbox */}
-        <div className="my-12">
-          <ImageGallery 
-            images={[
-              {
-                src: "/images/case-studies/breeze-mortgage-hub/breezedash.png",
-                alt: "Broker workflow dashboard",
-                caption: "Dashboard that turns pipeline status into action, filterable by stage in the application process."
-              },
-              {
-                src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png",
-                alt: "Client portal with tabbed navigation",
-                caption: "Client portal showing the selected client's status in the application process. Tabbed IA offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads."
-              },
-              {
-                src: "/images/case-studies/breeze-mortgage-hub/Chat.png",
-                alt: "Modernized chat system",
-                caption: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients."
-              }
-            ]}
-          />
         </div>
 
         <div className="prose prose-zinc dark:prose-invert max-w-none">
@@ -147,7 +141,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
           <div className="lg:col-span-3 prose prose-zinc dark:prose-invert max-w-none">
-            <h2 id="where-ai-fit" className="mt-0 scroll-mt-24">Where AI Fit (Practical, Not Performative)</h2>
+            <Heading id="where-ai-fit" level={2} label="AI Integration & Design">Practical AI</Heading>
             <p>We identified areas where AI could reduce grunt work without introducing risk:</p>
             <ul>
               <li>Smart form assist to reduce typing and rework</li>
@@ -177,6 +171,29 @@ export default function BreezeMortgageHubCaseStudy() {
             <li>UX artifacts (journeys, IA maps, decision notes) anchored to user outcomes</li>
             <li>Dev-friendly acceptance criteria and requirements for high-risk or ambiguous areas</li>
           </ul>
+        </div>
+
+        {/* Image Gallery with lightbox */}
+        <div className="my-12">
+          <ImageGallery 
+            images={[
+              {
+                src: "/images/case-studies/breeze-mortgage-hub/breezedash.png",
+                alt: "Broker workflow dashboard",
+                caption: "Dashboard that turns pipeline status into action, filterable by stage in the application process."
+              },
+              {
+                src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png",
+                alt: "Client portal with tabbed navigation",
+                caption: "Client portal showing the selected client's status in the application process. Tabbed IA offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads."
+              },
+              {
+                src: "/images/case-studies/breeze-mortgage-hub/Chat.png",
+                alt: "Modernized chat system",
+                caption: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients."
+              }
+            ]}
+          />
         </div>
       </section>
 
