@@ -481,7 +481,7 @@ export function Timeline() {
       <div className="relative overflow-visible">
         {/* Section Header */}
         <div className="mb-10 sm:mb-16">
-          <Heading id="my-journey">My Journey</Heading>
+          <Heading id="my-journey" label="Experience">My Journey</Heading>
           <p className="mb-6 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400 sm:mb-8 sm:text-base">
             A decade of building user-centered solutions across industries,
             from startups to enterprise clients. Each role shaped my approach

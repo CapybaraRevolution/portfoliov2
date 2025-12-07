@@ -11,7 +11,7 @@ export function AnimatedTestimonialsWrapper() {
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-4xl">
-          <Heading id="testimonials">What Clients Say</Heading>
+          <Heading id="testimonials" label="Testimonials">What Clients Say</Heading>
           <p className="lead text-left mb-16">
             Real feedback from leaders who&apos;ve experienced the impact of strategic UX and product management.
           </p>
