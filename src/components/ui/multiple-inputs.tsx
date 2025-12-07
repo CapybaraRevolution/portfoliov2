@@ -505,4 +505,3 @@ const Icons = {
     </svg>
   ),
 }
-}
