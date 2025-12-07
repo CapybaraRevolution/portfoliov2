@@ -4,6 +4,7 @@ import { Figure, CaseImage } from '@/components/mdx/CaseStudyComponents'
 import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { AnimatedBeamMultipleOutputDemo } from '@/components/ui/multiple-inputs'
 import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
+import Carousel from '@/components/ui/carousel'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
@@ -100,22 +101,26 @@ export default function BreezeMortgageHubCaseStudy() {
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
         </div>
 
-        {/* Carousel placeholder - will be implemented with actual images */}
-        <div className="my-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Figure
-            src="/images/case-studies/breeze-mortgage-hub/broker-dashboard.png"
-            alt="Broker workflow dashboard"
-            caption="Dashboard that turns pipeline status into action"
-          />
-          <Figure
-            src="/images/case-studies/breeze-mortgage-hub/clients-by-stage.png"
-            alt="Clients by stage view"
-            caption="Filter by stage and work the queue"
-          />
-          <Figure
-            src="/images/case-studies/breeze-mortgage-hub/client-profile.png"
-            alt="Client profile with stage indicator"
-            caption="Persistent stage indicator keeps brokers oriented"
+        {/* Carousel with key screens */}
+        <div className="my-12">
+          <Carousel 
+            slides={[
+              {
+                title: "Dashboard that turns pipeline status into action, filterable by stage in the application process",
+                button: "Broker Dashboard",
+                src: "/images/case-studies/breeze-mortgage-hub/breezedash.png"
+              },
+              {
+                title: "Client portal showing the selected client's status in the application process. Tabbed IA offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads.",
+                button: "Client Portal",
+                src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png"
+              },
+              {
+                title: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients.",
+                button: "Chat System",
+                src: "/images/case-studies/breeze-mortgage-hub/Chat.png"
+              }
+            ]}
           />
         </div>
 

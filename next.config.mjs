@@ -18,6 +18,7 @@ const nextConfig = {
   poweredByHeader: false,
   images: {
     formats: ['image/avif', 'image/webp'],
+    qualities: [75, 90],
     remotePatterns: [{ protocol: 'https', hostname: 'assets.aceternity.com' }],
   },
 
