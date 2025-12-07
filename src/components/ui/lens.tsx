@@ -50,14 +50,17 @@ export function Lens({
   }
 
   const [isHovering, setIsHovering] = useState(false)
+  const [isTouching, setIsTouching] = useState(false)
+  const [lensActive, setLensActive] = useState(false)
   const [mousePosition, setMousePosition] = useState<Position>(position)
   const containerRef = useRef<HTMLDivElement>(null)
+  const touchStartRef = useRef<Position | null>(null)
 
   const currentPosition = useMemo(() => {
     if (isStatic) return position
-    if (defaultPosition && !isHovering) return defaultPosition
+    if (defaultPosition && !isHovering && !lensActive) return defaultPosition
     return mousePosition
-  }, [isStatic, position, defaultPosition, isHovering, mousePosition])
+  }, [isStatic, position, defaultPosition, isHovering, lensActive, mousePosition])
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -67,8 +70,50 @@ export function Lens({
     })
   }, [])
 
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const touch = e.touches[0]
+    const touchPos = {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    }
+    
+    // If lens is already active, toggle it off
+    if (lensActive) {
+      setLensActive(false)
+      setIsTouching(false)
+      return
+    }
+    
+    // Otherwise, activate lens and set position
+    touchStartRef.current = touchPos
+    setMousePosition(touchPos)
+    setLensActive(true)
+    setIsTouching(true)
+  }, [lensActive])
+
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (!lensActive || !isTouching) return
+    
+    e.preventDefault() // Prevent scrolling while dragging
+    const rect = e.currentTarget.getBoundingClientRect()
+    const touch = e.touches[0]
+    setMousePosition({
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    })
+  }, [lensActive, isTouching])
+
+  const handleTouchEnd = useCallback(() => {
+    setIsTouching(false)
+    touchStartRef.current = null
+  }, [])
+
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Escape") setIsHovering(false)
+    if (e.key === "Escape") {
+      setIsHovering(false)
+      setLensActive(false)
+    }
   }, [])
 
   const maskImage = useMotionTemplate`radial-gradient(circle ${
@@ -107,13 +152,18 @@ export function Lens({
     )
   }, [currentPosition, lensSize, lensColor, zoomFactor, children, duration, maskImage])
 
+  const showLens = isHovering || lensActive
+
   return (
     <div
       ref={containerRef}
-      className="relative z-20 overflow-hidden rounded-xl"
+      className="relative z-20 overflow-hidden rounded-xl touch-none"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       onKeyDown={handleKeyDown}
       role="region"
       aria-label={ariaLabel}
@@ -124,7 +174,7 @@ export function Lens({
         LensContent
       ) : (
         <AnimatePresence mode="popLayout">
-          {isHovering && LensContent}
+          {showLens && LensContent}
         </AnimatePresence>
       )}
     </div>
