@@ -14,7 +14,7 @@ import { trackEvent } from '@/components/GoogleAnalytics'
 import dynamic from 'next/dynamic'
 
 // Dynamically import ContactContent to avoid circular deps
-const ContactContent = dynamic(() => import('@/app/contact/page').then(mod => ({ default: mod.ContactContent })), {
+const ContactContent = dynamic(() => import('@/app/contact/page'), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center min-h-[400px]">

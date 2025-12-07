@@ -617,7 +617,7 @@ function ObfuscatedEmail() {
   )
 }
 
-export function ContactContent() {
+function ContactContent() {
   // Restore initial state from localStorage synchronously (lazy initialization)
   const initialState = getInitialContactFormState()
   
