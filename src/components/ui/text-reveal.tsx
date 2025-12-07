@@ -1,7 +1,7 @@
 "use client"
 
-import { useScroll, useTransform, motion } from "motion/react"
-import { useRef } from "react"
+import { useScroll, motion, useMotionValueEvent } from "motion/react"
+import { useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface TextRevealProps {
@@ -26,38 +26,38 @@ export function TextReveal({
   })
 
   const words = children.split(" ")
+  const [revealedWords, setRevealedWords] = useState<Set<number>>(new Set())
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const newRevealed = new Set<number>()
+    words.forEach((_, i) => {
+      const start = i / words.length
+      if (latest >= start) {
+        newRevealed.add(i)
+      }
+    })
+    setRevealedWords(newRevealed)
+  })
 
   return (
     <Component
       ref={ref}
       className={cn("relative", className)}
     >
-      {words.map((word, i) => {
-        const start = i / words.length
-        const end = start + 1 / words.length
-        
-        // Create transforms for this word
-        const opacity = useTransform(
-          scrollYProgress,
-          [Math.max(0, start - 0.1), end],
-          [0, 1]
-        )
-        const y = useTransform(
-          scrollYProgress,
-          [Math.max(0, start - 0.1), end],
-          [20, 0]
-        )
-
-        return (
-          <motion.span
-            key={i}
-            style={{ opacity, y }}
-            className="inline-block mr-2"
-          >
-            {word}
-          </motion.span>
-        )
-      })}
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: revealedWords.has(i) ? 1 : 0,
+            y: revealedWords.has(i) ? 0 : 20,
+          }}
+          transition={{ duration, delay: i * delayMultiple }}
+          className="inline-block mr-2"
+        >
+          {word}
+        </motion.span>
+      ))}
     </Component>
   )
 }
