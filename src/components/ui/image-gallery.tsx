@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MagnifyingGlassIcon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { Lens } from "@/components/ui/lens";
 
 interface GalleryImage {
   src: string;
@@ -134,23 +135,38 @@ export function ImageGallery({ images }: ImageGalleryProps) {
               </button>
             )}
 
-            {/* Content */}
+            {/* Content - Vertical Layout */}
             <motion.div
               key={activeIndex}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
-              className="h-full flex flex-col lg:flex-row items-center justify-center p-8 lg:p-16 gap-8 lg:gap-16"
+              className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Caption - Left Side */}
-              <div className="lg:w-1/3 lg:max-w-md order-2 lg:order-1">
+              {/* Image - Full Width with Lens */}
+              <div className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0">
+                <Lens zoomFactor={1.5} lensSize={200}>
+                  <motion.img
+                    key={activeImage.src}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    src={activeImage.src}
+                    alt={activeImage.alt}
+                    className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                  />
+                </Lens>
+              </div>
+
+              {/* Caption - Bottom */}
+              <div className="w-full max-w-4xl mt-6 text-center">
                 <motion.p
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1, duration: 0.3 }}
-                  className="text-lg lg:text-xl text-white/90 leading-relaxed"
+                  className="text-base lg:text-lg text-white/90 leading-relaxed"
                 >
                   {activeImage.caption}
                 </motion.p>
@@ -160,23 +176,10 @@ export function ImageGallery({ images }: ImageGalleryProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mt-6 text-sm text-white/50"
+                  className="mt-3 text-sm text-white/50"
                 >
-                  {activeIndex + 1} of {images.length}
+                  {activeIndex + 1} of {images.length} — Hover to zoom
                 </motion.div>
-              </div>
-
-              {/* Image - Right Side */}
-              <div className="lg:w-2/3 flex items-center justify-center order-1 lg:order-2">
-                <motion.img
-                  key={activeImage.src}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                  src={activeImage.src}
-                  alt={activeImage.alt}
-                  className="max-h-[50vh] lg:max-h-[80vh] max-w-full object-contain rounded-lg shadow-2xl"
-                />
               </div>
             </motion.div>
           </motion.div>
