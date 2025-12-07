@@ -3,13 +3,14 @@
 import { useScroll, motion, useMotionValueEvent } from "motion/react"
 import { useRef, useState } from "react"
 import { cn } from "@/lib/utils"
+import React from "react"
 
 interface TextRevealProps {
   children: string
   className?: string
   duration?: number
   delayMultiple?: number
-  as?: keyof JSX.IntrinsicElements
+  as?: React.ElementType
 }
 
 export function TextReveal({

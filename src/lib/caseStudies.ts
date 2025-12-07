@@ -145,7 +145,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     location: "Remote",
     timeline: "2024 – September 2025",
     status: "Completed",
-    tools: ["Figma", "AI Tools"],
+    tools: ["Figma", "AI Tools", "Tableau", "Salesforce"],
     services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
     order: 1,
     goal: "Transforming an incomplete product into a modern AI-enabled mortgage experience.",
