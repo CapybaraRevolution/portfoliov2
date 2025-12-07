@@ -1,22 +1,12 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { Figure, CaseImage, CaseMetric, Video } from '@/components/mdx/CaseStudyComponents'
+import { Figure, CaseImage, Video } from '@/components/mdx/CaseStudyComponents'
 import { MediaGroup, MediaVideo } from '@/components/mdx'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
-  description: 'Secured $2.3M Series A funding by transforming an incomplete product into a modern, AI-enabled mortgage experience with clear investor and user value',
+  description: 'Transform a messy beta into a shippable mortgage hub with a clear navigation model and a scalable design system.',
 }
-
-export const sections = [
-  { title: 'Overview', id: 'overview' },
-  { title: 'The Challenge', id: 'the-challenge' },
-  { title: 'My Approach', id: 'my-approach' },
-  { title: 'Selected Outcomes', id: 'selected-outcomes' },
-  { title: 'What I Delivered', id: 'what-i-delivered' },
-  { title: 'Where AI Helped', id: 'where-ai-helped' },
-  { title: 'Learnings', id: 'learnings' },
-]
 
 export default function BreezeMortgageHubCaseStudy() {
   const caseStudy = getCaseStudyBySlug('breeze-mortgage-hub')
@@ -25,27 +15,27 @@ export default function BreezeMortgageHubCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data combining funding success and UX improvements
+  // Results metrics - aligned to buyer outcomes
   const metrics = [
     {
-      label: 'Series A Funding Secured',
+      label: 'Series A Secured',
       value: 2.3,
       suffix: 'M',
-      description: 'Series A round completed after prototype demonstrations',
+      description: 'The prototype became part of the fundraising narrative',
       highlight: true,
     },
     {
-      label: 'Investor Interest',
-      value: 5.4,
-      suffix: ' Monthly Meetings',
-      description: 'Meeting requests after interactive prototype presentations',
+      label: 'Investor Momentum',
+      value: 180,
+      suffix: '%↑',
+      description: 'More meetings, less explanation after interactive prototypes',
       highlight: true,
     },
     {
-      label: 'Feature - Time to Clarity',
+      label: 'Time to Clarity',
       value: 1,
       suffix: ' week',
-      description: 'From scattered concepts to cohesive clickable prototype',
+      description: 'From "six months of circling" to aligned feature direction',
     }
   ]
 
@@ -58,172 +48,141 @@ export default function BreezeMortgageHubCaseStudy() {
       />
 
       <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Goal: transform an incomplete product into a modern, AI-enabled experience that's clearer for users and easier for the team to ship.</h2>
-
-        <h3 id="overview">Overview</h3>
-
-        <p>Breeze arrived with a partly built app, uneven UX, and unfinished flows. The team needed to secure Series A funding but lacked a cohesive product vision that investors could understand. I stepped in as <strong>UX Lead, Business Analyst, and AI Strategist</strong> to clarify what we're building and why—then translate that into wireframes, prototypes, and implementation-ready specs that would resonate with both users and investors.</p>
+        <p className="text-lg text-zinc-600 dark:text-zinc-400">
+          The work helped move Breeze from "we have ideas" to "we have a product story investors can actually experience." That mattered because time wasn't on our side, and clarity was the fastest way to buy runway.
+        </p>
 
         <hr />
 
-        <h2 id="the-challenge">The challenge</h2>
+        <h2 id="the-mess">The Mess</h2>
 
-        <ul>
-          <li><strong>Investor confusion:</strong> scattered wireframes and documentation couldn't communicate the value proposition</li>
-          <li><strong>Fragmented UX:</strong> screens didn't line up with user goals; key flows were incomplete</li>
-          <li><strong>Unclear handoff:</strong> requirements weren't shaped into dev-ready specs</li>
-          <li><strong>Missed opportunities for AI:</strong> no plan for intelligent assistance or automation</li>
-          <li><strong>Time pressure:</strong> needed to clarify vision quickly to secure funding runway</li>
-        </ul>
+        <p>When I joined, the product was a mix of scattered wireframes, half-formed requirements, and a beta that looked and behaved like it had missed a few years of the internet. The value proposition wasn't landing, the flows didn't line up with user goals, and "what happens next" depended on who you asked that day.</p>
+
+        <p>There was also an AI-shaped hole in the roadmap. Not "add AI because it's 2025," but grounded opportunities for categorization, classification, and guidance that could remove friction from the most tedious parts of the mortgage application process. None of that was framed yet.</p>
+
+        <p>The harder part: we weren't just fixing the present. We also needed a clear future scope and a roadmap that wouldn't collapse under its own complexity.</p>
 
         <hr />
 
-        <h2 id="my-approach">My approach</h2>
+        <h2 id="my-role">My Role</h2>
 
-        <h3>Discovery & audit (Week 1)</h3>
-        <ul>
-          <li>Stakeholder interviews with 8 team members to understand vision gaps</li>
-          <li>Competitive analysis of 12 fintech apps to identify differentiation opportunities</li>
-          <li>User journey mapping across 5 key flows to expose friction points</li>
-          <li>Technical constraint documentation to ground design in reality</li>
-        </ul>
+        <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build.</p>
 
-        <h3>Unify product and UX strategy</h3>
+        <p><strong>What I optimized for:</strong></p>
         <ul>
-          <li>Align on target outcomes, risks, and success signals</li>
-          <li>Map the IA, user journeys, and system constraints to reduce rework</li>
-          <li>Create investor-ready narrative showing clear value proposition</li>
-        </ul>
-
-        <h3>Design the system, not just screens</h3>
-        <ul>
-          <li>Mid-fidelity wireframes for every critical path (apply, docs, review, payments)</li>
-          <li>Componentized patterns for form fields, validation, progressive disclosure, and status</li>
-        </ul>
-
-        <h3>Prototype to de-risk</h3>
-        <ul>
-          <li>Clickable prototypes with <strong>state changes</strong> to show real behaviors (empty, loading, error, success)</li>
-          <li>Usability tests to expose friction before engineering commits</li>
-        </ul>
-
-        <h3>Introduce practical AI</h3>
-        <ul>
-          <li>Smart form assist (pre-fill from docs), predictive doc classification, and simple conversational guidance for complex steps</li>
-          <li>Instrument minimum events required to prove impact in Step 5</li>
+          <li>Clear information architecture and navigation (so people stop getting lost)</li>
+          <li>Consistent patterns and component behavior (so the UI has "design DNA," not vibes)</li>
+          <li>Requirements that are dev-ready (so shipping doesn't become an interpretive sport)</li>
         </ul>
 
         <hr />
 
-        <h2 id="selected-outcomes">Selected outcomes</h2>
+        <h2 id="how-i-created-clarity">How I Created Clarity</h2>
 
-        <h3>Series A funding secured</h3>
-        <p><strong>$2.3M raised</strong> after demonstrating the interactive prototypes to investors. The clickable prototypes were <strong>10x more effective</strong> than static presentations—investors could see and feel the product experience, not just read about it. This led to a <strong>+180% increase</strong> in investor meeting requests.</p>
+        <p>I began with discovery, an audit of what existed, and competitive scanning across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
 
-        <h3>Modernized UI foundation</h3>
-        <p>A crisp, professional interface that reduces cognitive load and increases trust.</p>
+        <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
+
+        <p>From there, I designed a full system—not isolated screens:</p>
+
+        <ul>
+          <li>End-to-end critical paths (application → documents → review → payments)</li>
+          <li>Component patterns for form fields, validation, status, and progressive disclosure (so the UI stays calm even when the process isn't)</li>
+          <li>Clickable prototypes with meaningful states and transitions (not "happy path theatre")</li>
+        </ul>
+
+        <hr />
+
+        <h2 id="where-ai-fit">Where AI Fit (Practical, Not Performative)</h2>
+
+        <p>We identified areas where AI could reduce grunt work without introducing risk:</p>
+        <ul>
+          <li>Smart form assist to reduce typing and rework</li>
+          <li>Predictive document classification so humans aren't forced to play foul detective</li>
+          <li>Lightweight conversational guidance for complex steps</li>
+          <li>An "Ask Breeze" helper for drafting broker-to-client messages and document text, with the broker approving before sending</li>
+        </ul>
+
+        <hr />
+
+        <h2 id="what-shipped">What Shipped</h2>
+
+        <p>This wasn't a single handoff file. It was a connected package:</p>
+
+        <ul>
+          <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
+          <li>A componentized design system foundation with interaction rules and states</li>
+          <li>UX artifacts (journeys, IA maps, decision notes) anchored to user outcomes</li>
+          <li>Dev-friendly acceptance criteria and requirements for high-risk or ambiguous areas</li>
+        </ul>
       </div>
 
+      {/* Visual Storyline - Hero Flow Candidates */}
+      
       <Figure
-        src="/images/case-studies/breeze-mortgage-hub/prepayment-calc.png"
-        alt="Redesigned calculator with clear hierarchy and navigation"
-        caption="A polished UI improves scannability and confidence."
+        src="/images/case-studies/breeze-mortgage-hub/client-profile.png"
+        alt="Client profile with persistent stage indicator"
+        caption="Client Profile + Stage Indicator — A persistent stage indicator keeps brokers oriented across deep client workflows. The goal: fewer 'where am I?' moments and more forward motion."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/broker-dashboard.png"
+        alt="Broker workflow dashboard showing pipeline status"
+        caption="Broker Workflow Dashboard — A dashboard that turns pipeline status into action. Brokers can see what's stuck and what needs attention without opening twenty tabs."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/clients-by-stage.png"
+        alt="Clients filtered by stage drilldown view"
+        caption="Clients-by-Stage Drilldown — Same data, sharper focus. Filter by stage and work the queue like a workflow, not like a scavenger hunt."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/esign-flow.png"
+        alt="E-Sign flow builder interface"
+        caption="E-Sign Flow Builder — A DocuSign-style flow with predictable, reusable building blocks: templates, signers, order, and notifications."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/document-signing.png"
+        alt="Document signing view"
+        caption="Document Signing View — The signing experience stays simple on the surface while the system tracks required fields and progress behind the scenes."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/document-checklist.png"
+        alt="Client document upload checklist"
+        caption="Client Document Upload Checklist — Upload documents through a guided checklist that clarifies what's needed, why it's needed, and what 'done' looks like."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/channels-creation.png"
+        alt="Channels creation flow"
+        caption="Channels Creation Flow — Jakob's Law on purpose: familiar patterns reduce the learning curve and make collaboration feel obvious."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/channels-view.png"
+        alt="Channels view interface"
+        caption="Channels View — Once created, channels behave consistently. The UI doesn't punish users for having more than one conversation at a time."
+      />
+
+      <Figure
+        src="/images/case-studies/breeze-mortgage-hub/marketing-analytics.png"
+        alt="Marketing hub analytics dashboard"
+        caption="Marketing Hub Analytics Dashboard — High-level complexity, low-friction scanning. The UI surfaces what matters first and keeps detail optional."
       />
 
       <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>End-to-end wireframes</h3>
-        <p>A complete, documented blueprint for development—no ambiguous gaps between steps.</p>
-      </div>
-
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/address-history-wireframe.png"
-        alt="Wireframe for address history with clear progress and validation"
-        caption="Every interaction mapped to reduce friction and handoff ambiguity."
-      />
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>AI-assisted flows</h3>
-        <p>Lightweight, explainable AI that saves time without overwhelming users.</p>
-      </div>
-
-      <Figure
-        src="/images/case-studies/breeze-mortgage-hub/aitools.png"
-        alt="Banner illustrating AI helpers for pre-fill and document recognition"
-        caption="AI was used where it adds real leverage: pre-fill, doc recognition, and guidance."
-      />
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>Clickable prototypes with real states</h3>
-        <p>Prototypes modeled to capture <strong>motion and transitions</strong>, so engineering can build the right thing first.</p>
-      </div>
-
-      <div className="max-w-3xl mx-auto my-8">
-        <MediaGroup title="Interactive prototype demonstration">
-          <MediaVideo
-            src="/images/case-studies/breeze-mortgage-hub/video1.mp4"
-            label="Prototype with state transitions"
-            autoplay={false}
-            loop={true}
-            muted={true}
-            controls={true}
-          />
-        </MediaGroup>
-      </div>
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <hr />
-
-        <h2 id="what-i-delivered">What I delivered</h2>
-
-        <ul>
-          <li>Comprehensive UX audit and competitive analysis findings</li>
-          <li>Interactive prototype package for investor presentations</li>
-          <li>Investor pitch deck with clear product narrative</li>
-          <li>IA and journey maps tied to measurable outcomes</li>
-          <li>Full set of wireframes and interaction notes</li>
-          <li>Dev-ready PRDs for priority flows (inputs, rules, and edge cases)</li>
-          <li>Prototype package demonstrating critical states and transitions</li>
-          <li>AI opportunity map + minimal instrumentation plan to verify impact</li>
-          <li>Design system foundations for consistent UI patterns</li>
-        </ul>
-
-        <hr />
-
-        <h2 id="where-ai-helped">Where AI helped (AI-Accelerated ✅)</h2>
-
-        <p><strong>AI integration strategy and implementation guidance for mortgage workflow automation.</strong></p>
-
-        <ul>
-          <li><strong>Smart form assistance:</strong> Designed AI pre-fill system that extracts data from uploaded documents to auto-populate mortgage application fields</li>
-          <li><strong>Document classification:</strong> Architected predictive document recognition to automatically categorize uploaded files (tax returns, pay stubs, bank statements)</li>
-          <li><strong>Conversational guidance:</strong> Created AI-powered contextual help that provides step-by-step assistance for complex mortgage terms and requirements</li>
-          <li><strong>Error prevention:</strong> Developed intelligent validation patterns that predict and prevent common form errors before submission</li>
-          <li><strong>Workflow optimization:</strong> Used AI to analyze user paths and identify friction points for prioritized UX improvements</li>
-        </ul>
-
-        <p><strong>Result:</strong> Reduced cognitive load and accelerated form completion while maintaining transparency and user control over AI suggestions.</p>
-
         <hr />
 
         <h2 id="learnings">Learnings</h2>
 
-        <p>Pairing UX strategy with business analysis and practical AI delivers compounding returns: clearer decisions, less rework, and a product that feels powerful without being complex.</p>
-
-        <blockquote>
-          <p><strong>Key Insight:</strong> Investors need to see and feel the product experience, not just read about it. Interactive prototypes were 10x more effective than static presentations in securing funding.</p>
-        </blockquote>
-
-        <p><strong>Big takeaway:</strong> even high-stakes processes like mortgages can feel simple when you combine strong UX, explicit system design, and just-enough AI. The same clarity that helps users navigate complex flows also helps investors understand product value.</p>
-
-        <hr />
-
-        <h3>Credits</h3>
-
-        <p>Breeze Mortgage Hub team for trusting me to transform their product vision into a modern, AI-enabled mortgage experience that serves both users and business goals.</p>
-
-        <p className="mt-8 text-sm text-zinc-600 dark:text-zinc-400">
-          <em>Interested in the details or evaluating a similar transformation? Let's connect on LinkedIn.</em>
-        </p>
+        <ol>
+          <li><strong>In early-stage products, clarity beats velocity.</strong> Wireframes and prototypes prevent expensive "fast" mistakes later.</li>
+          <li><strong>Investors don't want a whitepaper.</strong> They want to feel the product. Interactive prototypes compress explanation time.</li>
+          <li><strong>Mortgages are complex. The UX job is to keep the experience calm and predictable</strong> while the system carries the complexity: clear status, clear steps, the right guidance, and low cognitive load.</li>
+        </ol>
       </div>
     </CaseStudyViewer>
   )

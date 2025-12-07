@@ -98,6 +98,20 @@ The structural refactor is "done" when:
 - `src/components/CaseMetaBar.tsx` — unused alternative layout
 - `src/components/CaseStudyLayout.tsx` — legacy standalone layout
 
+## Delight Opportunities (Design Philosophy)
+
+Case studies should feel dynamic and engaging, not static content dumps. Look for contextual opportunities to:
+
+- **Micro-interactions**: Buttons, hover states, and transitions that feel satisfying
+- **Contextual showcases**: If discussing charts, hide a real chart behind a "take a closer look" button
+- **Module variety**: Alternate between text blocks, media, carousels, tables, and interactive elements
+- **Progressive disclosure**: Reward curiosity with expandable content that doesn't overwhelm
+- **Component demos**: Where relevant, embed working examples of the tools/patterns discussed
+
+The goal is a portfolio that demonstrates craft through experience, not just description.
+
+---
+
 ## Review Checklist
 
 Before marking a worktree attempt as complete, verify:

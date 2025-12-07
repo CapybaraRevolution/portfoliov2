@@ -16,6 +16,10 @@ export interface CaseStudyMetadata {
   tools: string[]
   services: string[]
   order: number
+  /** Required: One-sentence ambitious goal statement (renders with Aurora gradient) */
+  goal: string
+  /** Optional: Supporting detail for the goal (renders as body text below goal) */
+  goalDetail?: string
 }
 
 // Case studies data - this will eventually be loaded from MDX frontmatter
@@ -35,7 +39,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Salesforce", "Figma", "Miro", "Jira", "Confluence", "Tableau"],
     services: ["System Mapping", "API Analysis", "Information Architecture", "Data Visualization", "Wireframes", "Stakeholder Alignment"],
-    order: 2
+    order: 2,
+    goal: "Design internal tools that let researchers and business leaders analyze budgets, track outcomes, and manage cross-system data with confidence."
   },
   {
     title: "Boveda Tr1n1ty",
@@ -52,7 +57,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Figma", "FigJam", "Notion", "Jira"],
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Management", "Product Analytics"],
-    order: 3
+    order: 3,
+    goal: "Turn a fragmented workflow into a coherent, measurable experience that stakeholders could rally behind."
   },
   {
     title: "Old Skool Game Studios",
@@ -69,7 +75,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Figma", "FigJam", "Jira", "Confluence"],
     services: ["User Research", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
-    order: 4
+    order: 4,
+    goal: "Apply systematic UX research and design improvements to lift engagement and fix localization pain across mobile casino games."
   },
   {
     title: "Avatar: Generations",
@@ -86,7 +93,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Figma", "FigJam", "Notion", "Jira", "Unity", "Lottie"],
     services: ["Stakeholder Alignment", "System Design", "Wireframing", "Prototyping", "PRDs (Specs)", "Roadmap", "Team Facilitation", "User Research", "Usability Testing", "Product Analytics", "Experimentation"],
-    order: 5
+    order: 5,
+    goal: "Lead UX across a multi-stakeholder mobile RPG, balancing franchise requirements with player experience."
   },
   {
     title: "Cornell University — SC Johnson College of Business",
@@ -103,7 +111,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Figma", "FigJam", "Hotjar", "Google Analytics", "LLM assistants"],
     services: ["Information Architecture", "Wireframing", "Prototyping", "Product Vision", "PRDs (Specs)", "Stakeholder Alignment", "System Design"],
-    order: 6
+    order: 6,
+    goal: "Unify three distinct business school institutions through a cohesive digital experience."
   },
   {
     title: "Social Finance Fund",
@@ -120,7 +129,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Microsoft Forms", "Excel", "Obsidian", "Figma"],
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Team Facilitation"],
-    order: 7
+    order: 7,
+    goal: "Align multi-org stakeholders and ship a usable IA/wireframe package for a government social finance initiative."
   },
   {
     title: "Breeze Mortgage Hub",
@@ -135,9 +145,11 @@ export const caseStudies: CaseStudyMetadata[] = [
     location: "Remote",
     timeline: "2024–Present",
     status: "Ongoing",
-    tools: ["Figma", "FigJam", "Notion", "Jira", "React", "SQL"],
+    tools: ["Figma", "AI Tools"],
     services: ["Product Vision", "Roadmap", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "PRDs (Specs)", "System Design", "AI Integration", "Product Analytics", "Stakeholder Alignment", "Team Facilitation"],
-    order: 1
+    order: 1,
+    goal: "Transform a messy beta into a shippable mortgage hub with a clear navigation model and a scalable design system.",
+    goalDetail: "The outcome wasn't \"prettier screens.\" It was a buildable product with fewer interpretation gaps, clearer state, and a UI that could scale without inventing new rules every week."
   },
   {
     title: "AMFA Class Filter Redesign",
@@ -154,7 +166,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Ongoing",
     tools: ["Figma", "FigJam", "Miro", "Notion"],
     services: ["Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Product Analytics", "Usability Testing", "PRDs (Specs)", "Team Facilitation"],
-    order: 9
+    order: 9,
+    goal: "Improve navigation and registration through smarter filtering and cross-system user flows."
   }
 ]
 
@@ -171,6 +184,17 @@ export function getNextCaseStudy(currentSlug: string): CaseStudyMetadata | undef
   // Wrap to first if on last
   const nextIndex = currentIndex + 1 >= sortedStudies.length ? 0 : currentIndex + 1
   return sortedStudies[nextIndex]
+}
+
+export function getPreviousCaseStudy(currentSlug: string): CaseStudyMetadata | undefined {
+  const sortedStudies = [...caseStudies].sort((a, b) => a.order - b.order)
+  const currentIndex = sortedStudies.findIndex(study => study.slug === currentSlug)
+  
+  if (currentIndex === -1) return undefined
+  
+  // Wrap to last if on first
+  const prevIndex = currentIndex - 1 < 0 ? sortedStudies.length - 1 : currentIndex - 1
+  return sortedStudies[prevIndex]
 }
 
 export function getAllCaseStudies(): CaseStudyMetadata[] {
