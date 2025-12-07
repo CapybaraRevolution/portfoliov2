@@ -147,7 +147,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
             >
               {/* Image - Full Width with Lens */}
               <div className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0">
-                <Lens zoomFactor={1.5} lensSize={200}>
+                <Lens zoomFactor={1.5} lensSize={300}>
                   <motion.img
                     key={activeImage.src}
                     initial={{ opacity: 0, scale: 0.95 }}
