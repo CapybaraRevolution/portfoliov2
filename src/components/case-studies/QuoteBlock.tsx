@@ -40,7 +40,8 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
     >
       <p className="text-2xl md:text-3xl font-medium text-zinc-600 dark:text-zinc-400 italic leading-relaxed">
         {words.map((word, i) => {
-          const isClarity = word.toLowerCase().replace(/[.,!?;:]/, '') === 'clarity'
+          const wordWithoutPunct = word.toLowerCase().replace(/[.,!?;:]/, '')
+          const isClarity = wordWithoutPunct === 'clarity'
           
           return (
             <motion.span
