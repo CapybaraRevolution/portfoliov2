@@ -1,3 +1,7 @@
+"use client"
+
+import { SparklesText } from '@/components/ui/sparkles-text'
+
 interface QuoteBlockProps {
   children: string
   className?: string
@@ -9,7 +13,15 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
       className={`my-16 w-full border-l-4 border-emerald-500 dark:border-emerald-400 pl-6 py-4 ${className}`}
     >
       <p className="prose prose-zinc dark:prose-invert max-w-none text-emerald-600 dark:text-emerald-400 italic">
-        {children}
+        <SparklesText
+          sparklesCount={8}
+          colors={{
+            first: "#10b981",
+            second: "#14b8a6",
+          }}
+        >
+          {children}
+        </SparklesText>
       </p>
     </blockquote>
   )
