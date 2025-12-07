@@ -4,7 +4,7 @@ import { Figure, CaseImage } from '@/components/mdx/CaseStudyComponents'
 import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { AnimatedBeamMultipleOutputDemo } from '@/components/ui/multiple-inputs'
 import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
-import Carousel from '@/components/ui/carousel'
+import { ImageGallery } from '@/components/ui/image-gallery'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
@@ -101,24 +101,24 @@ export default function BreezeMortgageHubCaseStudy() {
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, de-risked future flows, and forced the information architecture to reveal where it would bend or break.</p>
         </div>
 
-        {/* Carousel with key screens */}
+        {/* Image Gallery with lightbox */}
         <div className="my-12">
-          <Carousel 
-            slides={[
+          <ImageGallery 
+            images={[
               {
-                title: "Dashboard that turns pipeline status into action, filterable by stage in the application process",
-                button: "Broker Dashboard",
-                src: "/images/case-studies/breeze-mortgage-hub/breezedash.png"
+                src: "/images/case-studies/breeze-mortgage-hub/breezedash.png",
+                alt: "Broker workflow dashboard",
+                caption: "Dashboard that turns pipeline status into action, filterable by stage in the application process."
               },
               {
-                title: "Client portal showing the selected client's status in the application process. Tabbed IA offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads.",
-                button: "Client Portal",
-                src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png"
+                src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png",
+                alt: "Client portal with tabbed navigation",
+                caption: "Client portal showing the selected client's status in the application process. Tabbed IA offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads."
               },
               {
-                title: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients.",
-                button: "Chat System",
-                src: "/images/case-studies/breeze-mortgage-hub/Chat.png"
+                src: "/images/case-studies/breeze-mortgage-hub/Chat.png",
+                alt: "Modernized chat system",
+                caption: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients."
               }
             ]}
           />
