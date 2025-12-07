@@ -89,9 +89,9 @@ export const NeonGradientCard: React.FC<NeonGradientCardProps> = ({
         } as CSSProperties & Record<string, string | number>
       }
       className={cn(
-        "relative z-10 isolate size-full rounded-[var(--border-radius)] overflow-visible",
+        "relative z-10 isolate size-full rounded-[var(--border-radius)]",
         "bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))]",
-        "before:pointer-events-none before:absolute before:-inset-16 md:before:-inset-12 before:-z-10 before:rounded-[var(--border-radius)]",
+        "before:pointer-events-none before:absolute before:-inset-16 sm:before:-inset-14 md:before:-inset-12 before:-z-10 before:rounded-[var(--border-radius)]",
         "before:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] before:opacity-35 before:blur-3xl before:content-['']",
         "after:pointer-events-none after:absolute after:inset-0 after:-z-[1] after:rounded-[var(--border-radius)]",
         "after:bg-[linear-gradient(120deg,var(--neon-first-color),var(--neon-second-color))] after:bg-[length:200%_200%]",

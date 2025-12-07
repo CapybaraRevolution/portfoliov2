@@ -306,33 +306,14 @@ export function Timeline() {
     }
   }, [prefersReducedMotion])
 
-  // Only render the motion-heavy tracing beam when we actually have the room (desktop) and the user hasn't opted out.
+  // Render the tracing beam on all devices unless the user has opted out with reduced motion
   useEffect(() => {
-    if (prefersReducedMotion || typeof window === 'undefined') {
-      setShouldRenderBeam(false)
+    if (typeof window === 'undefined') {
       return
     }
 
-    const media = window.matchMedia('(min-width: 768px)')
-    const applyCurrentPreference = () => setShouldRenderBeam(media.matches)
-    const handleChange = (event: MediaQueryListEvent) =>
-      setShouldRenderBeam(event.matches)
-
-    applyCurrentPreference()
-
-    if (media.addEventListener) {
-      media.addEventListener('change', handleChange)
-    } else {
-      media.addListener(handleChange)
-    }
-
-    return () => {
-      if (media.removeEventListener) {
-        media.removeEventListener('change', handleChange)
-      } else {
-        media.removeListener(handleChange)
-      }
-    }
+    // Enable beam for all screen sizes unless user prefers reduced motion
+    setShouldRenderBeam(!prefersReducedMotion)
   }, [prefersReducedMotion])
 
   // Memoize neon colors to avoid recalculating
@@ -359,7 +340,7 @@ export function Timeline() {
 
   const timelineContent = (
     <div className="relative space-y-16 overflow-visible">
-      <div className={`space-y-10 sm:space-y-20 overflow-visible ${shouldRenderBeam ? 'pl-4 sm:pl-16' : 'md:pl-4 md:pl-16'}`}>
+      <div className="space-y-10 sm:space-y-20 overflow-visible pl-10 sm:pl-12 md:pl-16 lg:pl-20">
         {timelineData.map((node, index) => {
           const isActive = activeNodeIndex === index
           const neonColors = getNeonColors(index)
@@ -456,14 +437,14 @@ export function Timeline() {
                     '--neon-second-color': neonColors.secondColor,
                   } as React.CSSProperties}
                 >
-                  <div className="relative z-20 rounded-[10px] bg-white p-6 dark:bg-zinc-800/30">
+                  <div className="relative z-20 rounded-[10px] bg-white p-4 sm:p-5 md:p-6 dark:bg-zinc-800/30">
                     {nodeContent}
                   </div>
                 </NeonGradientCard>
               </div>
               {/* Regular card - always rendered, opacity transitions */}
               <div 
-                className={`relative rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-opacity duration-700 ease-in-out dark:border-zinc-700 dark:bg-zinc-800/30 ${
+                className={`relative rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 md:p-6 shadow-sm transition-opacity duration-700 ease-in-out dark:border-zinc-700 dark:bg-zinc-800/30 ${
                   isActive ? 'opacity-0 pointer-events-none' : 'opacity-100 z-0'
                 }`}
               >
@@ -509,11 +490,11 @@ export function Timeline() {
         </div>
 
         {/* Timeline */}
-        <div className="mx-auto max-w-4xl overflow-visible px-4 sm:px-6">
+        <div className="mx-auto max-w-4xl overflow-visible px-2 sm:px-4 md:px-6">
           {shouldRenderBeam ? (
             <TracingBeam className="relative w-full overflow-visible">{timelineContent}</TracingBeam>
           ) : (
-            <div className="relative w-full overflow-visible md:border-l md:border-zinc-200/70 md:pl-4 md:dark:border-zinc-800/70 md:pl-6">
+            <div className="relative w-full overflow-visible">
               {timelineContent}
             </div>
           )}
