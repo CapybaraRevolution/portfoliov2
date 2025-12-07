@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { AnimatePresence, motion, useMotionTemplate } from "motion/react"
 
 interface Position {
@@ -54,8 +54,40 @@ export function Lens({
   const [isActive, setIsActive] = useState(false)
   const [mousePosition, setMousePosition] = useState<Position>(position)
   const [touchStartPosition, setTouchStartPosition] = useState<Position | null>(null)
+  const [showTooltip, setShowTooltip] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const touchStartTimeRef = useRef<number>(0)
+
+  // Check if user has seen the tooltip recently (within 4 hours) and auto-dismiss after 3 seconds
+  useEffect(() => {
+    const lastDismissed = localStorage.getItem('lens-tooltip-dismissed-time')
+    const fourHoursInMs = 4 * 60 * 60 * 1000 // 4 hours in milliseconds
+    
+    if (lastDismissed) {
+      const timeSinceDismissal = Date.now() - parseInt(lastDismissed, 10)
+      // Show tooltip again if 4 hours have passed
+      if (timeSinceDismissal >= fourHoursInMs) {
+        setShowTooltip(true)
+      }
+    } else {
+      // First time ever - show tooltip
+      setShowTooltip(true)
+    }
+    
+    // Auto-dismiss after 3 seconds if showing
+    if (showTooltip) {
+      const timer = setTimeout(() => {
+        dismissTooltip()
+      }, 3000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showTooltip])
+
+  const dismissTooltip = useCallback(() => {
+    setShowTooltip(false)
+    localStorage.setItem('lens-tooltip-dismissed-time', Date.now().toString())
+  }, [])
 
   const currentPosition = useMemo(() => {
     if (isStatic) return position
@@ -69,6 +101,20 @@ export function Lens({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     })
+  }, [])
+
+  const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+    
+    // Update position immediately on click
+    const rect = e.currentTarget.getBoundingClientRect()
+    setMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    })
+    
+    // Simple toggle on/off
+    setIsActive((prev) => !prev)
   }, [])
 
   const handleTouchStart = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
@@ -149,36 +195,80 @@ export function Lens({
     const { x, y } = currentPosition
 
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.85 }}
-        transition={{ 
-          duration,
-          type: "spring",
-          stiffness: 300,
-          damping: 30
-        }}
-        className="absolute inset-0 overflow-hidden touch-none"
-        style={{
-          maskImage,
-          WebkitMaskImage: maskImage,
-          transformOrigin: `${x}px ${y}px`,
-          zIndex: 50,
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          className="absolute inset-0"
+      <>
+        {/* Zoomed Content with Radial Mask */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.85 }}
+          transition={{ 
+            duration,
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+          }}
+          className="absolute inset-0 overflow-hidden touch-none"
           style={{
-            transform: `scale(${zoomFactor})`,
+            maskImage,
+            WebkitMaskImage: maskImage,
             transformOrigin: `${x}px ${y}px`,
-            transition: "transform 0.1s ease-out",
+            zIndex: 50,
+            pointerEvents: "none",
           }}
         >
-          {children}
-        </div>
-      </motion.div>
+          <div
+            className="absolute inset-0"
+            style={{
+              transform: `scale(${zoomFactor})`,
+              transformOrigin: `${x}px ${y}px`,
+              transition: "transform 0.1s ease-out",
+            }}
+          >
+            {children}
+          </div>
+        </motion.div>
+
+        {/* Sharp Circle of Light Stroke */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.6 }}
+          transition={{
+            duration: duration * 0.8,
+            type: "spring",
+            stiffness: 400,
+            damping: 25
+          }}
+          className="absolute touch-none pointer-events-none"
+          style={{
+            left: x - lensSize / 2,
+            top: y - lensSize / 2,
+            width: lensSize,
+            height: lensSize,
+            zIndex: 51,
+          }}
+        >
+          {/* Outer glow ring - thinner */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: `radial-gradient(circle at center, transparent ${lensSize / 2 - 2}px, rgba(255, 255, 255, 0.3) ${lensSize / 2 - 1.5}px, rgba(255, 255, 255, 0.6) ${lensSize / 2 - 0.5}px, rgba(255, 255, 255, 0.2) ${lensSize / 2 + 0.5}px, transparent ${lensSize / 2 + 2}px)`,
+              boxShadow: `
+                0 0 8px rgba(255, 255, 255, 0.4),
+                0 0 12px rgba(255, 255, 255, 0.2)
+              `,
+            }}
+          />
+          
+          {/* Inner sharp edge - very precise */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: `radial-gradient(circle at center, transparent ${lensSize / 2 - 1}px, rgba(255, 255, 255, 0.8) ${lensSize / 2 - 0.5}px, rgba(255, 255, 255, 0.9) ${lensSize / 2}px, transparent ${lensSize / 2 + 0.5}px)`,
+            }}
+          />
+        </motion.div>
+      </>
     )
   }, [currentPosition, lensSize, lensColor, zoomFactor, children, duration, maskImage])
 
@@ -187,10 +277,11 @@ export function Lens({
   return (
     <div
       ref={containerRef}
-      className="relative z-20 overflow-hidden rounded-xl touch-pan-y"
+      className="relative z-20 overflow-hidden rounded-xl touch-pan-y cursor-pointer"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       onMouseMove={handleMouseMove}
+      onClick={handleClick}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -212,6 +303,80 @@ export function Lens({
           {shouldShowLens && LensContent}
         </AnimatePresence>
       )}
+
+      {/* First-time tooltip */}
+      <AnimatePresence>
+        {showTooltip && !isActive && (
+          <motion.div
+            initial={{ opacity: 0, x: 10, y: 10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-4 right-4 z-[100] pointer-events-auto"
+          >
+            <div className="bg-black/90 backdrop-blur-sm text-white px-4 py-3 rounded-lg shadow-2xl border border-white/10 flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <svg 
+                  className="w-5 h-5 flex-shrink-0" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" 
+                  />
+                </svg>
+                <p className="text-sm font-medium whitespace-nowrap">Click to magnify</p>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  dismissTooltip()
+                }}
+                className="flex-shrink-0 w-6 h-6 flex items-center justify-center relative group"
+                aria-label="Dismiss tooltip"
+              >
+                {/* Radial countdown circle - burning fuse effect */}
+                <svg className="w-6 h-6 -rotate-90" viewBox="0 0 24 24">
+                  {/* Background circle */}
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.15)"
+                    strokeWidth="2.5"
+                  />
+                  {/* Burning fuse circle */}
+                  <motion.circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.8)"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    initial={{ strokeDashoffset: 0 }}
+                    animate={{ strokeDashoffset: 56.5 }}
+                    transition={{ duration: 3, ease: "linear" }}
+                    style={{
+                      strokeDasharray: "56.5",
+                    }}
+                    className="drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]"
+                  />
+                </svg>
+                {/* Hover hint dot in center */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/60 group-hover:bg-white/90 transition-colors" />
+                </div>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

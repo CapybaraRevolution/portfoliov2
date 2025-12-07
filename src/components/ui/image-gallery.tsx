@@ -178,7 +178,7 @@ export function ImageGallery({ images }: ImageGalleryProps) {
                   transition={{ delay: 0.2 }}
                   className="mt-3 text-sm text-white/50"
                 >
-                  {activeIndex + 1} of {images.length} — <span className="hidden md:inline">Hover to zoom</span><span className="md:hidden">Tap to zoom, drag to explore</span>
+                  {activeIndex + 1} of {images.length}
                 </motion.div>
               </div>
             </motion.div>
