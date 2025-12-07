@@ -10,7 +10,7 @@ interface QuoteBlockProps {
 export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
   return (
     <blockquote 
-      className={`my-16 w-full border-l-4 border-emerald-500 dark:border-emerald-400 pl-6 py-4 ${className}`}
+      className={`my-24 w-full border-l-4 border-emerald-500 dark:border-emerald-400 pl-0 py-0 ${className}`}
     >
       <TextReveal
         as="p"
