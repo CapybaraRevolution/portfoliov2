@@ -36,7 +36,7 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
   return (
     <blockquote 
       ref={ref}
-      className={`my-20 w-full border-l-4 border-emerald-500 dark:border-emerald-400 pl-0 py-0 ${className}`}
+      className={`mt-20 mb-32 w-full border-l-4 border-emerald-500 dark:border-emerald-400 pl-0 py-0 ${className}`}
     >
       <p className="text-2xl md:text-3xl font-medium text-zinc-600 dark:text-zinc-400 italic leading-relaxed">
         {words.map((word, i) => {
