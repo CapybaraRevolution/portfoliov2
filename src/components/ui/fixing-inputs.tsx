@@ -145,13 +145,11 @@ const Icons = {
     >
       <path
         d="M3 3h8v8H3V3zm10 0h8v5h-8V3zM3 13h8v8H3v-8zm10 8h8v-5h-8v5z"
-        fill="currentColor"
-        fillOpacity="0.9"
+        fill="#1f2937"
       />
       <path
         d="M3 13h8v8H3v-8z"
-        fill="currentColor"
-        fillOpacity="0.6"
+        fill="#111827"
       />
     </svg>
   ),
