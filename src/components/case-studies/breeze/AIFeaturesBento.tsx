@@ -32,7 +32,13 @@ const formFields = [
   { field: "Employer", value: "Auto-filled from pay stub" },
 ]
 
-const chatMessages = [
+type ChatMessage = {
+  type: "user" | "ai"
+  text: string
+  suggested?: boolean
+}
+
+const chatMessages: ChatMessage[] = [
   { type: "user", text: "How do I calculate my debt ratio?" },
   { type: "ai", text: "I can help with that! Add all monthly debt payments and divide by gross monthly income.", suggested: true },
   { type: "user", text: "What documents do I need?" },
@@ -329,7 +335,7 @@ export function AIFeaturesBento() {
                       {message.type === "ai" && (
                         <div className={cn(
                           "flex items-center gap-1 mt-1",
-                          message.type === "user" ? "justify-end" : "justify-start"
+                          "justify-start"
                         )}>
                           {feedbackState[`chat-${idx}`] === 'thumbsUp' ? (
                             <div className="flex items-center gap-1 animate-in fade-in slide-in-from-bottom-2 duration-300">
