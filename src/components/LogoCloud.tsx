@@ -23,7 +23,7 @@ export function LogoCloud() {
     <section className="mt-20">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-2xl lg:max-w-none">
-          <Heading id="my-clients" label="Portfolio">My Clients</Heading>
+          <Heading id="my-clients" label="Clients">My Clients</Heading>
           <p className="lead mb-12">
             I&apos;ve had the privilege of working with innovative companies across industries,
             from early-stage startups to established enterprises.

@@ -472,16 +472,16 @@ export function Timeline() {
           <div className="flex flex-wrap gap-3 sm:gap-4">
             <Button
               variant="outline"
-              href="/services#my-process"
+              href="/services"
               className="group"
             >
-              Learn More
+              View Services
               <span className="ml-2 transition-transform group-hover:translate-x-1">
                 →
               </span>
             </Button>
-            <Button href="/services" className="group">
-              View Services
+            <Button href="/work/overview" className="group">
+              View My Work
               <span className="ml-2 transition-transform group-hover:translate-x-1">
                 →
               </span>
