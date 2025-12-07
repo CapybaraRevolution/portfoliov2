@@ -16,11 +16,11 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
     offset: ["start end", "end start"]
   })
   
-  // Transform scroll progress to background position (sweeps from left to right)
+  // Large-scale gradient that moves slowly - feels like looking through text at a background
   const backgroundPosition = useTransform(
     scrollYProgress,
     [0, 1],
-    ["-200% 0%", "200% 0%"]
+    ["-50% 0%", "150% 0%"]
   )
   
   return (
@@ -31,8 +31,8 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
       <motion.p
         style={{
           backgroundPosition,
-          backgroundImage: "linear-gradient(90deg, #10b981, #14b8a6, #06b6d4, #8b5cf6, #ec4899, #10b981)",
-          backgroundSize: "200% 100%",
+          backgroundImage: "linear-gradient(90deg, #6b7280 0%, #10b981 20%, #14b8a6 35%, #06b6d4 50%, #8b5cf6 65%, #ec4899 80%, #6b7280 100%)",
+          backgroundSize: "600% 100%",
           WebkitBackgroundClip: "text",
           backgroundClip: "text",
           WebkitTextFillColor: "transparent",
