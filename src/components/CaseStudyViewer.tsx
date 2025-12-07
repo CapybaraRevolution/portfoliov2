@@ -26,7 +26,7 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: Cas
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
       <CaseStudyHeader caseStudy={caseStudy} className="mb-12" />
-
+      
       {/* Optional Hero Image - renders above goal */}
       {heroImage && (
         <div className="mb-8">
@@ -51,26 +51,26 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: Cas
       {/* Content Section */}
       <div className="mb-12">
         {children}
-      </div>
+          </div>
 
       {/* Tools & Technologies Section - always visible */}
-      {caseStudy.tools.length > 0 && (
+        {caseStudy.tools.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-4">
-            Tools & Technologies
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {caseStudy.tools.map((tool) => (
-              <ToolPill 
-                key={tool} 
-                slug={tool.toLowerCase().replace(/\s+/g, '_')} 
-                name={tool}
-                size="sm"
-              />
-            ))}
+            <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-4">
+              Tools & Technologies
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {caseStudy.tools.map((tool) => (
+                <ToolPill 
+                  key={tool} 
+                  slug={tool.toLowerCase().replace(/\s+/g, '_')} 
+                  name={tool}
+                  size="sm"
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Services - hidden behind disclosure */}
       {caseStudy.services.length > 0 && (
@@ -94,9 +94,9 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: Cas
                   size="sm"
                 />
               ))}
-            </div>
+      </div>
           )}
-        </div>
+      </div>
       )}
 
       {/* Footer Navigation - Prev/Next */}
