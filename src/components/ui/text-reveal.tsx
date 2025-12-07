@@ -22,7 +22,7 @@ export function TextReveal({
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.8", "start 0.25"],
+    offset: ["start 1.2", "start 0.5"],
   })
 
   const words = children.split(" ")
