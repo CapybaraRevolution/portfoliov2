@@ -1,5 +1,5 @@
 // Simplified search implementation - basic text matching
-import { caseStudies } from '../lib/caseStudies'
+import { caseStudies } from '@/lib/caseStudies'
 
 export default function Search(nextConfig = {}) {
   return Object.assign({}, nextConfig, {
