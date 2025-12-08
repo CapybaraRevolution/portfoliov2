@@ -41,7 +41,7 @@ export default function Example() {
     query === ''
       ? []
       : projects.filter((project) => {
-          return project.name.toLowerCase().includes(query.toLowerCase())
+          return project.name?.toLowerCase().includes(query.toLowerCase()) ?? false
         })
 
   return (
