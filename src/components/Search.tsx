@@ -73,8 +73,8 @@ function useAutocomplete({ onNavigate }: { onNavigate: () => void }) {
           return [
             {
               sourceId: 'documentation',
-              getItems() {
-                return search(query, { limit: 5 })
+              async getItems() {
+                return await search(query, { limit: 5 })
               },
               getItemUrl({ item }) {
                 return item.url

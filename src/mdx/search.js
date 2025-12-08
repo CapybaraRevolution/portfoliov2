@@ -1,5 +1,4 @@
 // Simplified search implementation - basic text matching
-import { caseStudies } from '@/lib/caseStudies'
 
 export default function Search(nextConfig = {}) {
   return Object.assign({}, nextConfig, {
@@ -12,7 +11,21 @@ export default function Search(nextConfig = {}) {
   })
 }
 
-export function search(query, options = {}) {
+// Cache case studies to avoid re-importing
+let cachedCaseStudies = null
+
+async function getCaseStudies() {
+  if (cachedCaseStudies) {
+    return cachedCaseStudies
+  }
+  
+  // Dynamic import only works in browser/client-side
+  const { caseStudies } = await import('../lib/caseStudies')
+  cachedCaseStudies = caseStudies
+  return caseStudies
+}
+
+export async function search(query, options = {}) {
   // Server-side rendering guard
   if (typeof window === 'undefined') {
     return []
@@ -25,6 +38,9 @@ export function search(query, options = {}) {
     
     const { limit = 5 } = options
     const searchQuery = query.toLowerCase().trim()
+    
+    // Get case studies (cached after first call)
+    const caseStudies = await getCaseStudies()
     
     // Sort case studies by order
     const sortedStudies = [...caseStudies].sort((a, b) => a.order - b.order)
