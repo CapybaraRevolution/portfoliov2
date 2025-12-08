@@ -1,5 +1,5 @@
 // Enhanced search implementation with FlexSearch for semantic search
-import FlexSearch from 'flexsearch'
+import { Document } from 'flexsearch'
 
 export default function Search(nextConfig = {}) {
   return Object.assign({}, nextConfig, {
@@ -25,7 +25,7 @@ function initializeSearchIndex() {
   const caseStudies = getAllCaseStudies()
 
   // Create a Document index with multiple fields and custom scoring
-  searchIndex = new FlexSearch.Document({
+  searchIndex = new Document({
     tokenize: 'forward',
     cache: 100,
     document: {
