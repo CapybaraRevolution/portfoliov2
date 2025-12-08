@@ -24,24 +24,25 @@ export interface CaseStudyMetadata {
 
 // Case studies data - this will eventually be loaded from MDX frontmatter
 export const caseStudies: CaseStudyMetadata[] = [
-  {
-    title: "Pharmaceutical Project Management Portal",
-    descriptiveTitle: "Pharmaceutical Project Management Portal",
-    client: "Confidential",
-    description: "Designed internal tools atop a Salesforce data model so researchers and business leaders could analyze budgets, track outcomes, and manage cross-system data with confidence.",
-    slug: "healthcare",
-    category: "UX",
-    aiAccelerated: true,
-    role: "Business Analyst, System Designer",
-    engagementType: "Contract",
-    location: "Remote",
-    timeline: "June 2023",
-    status: "Completed",
-    tools: ["Salesforce", "Figma", "Miro", "Jira", "Confluence", "Tableau"],
-    services: ["System Mapping", "API Analysis", "Information Architecture", "Data Visualization", "Wireframes", "Stakeholder Alignment"],
-    order: 2,
-    goal: "Design internal tools that let researchers and business leaders analyze budgets, track outcomes, and manage cross-system data with confidence."
-  },
+  // Temporarily unlisted - can be restored later
+  // {
+  //   title: "Pharmaceutical Project Management Portal",
+  //   descriptiveTitle: "Pharmaceutical Project Management Portal",
+  //   client: "Confidential",
+  //   description: "Designed internal tools atop a Salesforce data model so researchers and business leaders could analyze budgets, track outcomes, and manage cross-system data with confidence.",
+  //   slug: "healthcare",
+  //   category: "UX",
+  //   aiAccelerated: true,
+  //   role: "Business Analyst, System Designer",
+  //   engagementType: "Contract",
+  //   location: "Remote",
+  //   timeline: "June 2023",
+  //   status: "Completed",
+  //   tools: ["Salesforce", "Figma", "Miro", "Jira", "Confluence", "Tableau"],
+  //   services: ["System Mapping", "API Analysis", "Information Architecture", "Data Visualization", "Wireframes", "Stakeholder Alignment"],
+  //   order: 2,
+  //   goal: "Design internal tools that let researchers and business leaders analyze budgets, track outcomes, and manage cross-system data with confidence."
+  // },
   {
     title: "Boveda Tr1n1ty",
     descriptiveTitle: "Digital Heartbeat Timer",

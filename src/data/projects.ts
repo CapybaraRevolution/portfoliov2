@@ -77,25 +77,26 @@ export const projects: Project[] = [
     timeline: '2024–Present',
     status: 'ongoing'
   },
-  {
-    id: 'healthcare-portal',
-    title: 'Pharmaceutical Project Management Portal',
-    description: 'Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.',
-    category: 'UX',
-    skills: [
-      'User Research',
-      'Service Design',
-      'Data Visualization',
-      'Design Systems',
-      'Accessibility',
-      'Wireframing'
-    ],
-    ai: true,
-    href: '/case-studies/healthcare',
-    client: 'Confidential',
-    timeline: '2023',
-    status: 'completed'
-  },
+  // Temporarily unlisted - can be restored later
+  // {
+  //   id: 'healthcare-portal',
+  //   title: 'Pharmaceutical Project Management Portal',
+  //   description: 'Redesigning patient data access and care coordination workflows to improve outcomes and reduce administrative burden.',
+  //   category: 'UX',
+  //   skills: [
+  //     'User Research',
+  //     'Service Design',
+  //     'Data Visualization',
+  //     'Design Systems',
+  //     'Accessibility',
+  //     'Wireframing'
+  //   ],
+  //   ai: true,
+  //   href: '/case-studies/healthcare',
+  //   client: 'Confidential',
+  //   timeline: '2023',
+  //   status: 'completed'
+  // },
   {
     id: 'ai-ux-pipeline',
     title: 'AI-Powered UX Pipeline',
