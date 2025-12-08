@@ -3,6 +3,7 @@ import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure } from '@/components/mdx/CaseStudyComponents'
 import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 import { GoalBlock } from '@/components/case-studies/GoalBlock'
+import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { ImageGallery } from '@/components/ui/image-gallery'
 import { Safari } from '@/components/ui/safari'
 import { NumberTicker } from '@/components/ui/number-ticker'
@@ -12,7 +13,7 @@ import { Tree, Folder, File } from '@/components/ui/file-tree'
 import { TextAnimate } from '@/components/ui/text-animate'
 import { Timeline } from '@/components/ui/newacetimeline'
 import { Tooltip } from '@/components/ui/tooltip-card'
-import { GitBranch, GitCompare, Sitemap } from 'lucide-react'
+import { GitBranch, GitCompare, Network } from 'lucide-react'
 
 export const metadata = {
   title: 'Cornell University — SC Johnson College of Business - Case Study',
@@ -183,7 +184,7 @@ export default function CornellUniversityCaseStudy() {
       <div className="absolute inset-0">
         <OrbitingCircles radius={140} duration={18} iconSize={52} className="bg-white/80 text-red-700 ring-2 ring-red-100 shadow-md dark:bg-white/10 dark:text-red-300 dark:ring-white/10">
           <div className="flex size-full items-center justify-center rounded-full">
-            <Sitemap className="h-7 w-7" />
+            <Network className="h-7 w-7" />
           </div>
           <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 shadow-md dark:bg-blue-950/40 dark:text-blue-200 dark:ring-blue-900/40">
             <GitBranch className="h-7 w-7" />
