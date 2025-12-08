@@ -13,12 +13,20 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { DocumentPlusIcon, FolderIcon, FolderPlusIcon, HashtagIcon, TagIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 
-const projects = [
+type SearchItem = {
+  url: string
+  name?: string
+  id?: number
+  icon?: typeof DocumentPlusIcon
+  shortcut?: string
+}
+
+const projects: SearchItem[] = [
   { id: 1, name: 'Workflow Inc. / Website Redesign', url: '#' },
   // More projects...
 ]
 const recent = [projects[0]]
-const quickActions = [
+const quickActions: SearchItem[] = [
   { name: 'Add new file...', icon: DocumentPlusIcon, shortcut: 'N', url: '#' },
   { name: 'Add new folder...', icon: FolderPlusIcon, shortcut: 'F', url: '#' },
   { name: 'Add hashtag...', icon: HashtagIcon, shortcut: 'H', url: '#' },
@@ -55,10 +63,10 @@ export default function Example() {
           transition
           className="mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl outline-1 outline-black/5 transition-all data-closed:scale-95 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in dark:divide-white/10 dark:bg-gray-900 dark:-outline-offset-1 dark:outline-white/10"
         >
-          <Combobox
-            onChange={(item) => {
+          <Combobox<SearchItem>
+            onChange={(item: SearchItem | null) => {
               if (item) {
-                window.location = item.url
+                window.location.href = item.url
               }
             }}
           >
