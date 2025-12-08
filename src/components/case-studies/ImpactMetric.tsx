@@ -65,7 +65,7 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
   )
 
   return isHighlighted ? (
-    <div className="group relative">
+    <div className="group relative h-full w-full">
       {/* Animated shine border */}
       <ShineBorder
         className="rounded-2xl"
@@ -83,7 +83,7 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
       />
 
       {/* Content with proper z-index */}
-      <div className="relative z-10">{content}</div>
+      <div className="relative z-10 h-full w-full">{content}</div>
     </div>
   ) : (
     content
