@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 import { ContactDrawer } from '@/components/ContactDrawer'
 import { Button } from '@/components/Button'
@@ -55,12 +55,14 @@ function NavLink({
   tag,
   active = false,
   isAnchorLink = false,
+  shouldPulse = false,
 }: {
   href: string
   children: React.ReactNode
   tag?: string
   active?: boolean
   isAnchorLink?: boolean
+  shouldPulse?: boolean
 }) {
   const isOverview = children === 'Overview' && href.includes('/work/overview') && !isAnchorLink
   
@@ -100,14 +102,31 @@ function NavLink({
       href={href}
       aria-current={active ? 'page' : undefined}
       className={clsx(
-        'flex justify-between gap-2 py-1 pr-3 text-sm transition',
-        isAnchorLink ? 'pl-7' : 'pl-4',
+        'flex justify-between gap-2 py-1 pr-3 text-sm transition-all duration-500',
+        isAnchorLink ? 'pl-7' : 'pl-4 font-semibold',
         active
           ? 'text-zinc-900 dark:text-white'
           : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white',
+        shouldPulse && 'text-emerald-600 dark:text-emerald-400',
       )}
     >
-      <span className="truncate">{children}</span>
+      <span className="truncate flex items-center gap-1.5">
+        {children}
+        {shouldPulse && (
+          <motion.span
+            initial={{ opacity: 0, x: 4 }}
+            animate={{ opacity: [0, 1, 0], x: [4, 0, 4] }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+            className="text-emerald-500"
+          >
+            ←
+          </motion.span>
+        )}
+      </span>
       {tag && (
         <Tag variant="small" color="zinc">
           {tag}
@@ -133,19 +152,61 @@ function VisibleSectionHighlight({
   )
 
   let isPresent = useIsPresent()
-  let firstVisibleSectionIndex = Math.max(
-    0,
-    [{ id: '_top' }, ...sections].findIndex(
-      (section) => section.id === visibleSections[0],
-    ),
-  )
   let itemHeight = remToPx(2)
-  let height = isPresent
-    ? Math.max(1, visibleSections.length) * itemHeight
-    : itemHeight
-  let top =
-    group.links.findIndex((link) => link.href === pathname) * itemHeight +
-    firstVisibleSectionIndex * itemHeight
+  
+  // Filter links the same way they're filtered in render
+  let filteredLinks = group.links.filter(
+    (link) => !(link.title === 'Overview' && link.href.includes('/work/overview'))
+  )
+  
+  // Only count visible sections that actually exist in the current page's sections
+  // This prevents the highlight from extending beyond the current page
+  let visibleSectionsInCurrentPage = visibleSections.filter(id => 
+    id === '_top' || sections.some(section => section.id === id)
+  )
+  
+  // Find current page index in the FILTERED list (matching what's actually rendered)
+  let currentPageIndex = filteredLinks.findIndex((link) => link.href === pathname)
+  if (currentPageIndex === -1) return null
+  
+  // If no sections are visible, show highlight on the page link itself
+  if (visibleSectionsInCurrentPage.length === 0) {
+    let top = currentPageIndex * itemHeight
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.2 } }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
+        style={{ borderRadius: 8, height: itemHeight, top }}
+      />
+    )
+  }
+  
+  let allSections = [{ id: '_top' }, ...sections]
+  let firstVisibleSectionIndex = allSections.findIndex(
+    (section) => section.id === visibleSectionsInCurrentPage[0]
+  )
+  let lastVisibleSectionIndex = allSections.findIndex(
+    (section) => section.id === visibleSectionsInCurrentPage[visibleSectionsInCurrentPage.length - 1]
+  )
+  
+  // If we can't find the sections, default to first section
+  if (firstVisibleSectionIndex === -1) firstVisibleSectionIndex = 0
+  if (lastVisibleSectionIndex === -1) lastVisibleSectionIndex = firstVisibleSectionIndex
+  
+  // Calculate height based on the range of visible sections
+  let numberOfSectionsToHighlight = lastVisibleSectionIndex - firstVisibleSectionIndex + 1
+  
+  // Constrain to the total sections available on this page
+  let maxPossibleSections = allSections.length - firstVisibleSectionIndex
+  numberOfSectionsToHighlight = Math.min(numberOfSectionsToHighlight, maxPossibleSections)
+  numberOfSectionsToHighlight = Math.max(1, numberOfSectionsToHighlight)
+  
+  // Calculate top position: page link position + section offset within that page's section list
+  let top = currentPageIndex * itemHeight + firstVisibleSectionIndex * itemHeight
+  let height = isPresent ? numberOfSectionsToHighlight * itemHeight : itemHeight
 
   return (
     <motion.div
@@ -166,19 +227,68 @@ function ActivePageMarker({
   group: NavGroup
   pathname: string
 }) {
+  let [sections, visibleSections] = useInitialValue(
+    [
+      useSectionStore((s) => s.sections),
+      useSectionStore((s) => s.visibleSections),
+    ],
+    useIsInsideMobileNavigation(),
+  )
+
   let itemHeight = remToPx(2)
   let offset = remToPx(0.25)
-  let activePageIndex = group.links.findIndex((link) => link.href === pathname)
-  let top = offset + activePageIndex * itemHeight
+  
+  // Filter links the same way they're filtered in render
+  let filteredLinks = group.links.filter(
+    (link) => !(link.title === 'Overview' && link.href.includes('/work/overview'))
+  )
+  
+  let activePageIndex = filteredLinks.findIndex((link) => link.href === pathname)
+  
+  if (activePageIndex === -1) return null
+  
+  // The green bar shows the PRIMARY section (closest to center-bottom of viewport)
+  // This is the first visible section in the array (prioritized by the SectionProvider)
+  let primarySectionId = visibleSections.find(id => 
+    id === '_top' || sections.some(section => section.id === id)
+  )
+  
+  let height = remToPx(1.5) // Fixed height for the green bar - it's a pinpoint indicator
+  
+  // If no sections from the current page are visible, show green bar at the page link itself
+  if (!primarySectionId) {
+    let top = offset + activePageIndex * itemHeight
+    return (
+      <motion.div
+        layout
+        className="absolute left-2 w-px bg-emerald-500"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.2 } }}
+        exit={{ opacity: 0 }}
+        style={{ top, height }}
+      />
+    )
+  }
+  
+  let allSections = [{ id: '_top' }, ...sections]
+  let primarySectionIndex = allSections.findIndex(
+    (section) => section.id === primarySectionId
+  )
+  
+  if (primarySectionIndex === -1) primarySectionIndex = 0
+  
+  // Position the green bar at the primary section
+  let sectionOffset = primarySectionIndex * itemHeight
+  let top = offset + activePageIndex * itemHeight + sectionOffset
 
   return (
     <motion.div
       layout
-      className="absolute left-2 h-6 w-px bg-emerald-500"
+      className="absolute left-2 w-px bg-emerald-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { delay: 0.2 } }}
       exit={{ opacity: 0 }}
-      style={{ top }}
+      style={{ top, height }}
     />
   )
 }
@@ -198,9 +308,46 @@ function NavigationGroup({
     [usePathname(), useSectionStore((s) => s.sections)],
     isInsideMobileNavigation,
   )
+  
+  // State for pulsing the next page hint
+  let [shouldPulseNext, setShouldPulseNext] = useState(false)
 
   let isActiveGroup =
     group.links.findIndex((link) => link.href === pathname) !== -1
+  
+  // Detect when user is at the bottom and hasn't scrolled for 2 seconds
+  useEffect(() => {
+    if (!isActiveGroup) return
+    
+    let timeoutId: NodeJS.Timeout
+    
+    const checkIfAtBottom = () => {
+      const scrollHeight = document.documentElement.scrollHeight
+      const scrollTop = window.scrollY
+      const clientHeight = window.innerHeight
+      const isAtBottom = scrollHeight - scrollTop - clientHeight < 100 // Within 100px of bottom
+      
+      if (isAtBottom) {
+        // Clear any existing timeout
+        clearTimeout(timeoutId)
+        // Wait 2 seconds before pulsing
+        timeoutId = setTimeout(() => {
+          setShouldPulseNext(true)
+        }, 2000)
+      } else {
+        clearTimeout(timeoutId)
+        setShouldPulseNext(false)
+      }
+    }
+    
+    window.addEventListener('scroll', checkIfAtBottom, { passive: true })
+    checkIfAtBottom() // Check initial state
+    
+    return () => {
+      window.removeEventListener('scroll', checkIfAtBottom)
+      clearTimeout(timeoutId)
+    }
+  }, [isActiveGroup])
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -238,11 +385,20 @@ function NavigationGroup({
         <ul role="list" className="border-l border-transparent">
           {group.links
             .filter((link) => !(link.title === 'Overview' && link.href.includes('/work/overview')))
-            .map((link) => (
-              <motion.li key={link.href} layout="position" className="relative">
-                <NavLink href={link.href} active={link.href === pathname}>
-                  {link.title}
-                </NavLink>
+            .map((link, linkIndex, filteredLinks) => {
+              // Check if this is the next page after the current one (using filtered list indices)
+              let currentPageIndex = filteredLinks.findIndex((l) => l.href === pathname)
+              let isNextPage = linkIndex === currentPageIndex + 1
+              
+              return (
+                <motion.li key={link.href} layout="position" className="relative">
+                  <NavLink 
+                    href={link.href} 
+                    active={link.href === pathname}
+                    shouldPulse={isNextPage && shouldPulseNext}
+                  >
+                    {link.title}
+                  </NavLink>
                 <AnimatePresence mode="popLayout" initial={false}>
                   {link.href === pathname && sections.length > 0 && (
                     <motion.ul
@@ -271,8 +427,9 @@ function NavigationGroup({
                     </motion.ul>
                   )}
                 </AnimatePresence>
-              </motion.li>
-            ))}
+                </motion.li>
+              )
+            })}
         </ul>
       </div>
     </li>

@@ -3,83 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { Button } from '@/components/Button'
-import { navigation } from '@/components/Navigation'
-
-function PageLink({
-  label,
-  page,
-  previous = false,
-}: {
-  label: string
-  page: { href: string; title: string }
-  previous?: boolean
-}) {
-  return (
-    <>
-      <Button
-        href={page.href}
-        aria-label={`${label}: ${page.title}`}
-        variant="secondary"
-        arrow={previous ? 'left' : 'right'}
-      >
-        {label}
-      </Button>
-      <Link
-        href={page.href}
-        tabIndex={-1}
-        aria-hidden="true"
-        className="text-base font-semibold text-zinc-900 transition hover:text-zinc-600 dark:text-white dark:hover:text-zinc-300"
-      >
-        {page.title}
-      </Link>
-    </>
-  )
-}
-
-function PageNavigation({ fullWidth = false }: { fullWidth?: boolean }) {
-  let pathname = usePathname()
-  let allPages = navigation.flatMap((group) => group.links)
-  let currentPageIndex = allPages.findIndex((page) => page.href === pathname)
-
-  if (currentPageIndex === -1) {
-    return null
-  }
-
-  let previousPage = allPages[currentPageIndex - 1]
-  let nextPage = allPages[currentPageIndex + 1]
-
-  if (!previousPage && !nextPage) {
-    return null
-  }
-
-  return (
-    <nav 
-      aria-label="Pagination"
-      className={fullWidth 
-        ? "flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between" 
-        : "flex"
-      }
-    >
-      {/* Left column: Previous */}
-      {!!previousPage && (
-        <div className="flex flex-col items-start gap-3">
-          <PageLink label="Previous" page={previousPage} previous />
-        </div>
-      )}
-      
-      {/* Right column: Next */}
-      {!!nextPage && (
-        <div className={fullWidth 
-          ? "flex flex-col items-end gap-3" 
-          : "ml-auto flex flex-col items-end gap-3"
-        }>
-          <PageLink label="Next" page={nextPage} />
-        </div>
-      )}
-    </nav>
-  )
-}
+import { ContactDrawer } from '@/components/ContactDrawer'
 
 function GitHubIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -139,18 +63,19 @@ export function Footer() {
         {/* Full-width divider spanning the sidebar-offset area */}
         <div className="border-t border-zinc-900/10 dark:border-white/10">
           <div className={container}>
-            {/* Row 1: Pager */}
-            <div className="py-6">
-              <PageNavigation fullWidth />
-            </div>
-
-            {/* Row 2: Protocol-style small print */}
-            <div className="pb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-zinc-500 dark:text-zinc-400">
+            {/* Footer content */}
+            <div className="py-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-zinc-500 dark:text-zinc-400">
               <p className="order-2 sm:order-1">
                 © {year} Kyle McGraw. All rights reserved.
               </p>
 
               <div className="order-1 sm:order-2 flex items-center gap-x-4">
+                <ContactDrawer>
+                  <button className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">
+                    Contact
+                  </button>
+                </ContactDrawer>
+                <span className="text-zinc-300 dark:text-zinc-600">·</span>
                 <SocialLink 
                   href="https://github.com/CapybaraRevolution" 
                   ariaLabel="GitHub"

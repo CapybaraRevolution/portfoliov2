@@ -70,6 +70,11 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
     function checkVisibleSections() {
       let { innerHeight, scrollY } = window
       let newVisibleSections = []
+      
+      // Target the center-bottom of the viewport (60% down) where users are actively reading
+      let readingFocusPoint = innerHeight * 0.6
+      let focusedSection = null
+      let focusDistance = Infinity
 
       for (
         let sectionIndex = 0;
@@ -84,6 +89,7 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
 
         let offset = remToPx(offsetRem)
         let top = headingRef.current.getBoundingClientRect().top + scrollY
+        let topFromViewport = headingRef.current.getBoundingClientRect().top
 
         if (sectionIndex === 0 && top - offset > scrollY) {
           newVisibleSections.push('_top')
@@ -96,13 +102,34 @@ function useVisibleSections(sectionStore: StoreApi<SectionState>) {
           scrollY -
           remToPx(nextSection?.offsetRem ?? 0)
 
-        if (
+        // Check if section is visible in viewport
+        let isVisible =
           (top > scrollY && top < scrollY + innerHeight) ||
           (bottom > scrollY && bottom < scrollY + innerHeight) ||
           (top <= scrollY && bottom >= scrollY + innerHeight)
-        ) {
+
+        if (isVisible) {
           newVisibleSections.push(id)
+          
+          // Find the section closest to the reading focus point (center-bottom)
+          // This is where the user's attention is focused while scrolling
+          let distanceFromFocus = Math.abs(topFromViewport - readingFocusPoint)
+          
+          // If the section heading is above the focus point and we're within the section content
+          if (topFromViewport <= readingFocusPoint && distanceFromFocus < focusDistance) {
+            focusDistance = distanceFromFocus
+            focusedSection = id
+          }
         }
+      }
+
+      // Reorder so the focused section (closest to reading point) appears first
+      // This section gets the green bar indicator
+      if (focusedSection && newVisibleSections.includes(focusedSection)) {
+        newVisibleSections = [
+          focusedSection,
+          ...newVisibleSections.filter(id => id !== focusedSection)
+        ]
       }
 
       setVisibleSections(newVisibleSections)
