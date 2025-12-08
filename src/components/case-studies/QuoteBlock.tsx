@@ -1,23 +1,43 @@
 "use client"
 
 import { useScroll, motion, useMotionValueEvent } from "motion/react"
-import { useRef, useState } from "react"
+import { useRef, useState, ReactNode } from "react"
 import { SparklesText } from '@/components/ui/sparkles-text'
 
 interface QuoteBlockProps {
-  children: string
+  children: ReactNode
   className?: string
+}
+
+// Check if children is a plain string (not a React element)
+function isPlainString(children: ReactNode): boolean {
+  return typeof children === 'string' || typeof children === 'number'
 }
 
 export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
   const ref = useRef<HTMLQuoteElement>(null)
+  
+  // If children is already a React element (like TextAnimate), just render it
+  if (!isPlainString(children)) {
+    return (
+      <blockquote 
+        ref={ref}
+        className={`mt-20 mb-32 w-full border-l-4 border-emerald-500 dark:border-emerald-400 pl-0 py-0 ${className}`}
+      >
+        {children}
+      </blockquote>
+    )
+  }
+
+  // Otherwise, do the word-by-word animation for plain strings
   const hasAnimatedRef = useRef(false)
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 1.5", "start 0.5"],
   })
 
-  const words = children.split(" ")
+  const textContent = String(children)
+  const words = textContent.split(" ").filter(word => word.length > 0)
   const [revealedWords, setRevealedWords] = useState<Set<number>>(new Set())
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -41,9 +61,6 @@ export function QuoteBlock({ children, className = '' }: QuoteBlockProps) {
     
     setRevealedWords(newRevealed)
   })
-
-  // Split text to highlight "clarity" with emerald and sparkles
-  const parts = children.split(/(clarity)/i)
   
   return (
     <blockquote 
