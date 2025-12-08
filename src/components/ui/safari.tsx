@@ -43,7 +43,7 @@ export function Safari({
       className={`relative block w-full align-middle leading-none ${className ?? ""}`}
       style={{
         aspectRatio: `${SAFARI_WIDTH}/${SAFARI_HEIGHT}`,
-        minHeight: 0,
+        minHeight: '400px',
         ...style,
       }}
       {...props}
@@ -91,7 +91,7 @@ export function Safari({
 
       {hasChildren && (
         <div
-          className="absolute z-20 pointer-events-auto overflow-hidden"
+          className="absolute z-20 pointer-events-auto overflow-hidden w-full h-full"
           style={{
             left: `${LEFT_PCT}%`,
             top: `${TOP_PCT}%`,
