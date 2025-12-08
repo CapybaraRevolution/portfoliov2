@@ -120,24 +120,29 @@ export default function Example() {
                   <li className="p-2">
                     <h2 className="sr-only">Quick actions</h2>
                     <ul className="text-sm text-gray-700 dark:text-gray-300">
-                      {quickActions.map((action) => (
-                        <ComboboxOption
-                          as="li"
-                          key={action.shortcut}
-                          value={action}
-                          className="group flex cursor-default items-center rounded-md px-3 py-2 select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden dark:data-focus:bg-indigo-500"
-                        >
-                          <action.icon
-                            className="size-6 flex-none text-gray-400 group-data-focus:text-white dark:text-gray-500 forced-colors:group-data-focus:text-[Highlight]"
-                            aria-hidden="true"
-                          />
-                          <span className="ml-3 flex-auto truncate">{action.name}</span>
-                          <span className="ml-3 flex-none text-xs font-semibold text-gray-400 group-data-focus:text-indigo-100">
-                            <kbd className="font-sans">⌘</kbd>
-                            <kbd className="font-sans">{action.shortcut}</kbd>
-                          </span>
-                        </ComboboxOption>
-                      ))}
+                      {quickActions.map((action) => {
+                        const Icon = action.icon
+                        return (
+                          <ComboboxOption
+                            as="li"
+                            key={action.shortcut}
+                            value={action}
+                            className="group flex cursor-default items-center rounded-md px-3 py-2 select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden dark:data-focus:bg-indigo-500"
+                          >
+                            {Icon && (
+                              <Icon
+                                className="size-6 flex-none text-gray-400 group-data-focus:text-white dark:text-gray-500 forced-colors:group-data-focus:text-[Highlight]"
+                                aria-hidden="true"
+                              />
+                            )}
+                            <span className="ml-3 flex-auto truncate">{action.name}</span>
+                            <span className="ml-3 flex-none text-xs font-semibold text-gray-400 group-data-focus:text-indigo-100">
+                              <kbd className="font-sans">⌘</kbd>
+                              <kbd className="font-sans">{action.shortcut}</kbd>
+                            </span>
+                          </ComboboxOption>
+                        )
+                      })}
                     </ul>
                   </li>
                 )}
