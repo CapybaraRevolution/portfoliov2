@@ -1,6 +1,7 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 
 export const metadata = {
   title: 'Cornell University — SC Johnson College of Business - Case Study',
@@ -42,6 +43,7 @@ export default function CornellUniversityCaseStudy() {
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <ConstructionBanner />
       <CaseImage
         src="/images/case-studies/cornell-university/cornelllogo.png"
         alt="Cornell University SC Johnson College of Business logo"
