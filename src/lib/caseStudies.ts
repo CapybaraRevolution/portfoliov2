@@ -51,7 +51,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     slug: "cornell-university",
     category: "Strategy",
     aiAccelerated: true,
-    role: "UX Designer & Business Analyst",
+    role: "UX Strategist",
     engagementType: "Contract",
     location: "Remote",
     timeline: "January – June 2024",
@@ -59,7 +59,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Hotjar", "Google Analytics", "LLM assistants"],
     services: ["Information Architecture", "Wireframing", "Prototyping", "Product Vision", "PRDs (Specs)", "Stakeholder Alignment", "System Design"],
     order: 2,
-    goal: "Unify three distinct business school institutions through a cohesive digital experience."
+    goal: "Unify three distinct schools into one digital experience that feels coherent, findable, and maintainable",
+    goalDetail: "This was not a visual refresh. It was a system-building job: shared navigation rules, shared page modules, and shared language, without sanding off each school's identity."
   },
   {
     title: "Breeze Mortgage Hub",

@@ -33,7 +33,6 @@ const OrbitingStyles = () => (
     }
     .animate-orbit {
       animation: orbit calc(var(--duration) * 1s) linear infinite;
-      transform-origin: center;
     }
   `}</style>
 )
@@ -79,6 +78,10 @@ export function OrbitingCircles({
                 '--radius': `${radius}px`,
                 '--angle': angle,
                 '--icon-size': `${iconSize}px`,
+                // Position at center of container (accounting for element size)
+                // Using the iconSize directly since CSS variables in calc() can be tricky
+                left: `calc(50% - ${iconSize / 2}px)`,
+                top: `calc(50% - ${iconSize / 2}px)`,
               } as React.CSSProperties
             }
             className={cn(
