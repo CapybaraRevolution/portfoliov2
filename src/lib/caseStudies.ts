@@ -45,7 +45,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   // },
   {
     title: "Cornell University — SC Johnson College of Business",
-    descriptiveTitle: "Ivy League Institution",
+    descriptiveTitle: "Cornell University",
     client: "Cornell University — SC Johnson College of Business",
     description: "Unifying three distinct institutions through a cohesive digital experience",
     slug: "cornell-university",
