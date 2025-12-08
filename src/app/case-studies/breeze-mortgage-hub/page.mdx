@@ -7,6 +7,7 @@ import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
 import { ImageGallery } from '@/components/ui/image-gallery'
 import { Heading } from '@/components/Heading'
 import { Compare } from '@/components/ui/compare'
+import { Safari } from '@/components/ui/safari'
 import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
 import { AIFeaturesBento } from '@/components/case-studies/breeze/AIFeaturesBento'
 import { Sparkles, FileText, MessageCircle, Bot } from 'lucide-react'
@@ -109,17 +110,17 @@ export default function BreezeMortgageHubCaseStudy() {
 
       {/* Before and After Comparison */}
       <div className="my-12 mb-16">
-        <div className="p-4 border rounded-3xl dark:bg-neutral-900 bg-neutral-100 border-neutral-200 dark:border-neutral-800 overflow-hidden">
+        <Safari url="breeze-mortgage-hub.com">
           <Compare
             firstImage="/images/case-studies/breeze-mortgage-hub/breezebefore.png"
             secondImage="/images/case-studies/breeze-mortgage-hub/breezeafter.png"
             firstImageClassName="object-contain object-center w-full h-full"
             secondImageClassname="object-contain object-center w-full h-full"
-            className="w-full aspect-[3/2] md:aspect-[16/10]"
+            className="w-full h-full"
             slideMode="drag"
             initialSliderPercentage={50}
           />
-        </div>
+        </Safari>
       </div>
 
       {/* How I Created Clarity */}
