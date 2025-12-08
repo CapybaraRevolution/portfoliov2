@@ -1,13 +1,18 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { Figure, CaseImage } from '@/components/mdx/CaseStudyComponents'
+import { Figure } from '@/components/mdx/CaseStudyComponents'
 import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 import { GoalBlock } from '@/components/case-studies/GoalBlock'
-import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { ImageGallery } from '@/components/ui/image-gallery'
 import { Safari } from '@/components/ui/safari'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { Heading } from '@/components/Heading'
+import { OrbitingCircles } from '@/components/ui/orbiting-circles'
+import { Tree, Folder, File } from '@/components/ui/file-tree'
+import { TextAnimate } from '@/components/ui/text-animate'
+import { Timeline } from '@/components/ui/newacetimeline'
+import { Tooltip } from '@/components/ui/tooltip-card'
+import { GitBranch, GitCompare, Sitemap } from 'lucide-react'
 
 export const metadata = {
   title: 'Cornell University — SC Johnson College of Business - Case Study',
@@ -51,12 +56,164 @@ export default function CornellUniversityCaseStudy() {
     },
   ]
 
+  const approachTimeline = [
+    {
+      title: 'Insight work',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">1) Insight work (data-informed, human-interpreted)</h3>
+          <p>We triangulated quantitative signals (<Tooltip content="Behavior analytics for seeing how people actually navigate via heatmaps, scroll depth, and session replays."><span className="font-bold">Hotjar</span></Tooltip> + <Tooltip content="Google Analytics—traffic and event data that shows what’s happening at scale."><span className="font-bold">GA</span></Tooltip>) with qualitative observation to locate friction and validate what the data couldn’t explain on its own.</p>
+          <p>The output wasn’t a giant research deck. It was a practical map:</p>
+          <ul>
+            <li>the journeys that matter most (especially prospective students)</li>
+            <li>the pages and modules that were creating drop-offs</li>
+            <li>a clear “problem → hypothesis → design probe → success signal” trail</li>
+          </ul>
+          <details className="mt-4">
+            <summary className="font-bold cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 text-base">
+              Nerdy aside: how we used data without drowning in it
+            </summary>
+            <div className="p-4 mt-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
+              <p className="mb-4">We treated analytics like a map for where to look, and observation like a metal detector for the exact spot to dig.</p>
+              <Figure
+                src="/images/case-studies/cornell-university/treasuremap.jpg"
+                alt="Treasure map metaphor"
+                caption="Data as a treasure map: showing us where to dig deeper"
+              />
+              <Figure
+                src="/images/case-studies/cornell-university/nerdycornelldata.jpg"
+                alt="Annotated Hotjar data"
+                caption="Pinpointing the right problems made the design work calmer and faster"
+              />
+            </div>
+          </details>
+        </div>
+      ),
+    },
+    {
+      title: 'Personas',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">2) Anchor decisions with personas + user stories</h3>
+          <p>We defined and validated three core <Tooltip content="Research-backed archetypes that represent key user types, used to keep decisions anchored to real needs instead of opinions."><span className="font-bold">personas</span></Tooltip> to keep decisions grounded, especially when stakeholder opinions diverged (which they will, because they’re stakeholders).</p>
+          <p>The key benefit was speed with integrity: when the persona is clear, decisions stop being philosophical.</p>
+          <Safari url="cornell.edu">
+            <img
+              src="/images/case-studies/cornell-university/persona-slide1.avif"
+              alt="Prospective student persona and user stories"
+              className="w-full h-auto object-contain"
+            />
+          </Safari>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400 italic mt-3">
+            Personas kept debates short. Not because everyone agreed, but because we agreed who we were designing for.
+          </p>
+        </div>
+      ),
+    },
+    {
+      title: 'Module design',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">3) Module design (system first)</h3>
+          <p>We designed a library of <Tooltip content="Prebuilt, reusable page building blocks that share inputs, variants, and rules—keeping pages consistent and faster to assemble."><span className="font-bold">reusable page modules</span></Tooltip> (heroes, program cards, stats blocks, admissions CTAs, content sections) with:</p>
+          <ul>
+            <li>clear inputs</li>
+            <li>clear variants</li>
+            <li>rules for when to use what</li>
+          </ul>
+          <p>This is where the consistency debt gets paid down. Once modules are stable, pages stop feeling like bespoke one-offs and start feeling like one product.</p>
+          <Figure
+            src="/images/case-studies/cornell-university/cornell-fieldchip.avif"
+            alt="Standardized module components and documentation"
+            caption="One pattern, many contexts. Fewer decisions. Better consistency."
+          />
+        </div>
+      ),
+    },
+    {
+      title: 'Navigation system',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0"><Tooltip content="A governed set of global, sectional, and in-page patterns with naming/grouping rules so navigation feels predictable everywhere."><span className="font-bold">4) Navigation system (patterns + rules)</span></Tooltip></h3>
+          <p>Navigation was treated as a system, not a set of menus.</p>
+          <p>We prototyped and iterated:</p>
+          <ul>
+            <li>global navigation</li>
+            <li>sectional navigation</li>
+            <li>in-page wayfinding</li>
+          </ul>
+          <p>Then we documented naming and grouping rules tied to user tasks. The goal was simple: the same type of user should get the same type of path, regardless of which school’s content they started on.</p>
+          <ImageGallery
+            images={[
+              {
+                src: '/images/case-studies/cornell-university/cornell-nav-flow.jpg',
+                alt: 'Navigation flow and information architecture',
+                caption: 'Clear navigation rules that scale across all three schools',
+              },
+              {
+                src: '/images/case-studies/cornell-university/Cornell-nav-flow2.png',
+                alt: 'Detailed navigation wireframes',
+                caption: 'Detailed wireframes showing consistent navigation patterns',
+              },
+            ]}
+          />
+        </div>
+      ),
+    },
+    {
+      title: 'Handoff',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">5) Handoff (so it lives beyond us)</h3>
+          <p>The work only matters if it survives the handoff.</p>
+          <p>We organized the <Tooltip content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> and documentation so Cornell’s team could:</p>
+          <ul>
+            <li>onboard quickly</li>
+            <li>implement predictably</li>
+            <li>evolve the system without re-breaking consistency</li>
+          </ul>
+          <p>This meant clean component structure, naming, <Tooltip content="Design tokens that standardize spacing, color, and typography values so engineers and designers stay in sync."><span className="font-bold">spacing/token logic</span></Tooltip>, and “<Tooltip content="Lightweight product requirements that document intent, states, and edge cases without a bloated PRD."><span className="font-bold">PRD-lite</span></Tooltip>” specs that reduced interpretation gaps.</p>
+        </div>
+      ),
+    },
+  ]
+
   const heroImage = (
-    <CaseImage
-      src="/images/case-studies/cornell-university/cornelllogo.webp"
-      alt="Cornell University SC Johnson College of Business logo"
-      variant="logo"
-    />
+    <div className="relative mx-auto flex h-72 w-full max-w-3xl items-center justify-center">
+      <div className="absolute inset-0">
+        <OrbitingCircles radius={140} duration={18} iconSize={52} className="bg-white/80 text-red-700 ring-2 ring-red-100 shadow-md dark:bg-white/10 dark:text-red-300 dark:ring-white/10">
+          <div className="flex size-full items-center justify-center rounded-full">
+            <Sitemap className="h-7 w-7" />
+          </div>
+          <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 shadow-md dark:bg-blue-950/40 dark:text-blue-200 dark:ring-blue-900/40">
+            <GitBranch className="h-7 w-7" />
+          </div>
+          <div className="flex size-full items-center justify-center rounded-full bg-amber-50 text-amber-700 ring-2 ring-amber-100 shadow-md dark:bg-amber-950/40 dark:text-amber-200 dark:ring-amber-900/40">
+            <GitCompare className="h-7 w-7" />
+          </div>
+        </OrbitingCircles>
+        <OrbitingCircles
+          radius={100}
+          duration={12}
+          reverse
+          iconSize={40}
+          className="bg-emerald-50 text-emerald-700 ring-2 ring-emerald-100 shadow-sm dark:bg-emerald-900/30 dark:text-emerald-200 dark:ring-emerald-900/50"
+        >
+          <div className="flex size-full items-center justify-center rounded-full font-semibold text-xs">
+            Johnson
+          </div>
+          <div className="flex size-full items-center justify-center rounded-full font-semibold text-xs">
+            Nolan
+          </div>
+          <div className="flex size-full items-center justify-center rounded-full font-semibold text-xs">
+            Dyson
+          </div>
+        </OrbitingCircles>
+      </div>
+      <div className="relative z-10 flex size-32 items-center justify-center rounded-full bg-emerald-50/80 text-center text-sm font-semibold text-emerald-800 ring-2 ring-emerald-100 backdrop-blur-sm shadow-lg dark:bg-emerald-900/50 dark:text-emerald-100 dark:ring-emerald-800/60">
+        SC Johnson College<br />System Alignment
+      </div>
+    </div>
   )
 
   return (
@@ -98,14 +255,27 @@ export default function CornellUniversityCaseStudy() {
       {/* The Mess Section - 50/50 layout, flipped */}
       <section className="mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="rounded-xl overflow-hidden order-2 lg:order-1">
-            <div className="h-[400px] bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-900 rounded-xl flex items-center justify-center">
-              <div className="text-center p-8">
-                <div className="text-6xl mb-4">🔀</div>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 italic">
-                  Navigation changed depending on which school you were browsing
-                </p>
-              </div>
+          <div className="rounded-xl overflow-hidden order-2 lg:order-1 border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50">
+            <div className="p-4">
+              <Tree initialExpandedItems={['root', 'johnson']} initialSelectedId="johnson-nav">
+                <Folder element="Root IA (should be one system)" value="root" isSelectable={false}>
+                  <Folder element="Johnson" value="johnson">
+                    <File value="johnson-nav">nav.json (Programs / Faculty / Apply)</File>
+                    <File value="johnson-cta">cta.yaml (Request Info)</File>
+                  </Folder>
+                  <Folder element="Nolan" value="nolan">
+                    <File value="nolan-nav">navigation.yml (Degrees / Admissions / Visit)</File>
+                    <File value="nolan-cta">cta.yml (Schedule a tour)</File>
+                  </Folder>
+                  <Folder element="Dyson" value="dyson">
+                    <File value="dyson-nav">nav.config (Academics / Costs / Aid)</File>
+                    <File value="dyson-cta">cta.json (Meet a counselor)</File>
+                  </Folder>
+                  <File value="global-search" isSelectable={false}>
+                    search-index.csv (3 schemas, no shared taxonomy)
+                  </File>
+                </Folder>
+              </Tree>
             </div>
           </div>
           <div className="prose prose-zinc dark:prose-invert max-w-none order-1 lg:order-2">
@@ -115,7 +285,7 @@ export default function CornellUniversityCaseStudy() {
               <li>Navigation changed depending on which school you were browsing.</li>
               <li>Identical concepts were labeled differently across sections.</li>
               <li>Page modules looked similar enough to feel "almost consistent," but behaved differently in ways that made users second-guess themselves.</li>
-              <li>Internally, this created a design debt problem: every new page required re-deciding patterns that should have been settled once.</li>
+              <li>Internally, this created a <Tooltip content="Accumulated inconsistencies that make every new design or page slower because decisions keep getting re-made."><span className="font-bold">design debt</span></Tooltip> problem: every new page required re-deciding patterns that should have been settled once.</li>
             </ul>
             <p>If a user needs a mental model of Cornell's org chart to find a program, the system has already lost.</p>
             <p className="italic">The work ahead was less "make it prettier," more "make it predictable."</p>
@@ -125,7 +295,14 @@ export default function CornellUniversityCaseStudy() {
 
       {/* Quote Block */}
       <QuoteBlock>
-        If a user needs a mental model of Cornell's org chart to find a program, the system has already lost.
+        <TextAnimate
+          by="word"
+          animation="blurInUp"
+          className="text-2xl md:text-3xl font-medium text-zinc-600 dark:text-zinc-300 leading-relaxed"
+          segmentClassName="mr-2"
+        >
+          If a user needs a mental model of Cornell's org chart to find a program, the system has already lost.
+        </TextAnimate>
       </QuoteBlock>
 
       {/* My Role Section */}
@@ -145,135 +322,13 @@ export default function CornellUniversityCaseStudy() {
       {/* How I Created Clarity */}
       <section className="mb-16">
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <Heading id="how-i-created-clarity" level={2} label="Approach">How I Created Clarity</Heading>
+          <Heading id="how-i-created-clarity" level={2} label="Approach">
+            How I Created Clarity
+          </Heading>
           <p>I approached this like any other "merged product": start by understanding where users fall off, then build a system that prevents the same problems from reappearing.</p>
         </div>
-
-        {/* Insight Work */}
-        <div className="prose prose-zinc dark:prose-invert max-w-none mt-8">
-          <h3>1) Insight work (data-informed, human-interpreted)</h3>
-          <p>We triangulated quantitative signals (Hotjar + GA) with qualitative observation to locate friction and validate what the data couldn't explain on its own.</p>
-          <p>The output wasn't a giant research deck. It was a practical map:</p>
-          <ul>
-            <li>the journeys that matter most (especially prospective students)</li>
-            <li>the pages and modules that were creating drop-offs</li>
-            <li>a clear "problem → hypothesis → design probe → success signal" trail</li>
-          </ul>
-
-          <details className="mt-6">
-            <summary className="font-bold cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 text-base">
-              Nerdy aside: how we used data without drowning in it
-            </summary>
-            <div className="p-4 mt-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-              <p className="mb-4">We treated analytics like a map for where to look, and observation like a metal detector for the exact spot to dig.</p>
-              
-              <Figure 
-                src="/images/case-studies/cornell-university/treasuremap.jpg" 
-                alt="Treasure map metaphor" 
-                caption="Data as a treasure map: showing us where to dig deeper"
-              />
-              
-              <Figure 
-                src="/images/case-studies/cornell-university/nerdycornelldata.jpg" 
-                alt="Annotated Hotjar data" 
-                caption="Pinpointing the right problems made the design work calmer and faster"
-              />
-            </div>
-          </details>
-        </div>
-
-        {/* Personas + User Stories - 50/50 layout */}
-        <div className="mt-12 mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <div className="prose prose-zinc dark:prose-invert max-w-none">
-              <h3>2) Anchor decisions with personas + user stories</h3>
-              <p>We defined and validated three core personas to keep decisions grounded, especially when stakeholder opinions diverged (which they will, because they're stakeholders).</p>
-              <p>The key benefit was speed with integrity: when the persona is clear, decisions stop being philosophical.</p>
-            </div>
-            <div className="rounded-xl overflow-hidden">
-              <Safari url="cornell.edu">
-                <img
-                  src="/images/case-studies/cornell-university/persona-slide1.avif"
-                  alt="Prospective student persona and user stories"
-                  className="w-full h-auto object-contain"
-                />
-              </Safari>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 text-center mt-3 italic">
-                Personas kept debates short. Not because everyone agreed, but because we agreed who we were designing for.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Module Design - 50/50 layout, flipped */}
-        <div className="mt-12 mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <div className="rounded-xl overflow-hidden order-2 lg:order-1">
-              <Figure
-                src="/images/case-studies/cornell-university/cornell-fieldchip.avif"
-                alt="Standardized module components and documentation"
-                caption="One pattern, many contexts. Fewer decisions. Better consistency."
-              />
-            </div>
-            <div className="prose prose-zinc dark:prose-invert max-w-none order-1 lg:order-2">
-              <h3>3) Module design (system first)</h3>
-              <p>We designed a library of reusable page modules (heroes, program cards, stats blocks, admissions CTAs, content sections) with:</p>
-              <ul>
-                <li>clear inputs</li>
-                <li>clear variants</li>
-                <li>rules for when to use what</li>
-              </ul>
-              <p>This is where the consistency debt gets paid down. Once modules are stable, pages stop feeling like bespoke one-offs and start feeling like one product.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation System */}
-        <div className="mt-12 mb-12">
-          <div className="prose prose-zinc dark:prose-invert max-w-none">
-            <h3>4) Navigation system (patterns + rules)</h3>
-            <p>Navigation was treated as a system, not a set of menus.</p>
-            <p>We prototyped and iterated:</p>
-            <ul>
-              <li>global navigation</li>
-              <li>sectional navigation</li>
-              <li>in-page wayfinding</li>
-            </ul>
-            <p>Then we documented naming and grouping rules tied to user tasks. The goal was simple: the same type of user should get the same type of path, regardless of which school's content they started on.</p>
-          </div>
-
-          {/* Image Gallery for navigation flows */}
-          <div className="my-12">
-            <ImageGallery 
-              images={[
-                {
-                  src: "/images/case-studies/cornell-university/cornell-nav-flow.jpg",
-                  alt: "Navigation flow and information architecture",
-                  caption: "Clear navigation rules that scale across all three schools"
-                },
-                {
-                  src: "/images/case-studies/cornell-university/Cornell-nav-flow2.png",
-                  alt: "Detailed navigation wireframes",
-                  caption: "Detailed wireframes showing consistent navigation patterns"
-                }
-              ]}
-            />
-          </div>
-        </div>
-
-        {/* Handoff */}
-        <div className="mt-12 mb-12">
-          <div className="prose prose-zinc dark:prose-invert max-w-none">
-            <h3>5) Handoff (so it lives beyond us)</h3>
-            <p>The work only matters if it survives the handoff.</p>
-            <p>We organized the design system and documentation so Cornell's team could:</p>
-            <ul>
-              <li>onboard quickly</li>
-              <li>implement predictably</li>
-              <li>evolve the system without re-breaking consistency</li>
-            </ul>
-            <p>This meant clean component structure, naming, spacing/token logic, and "PRD-lite" specs that reduced interpretation gaps.</p>
-          </div>
+        <div className="mt-10">
+          <Timeline data={approachTimeline} />
         </div>
       </section>
 
@@ -284,9 +339,9 @@ export default function CornellUniversityCaseStudy() {
           <p>We used AI like an assistant, not an authority: fast first drafts, faster consistency checks, and more time for the real work (stakeholder alignment and simplifying journeys).</p>
           <p><strong>Human-in-the-loop, safety-first:</strong></p>
           <ul>
-            <li><strong>IA clustering support:</strong> accelerated early grouping and surfaced naming collisions. We made the decisions.</li>
+            <li><strong><Tooltip content="AI-assisted grouping of content and labels to propose an information architecture faster—humans still approve the final taxonomy."><span className="font-bold">IA clustering support</span></Tooltip>:</strong> accelerated early grouping and surfaced naming collisions. We made the decisions.</li>
             <li><strong>Story synthesis:</strong> drafted first-pass user stories from research notes, then edited for accuracy and tone.</li>
-            <li><strong>Terminology linting:</strong> flagged inconsistent labels between schools so we could standardize intentionally.</li>
+            <li><strong><Tooltip content="Automated checks that flag inconsistent labels and naming collisions across sections so we can standardize intentionally."><span className="font-bold">Terminology linting</span></Tooltip>:</strong> flagged inconsistent labels between schools so we could standardize intentionally.</li>
             <li><strong>Doc automation:</strong> generated checklists from module specs to speed QA and reduce missed edge cases.</li>
           </ul>
           <p>The result was not "AI magic." It was fewer hours spent on admin work and more time spent making the system coherent.</p>

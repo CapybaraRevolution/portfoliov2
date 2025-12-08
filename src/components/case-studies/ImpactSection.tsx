@@ -35,10 +35,15 @@ export function ImpactSection({ title = 'Impact', metrics, className, contained 
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-        {metrics.map((metric) => (
-          <ImpactMetric key={metric.label} {...metric} highlight={isHighlightedMetric(metric)} />
-        ))}
+      <div className="mt-6 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]">
+        {metrics.map((metric) => {
+          const metricKey =
+            typeof metric.label === 'string'
+              ? metric.label
+              : `${metric.value}-${metric.suffix ?? 'no-suffix'}-${metric.description ?? 'metric'}`
+
+          return <ImpactMetric key={metricKey} {...metric} highlight={isHighlightedMetric(metric)} />
+        })}
       </div>
     </section>
   )

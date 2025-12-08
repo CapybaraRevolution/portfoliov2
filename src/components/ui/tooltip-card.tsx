@@ -19,8 +19,9 @@ export const Tooltip = ({
     x: 0,
     y: 0,
   });
+  const [isTouch, setIsTouch] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (isVisible && contentRef.current) {
@@ -28,9 +29,17 @@ export const Tooltip = ({
     }
   }, [isVisible, content]);
 
-  const calculatePosition = (mouseX: number, mouseY: number) => {
+  const calculatePosition = (
+    mouseX: number,
+    mouseY: number,
+    options?: { preferAbove?: boolean }
+  ) => {
+    const preferAbove = options?.preferAbove ?? false;
     if (!contentRef.current || !containerRef.current)
-      return { x: mouseX + 12, y: mouseY + 12 };
+      return {
+        x: mouseX + 12,
+        y: preferAbove ? mouseY - 24 : mouseY + 12,
+      };
 
     const tooltip = contentRef.current;
     const container = containerRef.current;
@@ -47,7 +56,7 @@ export const Tooltip = ({
     const absoluteY = containerRect.top + mouseY;
 
     let finalX = mouseX + 12;
-    let finalY = mouseY + 12;
+    let finalY = preferAbove ? mouseY - tooltipHeight - 16 : mouseY + 12;
 
     // Check if tooltip goes beyond right edge
     if (absoluteX + 12 + tooltipWidth > viewportWidth) {
@@ -72,13 +81,18 @@ export const Tooltip = ({
     return { x: finalX, y: finalY };
   };
 
-  const updateMousePosition = (mouseX: number, mouseY: number) => {
+  const updateMousePosition = (
+    mouseX: number,
+    mouseY: number,
+    options?: { preferAbove?: boolean }
+  ) => {
     setMouse({ x: mouseX, y: mouseY });
-    const newPosition = calculatePosition(mouseX, mouseY);
+    const newPosition = calculatePosition(mouseX, mouseY, options);
     setPosition(newPosition);
   };
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
+    setIsTouch(false);
     setIsVisible(true);
     const rect = e.currentTarget.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -87,12 +101,13 @@ export const Tooltip = ({
   };
 
   const handleMouseLeave = () => {
+    setIsTouch(false);
     setMouse({ x: 0, y: 0 });
     setPosition({ x: 0, y: 0 });
     setIsVisible(false);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (!isVisible) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -100,12 +115,13 @@ export const Tooltip = ({
     updateMousePosition(mouseX, mouseY);
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLSpanElement>) => {
     const touch = e.touches[0];
     const rect = e.currentTarget.getBoundingClientRect();
     const mouseX = touch.clientX - rect.left;
     const mouseY = touch.clientY - rect.top;
-    updateMousePosition(mouseX, mouseY);
+    setIsTouch(true);
+    updateMousePosition(mouseX, mouseY, { preferAbove: true });
     setIsVisible(true);
   };
 
@@ -115,13 +131,15 @@ export const Tooltip = ({
       setIsVisible(false);
       setMouse({ x: 0, y: 0 });
       setPosition({ x: 0, y: 0 });
+      setIsTouch(false);
     }, 2000);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     // Toggle visibility on click for mobile devices
     if (window.matchMedia("(hover: none)").matches) {
       e.preventDefault();
+      setIsTouch(true);
       if (isVisible) {
         setIsVisible(false);
         setMouse({ x: 0, y: 0 });
@@ -130,7 +148,7 @@ export const Tooltip = ({
         const rect = e.currentTarget.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-        updateMousePosition(mouseX, mouseY);
+        updateMousePosition(mouseX, mouseY, { preferAbove: true });
         setIsVisible(true);
       }
     }
@@ -139,13 +157,15 @@ export const Tooltip = ({
   // Update position when tooltip becomes visible or content changes
   useEffect(() => {
     if (isVisible && contentRef.current) {
-      const newPosition = calculatePosition(mouse.x, mouse.y);
+      const newPosition = calculatePosition(mouse.x, mouse.y, {
+        preferAbove: isTouch,
+      });
       setPosition(newPosition);
     }
-  }, [isVisible, height, mouse.x, mouse.y]);
+  }, [isVisible, height, mouse.x, mouse.y, isTouch]);
 
   return (
-    <div
+    <span
       ref={containerRef}
       className={cn("relative inline-block", containerClassName)}
       onMouseEnter={handleMouseEnter}
@@ -183,6 +203,6 @@ export const Tooltip = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </span>
   );
 };

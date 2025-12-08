@@ -69,6 +69,18 @@
   }
 }
 
+@keyframes shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @layer base {
   :root {
     --shiki-color-text: var(--color-white);
@@ -260,7 +272,8 @@
     [style*="fadeInUp"],
     [style*="emerald-ripple"],
     .animate-\[bounce-subtle_3s_ease-in-out_infinite\],
-    .animate-rainbow {
+    .animate-rainbow,
+    .animate-shine {
       animation: none !important;
     }
   }
@@ -431,6 +444,11 @@
     100% {
       background-position: 200%;
     }
+  }
+
+  .animate-shine {
+    animation: shine var(--duration, 12s) linear infinite;
+    background-size: 300% 300%;
   }
 
   --radius-sm: calc(var(--radius) - 4px);
