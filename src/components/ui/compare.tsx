@@ -26,61 +26,69 @@ export const Compare = ({
   initialSliderPercentage = 50,
   slideMode = "hover",
   showHandlebar = true,
-  autoplay = false,
+  autoplay,
   autoplayDuration = 5000,
 }: CompareProps) => {
-  const [sliderXPercent, setSliderXPercent] = useState(initialSliderPercentage);
+  // Create a unique key for localStorage based on images
+  const storageKey = `compare-slider-${firstImage}-${secondImage}`;
+  
+  // Try to load saved position from localStorage
+  const getInitialPosition = () => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved !== null) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+          return parsed;
+        }
+      }
+    }
+    return initialSliderPercentage;
+  };
+
+  const [sliderXPercent, setSliderXPercent] = useState(getInitialPosition);
   const [isDragging, setIsDragging] = useState(false);
+  const [showHint, setShowHint] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const [isMouseOver, setIsMouseOver] = useState(false);
 
-  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startAutoplay = useCallback(() => {
-    if (!autoplay) return;
-
-    const startTime = Date.now();
-    const animate = () => {
-      const elapsedTime = Date.now() - startTime;
-      const progress =
-        (elapsedTime % (autoplayDuration * 2)) / autoplayDuration;
-      const percentage = progress <= 1 ? progress * 100 : (2 - progress) * 100;
-
-      setSliderXPercent(percentage);
-      autoplayRef.current = setTimeout(animate, 16); // ~60fps
-    };
-
-    animate();
-  }, [autoplay, autoplayDuration]);
-
-  const stopAutoplay = useCallback(() => {
-    if (autoplayRef.current) {
-      clearTimeout(autoplayRef.current);
-      autoplayRef.current = null;
-    }
-  }, []);
-
+  // Save position to localStorage whenever it changes
   useEffect(() => {
-    startAutoplay();
-    return () => stopAutoplay();
-  }, [startAutoplay, stopAutoplay]);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(storageKey, sliderXPercent.toString());
+    }
+  }, [sliderXPercent, storageKey]);
+
+  // Auto-hide hint after 4 seconds
+  useEffect(() => {
+    if (!hasInteracted) {
+      const timer = setTimeout(() => {
+        setShowHint(false);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasInteracted]);
 
   function mouseEnterHandler() {
     setIsMouseOver(true);
-    stopAutoplay();
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setShowHint(false);
+    }
   }
 
   function mouseLeaveHandler() {
     setIsMouseOver(false);
     if (slideMode === "hover") {
-      setSliderXPercent(initialSliderPercentage);
+      // Keep position where user left it
     }
     if (slideMode === "drag") {
       setIsDragging(false);
+      // Keep position where user left it
     }
-    startAutoplay();
   }
 
   const handleStart = useCallback(
@@ -88,8 +96,12 @@ export const Compare = ({
       if (slideMode === "drag") {
         setIsDragging(true);
       }
+      if (!hasInteracted) {
+        setHasInteracted(true);
+        setShowHint(false);
+      }
     },
-    [slideMode]
+    [slideMode, hasInteracted]
   );
 
   const handleEnd = useCallback(() => {
@@ -101,7 +113,8 @@ export const Compare = ({
   const handleMove = useCallback(
     (clientX: number) => {
       if (!sliderRef.current) return;
-      if (slideMode === "hover" || (slideMode === "drag" && isDragging)) {
+      // Move on hover for both modes, or when dragging
+      if (slideMode === "hover" || (slideMode === "drag" && (isMouseOver || isDragging))) {
         const rect = sliderRef.current.getBoundingClientRect();
         const x = clientX - rect.left;
         const percent = (x / rect.width) * 100;
@@ -110,7 +123,7 @@ export const Compare = ({
         });
       }
     },
-    [slideMode, isDragging]
+    [slideMode, isDragging, isMouseOver]
   );
 
   const handleMouseDown = useCallback(
@@ -125,26 +138,20 @@ export const Compare = ({
 
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
-      if (!autoplay) {
-        handleStart(e.touches[0].clientX);
-      }
+      handleStart(e.touches[0].clientX);
     },
-    [handleStart, autoplay]
+    [handleStart]
   );
 
   const handleTouchEnd = useCallback(() => {
-    if (!autoplay) {
-      handleEnd();
-    }
-  }, [handleEnd, autoplay]);
+    handleEnd();
+  }, [handleEnd]);
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
-      if (!autoplay) {
-        handleMove(e.touches[0].clientX);
-      }
+      handleMove(e.touches[0].clientX);
     },
-    [handleMove, autoplay]
+    [handleMove]
   );
 
   return (
@@ -153,7 +160,7 @@ export const Compare = ({
       className={cn("w-[400px] h-[400px] overflow-hidden", className)}
       style={{
         position: "relative",
-        cursor: slideMode === "drag" ? "grab" : "col-resize",
+        cursor: isDragging ? "grabbing" : "col-resize",
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={mouseLeaveHandler}
@@ -187,9 +194,55 @@ export const Compare = ({
             />
           </div>
           {showHandlebar && (
-            <div className="h-5 w-5 rounded-md top-1/2 -translate-y-1/2 bg-white z-30 -right-2.5 absolute   flex items-center justify-center shadow-[0px_-1px_0px_0px_#FFFFFF40]">
-              <IconDotsVertical className="h-4 w-4 text-black" />
-            </div>
+            <>
+              <motion.div 
+                className="h-5 w-5 rounded-md top-1/2 -translate-y-1/2 bg-white z-30 -right-2.5 absolute flex items-center justify-center shadow-[0px_-1px_0px_0px_#FFFFFF40]"
+                animate={!hasInteracted && showHint ? {
+                  scale: [1, 1.15, 1],
+                  boxShadow: [
+                    "0px -1px 0px 0px rgba(255,255,255,0.25)",
+                    "0px 0px 12px 2px rgba(99,102,241,0.4)",
+                    "0px -1px 0px 0px rgba(255,255,255,0.25)"
+                  ]
+                } : {}}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <IconDotsVertical className="h-4 w-4 text-black" />
+              </motion.div>
+              
+              {/* Drag hint tooltip */}
+              <AnimatePresence>
+                {showHint && !hasInteracted && slideMode === "drag" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                    className="absolute top-1/2 -translate-y-1/2 -right-24 z-40 pointer-events-none"
+                  >
+                    <div className="bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap flex items-center gap-2 border border-neutral-200 dark:border-neutral-700">
+                      <motion.span
+                        animate={{ x: [-2, 2, -2] }}
+                        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                        className="flex items-center gap-0.5"
+                      >
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" className="opacity-60">
+                          <path d="M4 1L1 4L4 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" className="opacity-60">
+                          <path d="M4 1L7 4L4 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </motion.span>
+                      Drag to compare
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
           )}
         </motion.div>
       </AnimatePresence>
