@@ -32,21 +32,10 @@ export const Compare = ({
   // Create a unique key for localStorage based on images
   const storageKey = `compare-slider-${firstImage}-${secondImage}`;
   
-  // Try to load saved position from localStorage
-  const getInitialPosition = () => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(storageKey);
-      if (saved !== null) {
-        const parsed = parseFloat(saved);
-        if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
-          return parsed;
-        }
-      }
-    }
-    return initialSliderPercentage;
-  };
-
-  const [sliderXPercent, setSliderXPercent] = useState(getInitialPosition);
+  // Always start with initialSliderPercentage to avoid hydration mismatch
+  // We'll load from localStorage in useEffect after hydration
+  const [sliderXPercent, setSliderXPercent] = useState(initialSliderPercentage);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [showHint, setShowHint] = useState(true);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -55,12 +44,26 @@ export const Compare = ({
 
   const [isMouseOver, setIsMouseOver] = useState(false);
 
-  // Save position to localStorage whenever it changes
+  // Load saved position from localStorage after hydration
   useEffect(() => {
+    setIsHydrated(true);
     if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(storageKey);
+      if (saved !== null) {
+        const parsed = parseFloat(saved);
+        if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+          setSliderXPercent(parsed);
+        }
+      }
+    }
+  }, [storageKey]);
+
+  // Save position to localStorage whenever it changes (only after hydration)
+  useEffect(() => {
+    if (isHydrated && typeof window !== "undefined") {
       localStorage.setItem(storageKey, sliderXPercent.toString());
     }
-  }, [sliderXPercent, storageKey]);
+  }, [sliderXPercent, storageKey, isHydrated]);
 
   // Auto-hide hint after 4 seconds
   useEffect(() => {
