@@ -1,6 +1,7 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 
 export const metadata = {
   title: 'Avatar: Generations - Case Study',
@@ -44,6 +45,7 @@ export default function AvatarGenerationsCaseStudy() {
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <ConstructionBanner />
       <CaseImage
         src="/images/case-studies/avatar-generations/avatarlogo.png"
         alt="Avatar: Generations logo"

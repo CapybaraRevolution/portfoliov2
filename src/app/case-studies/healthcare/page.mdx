@@ -1,6 +1,7 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 
 export const metadata = {
   title: 'Pharmaceutical Project Management Portal - Case Study',
@@ -28,6 +29,7 @@ export default function HealthcareCaseStudy() {
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <ConstructionBanner />
       
       <div className="prose prose-zinc dark:prose-invert max-w-none">
         

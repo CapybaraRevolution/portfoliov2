@@ -1,6 +1,7 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure } from '@/components/mdx/CaseStudyComponents'
+import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 
 export const metadata = {
   title: 'Boveda Tr1n1ty - Case Study',
@@ -42,6 +43,7 @@ export default function BovedaTr1n1tyCaseStudy() {
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <ConstructionBanner />
       <div className="prose prose-zinc dark:prose-invert max-w-none">
         <h2>Executive summary</h2>
 

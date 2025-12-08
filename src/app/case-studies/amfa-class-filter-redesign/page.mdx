@@ -1,6 +1,7 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
+import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 
 export const metadata = {
   title: 'AMFA Class Filter Redesign - Case Study',
@@ -36,6 +37,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <ConstructionBanner />
       <CaseImage
         src="/images/case-studies/amfa-class-filter-redesign/amfalogo.png"
         alt="Arkansas Museum of Fine Arts logo"

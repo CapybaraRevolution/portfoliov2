@@ -2,6 +2,7 @@ import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { CaseImage } from '@/components/mdx/CaseStudyComponents'
 import { MediaGroup, MediaVideo } from '@/components/mdx'
+import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
 
 export const metadata = {
   title: 'Old Skool Game Studios - Case Study',
@@ -33,6 +34,7 @@ export default function OldSkoolCaseStudy() {
   
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+      <ConstructionBanner />
       <CaseImage
         src="/images/case-studies/old-skool/oldskoolgamecollage.png"
         alt="Collage of Old Skool game titles showcasing rich themed art across multiple releases"
