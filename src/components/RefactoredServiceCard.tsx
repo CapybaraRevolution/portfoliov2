@@ -97,10 +97,9 @@ export function RefactoredServiceCard({ service }: RefactoredServiceCardProps) {
   return (
     <div
       onMouseMove={onMouseMove}
-      className="group relative flex flex-col rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5"
+      className="group relative flex flex-col rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 border border-zinc-200 dark:border-zinc-700/75 group-hover:border-zinc-300 dark:group-hover:border-zinc-600"
     >
       <ServiceCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-zinc-900/7.5 ring-inset group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
       
       {/* Header */}
       <div className="relative p-6 pb-4">

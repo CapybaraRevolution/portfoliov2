@@ -119,7 +119,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Social Finance Fund",
-    descriptiveTitle: "Government Social Finance Initiative",
+    descriptiveTitle: "Social Finance Fund",
     client: "Social Finance Fund",
     description: "UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package",
     slug: "social-finance-fund",
@@ -137,7 +137,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Old Skool Game Studios",
-    descriptiveTitle: "Mobile Casino Game Studio",
+    descriptiveTitle: "Mobile Slot Games",
     client: "Old Skool Game Studios (now MahiGaming)",
     description: "UX research + systematic design improvements that lifted engagement and fixed localization pain.",
     slug: "old-skool",
@@ -155,7 +155,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Boveda Tr1n1ty",
-    descriptiveTitle: "Digital Heartbeat Timer",
+    descriptiveTitle: "Digital Heartbeat Timer App",
     client: "Boveda",
     description: "From fragmented workflow to coherent, measurable experience—aligning stakeholders, simplifying flows, and shipping modernized UX.",
     slug: "boveda-tr1n1ty",

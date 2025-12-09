@@ -95,7 +95,7 @@ export function ProcessCard({ title, subtitle, icon, pattern, onClick, isHighlig
       onClick={handleClick}
       onMouseMove={onMouseMove}
       data-highlight-target={dataHighlightTarget}
-      className={`group relative flex rounded-2xl bg-zinc-50 transition-all hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 w-full text-left ${
+      className={`group relative flex rounded-2xl bg-zinc-50 transition-all hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 w-full text-left border border-zinc-200 dark:border-zinc-700/75 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 ${
         isHighlighted 
           ? 'ring-2 ring-emerald-400 shadow-lg shadow-emerald-500/25 dark:ring-emerald-500 dark:shadow-emerald-400/20' 
           : ''
@@ -105,7 +105,6 @@ export function ProcessCard({ title, subtitle, icon, pattern, onClick, isHighlig
       } : undefined}
     >
       <ProcessCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
-      <div className="absolute inset-0 rounded-2xl ring-1 ring-zinc-900/7.5 ring-inset group-hover:ring-zinc-900/10 dark:ring-white/10 dark:group-hover:ring-white/20" />
       <div className="relative rounded-2xl px-4 pt-16 pb-4 w-full">
         <ProcessCardIcon icon={icon} />
         <h3 className="mt-4 text-sm/7 font-semibold text-zinc-900 dark:text-white card-title" tabIndex={-1}>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { FunnelIcon, MagnifyingGlassIcon, XMarkIcon, ChevronUpIcon } from '@heroicons/react/20/solid'
 import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
 import { AIToggle } from '@/components/AIToggle'
 import { getAllCaseStudies } from '@/lib/caseStudies'
@@ -300,11 +300,6 @@ export function PortfolioShell() {
                   </span>
                 </button>
               </div>
-              
-              <AIToggle 
-                checked={filters.aiAccelerated}
-                onChange={handleAIToggle}
-              />
             </div>
             
             {activeFiltersCount > 0 && (
@@ -327,18 +322,24 @@ export function PortfolioShell() {
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className="overflow-hidden"
               >
-                <div className="mt-6 border-t border-zinc-200 dark:border-zinc-700 pt-6">
-                  <h3 className="text-sm font-medium text-zinc-900 dark:text-white mb-6">
-                    Filter by skill
-                  </h3>
+                <div className="mt-4 border-t border-zinc-200 dark:border-zinc-700 pt-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-medium text-zinc-900 dark:text-white">
+                      Filter by skill
+                    </h3>
+                    <AIToggle 
+                      checked={filters.aiAccelerated}
+                      onChange={handleAIToggle}
+                    />
+                  </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-4 gap-y-5">
                     {Object.entries(availableSkills).map(([groupName, skills]) => (
-                      <div key={groupName} className="space-y-3">
+                      <div key={groupName} className="space-y-2">
                         <h4 className="text-xs font-medium text-zinc-600 dark:text-zinc-400 uppercase tracking-wide">
                           {groupName}
                         </h4>
-                        <div className="space-y-2">
+                        <div className="space-y-1">
                           {skills.map(skill => {
                             const count = skillCounts.get(skill) || 0
                             const isSelected = filters.selectedSkills.has(skill)
@@ -373,17 +374,17 @@ export function PortfolioShell() {
                   <div className="flex justify-center pt-4">
                     <button
                       onClick={() => setFiltersOpen(false)}
-                      className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 animate-pulse"
-                      style={{
-                        animation: 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        animationDelay: '2s',
-                        textShadow: '0 0 8px rgba(156, 163, 175, 0.3), 0 0 12px rgba(156, 163, 175, 0.15)'
-                      }}
+                      className="group relative inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-sm font-medium border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-800 dark:hover:text-zinc-100 transition-all"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                      </svg>
-                      Collapse filters
+                      {/* Subtle pulsing border glow */}
+                      <span 
+                        className="absolute -inset-[1px] rounded-full shadow-[0_0_6px_1px_rgba(161,161,170,0.15)] dark:shadow-[0_0_6px_1px_rgba(212,212,216,0.1)]"
+                        style={{
+                          animation: 'pulse-border 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        }}
+                      />
+                      <ChevronUpIcon className="w-4 h-4 relative z-10" />
+                      <span className="relative z-10">Collapse filters</span>
                     </button>
                   </div>
                 </div>
@@ -497,6 +498,15 @@ export function PortfolioShell() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        
+        @keyframes pulse-border {
+          0%, 100% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 0.9;
           }
         }
       `}</style>

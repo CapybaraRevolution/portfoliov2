@@ -2,11 +2,24 @@ import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
 import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
+import { Heading } from '@/components/Heading'
 
 export const metadata = {
   title: 'AMFA Class Filter Redesign - Case Study',
   description: 'Improving navigation and registration through smarter filtering and cross-system user flows for the Arkansas Museum of Fine Arts',
 }
+
+export const sections = [
+  { title: 'Overview', id: 'overview' },
+  { title: 'Key Challenges', id: 'key-challenges' },
+  { title: 'My Approach', id: 'my-approach' },
+  { title: 'System Architecture', id: 'system-architecture' },
+  { title: 'Deliverables', id: 'deliverables' },
+  { title: 'Measurement Strategy', id: 'measurement-strategy' },
+  { title: 'Stakeholder Navigation', id: 'stakeholder-navigation' },
+  { title: 'Outcome', id: 'outcome' },
+  { title: 'Learnings', id: 'learnings' },
+]
 
 export default function AMFAClassFilterRedesignCaseStudy() {
   const caseStudy = getCaseStudyBySlug('amfa-class-filter-redesign')
@@ -45,13 +58,13 @@ export default function AMFAClassFilterRedesignCaseStudy() {
       />
 
       <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Overview</h2>
+        <Heading id="overview" level={2}>Overview</Heading>
 
         <p>The Arkansas Museum of Fine Arts (AMFA) offers a wide variety of community classes for youth and adults. The class filtering and booking journey was fragmented across platforms and unclear at decision points. Brought in via Jixaw, I unified the experience, streamlined filtering, and clarified system transitions so people can find the right class faster and check out with confidence.</p>
 
         <hr />
 
-        <h2>Key Challenges</h2>
+        <Heading id="key-challenges" level={2}>Key Challenges</Heading>
 
         <ul>
           <li><strong>Fragmented architecture:</strong> Marketing site, class directory (minisite), and cart lived on separate platforms.</li>
@@ -62,7 +75,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
         <hr />
 
-        <h2>My Approach</h2>
+        <Heading id="my-approach" level={2}>My Approach</Heading>
 
         <ul>
           <li><strong>Map the ecosystem:</strong> Identified all systems, owners, and transition points, then aligned on entry/exit rules.</li>
@@ -80,7 +93,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
       />
 
       <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>System Architecture & Flow Design</h2>
+        <Heading id="system-architecture" level={2}>System Architecture & Flow Design</Heading>
 
         <p>The challenge was to create a seamless experience across three disconnected platforms. I mapped the entire ecosystem to understand where users entered, how they moved between systems, and where they dropped off.</p>
 
@@ -106,7 +119,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
         <hr />
 
-        <h2>Deliverables</h2>
+        <Heading id="deliverables" level={2}>Deliverables</Heading>
 
         <ul>
           <li><strong>System map / flow diagram</strong> (current → future) with platform boundaries</li>
@@ -118,7 +131,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
         <hr />
 
-        <h2>Measurement Strategy</h2>
+        <Heading id="measurement-strategy" level={2}>Measurement Strategy</Heading>
 
         <p>To validate the redesign's impact, I defined key events to track post-launch:</p>
 
@@ -136,7 +149,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
         <hr />
 
-        <h2>Stakeholder Navigation</h2>
+        <Heading id="stakeholder-navigation" level={2}>Stakeholder Navigation</Heading>
 
         <p>With three teams (marketing, operations, development) having different priorities, alignment was crucial. I facilitated workshops using:</p>
         
@@ -148,13 +161,13 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
         <hr />
 
-        <h2>Outcome</h2>
+        <Heading id="outcome" level={2}>Outcome</Heading>
 
         <p>The new filter architecture is being implemented. Analytics are configured to track discovery, filter engagement, and drop-offs. Early stakeholder feedback highlights clearer paths, better handoffs, and a more resilient cart flow.</p>
 
         <hr />
 
-        <h2>Learnings</h2>
+        <Heading id="learnings" level={2}>Learnings</Heading>
 
         <ul>
           <li><strong>Systems first:</strong> Designing across platforms demands early agreement on boundaries and state.</li>
