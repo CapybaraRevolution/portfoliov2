@@ -235,7 +235,7 @@ export function Video({
   className 
 }: VideoProps) {
   const videoElement = (
-    <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10">
+    <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-white/10">
       {/* Clean header like Protocol code blocks */}
       {caption && (
         <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
@@ -356,7 +356,7 @@ export function CaseImage({
         </div>
       ) : (
         // Original container for hero and default images
-        <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-1 dark:ring-white/10">
+        <div className="group my-6 overflow-hidden rounded-2xl bg-zinc-900 shadow-md dark:ring-white/10">
           {/* Clean header like Protocol code blocks */}
           {caption && (
             <div className="flex min-h-[calc(--spacing(12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">

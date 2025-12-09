@@ -129,12 +129,12 @@ function InputField({
           aria-describedby={hasValidation ? `${id}-message` : undefined}
           className={`col-start-1 row-start-1 block w-full rounded-md px-3 py-2.5 text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors ${
             hasError
-              ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-500/50 placeholder:text-red-400/70 focus:border-red-400 focus:ring-2 focus:ring-red-400/20 pr-10'
+              ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-500/50 placeholder:text-red-400/70 focus:border-red-400 focus:ring-red-400/20 pr-10'
               : hasWarning
-              ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 pr-10'
+              ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-amber-400/20 pr-10'
               : hasSuccess
-              ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 pr-10'
-              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-emerald-500/20 pr-10'
+              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 focus:border-emerald-500'
           }`}
         />
         {hasError && (
@@ -204,8 +204,8 @@ function WebsiteField({
           onBlur={onBlur}
           className={`-ml-px block w-full grow rounded-r-md px-3 py-2.5 text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors pr-10 ${
             success
-              ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20'
-              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-emerald-500/20'
+              : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 focus:border-emerald-500'
           }`}
         />
         {success && (
@@ -246,7 +246,7 @@ function EngagementStep({
             aria-description={`${model.subtitle} - ${model.description}`}
             className={`group relative flex rounded-xl border p-4 transition-all duration-200 cursor-pointer ${
               value === model.title
-                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 ring-1 ring-emerald-500'
+                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 ring-emerald-500'
                 : 'border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/50 hover:border-emerald-300 dark:hover:border-emerald-700'
             }`}
           >
@@ -328,10 +328,10 @@ function ProjectStep({
             onBlur={onProjectBlur}
             className={`w-full px-3 py-2.5 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none pr-10 ${
               warnings.project
-                ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20'
+                ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border border-amber-500/50 placeholder:text-amber-500/70 focus:border-amber-400 focus:ring-amber-400/20'
                 : projectSuccess
-                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20'
-                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-emerald-500/20'
+                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 focus:border-emerald-500'
             }`}
           />
           {projectSuccess && (
@@ -360,8 +360,8 @@ function ProjectStep({
             onBlur={onSuccessBlur}
             className={`w-full px-3 py-2.5 rounded-md text-zinc-900 dark:text-zinc-100 sm:text-sm transition-colors resize-none pr-10 ${
               successFieldSuccess
-                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20'
-                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500'
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/50 focus:border-emerald-500 focus:ring-emerald-500/20'
+                : 'bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 focus:border-emerald-500'
             }`}
           />
           {successFieldSuccess && (
@@ -575,7 +575,7 @@ function ReviewStep({
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                    className="w-4 h-4 border-2 border-emerald-400/30 border-t-emerald-600 dark:border-emerald-400/30 dark:border-t-emerald-400 rounded-full"
+                    className="w-4 h-4 border-emerald-400/30 border-t-emerald-600 dark:border-emerald-400/30 dark:border-t-emerald-400 rounded-full"
                   />
                   Sending...
                 </span>

@@ -24,3 +24,4 @@ export function AnimatedSafari({ children, className = "" }: AnimatedSafariProps
     </motion.div>
   )
 }
+

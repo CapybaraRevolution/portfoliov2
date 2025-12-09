@@ -72,3 +72,4 @@ export function ToolsStack({ tools, className }: ToolsStackProps) {
     </div>
   )
 }
+

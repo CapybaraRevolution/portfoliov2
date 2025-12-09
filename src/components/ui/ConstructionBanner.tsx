@@ -36,7 +36,7 @@ export function ConstructionBanner() {
                       <button
                         type="button"
                         onClick={() => setShow(false)}
-                        className="rounded-md text-sm font-medium text-emerald-600 hover:text-emerald-500 focus:outline-2 focus:outline-offset-2 focus:outline-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300 dark:focus:outline-emerald-400"
+                        className="rounded-md text-sm font-medium text-emerald-600 hover:text-emerald-500 focus:outline-offset-2 focus:outline-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300 dark:focus:outline-emerald-400"
                       >
                         Dismiss
                       </button>
@@ -46,7 +46,7 @@ export function ConstructionBanner() {
                     <button
                       type="button"
                       onClick={() => setShow(false)}
-                      className="inline-flex rounded-md text-zinc-400 hover:text-zinc-600 focus:outline-2 focus:outline-offset-2 focus:outline-zinc-500 dark:text-zinc-500 dark:hover:text-zinc-300 dark:focus:outline-zinc-400"
+                      className="inline-flex rounded-md text-zinc-400 hover:text-zinc-600 focus:outline-offset-2 focus:outline-zinc-500 dark:text-zinc-500 dark:hover:text-zinc-300 dark:focus:outline-zinc-400"
                     >
                       <span className="sr-only">Close</span>
                       <XMarkIcon aria-hidden="true" className="size-5" />

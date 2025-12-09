@@ -77,7 +77,7 @@ function NavLink({
         duration="500ms"
         className={clsx(
           'inline-flex items-center justify-center rounded-md text-xs font-medium transition-colors',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50',
+          'focus-visible:outline-none focus-visible:ring-emerald-500/50',
           'disabled:pointer-events-none disabled:opacity-50',
           'border border-zinc-900/10 dark:border-white/10',
           active

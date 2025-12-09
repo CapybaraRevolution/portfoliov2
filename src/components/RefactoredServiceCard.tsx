@@ -154,7 +154,7 @@ export function RefactoredServiceCard({ service }: RefactoredServiceCardProps) {
           <div className="relative mx-6 h-px bg-zinc-900/7.5 dark:bg-white/10" />
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="relative flex items-center justify-between p-6 pb-4 w-full text-left focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            className="relative flex items-center justify-between p-6 pb-4 w-full text-left focus:outline-none focus:ring-emerald-500/50"
             aria-expanded={isExpanded}
           >
             <span className="text-sm font-medium text-zinc-900 dark:text-white">

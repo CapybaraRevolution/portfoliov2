@@ -23,7 +23,7 @@ interface ProcessCardProps {
 
 function ProcessCardIcon({ icon: Icon }: { icon: ProcessCardProps['icon'] }) {
   return (
-    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900/5 ring-1 ring-zinc-900/25 backdrop-blur-[2px] transition duration-300 group-hover:bg-white/50 group-hover:ring-zinc-900/25 dark:bg-white/7.5 dark:ring-white/15 dark:group-hover:bg-emerald-300/10 dark:group-hover:ring-emerald-400 overflow-hidden">
+    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900/5 ring-zinc-900/25 backdrop-blur-[2px] transition duration-300 group-hover:bg-white/50 group-hover:ring-zinc-900/25 dark:bg-white/7.5 dark:ring-white/15 dark:group-hover:bg-emerald-300/10 dark:group-hover:ring-emerald-400 overflow-hidden">
       <Icon className="h-5 w-5 fill-zinc-700/10 stroke-zinc-700 transition-colors duration-300 group-hover:stroke-zinc-900 dark:fill-white/10 dark:stroke-zinc-400 dark:group-hover:fill-emerald-300/10 dark:group-hover:stroke-emerald-400 flex-shrink-0" />
     </div>
   )
@@ -97,7 +97,7 @@ export function ProcessCard({ title, subtitle, icon, pattern, onClick, isHighlig
       data-highlight-target={dataHighlightTarget}
       className={`group relative flex rounded-2xl bg-zinc-50 transition-all hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 w-full text-left border border-zinc-200 dark:border-zinc-700/75 group-hover:border-zinc-300 dark:group-hover:border-zinc-600 ${
         isHighlighted 
-          ? 'ring-2 ring-emerald-400 shadow-lg shadow-emerald-500/25 dark:ring-emerald-500 dark:shadow-emerald-400/20' 
+          ? 'ring-emerald-400 shadow-lg shadow-emerald-500/25 dark:ring-emerald-500 dark:shadow-emerald-400/20' 
           : ''
       }`}
       style={isHighlighted ? {

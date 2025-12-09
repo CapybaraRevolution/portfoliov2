@@ -40,3 +40,4 @@ export function LearningCard({ title, children, icon, className }: LearningCardP
     </MagicCard>
   )
 }
+

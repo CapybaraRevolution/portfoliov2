@@ -101,3 +101,4 @@ export function MagicCard({
     </div>
   )
 }
+

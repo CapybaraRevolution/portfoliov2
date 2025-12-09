@@ -1,0 +1,21 @@
+{
+  "default": true,
+  "MD013": false,
+  "MD033": false,
+  "MD041": {
+    "level": 1
+  },
+  "MD022": {
+    "lines_above": 1,
+    "lines_below": 1
+  },
+  "MD032": true,
+  "MD029": {
+    "style": "ordered"
+  },
+  "MD047": true,
+  "MD040": true,
+  "MD031": true,
+  "MD034": false
+}
+

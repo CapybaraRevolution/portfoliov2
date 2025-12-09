@@ -132,7 +132,7 @@ function ServiceCard({ service }: { service: typeof services[number] }) {
         <div className="flex size-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
           <service.icon aria-hidden="true" className="size-6" />
         </div>
-        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/30">
+        <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/30">
           {service.engagement}
         </span>
       </div>
@@ -248,9 +248,9 @@ export function SimplifiedServicesGrid() {
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+          <div className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
             Services
-          </p>
+          </div>
           <h2 className="mt-3 text-balance text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-5xl">
             Make the complex feel simple—and testable.
           </h2>

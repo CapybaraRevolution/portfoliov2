@@ -29,3 +29,4 @@ if ! diff -q /tmp/ImpactMetric_main_backup.tsx src/components/case-studies/Impac
 fi
 
 echo "Merge complete. ImpactMetric preserved from main."
+

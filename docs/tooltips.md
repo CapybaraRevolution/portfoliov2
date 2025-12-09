@@ -1,8 +1,9 @@
-## Tooltip Inventory
+# Tooltip Inventory
 
 A quick record of tooltip terms and definitions currently used across the site. Terms are bolded inline in case studies and render via `Tooltip`.
 
-### Breeze Mortgage Hub
+## Breeze Mortgage Hub
+
 - **Series A** — First significant VC round after proving product-market fit.
 - **Information architecture** — Blueprint for how content/features are organized and found.
 - **Component behavior** — Reusable UI blocks behaving consistently everywhere.
@@ -17,10 +18,11 @@ A quick record of tooltip terms and definitions currently used across the site. 
 - **Design system** — Figma library of reusable components with tokens and interaction logic.
 - **UX artifacts** — Deliverables (wireframes, personas, journeys) for shared context.
 - **IA maps** — Blueprint of how pages/features connect and how users navigate.
-- **Acceptance criteria** — Conditions that define “done” before code is written.
+- **Acceptance criteria** — Conditions that define "done" before code is written.
 - **Cognitive load** — Mental effort required to use the product; good design keeps it low.
 
-### Cornell University
+## Cornell University
+
 - **Hotjar** — Behavior analytics (heatmaps, scroll depth, session replays).
 - **GA** — Google Analytics; traffic/event data at scale.
 - **Personas** — Research-backed archetypes to anchor decisions.

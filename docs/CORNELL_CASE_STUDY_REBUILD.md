@@ -21,24 +21,29 @@ Transform the Cornell case study into a story-driven page with interactive eleme
 ## Page Structure
 
 ### 1. Hero and Goal Section
+
 - `GoalBlock` with aurora text animation
 - Goal: "Unify three distinct schools into one digital experience that feels coherent, findable, and maintainable"
 - Subtle AI indicator badge: "AI-accelerated (human-reviewed)"
 - Goal detail as italic subtext
 
 ### 2. Context Section (50/50 layout)
+
 - **Left**: Prose about the 2016 merger and 2024 web fragmentation
 - **Right**: Cornell logo or visual metaphor
 
 ### 3. The Mess Section (50/50 layout, flipped)
+
 - **Left**: Visual showing navigation inconsistency
 - **Right**: Prose about lack of shared rules, terminology mismatches
 
 ### 4. Quote Block
+
 - Scroll-reveal animation
 - "If a user needs a mental model of Cornell's org chart to find a program, the system has already lost."
 
 ### 5. My Role Section
+
 - What I optimized for: Alignment, Clarity, Maintainability
 
 ### 6. How I Created Clarity (multi-part)
@@ -63,16 +68,19 @@ Custom `CornellAIBento` component with 4 interactive cards:
 | Doc Automation | `ListChecks` | Auto-generating checklist items |
 
 ### 8. Outcomes Section
+
 - `NumberTicker` components for metrics
 - ~1.7 min time-to-find
 - 3 personas defined
 - ~55 modules/screens wireframed
 
 ### 9. Learnings Section
+
 - Three styled callout cards
 - Hover animations
 
 ### 10. Closing
+
 - Brief wrap-up paragraph
 - Credits section
 
@@ -98,7 +106,7 @@ Located in `/public/images/case-studies/cornell-university/`:
 
 ## Component Dependencies
 
-```
+```text
 CornellAIBento.tsx
 ├── BentoGrid, BentoCard (@/components/ui/bento-grid)
 ├── Marquee (@/components/ui/marquee)

@@ -1,0 +1,39 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "AMFA",
+    "amfa",
+    "amfalogo",
+    "Jixaw",
+    "minisite",
+    "wireframes",
+    "Bento",
+    "bento",
+    "lucide",
+    "breezebefore",
+    "breezeafter",
+    "fintech",
+    "componentized",
+    "lightbox",
+    "breezedash",
+    "Wireframes",
+    "rgba",
+    "glowingeffect",
+    "Aceternity"
+  ],
+  "ignoreWords": [],
+  "ignorePaths": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "*.min.js",
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml"
+  ],
+  "flagWords": [],
+  "dictionaries": ["typescript", "node", "html", "css"]
+}
+

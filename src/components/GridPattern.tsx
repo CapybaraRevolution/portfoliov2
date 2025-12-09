@@ -6,6 +6,7 @@ export function GridPattern({
   x,
   y,
   squares,
+  id,
   ...props
 }: React.ComponentPropsWithoutRef<'svg'> & {
   width: number
@@ -13,8 +14,10 @@ export function GridPattern({
   x: string | number
   y: string | number
   squares: Array<[x: number, y: number]>
+  id?: string
 }) {
-  let patternId = useId()
+  let generatedId = useId()
+  let patternId = id ?? generatedId
 
   return (
     <svg aria-hidden="true" {...props}>

@@ -18,7 +18,7 @@ export function EnhancedPhoto({ src, alt, width, height, priority = false, sizes
     <div className="group relative">
       {/* Photo with Simple Styling */}
       <div 
-        className="relative overflow-hidden rounded-2xl ring-2 ring-emerald-500/20 dark:ring-emerald-400/20 transition-all duration-500"
+        className="relative overflow-hidden rounded-2xl ring-emerald-500/20 dark:ring-emerald-400/20 transition-all duration-500"
         style={{
           boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
         }}
