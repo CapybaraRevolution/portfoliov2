@@ -16,7 +16,7 @@ const ALIAS: Record<string, string> = {
 
 // Mapping of tool slugs to Simple Icons slugs (for tools not in our local assets)
 // Simple Icons uses lowercase with hyphens: https://simpleicons.org/
-const SIMPLE_ICONS_MAP: Record<string, string> = {
+const SIMPLE_ICONS_MAP: Record<string, string | null> = {
   'salesforce': 'salesforce',
   'tableau': 'tableau',
   'hotjar': 'hotjar',
