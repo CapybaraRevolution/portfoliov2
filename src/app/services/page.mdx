@@ -11,35 +11,14 @@ import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
 import { SplitSection } from '@/components/case-studies/SplitSection'
 import { Globe } from '@/components/ui/globe'
 import { GlowingEffect } from '@/components/ui/glowing-effect'
+import { ServicesHero } from '@/components/ServicesHero'
 import { Target, Network, FlaskConical, Rocket, Video, FileText, Clock } from 'lucide-react'
 
 <ProcessRedirect />
 
-<section className="not-prose py-16 sm:py-20">
-  <div className="mx-auto max-w-5xl px-6 lg:px-8">
-    <span className="block text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-      Services
-    </span>
-    <h1 className="mt-3 text-balance text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-5xl">
-      Turning messy problem spaces into clear, testable ideas.
-    </h1>
-    <p className="mt-6 max-w-3xl text-lg text-zinc-600 dark:text-zinc-300">
-      I am a hybrid UX designer and business analyst who helps teams align fast, map complex systems,
-      and test what matters before committing code. Every engagement ends with clarity, evidence, and
-      a confident next move.
-    </p>
-    <div className="mt-8 flex flex-wrap gap-4">
-      <ContactDrawer>
-        <Button arrow="right">
-          Schedule a call
-        </Button>
-      </ContactDrawer>
-      <Button href="/work/overview" variant="secondary" arrow="right">
-        View case studies
-      </Button>
-    </div>
-  </div>
-</section>
+<div className="not-prose">
+  <ServicesHero />
+</div>
 
 <div className="not-prose">
   <SimplifiedServicesGrid />
