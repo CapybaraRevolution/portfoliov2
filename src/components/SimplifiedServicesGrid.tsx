@@ -246,7 +246,7 @@ function ServiceCard({ service }: { service: typeof services[number] }) {
 export function SimplifiedServicesGrid() {
   return (
     <section className="py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
         <div className="max-w-3xl">
           <div className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
             Services
