@@ -14,8 +14,9 @@ import { Tree, Folder, File } from '@/components/ui/file-tree'
 import { Timeline } from '@/components/ui/newacetimeline'
 import { Tooltip } from '@/components/ui/tooltip-card'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { GitBranch, GitCompare, Network, GraduationCap } from 'lucide-react'
+import { GitBranch, GitCompare, Network, GraduationCap, FileText, Layers, MessageSquare } from 'lucide-react'
 import { LearningCard } from '@/components/case-studies/LearningCard'
+import { HalfContentSection } from '@/components/ui/halfcontentsection'
 
 export const metadata = {
   title: 'Cornell University: SC Johnson College of Business - Case Study',
@@ -66,7 +67,7 @@ export default function CornellUniversityCaseStudy() {
       title: 'Insight work',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Insight work (data-informed, human-interpreted)</h3>
+          <h3 className="mt-0">Data-Informed, Human-Interpreted</h3>
           <p>We triangulated quantitative signals (<Tooltip content="Behavior analytics for seeing how people actually navigate via heatmaps, scroll depth, and session replays."><span className="font-bold">Hotjar</span></Tooltip> + <Tooltip content="Google Analytics—traffic and event data that shows what’s happening at scale."><span className="font-bold">GA</span></Tooltip>) with qualitative observation to locate friction and validate what the data couldn’t explain on its own.</p>
           <p>The output wasn’t a giant research deck. It was a practical map:</p>
           <ul>
@@ -158,7 +159,7 @@ export default function CornellUniversityCaseStudy() {
       title: 'Module design',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Module design (system first)</h3>
+          <h3 className="mt-0">Keeping Things Systematic</h3>
           <p>We designed a library of <Tooltip content="Prebuilt, reusable page building blocks that share inputs, variants, and rules—keeping pages consistent and faster to assemble."><span className="font-bold">reusable page modules</span></Tooltip> (heroes, program cards, stats blocks, admissions CTAs, content sections) with:</p>
           <ul>
             <li>clear inputs</li>
@@ -178,7 +179,7 @@ export default function CornellUniversityCaseStudy() {
       title: 'Navigation system',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0"><Tooltip content="A governed set of global, sectional, and in-page patterns with naming/grouping rules so navigation feels predictable everywhere."><span className="font-bold">Navigation system (patterns + rules)</span></Tooltip></h3>
+          <h3 className="mt-0"><Tooltip content="A governed set of global, sectional, and in-page patterns with naming/grouping rules so navigation feels predictable everywhere."><span className="font-bold">Patterns and Rules</span></Tooltip></h3>
           <p>Navigation was treated as a system, not a set of menus.</p>
           <p>We prototyped and iterated:</p>
           <ul>
@@ -210,7 +211,7 @@ export default function CornellUniversityCaseStudy() {
       title: 'Handoff',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Handoff (so it lives beyond us)</h3>
+          <h3 className="mt-0">So our work lives beyond us</h3>
           <p>The work only matters if it survives the handoff.</p>
           <p>We organized the <Tooltip content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> and documentation so Cornell’s team could:</p>
           <ul>
@@ -365,16 +366,84 @@ export default function CornellUniversityCaseStudy() {
 
       {/* Outcomes & Artefacts */}
       <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
           <Heading id="outcomes" level={2}>Outcomes & Artefacts</Heading>
-          <p>Outcomes are directional and safe-to-share:</p>
-          <ul>
-            <li><strong>Time-to-find dropped to under two minutes</strong> for core program information in prototype testing—a directional signal that the IA restructure was working.</li>
-            <li><strong>Three core personas defined and socialized</strong> across stakeholders, giving the team a shared reference point for decisions instead of opinion-based debates.</li>
-            <li><strong>~55 modules and screens wireframed</strong> to establish the system foundation and reduce one-off design decisions going forward.</li>
-            <li><strong>Findability improved</strong> in unmoderated tests on key tasks after IA and navigation prototyping.</li>
-            <li><strong>The documented module library</strong> reduced consistency debt and made future page creation calmer and faster for Cornell's internal team.</li>
-          </ul>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+          <LearningCard 
+            title="Findability & Speed"
+            icon="Search"
+          >
+            Time-to-find dropped to under two minutes for core program information in prototype testing. The IA restructure turned navigation from a guessing game into a predictable path.
+          </LearningCard>
+
+          <LearningCard 
+            title="System Foundation"
+            icon="Layers"
+          >
+            ~55 modules and screens wireframed to establish reusable patterns. Pages stopped being bespoke one-offs and started feeling like one cohesive product.
+          </LearningCard>
+
+          <LearningCard 
+            title="Annotated Wireframes"
+            icon="BookOpen"
+          >
+            Built to last: the documented module library reduced consistency debt and made future page creation calmer and faster for Cornell's internal team—long after we left.
+          </LearningCard>
+        </div>
+
+        <div className="mt-16">
+          <HalfContentSection
+            eyebrow="Handoff Documentation"
+            title="Annotated Wireframes"
+            subtitle="Bridging design intent to implementation"
+            accentColor="emerald"
+            flip={false}
+            fullWidth={true}
+            parallax={true}
+            imageSrc="/images/case-studies/cornell-university/on-page-sidebar-documentation.png"
+            darkModeImageSrc="/images/case-studies/cornell-university/on-page-sidebar-documentation-dark.png"
+            imageAlt="Annotated documentation showing on-page sidebar component anatomy, interactions, and visual feedback states"
+            description={
+              <p>
+                Every module we designed came with supporting documentation that explained not just <em>what</em> something looks like, but <em>how</em> it behaves and <em>why</em> it works that way. This approach reduced interpretation gaps during implementation and gave Cornell's team a reference they could return to long after our engagement ended.
+              </p>
+            }
+            features={[
+              {
+                icon: <Layers className="h-5 w-5" />,
+                title: "Component Anatomy",
+                description: "Each module was broken down into parent and child components, with clear hierarchy and naming conventions that mapped directly to implementation."
+              },
+              {
+                icon: <FileText className="h-5 w-5" />,
+                title: "Interaction Logic",
+                description: "Expand/collapse behaviors, navigation flows, and state changes were documented with specific triggers and expected outcomes."
+              },
+              {
+                icon: <MessageSquare className="h-5 w-5" />,
+                title: "Visual Feedback",
+                description: "Hover states, active indicators, and location highlights were specified so users always know where they are and what's interactive."
+              }
+            ]}
+            additionalContent={
+              <>
+                <p className="mt-8">
+                  The on-page content sidebar shown here is a good example. It needed to reflect the page's hierarchy, allow users to navigate to specific sections, and communicate their current position as they scroll. That's a lot of behavior to get right—and easy to misinterpret without clear documentation.
+                </p>
+                <h3 className="mt-12 text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">
+                  Built for Handoff, Not Just Presentation
+                </h3>
+                <p className="mt-6">
+                  These weren't presentation decks designed to impress stakeholders. They were working documents designed to reduce back-and-forth between design and development. When a developer had a question about edge cases or interaction states, the answer was already documented.
+                </p>
+                <p className="mt-6">
+                  The result: faster implementation, fewer misinterpretations, and a system Cornell's team could maintain and extend without needing to reverse-engineer our intent.
+                </p>
+              </>
+            }
+          />
         </div>
       </section>
 
@@ -405,10 +474,6 @@ export default function CornellUniversityCaseStudy() {
           >
             Clustering, drafts, consistency checks. The value is time and focus, not novelty.
           </LearningCard>
-        </div>
-
-        <div className="prose prose-zinc dark:prose-invert max-w-none mt-8">
-          <p>This project was about clarity at scale: helping SC Johnson feel like one institution online, while still respecting what makes each school distinct.</p>
         </div>
       </section>
 

@@ -164,7 +164,7 @@ export function ImpactMetric({ label, value, suffix, description, className, hig
       onPointerEnter={isHighlighted ? reset : undefined}
     >
       {/* Base neutral border (always visible) */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl border-2 border-zinc-400 dark:border-zinc-600" />
+      <div className="pointer-events-none absolute inset-0 rounded-2xl border-[2px] border-zinc-400 dark:border-zinc-600" />
       
       {/* Proximity-based gradient border overlay (only for highlighted cards) */}
       {isHighlighted && (

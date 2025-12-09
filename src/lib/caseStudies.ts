@@ -96,7 +96,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Ongoing",
     tools: ["Figma", "FigJam", "Miro", "Notion"],
     services: ["Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Product Analytics", "Usability Testing", "PRDs (Specs)", "Team Facilitation"],
-    order: 3,
+    order: 4,
     goal: "Improve navigation and registration through smarter filtering and cross-system user flows."
   },
   {
@@ -114,7 +114,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Figma", "FigJam", "Notion", "Jira", "Unity", "Lottie"],
     services: ["Stakeholder Alignment", "System Design", "Wireframing", "Prototyping", "PRDs (Specs)", "Roadmap", "Team Facilitation", "User Research", "Usability Testing", "Product Analytics", "Experimentation"],
-    order: 4,
+    order: 5,
     goal: "Lead UX across a multi-stakeholder mobile RPG, balancing franchise requirements with player experience."
   },
   {
@@ -132,7 +132,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Microsoft Forms", "Excel", "Obsidian", "Figma"],
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Team Facilitation"],
-    order: 5,
+    order: 6,
     goal: "Align multi-org stakeholders and ship a usable IA/wireframe package for a government social finance initiative."
   },
   {
@@ -150,7 +150,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     status: "Completed",
     tools: ["Figma", "FigJam", "Jira", "Confluence"],
     services: ["User Research", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
-    order: 6,
+    order: 7,
     goal: "Apply systematic UX research and design improvements to lift engagement and fix localization pain across mobile casino games."
   },
   {
@@ -170,6 +170,25 @@ export const caseStudies: CaseStudyMetadata[] = [
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Management", "Product Analytics"],
     order: 7,
     goal: "Turn a fragmented workflow into a coherent, measurable experience that stakeholders could rally behind."
+  },
+  {
+    title: "Houston Ballet",
+    descriptiveTitle: "Mobile Ticketing Experience",
+    client: "Jixaw Technologies",
+    description: "Designed a mobile-first QR ticketing experience for Houston Ballet patrons, from performance discovery to venue arrival.",
+    slug: "houston-ballet",
+    category: "UX",
+    aiAccelerated: true,
+    role: "Product Designer",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "2024",
+    status: "Completed",
+    tools: ["Figma", "Figma Make", "React", "Tailwind CSS"],
+    services: ["Product Vision", "Information Architecture", "Prototyping", "Visual Design", "Interaction Design"],
+    order: 3,
+    goal: "Create a delightful mobile ticketing experience that guides patrons from ticket purchase to their seats.",
+    goalDetail: "An interactive prototype demonstrating the full user journey—from browsing performances to presenting QR tickets at the venue."
   }
 ]
 
