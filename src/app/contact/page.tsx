@@ -3,7 +3,6 @@
 import { Button } from '@/components/Button'
 import { HeroPattern } from '@/components/HeroPattern'
 import { BackgroundRippleEffect } from '@/components/ui/background-ripple-effect'
-import { RainbowButton } from '@/components/ui/rainbow-button'
 import { ContactStepper } from '@/components/ContactStepper'
 import { useState, useRef, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -681,6 +680,18 @@ function ContactContent() {
     onClear: handleClearState,
   })
 
+  // Auto-fade success message and reset form
+  useEffect(() => {
+    if (submitResult?.success) {
+      const timer = setTimeout(() => {
+        setSubmitResult(null)
+        handleClearState()
+      }, 4000) // Fade after 4 seconds
+      
+      return () => clearTimeout(timer)
+    }
+  }, [submitResult, handleClearState])
+
   // Email validation
   const emailRegex = useMemo(() => /^[^\s@]+@[^\s@]+\.[^\s@]+$/, [])
 
@@ -1009,25 +1020,49 @@ function ContactContent() {
         <AnimatePresence>
           {!hasStarted && !submitResult && (
             <motion.div 
-              className="flex justify-center mt-16 mb-8 pointer-events-auto relative z-20"
+              className="flex justify-center mt-6 mb-8 pointer-events-auto relative z-20"
               initial={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="relative">
-                {/* Subtle ambient glow */}
-                <div className="absolute -inset-8 rounded-full bg-gradient-to-r from-rose-500/10 via-violet-500/10 to-blue-500/10 blur-2xl animate-pulse pointer-events-none" />
-                
-                <div className="dark:[&_button]:!bg-[linear-gradient(#18181b,#18181b),linear-gradient(#18181b_50%,rgba(24,24,27,0.6)_80%,rgba(24,24,27,0)),linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] dark:[&_button]:!text-white">
-                  <RainbowButton
-                    size="lg"
+              <motion.div 
+                className="flex justify-center pt-4"
+                animate={{
+                  scale: [1, 1.01, 1],
+                  y: [0, -1, 0]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <div className="relative group">
+                  <motion.div 
+                    className="absolute -inset-3 rounded-lg bg-emerald-500/20 dark:bg-emerald-400/20 blur-xl"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  
+                  <Button 
+                    type="button"
                     onClick={handleBegin}
-                    className="relative text-white dark:text-white px-12 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-shadow"
+                    variant="secondary"
+                    className="relative px-8 py-3 !bg-emerald-50 dark:!bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 hover:!bg-emerald-100 dark:hover:!bg-emerald-900/80 hover:border-emerald-400 dark:hover:border-emerald-400/70 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20 dark:hover:shadow-emerald-400/20 transition-all duration-500 transform"
                   >
-                    Begin
-                  </RainbowButton>
+                    <span className="relative z-10 font-medium">
+                      Begin
+                    </span>
+                  </Button>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -1095,24 +1130,23 @@ function ContactContent() {
                     : 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800'
                 }`}
               >
-                <p className="text-lg font-medium mb-4">{submitResult.message}</p>
-                {submitResult.success && (
-                  <div className="space-y-3">
-                    <Button href="https://calendly.com/kylemcgraw" variant="filled" arrow="right">
-                      Book an intro call
+                {submitResult.success ? (
+                  <p className="text-lg font-medium">
+                    Thank you for your inquiry. I'll get back to you within one business day.
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-lg font-medium mb-4">{submitResult.message}</p>
+                    <Button 
+                      variant="secondary"
+                      onClick={() => {
+                        setSubmitResult(null)
+                        setCurrentStep(5)
+                      }}
+                    >
+                      Try again
                     </Button>
-                  </div>
-                )}
-                {!submitResult.success && (
-                  <Button 
-                    variant="secondary"
-                    onClick={() => {
-                      setSubmitResult(null)
-                      setCurrentStep(5)
-                    }}
-                  >
-                    Try again
-                  </Button>
+                  </>
                 )}
               </div>
             </motion.div>

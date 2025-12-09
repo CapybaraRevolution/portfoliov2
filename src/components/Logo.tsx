@@ -3,8 +3,8 @@
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import logoLight from '@/images/logos/KyleMcGraw_Logo_Light.svg'
-import logoDark from '@/images/logos/KyleMcGraw_Logo_Dark.svg'
+import logoLight from '@/images/logos/KyleMcGraw_Icon_Light.png'
+import logoDark from '@/images/logos/KyleMcGraw_Icon_Dark.png'
 
 interface LogoProps {
   className?: string
@@ -23,24 +23,23 @@ export function Logo({ className }: LogoProps) {
   if (!mounted) {
     return (
       <div 
-        className={`${className || ''} animate-pulse bg-zinc-300 dark:bg-zinc-600 rounded`}
-        style={{ width: '152px', height: '18.5px' }} // Half the logo dimensions for h-10 scaling
+        className={`animate-pulse bg-zinc-300 dark:bg-zinc-600 rounded ${className || 'h-8'}`}
+        style={{ aspectRatio: '140/32' }}
       />
     )
   }
 
   const isDark = resolvedTheme === 'dark'
-  // Dark mode shows light logo, light mode shows dark logo
+  // Dark mode shows light logo (white text), light mode shows dark logo (black text)
   const logoSrc = isDark ? logoLight : logoDark
   
   return (
     <Image
       src={logoSrc}
-      alt="Kyle McGraw - Product Manager"
-      width={304}
-      height={37}
-      className={className || ''}
-      style={{ width: 'auto', height: '100%' }}
+      alt="Kyle McGraw"
+      height={40}
+      width={175}
+      className={`w-auto ${className || 'h-8'}`}
       priority
     />
   )

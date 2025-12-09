@@ -13,6 +13,8 @@ import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
 import { AIFeaturesBento } from '@/components/case-studies/breeze/AIFeaturesBento'
 import { Sparkles, FileText, MessageCircle, Bot } from 'lucide-react'
 import { Tooltip } from '@/components/ui/tooltip-card'
+import { AnimatedSafari } from '@/components/case-studies/AnimatedSafari'
+import { LearningCard } from '@/components/case-studies/LearningCard'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
@@ -91,12 +93,12 @@ export default function BreezeMortgageHubCaseStudy() {
       </SplitSection>
 
       {/* Quote Block */}
-      <QuoteBlock>
+      <QuoteBlock className="mt-48 mb-4">
         Without time on our side, Clarity was the fastest way to buy runway.
       </QuoteBlock>
 
       {/* Before and After Comparison */}
-      <div className="my-12 mb-16">
+      <AnimatedSafari className="mt-4 mb-16">
         <Safari url="breeze-mortgage-hub.com">
           <Compare
             firstImage="/images/case-studies/breeze-mortgage-hub/breezebefore.png"
@@ -108,7 +110,7 @@ export default function BreezeMortgageHubCaseStudy() {
             initialSliderPercentage={50}
           />
         </Safari>
-      </div>
+      </AnimatedSafari>
 
       {/* How I Created Clarity */}
       <section className="mb-16">
@@ -180,13 +182,31 @@ export default function BreezeMortgageHubCaseStudy() {
 
       {/* Learnings */}
       <section>
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
           <Heading id="learnings" level={2}>Learnings</Heading>
-          <ol>
-            <li><strong>In early-stage products, clarity beats velocity.</strong> Wireframes and prototypes prevent expensive "fast" mistakes later.</li>
-            <li><strong>Investors don't want a whitepaper.</strong> They want to feel the product. Interactive prototypes compress explanation time.</li>
-            <li><strong>Mortgages are complex. The UX job is to keep the experience calm and predictable</strong> while the system carries the complexity: clear status, clear steps, the right guidance, and low <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip>.</li>
-          </ol>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+          <LearningCard 
+            title="In early-stage products, clarity beats velocity."
+            icon="Eye"
+          >
+            Wireframes and prototypes prevent expensive "fast" mistakes later.
+          </LearningCard>
+
+          <LearningCard 
+            title="Investors don't want a whitepaper."
+            icon="Presentation"
+          >
+            They want to feel the product. Interactive prototypes compress explanation time.
+          </LearningCard>
+
+          <LearningCard 
+            title="Mortgages are complex. The UX job is to keep the experience calm and predictable."
+            icon="Heart"
+          >
+            While the system carries the complexity: clear status, clear steps, the right guidance, and low <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip>.
+          </LearningCard>
         </div>
       </section>
     </CaseStudyViewer>

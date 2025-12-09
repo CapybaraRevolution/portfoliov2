@@ -453,7 +453,20 @@
   --radius-lg: var(--radius);
 
   --radius-xl: calc(var(--radius) + 4px)
-}
+;
+
+  --animate-shine: shine var(--duration) infinite linear;
+  @keyframes shine {
+  0% {
+    background-position: 0% 0%;
+    }
+  50% {
+    background-position: 100% 100%;
+    }
+  to {
+    background-position: 0% 0%;
+    }
+  }}
 
 :root {
   --radius: 0.625rem;
@@ -531,7 +544,7 @@
   body {
     @apply bg-background text-foreground;
   }
-  
+
   .animate-shine {
     animation: shine var(--duration, 12s) linear infinite;
     background-size: 300% 300%;

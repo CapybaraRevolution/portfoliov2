@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import clsx from 'clsx'
+import * as LucideIcons from 'lucide-react'
 import SafeToolIcon from '@/components/SafeToolIcon'
 
 interface ToolPillProps {
@@ -11,26 +11,41 @@ interface ToolPillProps {
   size?: 'sm' | 'md'
 }
 
+// Placeholder Lucide icons for tools that need brand icon assets
+// TODO: Add brand icons to public/images/tools/ - see docs/TOOL_ICONS_GUIDE.md
+const placeholderIcons: Record<string, keyof typeof LucideIcons> = {
+  'salesforce': 'Cloud',
+  'tableau': 'BarChart',
+  'hotjar': 'Flame',
+  'google_analytics': 'LineChart',
+}
+
+// Mapping of tool slugs/names to Lucide icon names (for tools without brand icons)
+const toolIconMap: Record<string, keyof typeof LucideIcons> = {
+  'ai_tools': 'Sparkles',
+  'ai tools': 'Sparkles',
+  'llm_assistants': 'Brain',
+  'llm assistants': 'Brain',
+  'llm': 'Brain',
+}
+
 export function ToolPill({ 
   slug, 
   name, 
   className,
   size = 'md'
 }: ToolPillProps) {
-  // Generate letter avatar from name for fallback
-  const getInitials = (name: string) => {
-    if (!name || typeof name !== 'string') {
-      return 'XX' // Fallback for undefined/null names
-    }
-    return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .substring(0, 2)
-      .toUpperCase()
-  }
-
-  const initials = getInitials(name)
+  const iconSize = size === 'sm' ? 16 : 20
+  
+  // Check if this tool has a placeholder icon (for tools needing brand icons)
+  const placeholderIconName = placeholderIcons[slug] || null
+  const PlaceholderIcon = placeholderIconName 
+    ? (LucideIcons[placeholderIconName] as React.ComponentType<{ className?: string }>) 
+    : null
+  
+  // Check if we should use a Lucide icon (for tools without brand icons)
+  const iconName = toolIconMap[slug] || toolIconMap[name.toLowerCase()] || null
+  const Icon = iconName ? (LucideIcons[iconName] as React.ComponentType<{ className?: string }>) : null
 
   return (
     <div
@@ -44,11 +59,28 @@ export function ToolPill({
         'relative flex items-center justify-center flex-shrink-0 rounded-md overflow-hidden',
         size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'
       )}>
-        <SafeToolIcon 
-          slug={slug}
-          size={size === 'sm' ? 16 : 20}
-          alt={`${name} logo`}
-        />
+        {Icon ? (
+          // Use Lucide icon for generic tools (AI Tools, LLM assistants)
+          <Icon className={clsx(
+            'text-zinc-700 dark:text-zinc-300',
+            size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'
+          )} />
+        ) : PlaceholderIcon ? (
+          // Show placeholder until brand icon is added to public/images/tools/
+          // Once file is added, SafeToolIcon will automatically pick it up
+          // See docs/TOOL_ICONS_GUIDE.md for instructions
+          <PlaceholderIcon className={clsx(
+            'text-zinc-700 dark:text-zinc-300',
+            size === 'sm' ? 'w-4 h-4' : 'w-5 h-5'
+          )} />
+        ) : (
+          // Use SafeToolIcon (checks for local file first)
+          <SafeToolIcon 
+            slug={slug}
+            size={iconSize}
+            alt={`${name} logo`}
+          />
+        )}
       </div>
       
       <span className={clsx(

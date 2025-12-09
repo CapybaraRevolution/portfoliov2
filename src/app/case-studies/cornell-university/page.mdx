@@ -15,6 +15,7 @@ import { Timeline } from '@/components/ui/newacetimeline'
 import { Tooltip } from '@/components/ui/tooltip-card'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { GitBranch, GitCompare, Network, GraduationCap } from 'lucide-react'
+import { LearningCard } from '@/components/case-studies/LearningCard'
 
 export const metadata = {
   title: 'Cornell University — SC Johnson College of Business - Case Study',
@@ -381,32 +382,26 @@ export default function CornellUniversityCaseStudy() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
-          <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100 mb-3">
-              1) In complex institutions, consistency is a trust feature.
-            </h3>
-            <p className="text-sm text-emerald-800 dark:text-emerald-200">
-              If the same action "looks different" across sections, users start second-guessing the whole system.
-            </p>
-          </div>
+          <LearningCard 
+            title="In complex institutions, consistency is a trust feature."
+            icon="Shield"
+          >
+            If the same action "looks different" across sections, users start second-guessing the whole system.
+          </LearningCard>
 
-          <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100 mb-3">
-              2) Mergers don't just need new visuals. They need shared rules.
-            </h3>
-            <p className="text-sm text-emerald-800 dark:text-emerald-200">
-              Once the rules exist, design and content work stop being a recurring negotiation.
-            </p>
-          </div>
+          <LearningCard 
+            title="Mergers don't just need new visuals. They need shared rules."
+            icon="Layers"
+          >
+            Once the rules exist, design and content work stop being a recurring negotiation.
+          </LearningCard>
 
-          <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100 mb-3">
-              3) AI is most useful when it accelerates the unglamorous parts.
-            </h3>
-            <p className="text-sm text-emerald-800 dark:text-emerald-200">
-              Clustering, drafts, consistency checks. The value is time and focus, not novelty.
-            </p>
-          </div>
+          <LearningCard 
+            title="AI is most useful when it accelerates the unglamorous parts."
+            icon="Sparkles"
+          >
+            Clustering, drafts, consistency checks. The value is time and focus, not novelty.
+          </LearningCard>
         </div>
 
         <div className="prose prose-zinc dark:prose-invert max-w-none mt-8">

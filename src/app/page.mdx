@@ -3,6 +3,7 @@ import { HorizontalLogoMarquee } from '@/components/HorizontalLogoMarquee'
 import { HeroPattern } from '@/components/HeroPattern'
 import { EnhancedPhoto } from '@/components/EnhancedPhoto'
 import { LazyTestimonials } from '@/components/LazyTestimonials'
+import { MorphingText } from '@/components/ui/morphing-text'
 import Image from 'next/image'
 import kyleMcGrawPhoto from '@/images/kyle-mcgraw.jpg'
 
@@ -21,7 +22,7 @@ export const sections = [
 
 <HeroPattern />
 
-<div className="not-prose mb-12 flex justify-center">
+<div className="not-prose mb-6 flex flex-col items-center gap-8">
   <div className="w-full max-w-[420px]">
     <EnhancedPhoto 
       src={kyleMcGrawPhoto}
@@ -32,9 +33,11 @@ export const sections = [
       sizes="(max-width: 640px) 80vw, 420px"
     />
   </div>
+  <MorphingText 
+    texts={['Business Analyst', 'UX Designer', 'Systems Architect', 'Kyle McGraw']}
+    className="text-4xl md:text-6xl lg:text-7xl font-bold text-zinc-900 dark:text-zinc-100"
+  />
 </div>
-
-# Who Am I?
 
 I&apos;m Kyle McGraw: a hybrid UX Designer and Business Analyst who loves turning messy problem spaces into clear, testable ideas. I help teams figure out what they&apos;re actually building, why it matters, and how to get there without wasting effort. {{ className: 'lead' }}
 

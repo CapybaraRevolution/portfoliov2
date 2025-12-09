@@ -7,14 +7,19 @@ import { ProcessRedirect } from '@/components/ProcessRedirect'
 import { SimplifiedServicesGrid } from '@/components/SimplifiedServicesGrid'
 import { Button } from '@/components/Button'
 import { ContactDrawer } from '@/components/ContactDrawer'
+import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
+import { SplitSection } from '@/components/case-studies/SplitSection'
+import { Globe } from '@/components/ui/globe'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
+import { Target, Network, FlaskConical, Rocket, Video, FileText, Clock } from 'lucide-react'
 
 <ProcessRedirect />
 
 <section className="not-prose py-16 sm:py-20">
   <div className="mx-auto max-w-5xl px-6 lg:px-8">
-    <p className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+    <span className="block text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
       Services
-    </p>
+    </span>
     <h1 className="mt-3 text-balance text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-5xl">
       Turning messy problem spaces into clear, testable ideas.
     </h1>
@@ -43,9 +48,9 @@ import { ContactDrawer } from '@/components/ContactDrawer'
 <section className="not-prose py-16 sm:py-20">
   <div className="mx-auto max-w-6xl px-6 lg:px-8">
     <div className="max-w-3xl">
-      <p className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+      <span className="block text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
         How I work
-      </p>
+      </span>
       <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
         Clarity first, then momentum.
       </h2>
@@ -55,105 +60,166 @@ import { ContactDrawer } from '@/components/ContactDrawer'
       </p>
     </div>
 
-    <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {[
-        {
-          title: 'Align',
-          body: 'Frame the problem, surface constraints, and agree on success signals.',
-        },
-        {
-          title: 'Map',
-          body: 'Make the invisible visible—flows, systems, decision points, and risks.',
-        },
-        {
-          title: 'Test',
-          body: 'Prototype or research the riskiest assumptions with clear metrics.',
-        },
-        {
-          title: 'Decide',
-          body: 'Share a decision-ready readout with next moves, owners, and timelines.',
-        },
-      ].map((step) => (
-        <div
-          key={step.title}
-          className="rounded-2xl border border-zinc-900/5 bg-white/70 p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900/60"
-        >
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{step.title}</h3>
-          <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{step.body}</p>
-        </div>
-      ))}
-    </div>
+    <BentoGrid className="mt-10 grid-cols-1 md:grid-cols-2 auto-rows-[16rem]">
+      <BentoCard
+        name="Align"
+        Icon={Target}
+        description="Frame the problem, surface constraints, and agree on what success looks like before touching wireframes."
+        className="col-span-1 relative"
+        background={
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100/50 dark:from-neutral-900/50 dark:to-neutral-800/30">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.08),transparent_60%)]" />
+            <div className="absolute top-4 right-4 text-8xl font-bold text-neutral-200 dark:text-neutral-800/40 select-none">01</div>
+            <GlowingEffect
+              disabled={false}
+              spread={30}
+              proximity={50}
+              blur={0}
+              borderWidth={1}
+              movementDuration={1.5}
+            />
+          </div>
+        }
+      />
+      <BentoCard
+        name="Map"
+        Icon={Network}
+        description="Make the invisible visible—user journeys, system flows, decision points, and the risks hiding in the gaps."
+        className="col-span-1 relative"
+        background={
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100/50 dark:from-neutral-900/50 dark:to-neutral-800/30">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(59,130,246,0.08),transparent_60%)]" />
+            <div className="absolute top-4 right-4 text-8xl font-bold text-neutral-200 dark:text-neutral-800/40 select-none">02</div>
+            <GlowingEffect
+              disabled={false}
+              spread={30}
+              proximity={50}
+              blur={0}
+              borderWidth={1}
+              movementDuration={1.5}
+            />
+          </div>
+        }
+      />
+      <BentoCard
+        name="Test"
+        Icon={FlaskConical}
+        description="Prototype the risky parts before committing code. Validate with users, kill ideas that don't hold up."
+        className="col-span-1 relative"
+        background={
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100/50 dark:from-neutral-900/50 dark:to-neutral-800/30">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(147,51,234,0.08),transparent_60%)]" />
+            <div className="absolute top-4 right-4 text-8xl font-bold text-neutral-200 dark:text-neutral-800/40 select-none">03</div>
+            <GlowingEffect
+              disabled={false}
+              spread={30}
+              proximity={50}
+              blur={0}
+              borderWidth={1}
+              movementDuration={1.5}
+            />
+          </div>
+        }
+      />
+      <BentoCard
+        name="Decide"
+        Icon={Rocket}
+        description="End with a decision-ready package: what we learned, what to do next, and who owns what."
+        className="col-span-1 relative"
+        background={
+          <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100/50 dark:from-neutral-900/50 dark:to-neutral-800/30">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(245,158,11,0.08),transparent_60%)]" />
+            <div className="absolute top-4 right-4 text-8xl font-bold text-neutral-200 dark:text-neutral-800/40 select-none">04</div>
+            <GlowingEffect
+              disabled={false}
+              spread={30}
+              proximity={50}
+              blur={0}
+              borderWidth={1}
+              movementDuration={1.5}
+            />
+          </div>
+        }
+      />
+    </BentoGrid>
   </div>
 </section>
 
 <section className="not-prose py-16 sm:py-20">
   <div className="mx-auto max-w-6xl px-6 lg:px-8">
-    <div className="max-w-3xl">
-      <p className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
-        Engagement models
-      </p>
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
-        Start where you are—move with intent.
-      </h2>
-      <p className="mt-4 text-base text-zinc-600 dark:text-zinc-300">
-        Choose the pace and depth that matches your team. Each model includes clear deliverables and
-        a crisp decision point.
-      </p>
-    </div>
-
-    <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-      {[
-        {
-          title: 'Workshop Sprint',
-          duration: '1–2 weeks',
-          items: [
-            'Facilitated workshops to align on goals and risks',
-            'Artifacts: maps, flows, and prioritized bets',
-            'Decision: go/no-go criteria + next steps',
-          ],
-        },
-        {
-          title: 'Project Engagement',
-          duration: '4–8 weeks',
-          items: [
-            'End-to-end design, research, and requirements',
-            'Prototypes, specs, and usability findings',
-            'Decision: build-ready scope with owners and dates',
-          ],
-        },
-        {
-          title: 'Product Advisory',
-          duration: 'Ongoing',
-          items: [
-            'Weekly/bi-weekly cadence with leadership and teams',
-            'Rapid feedback on roadmaps, flows, and experiments',
-            'Decision: keep momentum without losing clarity',
-          ],
-        },
-      ].map((model) => (
-        <div
-          key={model.title}
-          className="flex h-full flex-col rounded-2xl border border-zinc-900/5 bg-white/70 p-6 shadow-sm dark:border-white/10 dark:bg-zinc-900/60"
-        >
-          <div className="flex items-baseline justify-between gap-4">
-            <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">{model.title}</h3>
-            <span className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
-              {model.duration}
-            </span>
-          </div>
-          <ul className="mt-4 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
-            {model.items.map((item) => (
-              <li key={item} className="flex gap-2">
-                <span aria-hidden="true" className="text-emerald-500 dark:text-emerald-300">
-                  •
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+    <SplitSection
+      align="center"
+      visual={
+        <div className="relative h-[400px] w-full">
+          <Globe
+            config={{
+              width: 800,
+              height: 800,
+              devicePixelRatio: 2,
+              phi: 0,
+              theta: 0.3,
+              dark: 0,
+              diffuse: 0.4,
+              mapSamples: 16000,
+              mapBrightness: 1.2,
+              baseColor: [0.9, 0.9, 0.9],
+              markerColor: [16/255, 185/255, 129/255],
+              glowColor: [0.9, 0.95, 0.9],
+              markers: [
+                { location: [49.2827, -123.1207], size: 0.1 },
+                { location: [43.6532, -79.3832], size: 0.08 },
+                { location: [40.7128, -74.006], size: 0.1 },
+                { location: [51.5074, -0.1278], size: 0.08 },
+                { location: [52.52, 13.405], size: 0.06 },
+                { location: [35.6762, 139.6503], size: 0.07 },
+                { location: [-33.8688, 151.2093], size: 0.06 },
+                { location: [1.3521, 103.8198], size: 0.05 },
+              ],
+            }}
+          />
         </div>
-      ))}
-    </div>
+      }
+    >
+      <span className="block text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+        Location-agnostic
+      </span>
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
+        I work from anywhere and deliver everywhere. Seriously.
+      </h2>
+      <span className="block mt-4 text-base text-zinc-600 dark:text-zinc-300">
+        Ask me about my three years in London, I'll talk your ear off. Whether your team is in one office or spread across time zones, I adapt. Most of my work happens 
+        asynchronously with clear handoffs, so location is never a blocker.
+      </span>
+      <ul className="mt-6 space-y-4">
+        <li className="flex items-start gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+            <Video className="h-4 w-4" />
+          </div>
+          <div>
+            <span className="font-medium text-zinc-900 dark:text-white">Remote workshops</span>
+            <span className="block text-sm text-zinc-600 dark:text-zinc-400">Facilitated sessions via Zoom/Meet with real-time collaboration in Figma or Miro</span>
+          </div>
+        </li>
+        <li className="flex items-start gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+            <FileText className="h-4 w-4" />
+          </div>
+          <div>
+            <span className="font-medium text-zinc-900 dark:text-white">Async-friendly deliverables</span>
+            <span className="block text-sm text-zinc-600 dark:text-zinc-400">Loom walkthroughs, annotated prototypes, and self-serve documentation</span>
+          </div>
+        </li>
+        <li className="flex items-start gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+            <Clock className="h-4 w-4" />
+          </div>
+          <div>
+            <span className="font-medium text-zinc-900 dark:text-white">Timezone flexibility</span>
+            <span className="block text-sm text-zinc-600 dark:text-zinc-400">Overlap hours for sync calls, async updates that don't block your morning</span>
+          </div>
+        </li>
+      </ul>
+    </SplitSection>
   </div>
 </section>
 
