@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { motion, MotionValue } from "motion/react";
 import React from "react";
-import Link from "next/link";
+import { ContactDrawer } from "@/components/ContactDrawer";
 
 const transition = {
   duration: 0,
@@ -36,12 +36,13 @@ export const GoogleGeminiEffect = ({
       
       {/* Button - absolutely positioned to sit on the wires */}
       <div className="absolute left-1/2 -translate-x-1/2 bottom-[35%] md:bottom-[40%] z-20">
-        <Link 
-          href="/contact"
-          className="font-bold bg-white rounded-full md:px-4 md:py-2 px-2 py-1 md:text-base text-black text-xs inline-block"
-        >
-          Get in touch
-        </Link>
+        <ContactDrawer>
+          <button 
+            className="font-bold bg-white rounded-full md:px-4 md:py-2 px-2 py-1 md:text-base text-black text-xs inline-block hover:bg-zinc-100 transition-colors cursor-pointer"
+          >
+            Get in touch
+          </button>
+        </ContactDrawer>
       </div>
       
       {/* SVG paths - positioned behind text */}

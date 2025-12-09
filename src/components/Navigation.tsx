@@ -18,6 +18,7 @@ import { LinkRippleButton } from '@/components/ui/ripple-button'
 
 interface NavGroup {
   title: string
+  hideChildren?: boolean
   links: Array<{
     title: string
     href: string
@@ -159,15 +160,30 @@ function VisibleSectionHighlight({
     (link) => !(link.title === 'Overview' && link.href.includes('/work/overview'))
   )
   
+  // Find current page index in the FILTERED list (matching what's actually rendered)
+  let currentPageIndex = filteredLinks.findIndex((link) => link.href === pathname)
+  if (currentPageIndex === -1) return null
+  
+  // If hideChildren is true, only highlight the parent page link
+  if (group.hideChildren) {
+    let top = currentPageIndex * itemHeight
+    return (
+      <motion.div
+        layout
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.2 } }}
+        exit={{ opacity: 0 }}
+        className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
+        style={{ borderRadius: 8, height: itemHeight, top }}
+      />
+    )
+  }
+  
   // Only count visible sections that actually exist in the current page's sections
   // This prevents the highlight from extending beyond the current page
   let visibleSectionsInCurrentPage = visibleSections.filter(id => 
     id === '_top' || sections.some(section => section.id === id)
   )
-  
-  // Find current page index in the FILTERED list (matching what's actually rendered)
-  let currentPageIndex = filteredLinks.findIndex((link) => link.href === pathname)
-  if (currentPageIndex === -1) return null
   
   // If no sections are visible, show highlight on the page link itself
   if (visibleSectionsInCurrentPage.length === 0) {
@@ -247,13 +263,28 @@ function ActivePageMarker({
   
   if (activePageIndex === -1) return null
   
+  let height = remToPx(1.5) // Fixed height for the green bar - it's a pinpoint indicator
+  
+  // If hideChildren is true, only show green bar at the page link itself
+  if (group.hideChildren) {
+    let top = offset + activePageIndex * itemHeight
+    return (
+      <motion.div
+        layout
+        className="absolute left-2 w-px bg-emerald-500"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { delay: 0.2 } }}
+        exit={{ opacity: 0 }}
+        style={{ top, height }}
+      />
+    )
+  }
+  
   // The green bar shows the PRIMARY section (closest to center-bottom of viewport)
   // This is the first visible section in the array (prioritized by the SectionProvider)
   let primarySectionId = visibleSections.find(id => 
     id === '_top' || sections.some(section => section.id === id)
   )
-  
-  let height = remToPx(1.5) // Fixed height for the green bar - it's a pinpoint indicator
   
   // If no sections from the current page are visible, show green bar at the page link itself
   if (!primarySectionId) {
@@ -399,6 +430,7 @@ function NavigationGroup({
                   >
                     {link.title}
                   </NavLink>
+                {!group.hideChildren && (
                 <AnimatePresence mode="popLayout" initial={false}>
                   {link.href === pathname && sections.length > 0 && (
                     <motion.ul
@@ -427,6 +459,7 @@ function NavigationGroup({
                     </motion.ul>
                   )}
                 </AnimatePresence>
+                )}
                 </motion.li>
               )
             })}
@@ -439,6 +472,7 @@ function NavigationGroup({
 export const navigation: Array<NavGroup> = [
   {
     title: 'About Kyle McGraw',
+    hideChildren: true,
     links: [
       { title: 'About', href: '/' },
       { title: 'Services', href: '/services' },
