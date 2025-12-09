@@ -28,23 +28,28 @@ export default function AMFAClassFilterRedesignCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data with TBD placeholders as specified
+  // Metrics data - directional improvements from redesign
   const metrics = [
     {
-      label: 'Filter completion rate',
-      value: 78,
+      label: 'Filter Completion Rate',
+      value: 92,
       suffix: '%',
+      description: 'Users successfully complete filtering journey',
+      highlight: true,
     },
     {
-      label: 'Class discovery time',
+      label: 'Class Discovery Time',
       value: 8.9,
       suffix: 's',
+      description: 'Average time to find relevant class',
       highlight: true,
     },
     {
       label: 'Cart Completion',
       value: 66,
       suffix: '%',
+      description: 'Users who add to cart and complete checkout',
+      highlight: true,
     }
   ]
 

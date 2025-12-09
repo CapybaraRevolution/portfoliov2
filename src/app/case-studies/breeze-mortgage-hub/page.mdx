@@ -40,24 +40,24 @@ export default function BreezeMortgageHubCaseStudy() {
   // Results metrics - aligned to buyer outcomes
   const metrics = [
     {
-      label: (<><Tooltip containerClassName="inline" content="A startup's first significant round of venture capital financing, typically used to scale operations after proving product-market fit."><span className="font-bold">Series A</span></Tooltip> Secured</>),
-      value: 2.3,
-      suffix: 'M',
-      description: 'The prototype became part of the fundraising narrative',
+      label: 'Design System Components',
+      value: 95,
+      suffix: '+',
+      description: 'Components designed, documented, and annotated in Figma',
       highlight: true,
     },
     {
-      label: 'Investor Momentum',
-      value: 180,
-      suffix: '%',
-      description: 'More meetings, less explanation after interactive prototypes',
+      label: 'Screens Designed',
+      value: 56,
+      description: 'Broken out into 12 distinct user flows.',
       highlight: true,
     },
     {
-      label: 'Decision time cut 96%',
+      label: 'Feature Design Time Cut',
       value: 96,
       suffix: '%',
-      description: 'From "six months of circling" to alignment in a week',
+      description: 'From "six months of circling back" to alignment in a week',
+      highlight: true,
     }
   ]
 
@@ -150,8 +150,8 @@ export default function BreezeMortgageHubCaseStudy() {
           <p>This wasn't a single handoff file. It was a connected package:</p>
           <ul>
             <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
-            <li>A componentized <Tooltip containerClassName="inline" content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> foundation with interaction rules and states</li>
-            <li><Tooltip containerClassName="inline" content="Deliverables designed to empower teams—wireframes, personas, user journey maps—giving everyone shared context on user needs and product direction."><span className="font-bold">UX artifacts</span></Tooltip> (journeys, <Tooltip containerClassName="inline" content="The structural blueprint of how content and features are organized—mapping where things live and how users navigate between them."><span className="font-bold">IA maps</span></Tooltip>, decision notes) anchored to user outcomes</li>
+            <li>A componentized <Tooltip containerClassName="inline" content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> foundation with interaction rules, states, and colour tokens.</li>
+            <li><Tooltip containerClassName="inline" content="Deliverables designed to empower teams—wireframes, personas, user journey maps—giving everyone shared context on user needs and product direction."><span className="font-bold">UX artefacts</span></Tooltip> (journeys, <Tooltip containerClassName="inline" content="The structural blueprint of how content and features are organized—mapping where things live and how users navigate between them."><span className="font-bold">IA maps</span></Tooltip>, decision notes) anchored to user outcomes</li>
             <li>Dev-friendly <Tooltip containerClassName="inline" content="Specific conditions a feature must meet to be considered 'done'—removes ambiguity about what success looks like before code is written."><span className="font-bold">acceptance criteria</span></Tooltip> and requirements for high-risk or ambiguous areas</li>
           </ul>
         </div>
@@ -188,24 +188,24 @@ export default function BreezeMortgageHubCaseStudy() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
           <LearningCard 
-            title="In early-stage products, clarity beats velocity."
+            title="In early-stages: clarity beats velocity."
             icon="Eye"
           >
-            Wireframes and prototypes prevent expensive "fast" mistakes later.
+            Wireframes and prototypes discover where things bend or break. This prevents expensive mistakes later.
           </LearningCard>
 
           <LearningCard 
             title="Investors don't want a whitepaper."
             icon="Presentation"
           >
-            They want to feel the product. Interactive prototypes compress explanation time.
+            They want to feel the product. Interactive prototypes compress explanation time. Less time arguing = more time to refining the product.
           </LearningCard>
 
           <LearningCard 
-            title="Mortgages are complex. The UX job is to keep the experience calm and predictable."
+            title="Mortgages are complex. Keep the user's experience simple."
             icon="Heart"
           >
-            While the system carries the complexity: clear status, clear steps, the right guidance, and low <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip>.
+            When the system requires complexity: use progressive disclosure, clear status, the right guidance. Ensuring low <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip>.
           </LearningCard>
         </div>
       </section>

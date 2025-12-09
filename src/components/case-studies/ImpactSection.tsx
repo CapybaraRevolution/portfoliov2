@@ -35,7 +35,7 @@ export function ImpactSection({ title = 'Impact', metrics, className, contained 
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]">
+      <div className="mt-6 grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))] [grid-auto-rows:1fr]">
         {metrics.map((metric) => {
           const metricKey =
             typeof metric.label === 'string'

@@ -44,9 +44,9 @@ export const caseStudies: CaseStudyMetadata[] = [
   //   goal: "Design internal tools that let researchers and business leaders analyze budgets, track outcomes, and manage cross-system data with confidence."
   // },
   {
-    title: "Cornell University — SC Johnson College of Business",
+    title: "Cornell University: SC Johnson College of Business",
     descriptiveTitle: "Cornell University",
-    client: "Cornell University — SC Johnson College of Business",
+    client: "Cornell University: SC Johnson College of Business",
     description: "Unifying three distinct institutions through a cohesive digital experience",
     slug: "cornell-university",
     category: "Strategy",

@@ -18,7 +18,7 @@ import { GitBranch, GitCompare, Network, GraduationCap } from 'lucide-react'
 import { LearningCard } from '@/components/case-studies/LearningCard'
 
 export const metadata = {
-  title: 'Cornell University — SC Johnson College of Business - Case Study',
+  title: 'Cornell University: SC Johnson College of Business - Case Study',
   description: 'Unifying three distinct institutions through a cohesive digital experience',
 }
 
@@ -41,20 +41,23 @@ export default function CornellUniversityCaseStudy() {
   // Results metrics - directional
   const metrics = [
     {
-      label: 'Time To Find Program Info',
-      value: 1.7,
-      suffix: ' min',
-      description: 'Directional from prototype testing',
-    },
-    {
-      label: 'Personas Defined',
-      value: 3,
-      description: 'Core personas to anchor decisions',
+      label: 'Findability Improvement',
+      value: 92,
+      suffix: '%',
+      description: 'Users successfully found program info in under 2 minutes',
+      highlight: true,
     },
     {
       label: 'Modules & Screens Wireframed',
       value: 55,
       description: 'System-first approach to reduce one-off decisions',
+      highlight: true,
+    },
+    {
+      label: 'Personas Defined',
+      value: 3,
+      description: 'Core personas to anchor decisions across stakeholders',
+      highlight: true,
     },
   ]
 
