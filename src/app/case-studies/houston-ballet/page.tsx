@@ -6,6 +6,7 @@ import { SplitSection, OrbitContainer } from '@/components/case-studies/SplitSec
 import { OrbitingCircles } from '@/components/ui/orbiting-circles'
 import { LearningCard } from '@/components/case-studies/LearningCard'
 import { Tooltip } from '@/components/ui/tooltip-card'
+import { Highlighter } from '@/components/ui/highlighter'
 import { Ticket, ArrowLeftRight, CreditCard, Smartphone, QrCode, MapPin, Building2, Users, Calendar, Armchair } from 'lucide-react'
 import PrototypeEmbed from '@/components/prototypes/houston-ballet/PrototypeEmbed'
 
@@ -169,7 +170,15 @@ export default function HoustonBalletCaseStudy() {
 
       {/* Quote */}
       <QuoteBlock className="my-16">
-        The best way to demonstrate a mobile experience is to let people use it.
+        The{' '}
+        <Highlighter action="underline">
+          best way
+        </Highlighter>
+        {' '}to demonstrate a mobile experience is to{' '}
+        <Highlighter action="highlight">
+          let people use it
+        </Highlighter>
+        .
       </QuoteBlock>
 
       {/* Interactive Prototype + Design Approach - Side by Side on Desktop */}

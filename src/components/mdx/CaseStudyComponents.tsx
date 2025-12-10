@@ -1,3 +1,5 @@
+"use client"
+
 import Image from 'next/image'
 import clsx from 'clsx'
 import { 
@@ -7,6 +9,7 @@ import {
   ExclamationCircleIcon
 } from '@heroicons/react/20/solid'
 import { IMAGE_SIZES } from '@/lib/imageSizes'
+import { motion } from 'motion/react'
 
 // Section component with Protocol-style dividers
 interface SectionProps {
@@ -159,7 +162,7 @@ export function Stat({ label, value, note, className }: StatProps) {
   )
 }
 
-// Figure component with caption
+// Figure component with caption and scroll animation
 interface FigureProps {
   src: string
   alt: string
@@ -182,7 +185,16 @@ export function Figure({
   priority = false
 }: FigureProps) {
   return (
-    <figure className={clsx('my-8', className)}>
+    <motion.figure 
+      className={clsx('my-8', className)}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+    >
       <div className="relative overflow-hidden rounded-xl shadow-lg">
         <Image
           src={src}
@@ -202,7 +214,7 @@ export function Figure({
           {caption}
         </figcaption>
       )}
-    </figure>
+    </motion.figure>
   )
 }
 
@@ -330,14 +342,23 @@ export function CaseImage({
   const imagePriority = priority !== undefined ? priority : isHero
 
   return (
-    <figure className={clsx(
-      'my-8',
-      {
-        'my-12': variant === 'hero',
-        'my-4': variant === 'logo'
-      },
-      className
-    )}>
+    <motion.figure 
+      className={clsx(
+        'my-8',
+        {
+          'my-12': variant === 'hero',
+          'my-4': variant === 'logo'
+        },
+        className
+      )}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+    >
       {variant === 'logo' ? (
         // Half-width logo aligned left for content flow
         <div className="py-6">
@@ -388,7 +409,7 @@ export function CaseImage({
           </div>
         </div>
       )}
-    </figure>
+    </motion.figure>
   )
 }
 

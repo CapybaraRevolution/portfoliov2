@@ -1,3 +1,7 @@
+"use client"
+
+import { motion } from 'motion/react'
+
 interface GoalBlockProps {
   goal: string
   goalDetail?: string
@@ -6,7 +10,16 @@ interface GoalBlockProps {
 
 export function GoalBlock({ goal, goalDetail, className = '' }: GoalBlockProps) {
   return (
-    <section className={`mb-12 ${className}`}>
+    <motion.section 
+      className={`mb-12 ${className}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+    >
       <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">
         {goal}
       </h2>
@@ -15,6 +28,6 @@ export function GoalBlock({ goal, goalDetail, className = '' }: GoalBlockProps) 
           {goalDetail}
         </p>
       )}
-    </section>
+    </motion.section>
   )
 }

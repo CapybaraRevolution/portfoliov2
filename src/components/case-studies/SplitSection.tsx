@@ -1,4 +1,7 @@
+"use client"
+
 import { cn } from '@/lib/utils'
+import { FadeIn } from '@/components/ui/fade-in'
 
 interface SplitSectionProps {
   /** The text content (prose section) */
@@ -20,6 +23,7 @@ interface SplitSectionProps {
  * 
  * Provides consistent spacing and visual continuity between text and content.
  * The visual content fills the available space while maintaining proper alignment.
+ * Includes scroll-triggered animations for elegant reveal on first view.
  * 
  * @example
  * <SplitSection
@@ -53,7 +57,8 @@ export function SplitSection({
         )}
       >
         {/* Text content */}
-        <div
+        <FadeIn 
+          variant={flip ? 'fadeLeft' : 'fadeRight'}
           className={cn(
             'prose prose-zinc dark:prose-invert max-w-none relative',
             flip && 'lg:order-2'
@@ -63,10 +68,12 @@ export function SplitSection({
             <span id={id} className="absolute -top-24" aria-hidden="true" />
           )}
           {children}
-        </div>
+        </FadeIn>
 
         {/* Visual content - fills available space with proper centering */}
-        <div
+        <FadeIn
+          variant={flip ? 'fadeRight' : 'fadeLeft'}
+          delay={0.15}
           className={cn(
             'relative flex items-center justify-center min-h-[280px]',
             flip && 'lg:order-1'
@@ -75,7 +82,7 @@ export function SplitSection({
           <div className="relative w-full h-full flex items-center justify-center">
             {visual}
           </div>
-        </div>
+        </FadeIn>
       </div>
     </section>
   )

@@ -3,6 +3,7 @@ import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure } from '@/components/mdx/CaseStudyComponents'
 import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { SplitSection } from '@/components/case-studies/SplitSection'
+import { ProseSection, ProseBlock } from '@/components/case-studies/ProseSection'
 import { IntegrationIconCloud } from '@/components/ui/integration-icon-cloud'
 import { AnimatedBeamDemo } from '@/components/ui/fixing-inputs'
 import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
@@ -15,6 +16,7 @@ import { Sparkles, FileText, MessageCircle, Bot } from 'lucide-react'
 import { Tooltip } from '@/components/ui/tooltip-card'
 import { AnimatedSafari } from '@/components/case-studies/AnimatedSafari'
 import { LearningCard } from '@/components/case-studies/LearningCard'
+import { FadeIn } from '@/components/ui/fade-in'
 
 export const metadata = {
   title: 'Breeze Mortgage Hub - Case Study',
@@ -113,39 +115,41 @@ export default function BreezeMortgageHubCaseStudy() {
       </AnimatedSafari>
 
       {/* How I Created Clarity */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+      <ProseSection>
+        <ProseBlock>
           <Heading id="how-i-created-clarity" level={2} label="Before and After">How I Created Clarity</Heading>
           <p>I began with <Tooltip containerClassName="inline" content="The research phase where you learn about users, business goals, and constraints before designing anything—interviews, audits, and lots of 'why?' questions."><span className="font-bold">discovery</span></Tooltip>, an audit of what existed, and <Tooltip containerClassName="inline" content="Systematic review of competitor products to identify patterns, gaps, and opportunities—not to copy, but to understand industry conventions."><span className="font-bold">competitive scanning</span></Tooltip> across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, <Tooltip containerClassName="inline" content="Reducing uncertainty by testing ideas before building—cheaper to fix a prototype than production code."><span className="font-bold">de-risked</span></Tooltip> future flows, and forced the information architecture to reveal where it would bend or break.</p>
-        </div>
+        </ProseBlock>
 
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+        <ProseBlock delay={0.1}>
           <p>From there, I designed a full system—not isolated screens:</p>
           <ul>
             <li>End-to-end critical paths (application → documents → review → payments)</li>
             <li><Tooltip containerClassName="inline" content="Standardized rules for how UI elements look and behave—ensuring buttons, inputs, and feedback work consistently across the product."><span className="font-bold">Component patterns</span></Tooltip> for form fields, validation, status, and <Tooltip containerClassName="inline" content="A UX technique that reveals information gradually as needed, preventing overwhelm by showing only what's relevant at each step."><span className="font-bold">progressive disclosure</span></Tooltip> (so the UI stays calm even when the process isn't)</li>
             <li><Tooltip containerClassName="inline" content="Interactive mockups that simulate real product behavior—stakeholders can click through flows instead of imagining them from static screens."><span className="font-bold">Clickable prototypes</span></Tooltip> with meaningful states and transitions (not "<Tooltip containerClassName="inline" content="Demos that only show the ideal scenario—ignoring errors, edge cases, and the messy reality users actually encounter."><span className="font-bold">happy path theatre</span></Tooltip>")</li>
           </ul>
-        </div>
-      </section>
+        </ProseBlock>
+      </ProseSection>
 
       {/* Where AI Fit */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
+      <ProseSection>
+        <ProseBlock className="mb-8">
           <Heading id="where-ai-fit" level={2} label="AI Integration & Design">Practical AI</Heading>
           <p>We identified areas where AI could reduce grunt work without introducing risk. The goal was to assist with real end-user experiences—like predictive document classification, so humans can spend more time confirming instead of individually classifying bulk document uploads (T4/tax forms, income statements, proof of employment, etc.).</p>
-        </div>
+        </ProseBlock>
 
         {/* Bento Grid showcasing AI features */}
-        <div className="my-12">
-          <AIFeaturesBento />
-        </div>
-      </section>
+        <FadeIn delay={0.15}>
+          <div className="my-12">
+            <AIFeaturesBento />
+          </div>
+        </FadeIn>
+      </ProseSection>
 
       {/* What Shipped */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+      <ProseSection>
+        <ProseBlock>
           <Heading id="what-shipped" level={2}>What Shipped</Heading>
           <p>This wasn't a single handoff file. It was a connected package:</p>
           <ul>
@@ -154,42 +158,45 @@ export default function BreezeMortgageHubCaseStudy() {
             <li><Tooltip containerClassName="inline" content="Deliverables designed to empower teams—wireframes, personas, user journey maps—giving everyone shared context on user needs and product direction."><span className="font-bold">UX artefacts</span></Tooltip> (journeys, <Tooltip containerClassName="inline" content="The structural blueprint of how content and features are organized—mapping where things live and how users navigate between them."><span className="font-bold">IA maps</span></Tooltip>, decision notes) anchored to user outcomes</li>
             <li>Dev-friendly <Tooltip containerClassName="inline" content="Specific conditions a feature must meet to be considered 'done'—removes ambiguity about what success looks like before code is written."><span className="font-bold">acceptance criteria</span></Tooltip> and requirements for high-risk or ambiguous areas</li>
           </ul>
-        </div>
+        </ProseBlock>
 
         {/* Image Gallery with lightbox */}
-        <div className="my-12">
-          <FocusImageGallery 
-            images={[
-              {
-                src: "/images/case-studies/breeze-mortgage-hub/breezedash.png",
-                alt: "Broker workflow dashboard",
-                caption: "Dashboard that turns pipeline status into action, filterable by stage in the application process."
-              },
-              {
-                src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png",
-                alt: "Client portal with tabbed navigation",
-                caption: "Client portal showing the selected client's status in the application process. Tabbed information architecture offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads."
-              },
-              {
-                src: "/images/case-studies/breeze-mortgage-hub/Chat.png",
-                alt: "Modernized chat system",
-                caption: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients."
-              }
-            ]}
-          />
-        </div>
-      </section>
+        <FadeIn delay={0.1}>
+          <div className="my-12">
+            <FocusImageGallery 
+              images={[
+                {
+                  src: "/images/case-studies/breeze-mortgage-hub/breezedash.png",
+                  alt: "Broker workflow dashboard",
+                  caption: "Dashboard that turns pipeline status into action, filterable by stage in the application process."
+                },
+                {
+                  src: "/images/case-studies/breeze-mortgage-hub/Lawyer-Submit.png",
+                  alt: "Client portal with tabbed navigation",
+                  caption: "Client portal showing the selected client's status in the application process. Tabbed information architecture offered a wide breadth of information. As designers, we should always try to let the complexity live in the UI, as opposed to our users' heads."
+                },
+                {
+                  src: "/images/case-studies/breeze-mortgage-hub/Chat.png",
+                  alt: "Modernized chat system",
+                  caption: "A modernized chat system allowed brokers to strategize or escalate particularly troublesome clients."
+                }
+              ]}
+            />
+          </div>
+        </FadeIn>
+      </ProseSection>
 
       {/* Learnings */}
-      <section>
-        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
+      <ProseSection className="mb-0">
+        <ProseBlock className="mb-8">
           <Heading id="learnings" level={2}>Learnings</Heading>
-        </div>
+        </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
           <LearningCard 
             title="In early-stages: clarity beats velocity."
             icon="Eye"
+            index={0}
           >
             Wireframes and prototypes discover where things bend or break. This prevents expensive mistakes later.
           </LearningCard>
@@ -197,6 +204,7 @@ export default function BreezeMortgageHubCaseStudy() {
           <LearningCard 
             title="Investors don't want a whitepaper."
             icon="Presentation"
+            index={1}
           >
             They want to feel the product. Interactive prototypes compress explanation time. Less time arguing = more time to refining the product.
           </LearningCard>
@@ -204,11 +212,12 @@ export default function BreezeMortgageHubCaseStudy() {
           <LearningCard 
             title="Mortgages are complex. Keep the user's experience simple."
             icon="Heart"
+            index={2}
           >
             When the system requires complexity: use progressive disclosure, clear status, the right guidance. Ensuring low <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip>.
           </LearningCard>
         </div>
-      </section>
+      </ProseSection>
     </CaseStudyViewer>
   )
 }

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { GoalBlock } from '@/components/case-studies/GoalBlock'
 import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { SplitSection, OrbitContainer } from '@/components/case-studies/SplitSection'
+import { ProseSection, ProseBlock } from '@/components/case-studies/ProseSection'
 import { ImageGallery } from '@/components/ui/image-gallery'
 import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
 import { Heading } from '@/components/Heading'
@@ -17,6 +18,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { GitBranch, GitCompare, Network, GraduationCap, FileText, Layers, MessageSquare } from 'lucide-react'
 import { LearningCard } from '@/components/case-studies/LearningCard'
 import { HalfContentSection } from '@/components/ui/halfcontentsection'
+import { FadeIn } from '@/components/ui/fade-in'
 
 export const metadata = {
   title: 'Cornell University: SC Johnson College of Business - Case Study',
@@ -277,11 +279,11 @@ export default function CornellUniversityCaseStudy() {
       </SplitSection>
 
       {/* The Problem Section - mixed full-width and split layout */}
-      <section className="mb-16 space-y-8">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+      <ProseSection className="space-y-8">
+        <ProseBlock>
           <Heading id="the-mess" level={2} className="mt-0">The Problem</Heading>
           <p>The core issue wasn't a lack of content. It was a lack of shared rules.</p>
-        </div>
+        </ProseBlock>
 
         <SplitSection
           align="center"
@@ -329,7 +331,7 @@ export default function CornellUniversityCaseStudy() {
           </ul>
         </SplitSection>
 
-      </section>
+      </ProseSection>
 
       {/* Quote Block */}
       <QuoteBlock>
@@ -337,21 +339,23 @@ export default function CornellUniversityCaseStudy() {
       </QuoteBlock>
 
       {/* How I Created Clarity */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+      <ProseSection>
+        <ProseBlock>
           <Heading id="how-i-created-clarity" level={2} label="Approach">
             How I Created Clarity
           </Heading>
           <p>I worked as a UX strategist and systems designer. My job was to turn a multi-stakeholder, multi-site reality into a coherent digital experience with rules the team could actually run with. I approached this like any other "merged product": start by understanding where users fall off, then build a system that prevents the same problems from reappearing.</p>
-        </div>
-        <div className="mt-10">
-          <Timeline data={approachTimeline} />
-        </div>
-      </section>
+        </ProseBlock>
+        <FadeIn delay={0.1}>
+          <div className="mt-10">
+            <Timeline data={approachTimeline} />
+          </div>
+        </FadeIn>
+      </ProseSection>
 
       {/* Where AI Helped */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
+      <ProseSection>
+        <ProseBlock>
           <Heading id="where-ai-helped" level={2} label="AI Integration">Practical AI</Heading>
           <p>The strategy with AI on this project wasn't "AI magic." It was internal acceleration—fewer hours spent on admin work, more time making the system coherent. Fast first drafts, fast consistency checks, more iteration momentum, more time for the real work: stakeholder alignment, simplifying journeys, attacking user problems.</p>
           <p><strong>Where AI helped:</strong></p>
@@ -361,19 +365,20 @@ export default function CornellUniversityCaseStudy() {
             <li><strong><Tooltip content="Automated checks that flag inconsistent labels and naming collisions across sections so we can standardize intentionally."><span className="font-bold">Terminology linting</span></Tooltip>:</strong> flagged inconsistent labels between schools so we could standardize intentionally.</li>
             <li><strong>Doc automation:</strong> generated checklists from module specs to speed QA and reduce missed edge cases.</li>
           </ul>
-        </div>
-      </section>
+        </ProseBlock>
+      </ProseSection>
 
       {/* Outcomes & Artefacts */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
+      <ProseSection>
+        <ProseBlock className="mb-8">
           <Heading id="outcomes" level={2}>Outcomes & Artefacts</Heading>
-        </div>
+        </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
           <LearningCard 
             title="Findability & Speed"
             icon="Search"
+            index={0}
           >
             Time-to-find dropped to under two minutes for core program information in prototype testing. The IA restructure turned navigation from a guessing game into a predictable path.
           </LearningCard>
@@ -381,6 +386,7 @@ export default function CornellUniversityCaseStudy() {
           <LearningCard 
             title="System Foundation"
             icon="Layers"
+            index={1}
           >
             ~55 modules and screens wireframed to establish reusable patterns. Pages stopped being bespoke one-offs and started feeling like one cohesive product.
           </LearningCard>
@@ -388,6 +394,7 @@ export default function CornellUniversityCaseStudy() {
           <LearningCard 
             title="Annotated Wireframes"
             icon="BookOpen"
+            index={2}
           >
             Built to last: the documented module library reduced consistency debt and made future page creation calmer and faster for Cornell's internal team—long after we left.
           </LearningCard>
@@ -445,18 +452,19 @@ export default function CornellUniversityCaseStudy() {
             }
           />
         </div>
-      </section>
+      </ProseSection>
 
       {/* Learnings */}
-      <section className="mb-16">
-        <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
+      <ProseSection>
+        <ProseBlock className="mb-8">
           <Heading id="learnings" level={2}>Learnings</Heading>
-        </div>
+        </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
           <LearningCard 
             title="In complex institutions, consistency is a trust feature."
             icon="Shield"
+            index={0}
           >
             If the same action "looks different" across sections, users start second-guessing the whole system.
           </LearningCard>
@@ -464,6 +472,7 @@ export default function CornellUniversityCaseStudy() {
           <LearningCard 
             title="Mergers don't just need new visuals. They need shared rules."
             icon="Layers"
+            index={1}
           >
             Once the rules exist, design and content work stop being a recurring negotiation.
           </LearningCard>
@@ -471,19 +480,22 @@ export default function CornellUniversityCaseStudy() {
           <LearningCard 
             title="AI is most useful when it accelerates the unglamorous parts."
             icon="Sparkles"
+            index={2}
           >
             Clustering, drafts, consistency checks. The value is time and focus, not novelty.
           </LearningCard>
         </div>
-      </section>
+      </ProseSection>
 
       {/* Credits */}
-      <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3>Credits</h3>
-          <p>Cornell SC Johnson College of Business, Briteweb team, and the stakeholders who trusted us to bridge three institutions into one cohesive digital experience.</p>
-        </div>
-      </section>
+      <FadeIn>
+        <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <h3>Credits</h3>
+            <p>Cornell SC Johnson College of Business, Briteweb team, and the stakeholders who trusted us to bridge three institutions into one cohesive digital experience.</p>
+          </div>
+        </section>
+      </FadeIn>
     </CaseStudyViewer>
   )
 }

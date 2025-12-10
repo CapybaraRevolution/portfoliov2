@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import { motion } from 'motion/react'
 
 interface Feature {
   icon: ReactNode
@@ -141,15 +142,25 @@ export function HalfContentSection({
   )
 
   return (
-    <div 
+    <motion.div 
       ref={containerRef}
       className={`relative bg-white dark:bg-zinc-900 w-full ${className}`}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6 }}
     >
       <div className={`${fullWidth ? 'w-full' : 'mx-auto max-w-7xl'} lg:flex lg:justify-between lg:items-start ${fullWidth ? 'px-0' : 'lg:px-8'} xl:justify-end`}>
         {/* Visual Side */}
-        <div className={`lg:flex lg:w-1/2 lg:shrink lg:grow-0 xl:absolute xl:inset-y-0 xl:w-1/2 ${
-          flip ? 'xl:left-1/2' : 'xl:right-1/2'
-        }`}>
+        <motion.div 
+          className={`lg:flex lg:w-1/2 lg:shrink lg:grow-0 xl:absolute xl:inset-y-0 xl:w-1/2 ${
+            flip ? 'xl:left-1/2' : 'xl:right-1/2'
+          }`}
+          initial={{ opacity: 0, x: flip ? 30 : -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
           <div 
             ref={imageRef}
             className={`relative h-80 lg:h-full lg:w-full lg:grow xl:ml-0 overflow-hidden ${
@@ -158,11 +169,17 @@ export function HalfContentSection({
           >
             {visualContent}
           </div>
-        </div>
+        </motion.div>
 
         {/* Content Side */}
         {fullWidth ? (
-          <div className="px-6 lg:px-8 lg:flex lg:w-1/2 lg:shrink-0 xl:w-1/2 lg:items-start">
+          <motion.div 
+            className="px-6 lg:px-8 lg:flex lg:w-1/2 lg:shrink-0 xl:w-1/2 lg:items-start"
+            initial={{ opacity: 0, x: flip ? -30 : 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
             <div className={`mx-auto max-w-2xl pt-16 pb-24 sm:pt-20 sm:pb-32 lg:w-full lg:max-w-lg lg:flex-none lg:pt-16 xl:w-full ${
               flip ? 'lg:mr-8 lg:ml-0' : 'lg:ml-8'
             }`}>
@@ -210,9 +227,15 @@ export function HalfContentSection({
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <div className="px-6 lg:contents">
+          <motion.div 
+            className="px-6 lg:contents"
+            initial={{ opacity: 0, x: flip ? -30 : 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
             <div className={`mx-auto max-w-2xl pt-16 pb-24 sm:pt-20 sm:pb-32 lg:w-full lg:max-w-lg lg:flex-none lg:pt-16 xl:w-1/2 ${
               flip ? 'lg:mr-8 lg:ml-0' : 'lg:mr-0 lg:ml-8'
             }`}>
@@ -260,10 +283,10 @@ export function HalfContentSection({
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
