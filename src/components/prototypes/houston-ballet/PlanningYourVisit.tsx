@@ -13,7 +13,7 @@ export default function PlanningYourVisit({ onBack }: PlanningYourVisitProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-[#F6F6F6] h-full overflow-auto pb-6"
+      className="bg-[#F6F6F6] h-full overflow-auto pb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
     >
       {/* Header */}
       <div className="px-[17px] pt-12 pb-4 sticky top-0 bg-[#322F3C] z-10">

@@ -61,7 +61,7 @@ export default function QRCodeView({ performance, onBack }: QRCodeViewProps) {
       </motion.div>
 
       {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-auto bg-[#F6F6F6]">
+      <div className="flex-1 overflow-auto bg-[#F6F6F6] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="flex flex-col items-center px-4 py-6">
           {/* QR Code Card with All Key Info */}
           <motion.div 
@@ -159,7 +159,7 @@ export default function QRCodeView({ performance, onBack }: QRCodeViewProps) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="absolute inset-0 bg-white z-50 p-6 pt-12 overflow-auto"
+            className="absolute inset-0 bg-white z-50 p-6 pt-12 overflow-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             <button
               onClick={() => setShowDetails(false)}

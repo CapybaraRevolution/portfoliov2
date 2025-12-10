@@ -39,7 +39,7 @@ export default function PerformanceList({
   })
 
   return (
-    <div className="bg-[#F6F6F6] h-full overflow-auto pb-6">
+    <div className="bg-[#F6F6F6] h-full overflow-auto pb-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {/* Header - Added more padding for notch */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}

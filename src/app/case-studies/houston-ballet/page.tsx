@@ -35,7 +35,7 @@ export default function HoustonBalletCaseStudy() {
     {
       label: 'Screens Designed',
       value: 8,
-      description: 'Complete user flows from tickets to venue planning',
+      description: 'Complete flows from tickets to venue planning',
       highlight: true,
     },
     {
@@ -105,7 +105,7 @@ export default function HoustonBalletCaseStudy() {
         </p>
         <p>
           This case study showcases one piece of that work: a mobile ticketing app concept that demonstrates the 
-          end-to-end patron journey. Rather than describe it, I built a functional prototype you can interact with below.
+          end-to-end <Tooltip containerClassName="inline" content="The complete path a customer takes from discovering a performance through attending it—encompassing purchase, preparation, arrival, and post-event experience."><span className="font-bold">patron journey</span></Tooltip>. Rather than describe it, I built a functional prototype you can interact with below.
         </p>
       </SplitSection>
 
@@ -128,7 +128,7 @@ export default function HoustonBalletCaseStudy() {
               <h3 className="text-zinc-900 dark:text-white font-semibold">Purchase Paths</h3>
             </div>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Wireframes and flow definitions for ticket purchase journeys, from single tickets to subscription packages.
+              <Tooltip containerClassName="inline" content="Low-fidelity page layouts that show structure and functionality without visual design—used to test concepts before committing to high-fidelity design."><span className="font-bold">Wireframes</span></Tooltip> and <Tooltip containerClassName="inline" content="Step-by-step paths users take to complete a task, mapping screens, decisions, and interactions from start to finish."><span className="font-bold">flow definitions</span></Tooltip> for ticket purchase journeys, from single tickets to <Tooltip containerClassName="inline" content="Multi-ticket packages offering season access or bundles—requiring different purchase logic than single-event tickets."><span className="font-bold">subscription packages</span></Tooltip>.
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function HoustonBalletCaseStudy() {
 
         <div className="prose prose-zinc dark:prose-invert max-w-none mt-8">
           <p>
-            The prototype below represents a different angle: the <strong>day-of experience</strong>. What happens 
+            The prototype below represents a different angle: the <Tooltip containerClassName="inline" content="The set of interactions and touchpoints that happen on performance day—finding tickets, presenting them for entry, and accessing venue information."><span className="font-bold">day-of experience</span></Tooltip>. What happens 
             after you've bought your ticket? How do you find it, present it, and navigate your visit?
           </p>
         </div>
@@ -195,7 +195,7 @@ export default function HoustonBalletCaseStudy() {
               <h3 className="mt-0">Design Approach</h3>
               <p>
                 The design language draws from Houston Ballet's sophisticated brand while prioritizing 
-                usability in a theater environment—low light, quick interactions, one-handed use.
+                usability in a theater environment—low light, quick interactions, <Tooltip containerClassName="inline" content="Mobile interfaces designed for thumb-reachable zones and single-hand operation—critical for users carrying bags, coats, or holding a companion's hand."><span className="font-bold">one-handed use</span></Tooltip>.
               </p>
             </div>
 
@@ -207,7 +207,7 @@ export default function HoustonBalletCaseStudy() {
                     <QrCode className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
                   <div>
-                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">High Contrast QR Codes</h4>
+                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1"><Tooltip containerClassName="inline" content="Design with strong visual separation between elements—critical for readability in challenging lighting and ensuring QR codes scan reliably."><span className="font-bold">High Contrast</span></Tooltip> QR Codes</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Maximum contrast with dark purple borders ensures reliable scanning in varying lobby lighting conditions.
                     </p>
@@ -221,7 +221,7 @@ export default function HoustonBalletCaseStudy() {
                     <Armchair className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
                   <div>
-                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Glanceable Information</h4>
+                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1"><Tooltip containerClassName="inline" content="Information design that allows users to extract key details in under 3 seconds without focused reading—essential for quick reference in busy environments."><span className="font-bold">Glanceable Information</span></Tooltip></h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Essential details—date, time, venue, and seat info—are visible without extra taps. Ushers often ask 
                       "which section?" while scanning; keeping seat info on the QR screen eliminates that back-and-forth.
@@ -236,7 +236,7 @@ export default function HoustonBalletCaseStudy() {
                     <MapPin className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
                   <div>
-                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Planning as First-Class</h4>
+                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Planning as <Tooltip containerClassName="inline" content="Treating a feature as core to the experience with prominent placement and dedicated resources—not an afterthought or buried in menus."><span className="font-bold">First-Class</span></Tooltip></h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Parking, dining, and venue details get their own dedicated section—not buried in settings. For occasional 
                       theater-goers, this practical info often matters more than account preferences.
@@ -276,7 +276,7 @@ export default function HoustonBalletCaseStudy() {
         <div className="prose prose-zinc dark:prose-invert max-w-none">
           <Heading id="outcomes" level={2}>Outcomes</Heading>
           <p>
-            The prototype you interacted with above. A functional demonstration of the day-of patron experience—from 
+            The <Tooltip containerClassName="inline" content="A working, interactive model of the product that users can click through and experience—going beyond static mockups to demonstrate real behavior and flows."><span className="font-bold">prototype</span></Tooltip> you interacted with above. A functional demonstration of the day-of patron experience—from 
             finding your ticket to navigating your visit—built in a single day using Figma Make.
           </p>
         </div>
@@ -293,7 +293,7 @@ export default function HoustonBalletCaseStudy() {
             title="Figma Make accelerates prototyping"
             icon="Zap"
           >
-            Building a functional React prototype directly from Figma collapsed what would have been 
+            Building a functional <Tooltip containerClassName="inline" content="A JavaScript library for building user interfaces—industry standard for creating interactive web applications with reusable components."><span className="font-bold">React</span></Tooltip> prototype directly from <Tooltip containerClassName="inline" content="A tool that automatically converts Figma designs into production-ready React code—reducing the gap between design and implementation."><span className="font-bold">Figma Make</span></Tooltip> collapsed what would have been 
             days of development into hours. The tool isn't perfect, but the speed-to-demo tradeoff is worth it.
           </LearningCard>
 
@@ -309,8 +309,8 @@ export default function HoustonBalletCaseStudy() {
             title="Interactive beats static"
             icon="Play"
           >
-            Stakeholders align faster when they can tap through a prototype rather than reviewing 
-            flow diagrams. This prototype exists because showing is faster than explaining.
+            <Tooltip containerClassName="inline" content="Decision-makers who need to approve, fund, or support the project—executives, clients, investors, or cross-functional partners."><span className="font-bold">Stakeholders</span></Tooltip> align faster when they can tap through a prototype rather than reviewing{' '}
+            <Tooltip containerClassName="inline" content="Visual diagrams showing the sequence of screens and decisions users encounter—useful for planning but less visceral than interactive prototypes."><span className="font-bold">flow diagrams</span></Tooltip>. This prototype exists because showing is faster than explaining.
           </LearningCard>
         </div>
       </section>
