@@ -10,6 +10,10 @@ import { type Section } from '@/components/SectionProvider'
 
 import '@/styles/tailwind.css'
 
+export const viewport = {
+  themeColor: 'white',
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://kylemcgraw.io'),
   title: {

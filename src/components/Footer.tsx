@@ -1,5 +1,6 @@
 'use client'
 
+import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -62,7 +63,7 @@ export function Footer() {
       <div className="lg:ml-72 xl:ml-80">
         {/* Full-width divider spanning the sidebar-offset area */}
         <div className="border-t border-zinc-900/10 dark:border-white/10">
-          <div className={container}>
+          <div className={clsx(container, 'px-4 sm:px-6 lg:px-8')}>
             {/* Footer content */}
             <div className="py-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-zinc-500 dark:text-zinc-400">
               <p className="order-2 sm:order-1">

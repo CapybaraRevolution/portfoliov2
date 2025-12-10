@@ -12,6 +12,7 @@ type Props = {
 
 const ALIAS: Record<string, string> = {
   figjam: 'figma',        // the only special-case fallback
+  figma_make: 'figma',    // Alias for Figma Make
 }
 
 // Mapping of tool slugs to Simple Icons slugs (for tools not in our local assets)
@@ -23,6 +24,9 @@ const SIMPLE_ICONS_MAP: Record<string, string | null> = {
   'google_analytics': 'googleanalytics',
   'google-analytics': 'googleanalytics',
   'ga4': 'googleanalytics',
+  'react': 'react',
+  'tailwind_css': 'tailwindcss',
+  'tailwindcss': 'tailwindcss',
   'llm_assistants': null, // No simple icon for this, will use Lucide fallback
   'ai_tools': null,
   'ai tools': null,
@@ -36,7 +40,7 @@ export default function SafeToolIcon({ slug, size = 24, alt, className }: Props)
 
   const simpleIconSlug = SIMPLE_ICONS_MAP[slug] || SIMPLE_ICONS_MAP[initialSlug]
   const simpleIconUrl = simpleIconSlug 
-    ? `https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/${simpleIconSlug}.svg`
+    ? `https://cdn.simpleicons.org/${simpleIconSlug}`
     : null
 
   const handleError = () => {
@@ -52,7 +56,18 @@ export default function SafeToolIcon({ slug, size = 24, alt, className }: Props)
     }
   }
 
-  if (!visible) return null
+  if (!visible) {
+    // Graceful fallback: First letter of slug
+    return (
+      <span 
+        className={`flex h-full w-full items-center justify-center bg-zinc-100 text-[10px] font-bold text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 uppercase ${className}`}
+        role="img"
+        aria-label={alt ?? `${slug} icon placeholder`}
+      >
+        {slug.charAt(0)}
+      </span>
+    )
+  }
   
   // Use regular img tag for external CDN URLs (Simple Icons)
   if (useSimpleIcon && simpleIconUrl) {
