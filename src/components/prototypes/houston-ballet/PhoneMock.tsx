@@ -54,14 +54,7 @@ export default function PhoneMock({ className = '' }: PhoneMockProps) {
             borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
           }}
         >
-          <div 
-            className="w-full h-full overflow-hidden"
-            style={{
-              borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
-              transform: 'scale(1.002)',
-              transformOrigin: 'center',
-            }}
-          >
+          <div className="w-full h-full">
             <HoustonBalletApp />
           </div>
         </div>
