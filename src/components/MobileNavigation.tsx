@@ -76,7 +76,6 @@ function MobileNavigationDialog({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
               className="fixed inset-0 top-14 bg-zinc-400/20 backdrop-blur-xs dark:bg-black/40"
               onClick={close}
             />
