@@ -9,7 +9,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { submitContactForm, type FormData } from './actions'
 import { CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid'
-import { trackEvent, trackContactFormSubmission } from '@/components/GoogleAnalytics'
+import { 
+  trackEvent, 
+  trackContactFormSubmission,
+  trackContactPageView,
+  trackContactStepCompleted,
+  trackContactFormAbandoned
+} from '@/components/GoogleAnalytics'
 import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
 import { useContactFormPersistence, getInitialContactFormState } from '@/hooks/useContactFormPersistence'
 
@@ -616,6 +622,40 @@ function ContactContent() {
   const [emailFocused, setEmailFocused] = useState(initialState?.emailFocused ?? false)
   const confettiRef = useRef<ConfettiRef>(null)
   
+  // Analytics tracking refs
+  const pageStartTime = useRef<number>(Date.now())
+  const stepStartTime = useRef<number>(Date.now())
+  
+  // Track contact page view on mount
+  useEffect(() => {
+    const referrer = document.referrer
+    const referringPage = sessionStorage.getItem('contactSource') || 'direct'
+    trackContactPageView(referrer, referringPage)
+    // Clear the stored source after tracking
+    sessionStorage.removeItem('contactSource')
+  }, [])
+  
+  // Track step timing when step changes
+  useEffect(() => {
+    stepStartTime.current = Date.now()
+  }, [currentStep])
+  
+  // Track form abandonment on page unload
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (hasStarted && !submitResult?.success) {
+        const timeSpent = Math.round((Date.now() - pageStartTime.current) / 1000)
+        const fieldsCompleted = Object.entries(formData)
+          .filter(([_, value]) => value && value.trim() !== '')
+          .map(([key]) => key)
+        trackContactFormAbandoned(currentStep, timeSpent, fieldsCompleted)
+      }
+    }
+    
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [hasStarted, currentStep, formData, submitResult])
+  
   // Clear state function
   const handleClearState = useCallback(() => {
     setHasStarted(false)
@@ -760,8 +800,12 @@ function ContactContent() {
       }
       
       if (canProceed()) {
+        // Track step completion with timing
+        const timeOnStep = Math.round((Date.now() - stepStartTime.current) / 1000)
+        const stepName = STEPS[currentStep - 1]?.name || `Step ${currentStep}`
+        trackContactStepCompleted(currentStep, stepName, timeOnStep)
+        
         setCurrentStep(currentStep + 1)
-        trackEvent('contact_step_completed', { step: currentStep })
         // Clear validation attempted state when successfully proceeding (field is now valid)
         if (currentStep === 2) {
           setValidationAttempted(prev => ({ ...prev, project: false }))

@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { Providers } from '@/app/providers'
 import { Layout } from '@/components/Layout'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
+import { Hotjar } from '@/components/Hotjar'
 import { AdminProvider } from '@/contexts/AdminContext'
 import { type Section } from '@/components/SectionProvider'
 
@@ -87,6 +88,7 @@ export default async function RootLayout({
         </Providers>
         <Analytics />
         <GoogleAnalytics />
+        <Hotjar />
       </body>
     </html>
   )

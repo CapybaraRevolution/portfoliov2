@@ -12,6 +12,7 @@ import { GridPattern } from '@/components/GridPattern'
 import { AIBadge } from '@/components/ui/AIBadge'
 import { NavigationChip } from '@/components/NavigationChip'
 import { type Project } from '@/data/projects'
+import { trackPortfolioProjectClick } from '@/components/GoogleAnalytics'
 
 interface RefactoredProjectCardProps {
   project: Project
@@ -205,9 +206,15 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
     </div>
   )
 
+  const handleCardClick = () => {
+    if (!isDisabled) {
+      trackPortfolioProjectClick(project.title)
+    }
+  }
+
   return isDisabled ? (
     <div className="group">{cardContent}</div>
   ) : (
-    <Link href={project.href} className="group">{cardContent}</Link>
+    <Link href={project.href} className="group" onClick={handleCardClick}>{cardContent}</Link>
   )
 }

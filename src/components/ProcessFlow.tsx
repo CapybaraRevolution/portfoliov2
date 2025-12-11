@@ -66,6 +66,7 @@ import { PackageIcon } from '@/components/icons/PackageIcon'
 import { CheckIcon } from '@/components/icons/CheckIcon'
 import { GridPattern } from '@/components/GridPattern'
 import { standardizedSkills, getSkillById } from '@/data/standardizedSkills'
+import { trackProcessDrawerOpen } from '@/components/GoogleAnalytics'
 
 interface ProcessStep {
   id: number
@@ -2284,9 +2285,10 @@ function ProcessFlowContent() {
 
   // No highlight cleanup needed
 
-  // Basic card click passthrough
-  const handleCardClickWithAnalytics = useCallback((title: string) => {
-    handleCardClick(title)
+  // Basic card click passthrough with analytics tracking
+  const handleCardClickWithAnalytics = useCallback((slug: string) => {
+    trackProcessDrawerOpen(slug)
+    handleCardClick(slug)
   }, [])
 
   // Drawer handlers for all steps

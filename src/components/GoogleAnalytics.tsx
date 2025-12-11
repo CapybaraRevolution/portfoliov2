@@ -92,3 +92,138 @@ export const trackPortfolioProjectClick = (projectName: string) => {
     project_name: projectName,
   })
 }
+
+// Scroll depth tracking
+export const trackScrollDepth = (page: string, depth: number, timeToReach: number) => {
+  trackEvent('scroll_depth', {
+    page,
+    depth_percent: depth,
+    time_to_reach_seconds: timeToReach,
+  })
+}
+
+// Filter usage tracking
+export const trackFilterApplied = (filterType: string, filterValue: string, resultsCount: number) => {
+  trackEvent('filter_applied', {
+    filter_type: filterType,
+    filter_value: filterValue,
+    results_count: resultsCount,
+  })
+}
+
+// External link tracking
+export const trackExternalLinkClick = (url: string, linkText: string) => {
+  trackEvent('external_link_click', {
+    url,
+    link_text: linkText,
+  })
+}
+
+// Resume download tracking
+export const trackResumeDownload = (source: string) => {
+  trackEvent('resume_download', {
+    source,
+  })
+}
+
+// CTA click tracking
+export const trackCTAClick = (ctaName: string, destination: string, location: string) => {
+  trackEvent('cta_click', {
+    cta_name: ctaName,
+    destination,
+    location,
+  })
+}
+
+// Navigation click tracking
+export const trackNavigationClick = (linkName: string, destination: string, source: string) => {
+  trackEvent('nav_click', {
+    link_name: linkName,
+    destination,
+    source,
+  })
+}
+
+// Case study entry tracking
+export const trackCaseStudyEntry = (caseStudyName: string, referrer: string) => {
+  trackEvent('case_study_entry', {
+    case_study: caseStudyName,
+    referrer,
+    entry_source: getReferrerType(referrer),
+  })
+}
+
+// Contact page/drawer tracking
+export const trackContactPageView = (referrer: string, referringPage: string) => {
+  trackEvent('contact_opened', {
+    referrer,
+    source_page: referringPage,
+  })
+}
+
+export const trackContactDrawerOpen = (triggerLocation: string) => {
+  trackEvent('contact_drawer_opened', {
+    trigger_location: triggerLocation,
+  })
+}
+
+export const trackContactFormAbandoned = (lastStep: number, timeSpent: number, fieldsCompleted: string[]) => {
+  trackEvent('contact_form_abandoned', {
+    abandoned_at_step: lastStep,
+    time_spent_seconds: timeSpent,
+    fields_completed: fieldsCompleted.join(','),
+  })
+}
+
+export const trackContactStepCompleted = (stepNumber: number, stepName: string, timeOnStep: number) => {
+  trackEvent('contact_step_completed', {
+    step_number: stepNumber,
+    step_name: stepName,
+    time_on_step_seconds: timeOnStep,
+  })
+}
+
+// Section visibility tracking (for case studies)
+export const trackSectionViewed = (sectionName: string, page: string, timeVisible: number) => {
+  trackEvent('section_viewed', {
+    section_name: sectionName,
+    page,
+    time_visible_seconds: timeVisible,
+  })
+}
+
+// Time on page tracking
+export const trackTimeOnPage = (page: string, duration: number) => {
+  trackEvent('time_on_page', {
+    page,
+    duration_seconds: duration,
+  })
+}
+
+// Helper to categorize referrer
+function getReferrerType(referrer: string): string {
+  if (!referrer) return 'direct'
+  
+  try {
+    const url = new URL(referrer)
+    const hostname = url.hostname
+    
+    // Check if it's internal
+    if (hostname.includes('kylemcgraw.io') || hostname.includes('localhost')) {
+      const path = url.pathname
+      if (path === '/' || path === '') return 'homepage'
+      if (path.includes('/work')) return 'work_overview'
+      if (path.includes('/process')) return 'process_page'
+      if (path.includes('/case-studies')) return 'other_case_study'
+      return 'internal_other'
+    }
+    
+    // External sources
+    if (hostname.includes('google')) return 'google_search'
+    if (hostname.includes('linkedin')) return 'linkedin'
+    if (hostname.includes('twitter') || hostname.includes('x.com')) return 'twitter'
+    return 'external_other'
+  } catch {
+    return 'unknown'
+  }
+}

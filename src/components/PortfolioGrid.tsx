@@ -8,6 +8,7 @@ import { skillCategories, getAllSkillNames, standardizedSkills } from '@/data/st
 import { RefactoredProjectCard } from '@/components/RefactoredProjectCard'
 import { FilterChip } from '@/components/FilterChip'
 import { AIToggle } from '@/components/AIToggle'
+import { trackFilterApplied } from '@/components/GoogleAnalytics'
 
 // Create a mapping from new skill names to legacy project skill names
 const skillNameMapping: Record<string, string[]> = {
@@ -196,10 +197,15 @@ export function PortfolioGrid() {
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category)
     updateURL({ category })
+    
+    // Track filter usage
+    const newFilteredProjects = filterProjects(category, legacySkillsForFiltering, aiAccelerated)
+    trackFilterApplied('category', category, newFilteredProjects.length)
   }
 
   const handleSkillToggle = useCallback((skill: string) => {
     const newSkills = new Set(selectedSkills)
+    const action = newSkills.has(skill) ? 'removed' : 'added'
     if (newSkills.has(skill)) {
       newSkills.delete(skill)
     } else {
@@ -207,11 +213,20 @@ export function PortfolioGrid() {
     }
     setSelectedSkills(newSkills)
     updateURL({ skills: newSkills })
-  }, [selectedSkills, updateURL])
+    
+    // Track filter usage
+    const newLegacySkills = Array.from(newSkills).flatMap(s => findMatchingProjectSkills(s))
+    const newFilteredProjects = filterProjects(activeCategory, newLegacySkills, aiAccelerated)
+    trackFilterApplied('skill', `${skill} (${action})`, newFilteredProjects.length)
+  }, [selectedSkills, updateURL, activeCategory, aiAccelerated])
 
   const handleAIToggle = (checked: boolean) => {
     setAiAccelerated(checked)
     updateURL({ ai: checked })
+    
+    // Track filter usage
+    const newFilteredProjects = filterProjects(activeCategory, legacySkillsForFiltering, checked)
+    trackFilterApplied('ai_accelerated', checked ? 'enabled' : 'disabled', newFilteredProjects.length)
   }
 
   const clearAllFilters = () => {

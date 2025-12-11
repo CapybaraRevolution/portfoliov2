@@ -1,7 +1,10 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CaseStudyHeader } from '@/components/CaseStudyHeader'
+import { trackCaseStudyEntry, trackCaseStudyView } from '@/components/GoogleAnalytics'
+import { useScrollDepth } from '@/hooks/useScrollDepth'
+import { useTimeOnPage } from '@/hooks/useTimeOnPage'
 import { GoalBlock } from '@/components/case-studies/GoalBlock'
 import { ImpactSection } from '@/components/case-studies/ImpactSection'
 import { CaseStudyFooterNav } from '@/components/case-studies/CaseStudyFooterNav'
@@ -21,6 +24,19 @@ interface CaseStudyViewerProps {
 
 export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: CaseStudyViewerProps) {
   const [servicesExpanded, setServicesExpanded] = useState(false)
+
+  // Track case study entry and view
+  useEffect(() => {
+    const referrer = document.referrer
+    trackCaseStudyEntry(caseStudy.title, referrer)
+    trackCaseStudyView(caseStudy.title)
+  }, [caseStudy.title])
+
+  // Track scroll depth
+  useScrollDepth({ page: `/case-studies/${caseStudy.slug}` })
+
+  // Track time on page
+  useTimeOnPage({ page: `/case-studies/${caseStudy.slug}` })
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
