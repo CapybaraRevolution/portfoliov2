@@ -419,7 +419,7 @@ export function Timeline() {
         {timelineData.map((node, index) => {
           // Only show neon glow after entrance animations have completed
           const isActive = animationsReady && activeNodeIndex === index
-          const isDisabled = node.comingSoon || node.underConstruction
+          const isDisabled = !!(node.comingSoon || node.underConstruction)
           const neonColors = getNeonColors(index, isDisabled)
           const nodeContent = (
             <div className={isDisabled ? 'opacity-60' : ''}>
