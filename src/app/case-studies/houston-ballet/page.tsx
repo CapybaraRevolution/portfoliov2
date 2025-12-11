@@ -84,7 +84,7 @@ export default function HoustonBalletCaseStudy() {
           </p>
         </ProseBlock>
 
-        <ProseBlock delay={0.1}>
+        <ProseBlock delay={0.1} className="mt-8">
           <h3>The Workflow That Actually Worked</h3>
           <p>
             Here's what I did: I started with grey boxes. Literal rectangles representing the <Tooltip containerClassName="inline" content="The structural blueprint of how screens, content, and features are organized. The skeleton before the skin."><span className="font-bold">information architecture</span></Tooltip>. Header here, list of tickets there, navigation at the bottom. No colors, no polish. Just structure.
@@ -143,7 +143,7 @@ export default function HoustonBalletCaseStudy() {
             I'm not going to pretend this was seamless. The exported code needed cleanup. Naming conventions were inconsistent, some components were over-nested, and the responsive behavior required manual adjustment. If you're expecting "prompt → production," you'll be disappointed.
           </p>
           <p>
-            But here's the thing: I wasn't expecting that. I was expecting "prompt → starting point I can work with." And that's exactly what I got. The time I saved on boilerplate meant more time on the decisions that actually matter: interaction patterns, information hierarchy, the stuff that makes a prototype <em>useful</em> instead of just pretty.
+            But here's the thing: I wasn't expecting that. I was expecting "prompt → something we can look at together and pick apart." And that's exactly what I got. The time I saved on boilerplate meant more time on the decisions that actually matter: interaction patterns, information hierarchy, the stuff that makes a prototype <em>useful</em> instead of just pretty.
           </p>
         </ProseBlock>
       </ProseSection>
