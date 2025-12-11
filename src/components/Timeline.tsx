@@ -142,7 +142,6 @@ const getTimelineData = (): TimelineNode[] => {
   const caseStudies = getAllCaseStudies()
   
   const caseStudyNodes = caseStudies
-    .filter(study => !study.comingSoon) // Exclude coming soon case studies
     .sort((a, b) => {
       // Coming soon items go last
       if (a.comingSoon && !b.comingSoon) return 1
