@@ -147,7 +147,6 @@ export function AIFeaturesBento() {
         Icon={Sparkles}
         className="col-span-3 md:col-span-1 lg:col-span-2 cursor-pointer"
         onClick={() => handleCardClick('smart-form')}
-        hideContentOnHover={true}
         isMobileActive={isMobileCentered(0)}
         background={
           <div className="absolute inset-0">
@@ -330,7 +329,6 @@ export function AIFeaturesBento() {
         Icon={MessageCircle}
         className="col-span-3 md:col-span-1 lg:col-span-2 cursor-pointer"
         onClick={() => handleCardClick('chat')}
-        hideContentOnHover={true}
         isMobileActive={isMobileCentered(2)}
         background={
           <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/50 dark:to-neutral-800/50">

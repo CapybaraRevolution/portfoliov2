@@ -17,7 +17,6 @@ interface BentoCardProps extends ComponentPropsWithoutRef<"div"> {
   cta?: string
   badge?: ReactNode
   onClick?: () => void
-  hideContentOnHover?: boolean
   /** When true, applies hover-like styles on mobile (for scroll-based center detection) */
   isMobileActive?: boolean
 }
@@ -46,7 +45,6 @@ const BentoCard = forwardRef<HTMLDivElement, BentoCardProps>(({
   cta,
   badge,
   onClick,
-  hideContentOnHover = false,
   isMobileActive = false,
   ...props
 }, ref) => (
@@ -70,11 +68,7 @@ const BentoCard = forwardRef<HTMLDivElement, BentoCardProps>(({
     <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-neutral-50 via-neutral-50/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/60 dark:to-transparent pointer-events-none z-[5]" />
     
     <div className="relative z-10 p-4">
-      <div className={cn(
-        "pointer-events-none flex flex-col gap-1 transition-opacity duration-300",
-        hideContentOnHover && "group-hover:opacity-0",
-        hideContentOnHover && isMobileActive && "opacity-0"
-      )}>
+      <div className="pointer-events-none flex flex-col gap-1">
         <Icon className="h-12 w-12 text-neutral-700 dark:text-neutral-300" />
         <div className="flex items-center gap-2">
           <h3 className="text-xl font-semibold text-neutral-700 dark:text-neutral-300">
