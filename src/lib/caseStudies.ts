@@ -159,7 +159,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     services: ["User Research", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
     order: 7,
     goal: "Apply systematic UX research and design improvements to lift engagement and fix localization pain across mobile casino games.",
-    underConstruction: true
+    comingSoon: true
   },
   {
     title: "Boveda Tr1n1ty",
@@ -178,7 +178,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Management", "Product Analytics"],
     order: 7,
     goal: "Turn a fragmented workflow into a coherent, measurable experience that stakeholders could rally behind.",
-    underConstruction: true
+    comingSoon: true
   },
   {
     title: "Houston Ballet",
