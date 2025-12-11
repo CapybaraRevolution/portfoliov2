@@ -163,7 +163,7 @@ export function HalfContentSection({
         >
           <div 
             ref={imageRef}
-            className={`relative h-80 lg:h-full lg:w-full lg:grow xl:ml-0 overflow-hidden ${
+            className={`relative h-80 lg:h-full lg:w-full lg:grow xl:ml-0 overflow-hidden border border-zinc-200 dark:border-zinc-700 ${
               flip ? 'lg:-mr-8 xl:mr-0' : fullWidth ? '' : 'lg:-ml-8'
             }`}
           >

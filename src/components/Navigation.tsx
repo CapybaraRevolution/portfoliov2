@@ -402,13 +402,13 @@ function NavigationGroup({
             isTimelineVisible = entry.isIntersecting
             
             if (entry.isIntersecting) {
-              // Wait 12 seconds before showing the arrow
+              // Wait 10 seconds before showing the arrow
               if (!arrowDelayTimeout) {
                 arrowDelayTimeout = setTimeout(() => {
                   if (isTimelineVisible) {
                     setShouldShowFirstCaseStudyArrow(true)
                   }
-                }, 12000)
+                }, 10000)
               }
             } else {
               // Clear the timeout and hide arrow when scrolling away
