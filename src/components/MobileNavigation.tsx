@@ -2,7 +2,6 @@
 
 import {
   Dialog,
-  DialogBackdrop,
   DialogPanel,
 } from '@headlessui/react'
 import { motion, AnimatePresence, PanInfo } from 'framer-motion'
@@ -70,9 +69,7 @@ function MobileNavigationDialog({
         {isOpen && (
           <>
             {/* Backdrop */}
-            <DialogBackdrop
-              as={motion.div}
-              static
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
