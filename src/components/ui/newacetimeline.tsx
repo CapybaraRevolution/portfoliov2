@@ -1,6 +1,5 @@
 "use client";
 import {
-  useMotionValueEvent,
   useScroll,
   useTransform,
   motion,
@@ -11,6 +10,29 @@ interface TimelineEntry {
   title: string;
   content: React.ReactNode;
 }
+
+// Animation variants for timeline items
+const itemVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 30,
+  },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+  },
+};
+
+const titleVariants = {
+  hidden: { 
+    opacity: 0, 
+    x: -20,
+  },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+  },
+};
 
 export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -37,42 +59,107 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       className="w-full font-sans md:px-10"
       ref={containerRef}
     >
-
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
         {data.map((item, index) => (
-          <div
-            key={item.title || index}
-            className="flex justify-start pt-10 md:pt-40 md:gap-10"
+          <motion.div
+            key={index}
+            className="flex flex-col md:flex-row justify-start pt-8 md:pt-40 md:gap-10"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{
+              duration: 0.6,
+              delay: 0.1,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            variants={itemVariants}
           >
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-white dark:bg-zinc-900 flex items-center justify-center">
-                <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
+            {/* Desktop: sticky sidebar with dot and title */}
+            <div className="hidden md:flex sticky flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
+              <div className="h-10 absolute left-3 w-10 rounded-full bg-white dark:bg-zinc-900 flex items-center justify-center">
+                <motion.div 
+                  className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2"
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: 0.4, 
+                    delay: 0.2,
+                    ease: [0.34, 1.56, 0.64, 1] 
+                  }}
+                />
               </div>
-              <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
+              <motion.h3 
+                className="text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500"
+                variants={titleVariants}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.15,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+              >
                 {item.title}
-              </h3>
+              </motion.h3>
             </div>
 
-            <div className="relative pl-20 pr-4 md:pl-4 w-full">
-              <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
+            {/* Mobile: title header with dot indicator */}
+            <div className="md:hidden flex items-center gap-3 mb-4">
+              <div className="h-8 w-8 shrink-0 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center">
+                <motion.div 
+                  className="h-3 w-3 rounded-full bg-gradient-to-br from-purple-500 to-blue-500"
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: 0.4, 
+                    delay: 0.2,
+                    ease: [0.34, 1.56, 0.64, 1] 
+                  }}
+                />
+              </div>
+              <motion.h3 
+                className="text-xl font-bold text-neutral-600 dark:text-neutral-400"
+                variants={titleVariants}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.15,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+              >
                 {item.title}
-              </h3>
-              {item.content}{" "}
+              </motion.h3>
             </div>
-          </div>
+
+            {/* Content area - full width on mobile */}
+            <div className="relative w-full md:pl-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.25,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+              >
+                {item.content}
+              </motion.div>
+            </div>
+          </motion.div>
         ))}
+        {/* Vertical progress line - hidden on mobile for cleaner look */}
         <div
           style={{
             height: height + "px",
           }}
-          className="absolute md:left-8 left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-neutral-200 dark:via-neutral-700 to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)] "
+          className="hidden md:block absolute left-8 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-neutral-200 dark:via-neutral-700 to-transparent to-[99%] [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
         >
           <motion.div
             style={{
               height: heightTransform,
               opacity: opacityTransform,
             }}
-            className="absolute inset-x-0 top-0  w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"
+            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"
           />
         </div>
       </div>

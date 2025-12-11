@@ -12,17 +12,21 @@ import { useIsInsideMobileNavigation, useMobileNavigationStore } from '@/compone
 import { useSectionStore } from '@/components/SectionProvider'
 import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
-import { getAllCaseStudies } from '@/lib/caseStudies'
+import { getCaseStudiesForNavigation } from '@/lib/caseStudies'
 import { CloseButton } from '@headlessui/react'
 import { LinkRippleButton } from '@/components/ui/ripple-button'
+
+interface NavLink {
+  title: string
+  href: string
+  badge?: 'coming-soon' | 'under-construction'
+  disabled?: boolean
+}
 
 interface NavGroup {
   title: string
   hideChildren?: boolean
-  links: Array<{
-    title: string
-    href: string
-  }>
+  links: NavLink[]
 }
 
 function useInitialValue<T>(value: T, condition = true) {
@@ -42,7 +46,7 @@ function TopLevelNavItem({
       <CloseButton
         as={Link}
         href={href}
-        className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+        className="block py-2.5 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
       >
         {children}
       </CloseButton>
@@ -57,6 +61,8 @@ function NavLink({
   active = false,
   isAnchorLink = false,
   shouldPulse = false,
+  badge,
+  disabled = false,
 }: {
   href: string
   children: React.ReactNode
@@ -64,8 +70,17 @@ function NavLink({
   active?: boolean
   isAnchorLink?: boolean
   shouldPulse?: boolean
+  badge?: 'coming-soon' | 'under-construction'
+  disabled?: boolean
 }) {
   const isOverview = children === 'Overview' && href.includes('/work/overview') && !isAnchorLink
+  
+  // Badge content - small ghosted tag matching text color
+  const badgeContent = badge && (
+    <span className="ml-1.5 inline-flex items-center rounded px-1 py-px text-[9px] font-medium whitespace-nowrap opacity-50 border border-current/40">
+      Soon
+    </span>
+  )
   
   // Render Overview as a MagicUI ghosted ripple button
   if (isOverview) {
@@ -97,13 +112,32 @@ function NavLink({
     )
   }
   
+  // Disabled state (coming soon or under construction)
+  if (disabled) {
+    return (
+      <span
+        className={clsx(
+          'flex justify-between gap-2 py-2.5 lg:py-1 pr-3 text-sm cursor-not-allowed',
+          isAnchorLink ? 'pl-7' : 'pl-4 font-semibold',
+          'text-zinc-400 dark:text-zinc-500',
+        )}
+        aria-disabled="true"
+      >
+        <span className="truncate flex items-center">
+          {children}
+          {badgeContent}
+        </span>
+      </span>
+    )
+  }
+  
   return (
     <CloseButton
       as={Link}
       href={href}
       aria-current={active ? 'page' : undefined}
       className={clsx(
-        'flex justify-between gap-2 py-1 pr-3 text-sm transition-all duration-500',
+        'flex justify-between gap-2 py-2.5 lg:py-1 pr-3 text-sm transition-all duration-500',
         isAnchorLink ? 'pl-7' : 'pl-4 font-semibold',
         active
           ? 'text-zinc-900 dark:text-white'
@@ -113,6 +147,7 @@ function NavLink({
     >
       <span className="truncate flex items-center gap-1.5">
         {children}
+        {badgeContent}
         {shouldPulse && (
           <motion.span
             initial={{ opacity: 0, x: 4 }}
@@ -340,45 +375,81 @@ function NavigationGroup({
     isInsideMobileNavigation,
   )
   
-  // State for pulsing the next page hint
-  let [shouldPulseNext, setShouldPulseNext] = useState(false)
+  // State for showing arrow on first case study when Timeline is visible (home page only)
+  let [shouldShowFirstCaseStudyArrow, setShouldShowFirstCaseStudyArrow] = useState(false)
 
   let isActiveGroup =
     group.links.findIndex((link) => link.href === pathname) !== -1
   
-  // Detect when user is at the bottom and hasn't scrolled for 2 seconds
+  // Check if we're on the home page and the Work group
+  const isHomePage = pathname === '/'
+  const isWorkGroup = group.title === 'Work'
+  
+  // Detect when Timeline section is visible on home page, with delay before showing arrow
   useEffect(() => {
-    if (!isActiveGroup) return
-    
-    let timeoutId: NodeJS.Timeout
-    
-    const checkIfAtBottom = () => {
-      const scrollHeight = document.documentElement.scrollHeight
-      const scrollTop = window.scrollY
-      const clientHeight = window.innerHeight
-      const isAtBottom = scrollHeight - scrollTop - clientHeight < 100 // Within 100px of bottom
-      
-      if (isAtBottom) {
-        // Clear any existing timeout
-        clearTimeout(timeoutId)
-        // Wait 2 seconds before pulsing
-        timeoutId = setTimeout(() => {
-          setShouldPulseNext(true)
-        }, 2000)
-      } else {
-        clearTimeout(timeoutId)
-        setShouldPulseNext(false)
-      }
+    if (!isHomePage || !isWorkGroup) {
+      setShouldShowFirstCaseStudyArrow(false)
+      return
     }
     
-    window.addEventListener('scroll', checkIfAtBottom, { passive: true })
-    checkIfAtBottom() // Check initial state
+    let arrowDelayTimeout: NodeJS.Timeout | null = null
+    let isTimelineVisible = false
+    
+    // Small delay to ensure DOM is ready after hydration
+    const initTimeout = setTimeout(() => {
+      // Find the Timeline section by data attribute (more reliable than heading ID)
+      const timelineSection = document.querySelector('[data-timeline-section]')
+      if (!timelineSection) {
+        return
+      }
+      
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            isTimelineVisible = entry.isIntersecting
+            
+            if (entry.isIntersecting) {
+              // Wait 12 seconds before showing the arrow
+              if (!arrowDelayTimeout) {
+                arrowDelayTimeout = setTimeout(() => {
+                  if (isTimelineVisible) {
+                    setShouldShowFirstCaseStudyArrow(true)
+                  }
+                }, 12000)
+              }
+            } else {
+              // Clear the timeout and hide arrow when scrolling away
+              if (arrowDelayTimeout) {
+                clearTimeout(arrowDelayTimeout)
+                arrowDelayTimeout = null
+              }
+              setShouldShowFirstCaseStudyArrow(false)
+            }
+          })
+        },
+        {
+          rootMargin: '0px 0px -20% 0px',
+          threshold: 0.1,
+        }
+      )
+      
+      observer.observe(timelineSection)
+      
+      // Store observer for cleanup
+      ;(window as unknown as { __timelineObserver?: IntersectionObserver }).__timelineObserver = observer
+    }, 200)
     
     return () => {
-      window.removeEventListener('scroll', checkIfAtBottom)
-      clearTimeout(timeoutId)
+      clearTimeout(initTimeout)
+      if (arrowDelayTimeout) {
+        clearTimeout(arrowDelayTimeout)
+      }
+      const observer = (window as unknown as { __timelineObserver?: IntersectionObserver }).__timelineObserver
+      if (observer) {
+        observer.disconnect()
+      }
     }
-  }, [isActiveGroup])
+  }, [isHomePage, isWorkGroup])
 
   return (
     <li className={clsx('relative mt-6', className)}>
@@ -417,16 +488,19 @@ function NavigationGroup({
           {group.links
             .filter((link) => !(link.title === 'Overview' && link.href.includes('/work/overview')))
             .map((link, linkIndex, filteredLinks) => {
-              // Check if this is the next page after the current one (using filtered list indices)
-              let currentPageIndex = filteredLinks.findIndex((l) => l.href === pathname)
-              let isNextPage = linkIndex === currentPageIndex + 1
+              // Check if this is the first case study (Mortgage Platform / Breeze)
+              // and we should show the arrow because Timeline is visible on home page
+              let isFirstCaseStudy = linkIndex === 0 && link.href.includes('/case-studies/')
+              let showArrowForFirstCaseStudy = isFirstCaseStudy && shouldShowFirstCaseStudyArrow && !link.disabled
               
               return (
                 <motion.li key={link.href} layout="position" className="relative">
                   <NavLink 
                     href={link.href} 
                     active={link.href === pathname}
-                    shouldPulse={isNextPage && shouldPulseNext}
+                    shouldPulse={showArrowForFirstCaseStudy}
+                    badge={link.badge}
+                    disabled={link.disabled}
                   >
                     {link.title}
                   </NavLink>
@@ -483,9 +557,11 @@ export const navigation: Array<NavGroup> = [
     title: 'Work',
     links: [
       { title: 'Overview', href: '/work/overview' },
-      ...getAllCaseStudies().map(study => ({
+      ...getCaseStudiesForNavigation().map(study => ({
         title: study.descriptiveTitle,
-        href: `/case-studies/${study.slug}`
+        href: `/case-studies/${study.slug}`,
+        badge: study.comingSoon ? 'coming-soon' as const : study.underConstruction ? 'under-construction' as const : undefined,
+        disabled: study.comingSoon || study.underConstruction
       }))
     ],
   },

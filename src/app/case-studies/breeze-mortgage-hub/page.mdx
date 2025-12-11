@@ -84,13 +84,13 @@ export default function BreezeMortgageHubCaseStudy() {
         visual={<AnimatedBeamDemo />}
       >
         <Heading id="my-role" level={2} className="mt-0">My Role</Heading>
-        <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build.</p>
+        <p>I was brought in as an independent contractor supporting the CEO as a UX lead and product strategist. My job was to turn a loose vision into a coherent system the team could build. If you've ever been the translator between "founder brain" and "what engineers actually need to build," you know this is less about design and more about diplomacy.</p>
         <p>The work helped move Breeze from "we have ideas" to "we have a product story investors can actually experience."</p>
         <p><strong>What I optimized for:</strong></p>
         <ul>
           <li>Clear <Tooltip containerClassName="inline" content="The structural design of how content and features are organized, labeled, and connected—think of it as the blueprint for where things live and how users find them."><span className="font-bold">information architecture</span></Tooltip> and navigation (so people stop getting lost)</li>
           <li>Consistent patterns and <Tooltip containerClassName="inline" content="Reusable UI building blocks (buttons, forms, cards) that behave the same way everywhere—reducing user confusion and speeding up development."><span className="font-bold">component behavior</span></Tooltip> (so the UI has "design DNA," not vibes)</li>
-          <li>Requirements that are <Tooltip containerClassName="inline" content="Specifications detailed enough that engineers can build from them without guesswork—including edge cases, states, and expected behaviors."><span className="font-bold">dev-ready</span></Tooltip> (so shipping doesn't become an interpretive sport)</li>
+          <li>Requirements that are <Tooltip containerClassName="inline" content="Specifications detailed enough that engineers can build from them without guesswork—including edge cases, states, and expected behaviors.'"><span className="font-bold">dev-ready</span></Tooltip> (so shipping doesn't become an interpretive sport)</li>
         </ul>
       </SplitSection>
 
@@ -118,7 +118,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <ProseSection>
         <ProseBlock>
           <Heading id="how-i-created-clarity" level={2} label="Before and After">How I Created Clarity</Heading>
-          <p>I began with <Tooltip containerClassName="inline" content="The research phase where you learn about users, business goals, and constraints before designing anything—interviews, audits, and lots of 'why?' questions."><span className="font-bold">discovery</span></Tooltip>, an audit of what existed, and <Tooltip containerClassName="inline" content="Systematic review of competitor products to identify patterns, gaps, and opportunities—not to copy, but to understand industry conventions."><span className="font-bold">competitive scanning</span></Tooltip> across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well.</p>
+          <p>I began with <Tooltip containerClassName="inline" content="The research phase where you learn about users, business goals, and constraints before designing anything."><span className="font-bold">discovery</span></Tooltip>, an audit of what existed, and <Tooltip containerClassName="inline" content="Systematic review of competitor products to identify patterns, gaps, and opportunities—not to copy, but to understand industry conventions."><span className="font-bold">competitive scanning</span></Tooltip> across fintech and workflow-heavy tools. The goal wasn't to copy UI—it was to understand what "normal" looks like when complexity is handled well (spoiler: mortgage software rarely handles it well).</p>
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was a fog bank. Prototyping turned that fog into decisions. It surfaced broken assumptions early, <Tooltip containerClassName="inline" content="Reducing uncertainty by testing ideas before building—cheaper to fix a prototype than production code."><span className="font-bold">de-risked</span></Tooltip> future flows, and forced the information architecture to reveal where it would bend or break.</p>
         </ProseBlock>
 
@@ -127,7 +127,7 @@ export default function BreezeMortgageHubCaseStudy() {
           <ul>
             <li>End-to-end critical paths (application → documents → review → payments)</li>
             <li><Tooltip containerClassName="inline" content="Standardized rules for how UI elements look and behave—ensuring buttons, inputs, and feedback work consistently across the product."><span className="font-bold">Component patterns</span></Tooltip> for form fields, validation, status, and <Tooltip containerClassName="inline" content="A UX technique that reveals information gradually as needed, preventing overwhelm by showing only what's relevant at each step."><span className="font-bold">progressive disclosure</span></Tooltip> (so the UI stays calm even when the process isn't)</li>
-            <li><Tooltip containerClassName="inline" content="Interactive mockups that simulate real product behavior—stakeholders can click through flows instead of imagining them from static screens."><span className="font-bold">Clickable prototypes</span></Tooltip> with meaningful states and transitions (not "<Tooltip containerClassName="inline" content="Demos that only show the ideal scenario—ignoring errors, edge cases, and the messy reality users actually encounter."><span className="font-bold">happy path theatre</span></Tooltip>")</li>
+            <li><Tooltip containerClassName="inline" content="Interactive mockups that simulate real product behavior—stakeholders can click through flows instead of imagining them from static screens."><span className="font-bold">Clickable prototypes</span></Tooltip> with meaningful states and transitions (not "<Tooltip containerClassName="inline" content="The demo version of reality where WiFi is always fast, users never misclick, and edge cases don't exist."><span className="font-bold">happy path theatre</span></Tooltip>")</li>
           </ul>
         </ProseBlock>
       </ProseSection>
@@ -151,7 +151,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <ProseSection>
         <ProseBlock>
           <Heading id="what-shipped" level={2}>What Shipped</Heading>
-          <p>This wasn't a single handoff file. It was a connected package:</p>
+          <p>This wasn't a single handoff file. (Those usually collect dust anyway.) It was a connected package:</p>
           <ul>
             <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
             <li>A componentized <Tooltip containerClassName="inline" content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> foundation with interaction rules, states, and colour tokens.</li>
@@ -206,7 +206,7 @@ export default function BreezeMortgageHubCaseStudy() {
             icon="Presentation"
             index={1}
           >
-            They want to feel the product. Interactive prototypes compress explanation time. Less time arguing = more time to refining the product.
+            They want to feel the product. Interactive prototypes compress explanation time. Less time arguing = more time refining the product. (Also, more time for them to find other things to argue about.)
           </LearningCard>
 
           <LearningCard 
@@ -214,7 +214,7 @@ export default function BreezeMortgageHubCaseStudy() {
             icon="Heart"
             index={2}
           >
-            When the system requires complexity: use progressive disclosure, clear status, the right guidance. Ensuring low <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip>.
+            When the system requires complexity: hide it. Users don't need to understand how the sausage is made. They just need to trust the sausage. Progressive disclosure, clear status, and the right guidance keep <Tooltip containerClassName="inline" content="The mental effort required to use something—good design minimizes this by making interfaces intuitive and predictable."><span className="font-bold">cognitive load</span></Tooltip> low.
           </LearningCard>
         </div>
       </ProseSection>

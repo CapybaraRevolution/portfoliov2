@@ -2,8 +2,9 @@ import { LazyTimeline } from '@/components/LazyTimeline'
 import { HorizontalLogoMarquee } from '@/components/HorizontalLogoMarquee'
 import { HeroPattern } from '@/components/HeroPattern'
 import { EnhancedPhoto } from '@/components/EnhancedPhoto'
-import { LazyTestimonials } from '@/components/LazyTestimonials'
 import { MorphingText } from '@/components/ui/morphing-text'
+import { Ripple } from '@/components/ui/ripple'
+import { FadeIn } from '@/components/ui/fade-in'
 import Image from 'next/image'
 import kyleMcGrawPhoto from '@/images/kyle-mcgraw.jpg'
 
@@ -17,11 +18,11 @@ export const sections = [
   { title: 'What I Do', id: 'what-i-do' },
   { title: 'My Clients', id: 'my-clients' },
   { title: 'My Journey', id: 'my-journey' },
-  { title: 'What Clients Say', id: 'testimonials' },
 ]
 
 <HeroPattern />
 
+<FadeIn variant="fadeUp" delay={0.1}>
 <div className="not-prose mb-6 flex flex-col items-center gap-8">
   <div className="w-full max-w-[420px]">
     <EnhancedPhoto 
@@ -38,11 +39,17 @@ export const sections = [
     className="text-4xl md:text-6xl lg:text-7xl font-bold text-zinc-900 dark:text-zinc-100"
   />
 </div>
+</FadeIn>
 
-I&apos;m Kyle McGraw: a hybrid UX Designer and Business Analyst who loves turning messy problem spaces into clear, testable ideas. I help teams figure out what they&apos;re actually building, why it matters, and how to get there without wasting effort. {{ className: 'lead' }}
+<FadeIn variant="fadeUp" delay={0.2}>
+
+I&apos;m Kyle McGraw: a hybrid UX Designer and Business Analyst who loves turning messy problem spaces into clear, testable ideas. I help teams figure out what they&apos;re actually building (which is sometimes the hardest question), why it matters, and how to get there without wasting effort. {{ className: 'lead' }}
 
 I&apos;m a big believer in clarity. Whether I&apos;m mapping architecture, shaping a prototype, or running a workshop, my goal is always the same: make the complex feel simple, make decisions easier, and keep everyone aligned around a shared vision. {{ className: 'lead' }}
 
+</FadeIn>
+
+<FadeIn variant="fadeUp" delay={0.3}>
 <div className="not-prose mt-6 mb-16 flex gap-3">
   <Button href="/work/overview" arrow="right">
     <>View My Work</>
@@ -51,24 +58,53 @@ I&apos;m a big believer in clarity. Whether I&apos;m mapping architecture, shapi
     <>Let&apos;s Connect</>
   </Button>
 </div>
+</FadeIn>
+
+<FadeIn>
 
 ## What I Do {{ id: 'what-i-do', label: 'Expertise' }}
 
 I help companies design and build digital products with confidence. That means diving into workflows, requirements, and data; sketching out how systems should behave; and then turning those insights into prototypes teams can test and iterate quickly. {{ className: 'lead' }}
 
-Some days I&apos;m knee-deep in C4 diagrams or analytics. Other days I&apos;m running discovery sessions, designing data-dense interfaces, or aligning engineers, and stakeholders around a single point: end-users. No matter the format, I focus on building products that make sense — for the people who use them and the teams that support them. {{ className: 'lead' }}
+Some days I&apos;m knee-deep in C4 diagrams or analytics. Other days I&apos;m running discovery sessions, designing data-dense interfaces, or aligning engineers, and stakeholders around a single point: end-users. No matter the format, I focus on building products that make sense — for the people who use them and the teams that support them (not just the stakeholder who talks loudest in meetings). {{ className: 'lead' }}
 
-I bridge strategy and execution, design and engineering, concept and delivery. If something feels ambiguous, I&apos;m usually the one helping clarify it. {{ className: 'lead' }}
+I bridge strategy and execution, design and engineering, concept and delivery. If something feels ambiguous, I&apos;m usually the one asking the uncomfortable questions until it isn&apos;t. {{ className: 'lead' }}
 
+</FadeIn>
+
+<FadeIn delay={0.1}>
 <div className="not-prose">
   <Button href="/services" variant="text" arrow="right">
     <>Explore Services</>
   </Button>
 </div>
+</FadeIn>
 
 <HorizontalLogoMarquee />
 
 <LazyTimeline />
 
-<LazyTestimonials />
+<FadeIn variant="scale" viewportMargin="-150px">
+<section className="not-prose relative py-20 sm:py-28 overflow-hidden">
+  <Ripple 
+    mainCircleSize={180} 
+    mainCircleOpacity={0.15} 
+    numCircles={6}
+    className="opacity-60 dark:opacity-40"
+  />
+  <div className="relative z-10 mx-auto max-w-3xl text-center">
+    <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-3xl md:text-4xl">
+      Ready to see what I can do?
+    </h2>
+    <div className="mt-4 text-base text-zinc-600 dark:text-zinc-300 sm:text-lg">
+      Dive into my latest case study to see how I approach complex problems.
+    </div>
+    <div className="mt-8">
+      <Button href="/case-studies/breeze-mortgage-hub" arrow="right">
+        Enough talk. Show me.
+      </Button>
+    </div>
+  </div>
+</section>
+</FadeIn>
 export const dynamic = 'error'

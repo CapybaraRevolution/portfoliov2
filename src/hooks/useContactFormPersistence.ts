@@ -29,7 +29,6 @@ interface ContactFormState {
     project?: boolean
   }
   emailFocused: boolean
-  showFAQs: boolean
   timestamp: number
 }
 
@@ -56,7 +55,6 @@ export function getInitialContactFormState(): Omit<ContactFormState, 'timestamp'
         touched: parsed.touched,
         validationAttempted: parsed.validationAttempted,
         emailFocused: parsed.emailFocused,
-        showFAQs: parsed.showFAQs,
       }
     }
   } catch (error) {
@@ -74,7 +72,6 @@ interface UseContactFormPersistenceOptions {
   touched: ContactFormState['touched']
   validationAttempted: ContactFormState['validationAttempted']
   emailFocused: boolean
-  showFAQs: boolean
   onStateRestore?: (state: Omit<ContactFormState, 'timestamp'>) => void
   onClear?: () => void
   skipInitialRestore?: boolean // Skip restoration if state was already initialized
@@ -87,7 +84,6 @@ export function useContactFormPersistence({
   touched,
   validationAttempted,
   emailFocused,
-  showFAQs,
   onStateRestore,
   onClear,
   skipInitialRestore = false,
@@ -120,7 +116,6 @@ export function useContactFormPersistence({
             touched: parsed.touched,
             validationAttempted: parsed.validationAttempted,
             emailFocused: parsed.emailFocused,
-            showFAQs: parsed.showFAQs,
           })
         }
       } catch (error) {
@@ -147,7 +142,6 @@ export function useContactFormPersistence({
           touched,
           validationAttempted,
           emailFocused,
-          showFAQs,
           timestamp: Date.now(),
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
@@ -155,14 +149,14 @@ export function useContactFormPersistence({
         console.error('Failed to save contact form state:', error)
       }
     }, 500) // Debounce by 500ms
-  }, [hasStarted, currentStep, formData, touched, validationAttempted, emailFocused, showFAQs])
+  }, [hasStarted, currentStep, formData, touched, validationAttempted, emailFocused])
 
   // Save state whenever it changes
   useEffect(() => {
     if (!isInitialMount.current) {
       saveState()
     }
-  }, [hasStarted, currentStep, formData, touched, validationAttempted, emailFocused, showFAQs, saveState])
+  }, [hasStarted, currentStep, formData, touched, validationAttempted, emailFocused, saveState])
 
   // Clear state function
   const clearState = useCallback(() => {

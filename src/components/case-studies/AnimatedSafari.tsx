@@ -25,3 +25,9 @@ export function AnimatedSafari({ children, className = "" }: AnimatedSafariProps
   )
 }
 
+
+
+
+
+
+

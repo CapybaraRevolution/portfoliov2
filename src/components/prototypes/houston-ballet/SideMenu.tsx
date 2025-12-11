@@ -115,3 +115,9 @@ export default function SideMenu({ isOpen, onClose, onNavigate }: SideMenuProps)
     </AnimatePresence>
   )
 }
+
+
+
+
+
+

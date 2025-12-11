@@ -3,10 +3,14 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronDown } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { AIBadge } from '@/components/ui/AIBadge'
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card'
+import { SkillChip } from '@/components/SkillChip'
+import { standardizedSkills } from '@/data/standardizedSkills'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 
 const TracingBeam = dynamic(
@@ -23,77 +27,83 @@ interface TimelineNode {
   link: string
   status: 'Ongoing' | 'Completed'
   aiAccelerated?: boolean
-  services: string[]
+  skillIds: string[] // Changed from services to skillIds
+  comingSoon?: boolean
+  underConstruction?: boolean
 }
 
-function ServiceBadge({ label }: { label: string }) {
-  return (
-    <span className="rounded-full border border-emerald-100/80 bg-white/80 px-3 py-1 text-xs font-semibold text-emerald-700 shadow-sm backdrop-blur-sm dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200">
-      {label}
-    </span>
-  )
-}
-
-// Map legacy service strings to standardized skill names
-const mapServiceToStandardizedSkills = (service: string): string[] => {
+// Map legacy service strings to standardized skill IDs
+const mapServiceToSkillIds = (service: string): string[] => {
   const serviceMap: Record<string, string[]> = {
     // UX & Research Skills
-    'Wireframes & Prototypes': ['Wireframing', 'Prototyping'], // Legacy support
-    'Wireframing': ['Wireframing'],
-    'Prototyping': ['Prototyping'],
-    'Wireframes': ['Wireframing'],
-    'Prototypes': ['Prototyping'],
-    'User Research': ['User Research'],
-    'UX Research': ['User Research'],
-    'Information Architecture': ['UX Design Principles'],
-    'Usability Testing': ['Usability Testing'],
-    'Design Thinking': ['Design Thinking'],
+    'Wireframes & Prototypes': ['wireframing', 'prototyping'],
+    'Wireframing': ['wireframing'],
+    'Prototyping': ['prototyping'],
+    'Wireframes': ['wireframing'],
+    'Prototypes': ['prototyping'],
+    'User Research': ['user-research'],
+    'UX Research': ['user-research'],
+    'Information Architecture': ['ux-design-principles'],
+    'Usability Testing': ['usability-testing'],
+    'Design Thinking': ['design-thinking'],
     
     // Product Strategy Skills
-    'Product Strategy': ['Product Vision'],
-    'Product Vision': ['Product Vision'],
-    'Feature Prioritization': ['Feature Prioritization'],
-    'Product Discovery': ['Product Discovery'],
-    'Product Analytics': ['Data Analytics & Metrics'],
+    'Product Strategy': ['product-vision'],
+    'Product Vision': ['product-vision'],
+    'Feature Prioritization': ['feature-prioritization'],
+    'Product Discovery': ['product-discovery'],
+    'Product Analytics': ['data-analytics-metrics'],
     
     // Technical Skills
-    'System Mapping': ['Systems Architecture'],
-    'API Analysis': ['API & Integration Design'],
-    'Technical Analysis': ['Technical Feasibility Analysis'],
-    'Integration Design': ['API & Integration Design'],
+    'System Mapping': ['systems-architecture'],
+    'System Design': ['systems-architecture'],
+    'API Analysis': ['api-integration-design'],
+    'Technical Analysis': ['technical-feasibility'],
+    'Integration Design': ['api-integration-design'],
     
     // Business & Analysis Skills
-    'Business Analysis': ['Market Research & Analysis'],
-    'Market Research': ['Market Research & Analysis'],
-    'Competitive Analysis': ['Competitive Analysis'],
-    'Go-to-Market Strategy': ['Go-to-Market Strategy'],
+    'Business Analysis': ['market-research-analysis'],
+    'Market Research': ['market-research-analysis'],
+    'Competitive Analysis': ['competitive-analysis'],
+    'Go-to-Market Strategy': ['go-to-market-strategy'],
     
     // Data & Analytics Skills
-    'Data Visualization': ['Data Analytics & Metrics'],
-    'Analytics': ['Data Analytics & Metrics'],
-    'A/B Testing': ['A/B Testing & Experimentation'],
-    'Metrics': ['Data Analytics & Metrics'],
+    'Data Visualization': ['data-analytics-metrics'],
+    'Analytics': ['data-analytics-metrics'],
+    'A/B Testing': ['ab-testing'],
+    'Metrics': ['data-analytics-metrics'],
     
     // Collaboration Skills
-    'Stakeholder Alignment': ['Stakeholder Management'],
-    'Stakeholder Management': ['Stakeholder Management'],
-    'Cross-functional Leadership': ['Cross-Functional Leadership'],
-    'Communication': ['Communication'],
+    'Stakeholder Alignment': ['stakeholder-management'],
+    'Stakeholder Management': ['stakeholder-management'],
+    'Cross-functional Leadership': ['cross-functional-leadership'],
+    'Communication': ['communication'],
+    'Team Facilitation': ['cross-functional-leadership'],
     
     // Delivery & Execution Skills
-    'Project Management': ['Project Management'],
-    'Agile Methodologies': ['Agile Methodologies'],
-    'Requirements Definition': ['Requirements Definition'],
-    'Release Planning': ['Release Planning'],
+    'Project Management': ['project-management'],
+    'Agile Methodologies': ['agile-methodologies'],
+    'Agile Delivery': ['agile-methodologies'],
+    'Requirements Definition': ['requirements-definition'],
+    'PRDs (Specs)': ['requirements-definition'],
+    'Release Planning': ['release-planning'],
+    'Roadmap': ['product-roadmapping'],
     
     // AI & Data Skills
-    'AI Integration': ['Generative AI Integration'],
-    'AI Strategy': ['AI Agent Design'],
-    'Prompt Engineering': ['Prompt Engineering'],
-    'Data-Driven Decisions': ['Data-Driven Decision Making']
+    'AI Integration': ['generative-ai-integration'],
+    'AI Strategy': ['ai-agent-design'],
+    'Prompt Engineering': ['prompt-engineering'],
+    'Data-Driven Decisions': ['data-driven-decision-making'],
+    
+    // Visual/Interaction Design
+    'Visual Design': ['ux-design-principles'],
+    'Interaction Design': ['prototyping'],
+    
+    // Experimentation
+    'Experimentation': ['ab-testing']
   }
   
-  return serviceMap[service] || [service] // Fallback to original if no mapping
+  return serviceMap[service] || [] // Return empty if no mapping found
 }
 
 // Parse date from timeline string to get end date for sorting
@@ -133,6 +143,14 @@ const getTimelineData = (): TimelineNode[] => {
   
   const caseStudyNodes = caseStudies
     .sort((a, b) => {
+      // Coming soon items go last
+      if (a.comingSoon && !b.comingSoon) return 1
+      if (!a.comingSoon && b.comingSoon) return -1
+      
+      // Under construction items go after active, before coming soon
+      if (a.underConstruction && !b.underConstruction && !b.comingSoon) return 1
+      if (!a.underConstruction && !a.comingSoon && b.underConstruction) return -1
+      
       // First priority: Active/Ongoing projects at the top
       if (a.status === 'Ongoing' && b.status !== 'Ongoing') return -1
       if (b.status === 'Ongoing' && a.status !== 'Ongoing') return 1
@@ -142,19 +160,28 @@ const getTimelineData = (): TimelineNode[] => {
       const dateB = parseTimelineEndDate(b.timeline)
       return dateB.getTime() - dateA.getTime()
     })
-    .map((study, index) => ({
-      id: `node-${index + 1}`, // Start from 1 to leave 0 for Future Focus
-      title: study.descriptiveTitle,
-      client: study.client,
-      period: study.timeline,
-      description: study.description,
-      link: `/case-studies/${study.slug}`,
-      status: study.status,
-      aiAccelerated: study.aiAccelerated,
-      services: study.services
-        .flatMap(service => mapServiceToStandardizedSkills(service))
-        .slice(0, 4) // Limit to first 4 services for space
-    }))
+    .map((study, index) => {
+      // Get unique skill IDs, filtering out any that don't exist in standardizedSkills
+      const skillIds = [...new Set(
+        study.services
+          .flatMap(service => mapServiceToSkillIds(service))
+          .filter(id => standardizedSkills[id])
+      )].slice(0, 4) // Limit to first 4 skills for space
+      
+      return {
+        id: `node-${index + 1}`, // Start from 1 to leave 0 for Future Focus
+        title: study.descriptiveTitle,
+        client: study.client,
+        period: study.timeline,
+        description: study.description,
+        link: `/case-studies/${study.slug}`,
+        status: study.status,
+        aiAccelerated: study.aiAccelerated,
+        comingSoon: study.comingSoon,
+        underConstruction: study.underConstruction,
+        skillIds
+      }
+    })
 
   // Add Future Focus entry at the top
   const futureFocusNode: TimelineNode = {
@@ -166,7 +193,7 @@ const getTimelineData = (): TimelineNode[] => {
     link: '#', // No link for future focus
     status: 'Ongoing',
     aiAccelerated: true,
-    services: [] // No skill chips for future focus
+    skillIds: [] // No skill chips for future focus
   }
 
   return [futureFocusNode, ...caseStudyNodes]
@@ -178,6 +205,12 @@ export function Timeline() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [shouldRenderBeam, setShouldRenderBeam] = useState(false)
   const nodeRefs = useRef<Array<HTMLDivElement | null>>([])
+  
+  // Track if timeline is expanded - default open on desktop, closed on mobile
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [hasHydrated, setHasHydrated] = useState(false)
+  // Track if entrance animations have completed (prevents neon from firing before cards are visible)
+  const [animationsReady, setAnimationsReady] = useState(false)
 
   // Respect prefers-reduced-motion to avoid unnecessary work on low-powered devices
   useEffect(() => {
@@ -316,6 +349,28 @@ export function Timeline() {
     setShouldRenderBeam(!prefersReducedMotion)
   }, [prefersReducedMotion])
 
+  // Set initial expanded state based on viewport after hydration
+  useEffect(() => {
+    setHasHydrated(true)
+    // Open by default on desktop (md breakpoint = 768px)
+    setIsExpanded(window.innerWidth >= 768)
+  }, [])
+
+  // Delay neon activation until entrance animations have time to complete
+  useEffect(() => {
+    if (isExpanded && hasHydrated) {
+      // Reset animations ready when timeline opens
+      setAnimationsReady(false)
+      // Wait for entrance animations to complete (0.1s delay + 0.5s duration + buffer)
+      const timer = setTimeout(() => {
+        setAnimationsReady(true)
+      }, 700)
+      return () => clearTimeout(timer)
+    } else {
+      setAnimationsReady(false)
+    }
+  }, [isExpanded, hasHydrated])
+
   // Memoize neon colors to avoid recalculating
   const colorSchemes = useMemo(
     () => [
@@ -330,75 +385,114 @@ export function Timeline() {
     []
   )
 
-  // Get neon colors for active nodes (cycling through gradient colors)
-  const getNeonColors = useCallback(
-    (index: number) => {
-      return colorSchemes[index % colorSchemes.length]
-    },
-    [colorSchemes]
+  // Grayscale colors for disabled/coming soon nodes
+  const grayscaleColors = useMemo(
+    () => ({ firstColor: '#71717a', secondColor: '#a1a1aa' }), // zinc-500 to zinc-400
+    []
   )
 
-  const timelineContent = (
-    <div className="relative space-y-16 overflow-visible">
-      <div className="space-y-10 sm:space-y-20 overflow-visible pl-10 sm:pl-12 md:pl-16 lg:pl-20">
-        {timelineData.map((node, index) => {
-          const isActive = activeNodeIndex === index
-          const neonColors = getNeonColors(index)
+  // Get neon colors for nodes - grayscale for disabled, colorful for active
+  const getNeonColors = useCallback(
+    (index: number, isDisabled: boolean) => {
+      if (isDisabled) {
+        return grayscaleColors
+      }
+      return colorSchemes[index % colorSchemes.length]
+    },
+    [colorSchemes, grayscaleColors]
+  )
 
+  // Animation variants for timeline items
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 30,
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+    },
+  }
+
+  const timelineContent = (
+    <div className="space-y-8 sm:space-y-12 md:space-y-16">
+        {timelineData.map((node, index) => {
+          // Only show neon glow after entrance animations have completed
+          const isActive = animationsReady && activeNodeIndex === index
+          const isDisabled = node.comingSoon || node.underConstruction
+          const neonColors = getNeonColors(index, isDisabled)
           const nodeContent = (
-            <>
+            <div className={isDisabled ? 'opacity-60' : ''}>
               {/* Title header with status badge in top-right corner */}
               <div className="relative mb-3">
-                <h3 className="text-lg font-semibold leading-tight text-zinc-900 dark:text-white sm:text-xl">
+                <h3 className={`text-lg font-semibold leading-tight sm:text-xl ${isDisabled ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-900 dark:text-white'}`}>
                   {node.title}
                 </h3>
-                <span
-                  className={`absolute right-0 top-0 inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
-                    node.status === 'Ongoing'
-                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                      : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
-                  }`}
-                >
-                  <svg
-                    viewBox="0 0 6 6"
-                    aria-hidden="true"
-                    className={`size-1.5 ${
-                      node.status === 'Ongoing'
-                        ? 'animate-pulse fill-emerald-500'
-                        : 'fill-zinc-400'
-                    }`}
-                  >
-                    <circle r={3} cx={3} cy={3} />
-                  </svg>
-                  {node.status}
-                </span>
+                <div className="absolute right-0 top-0 flex items-center gap-2">
+                  {/* Coming Soon badge - small ghosted tag */}
+                  {isDisabled && (
+                    <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-300 dark:border-zinc-600 dark:text-zinc-500">
+                      Soon
+                    </span>
+                  )}
+                  {/* Status badge - only show if not coming soon/under construction */}
+                  {!isDisabled && (
+                    <span
+                      className={`inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                        node.status === 'Ongoing'
+                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+                          : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                      }`}
+                    >
+                      <svg
+                        viewBox="0 0 6 6"
+                        aria-hidden="true"
+                        className={`size-1.5 ${
+                          node.status === 'Ongoing'
+                            ? 'animate-pulse fill-emerald-500'
+                            : 'fill-zinc-400'
+                        }`}
+                      >
+                        <circle r={3} cx={3} cy={3} />
+                      </svg>
+                      {node.status}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Client and period */}
-              <p className="mb-3 text-xs font-medium text-zinc-600 dark:text-zinc-400 sm:text-sm">
+              <p className={`mb-3 text-xs font-medium sm:text-sm ${isDisabled ? 'text-zinc-400 dark:text-zinc-500' : 'text-zinc-600 dark:text-zinc-400'}`}>
                 {node.client} • {node.period}
               </p>
 
               {/* Description */}
-              <p className="mb-4 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 sm:text-base">
+              <p className={`mb-4 text-sm leading-relaxed sm:text-base ${isDisabled ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-700 dark:text-zinc-300'}`}>
                 {node.description}
               </p>
 
-              {/* Service/Skill chips */}
-              {node.services.length > 0 && (
+              {/* Skill chips - only show on active cards */}
+              {!isDisabled && node.skillIds.length > 0 && (
                 <div className="mb-4 flex flex-wrap gap-2">
-                  {node.services.map((service) => (
-                    <ServiceBadge
-                      key={`${node.id}-${service}`}
-                      label={service}
-                    />
-                  ))}
+                  {node.skillIds.map((skillId) => {
+                    const skill = standardizedSkills[skillId]
+                    if (!skill) return null
+                    return (
+                      <SkillChip
+                        key={`${node.id}-${skillId}`}
+                        skill={skill}
+                        size="sm"
+                        variant="outline"
+                        showDropdown={true}
+                      />
+                    )
+                  })}
                 </div>
               )}
 
               {/* Call-to-action and badges */}
               <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                {node.link !== '#' && (
+                {node.link !== '#' && !isDisabled && (
                   <Link
                     href={node.link}
                     className="group inline-flex items-center text-sm font-semibold text-emerald-600 transition-all duration-300 hover:gap-2 dark:text-emerald-400"
@@ -409,26 +503,36 @@ export function Timeline() {
                     </span>
                   </Link>
                 )}
-                {node.aiAccelerated && <AIBadge size="sm">AI-Accelerated</AIBadge>}
+                {isDisabled && (
+                  <span className="inline-flex items-center text-sm text-zinc-400 dark:text-zinc-500">
+                    Case study coming soon
+                  </span>
+                )}
+                {!isDisabled && node.aiAccelerated && <AIBadge size="sm">AI-Accelerated</AIBadge>}
               </div>
-            </>
+            </div>
           )
 
           return (
-            <div
+            <motion.div
               key={node.id}
-              className="relative overflow-visible"
+              className="relative"
               ref={(el) => registerNodeRef(index, el)}
               data-node-index={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={cardVariants}
+              transition={{
+                duration: 0.5,
+                delay: 0.1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
             >
-              {/* Neon gradient card - always rendered, opacity transitions */}
-              <div 
-                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                  isActive ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'
-                }`}
-              >
+              {/* Neon gradient card - shown when active (no transition to avoid flash) */}
+              {isActive ? (
                 <NeonGradientCard
-                  className="[&>div]:p-0"
+                  className={`[&>div]:p-0 ${isDisabled ? 'before:!opacity-[0.06]' : ''}`}
                   borderRadius={12}
                   borderSize={2}
                   neonColors={neonColors}
@@ -441,35 +545,37 @@ export function Timeline() {
                     {nodeContent}
                   </div>
                 </NeonGradientCard>
-              </div>
-              {/* Regular card - always rendered, opacity transitions */}
-              <div 
-                className={`relative rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 md:p-6 shadow-sm transition-opacity duration-700 ease-in-out dark:border-zinc-700 dark:bg-zinc-800/30 ${
-                  isActive ? 'opacity-0 pointer-events-none' : 'opacity-100 z-0'
-                }`}
-              >
-                {nodeContent}
-              </div>
-            </div>
+              ) : (
+                /* Regular card - shown when not active */
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 md:p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/30">
+                  {nodeContent}
+                </div>
+              )}
+            </motion.div>
           )
         })}
-      </div>
     </div>
   )
 
   return (
-    <section className="relative overflow-visible">
+    <section className="relative overflow-visible" data-timeline-section>
       <div className="relative overflow-visible">
         {/* Section Header */}
-        <div className="mb-10 sm:mb-16">
+        <div className="mb-6 sm:mb-10">
           <Heading id="my-journey" label="Experience">My Journey</Heading>
-          <p className="mb-6 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400 sm:mb-8 sm:text-base">
+          <p className="mb-6 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400 sm:text-base">
             A decade of building user-centered solutions across industries,
             from startups to enterprise clients. Each role shaped my approach
             to AI-powered product strategy.
           </p>
 
           <div className="flex flex-wrap gap-3 sm:gap-4">
+            <Button href="/work/overview" className="group">
+              View My Work
+              <span className="ml-2 transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </Button>
             <Button
               variant="outline"
               href="/services"
@@ -480,25 +586,48 @@ export function Timeline() {
                 →
               </span>
             </Button>
-            <Button href="/work/overview" className="group">
-              View My Work
-              <span className="ml-2 transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </Button>
           </div>
         </div>
 
-        {/* Timeline */}
-        <div className="mx-auto max-w-4xl overflow-visible px-2 sm:px-4 md:px-6">
-          {shouldRenderBeam ? (
-            <TracingBeam className="relative w-full overflow-visible">{timelineContent}</TracingBeam>
-          ) : (
-            <div className="relative w-full overflow-visible">
-              {timelineContent}
-            </div>
+        {/* Toggle Link */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="group mb-6 inline-flex items-center gap-2 text-sm font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
+        >
+          <motion.span
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-center justify-center"
+          >
+            <ChevronDown className="h-4 w-4" />
+          </motion.span>
+          {isExpanded ? 'Hide' : 'Show'} experience timeline
+          <span className="text-zinc-400 dark:text-zinc-500 font-normal">
+            ({timelineData.length} projects)
+          </span>
+        </button>
+
+        {/* Expandable Timeline Content */}
+        <AnimatePresence initial={false}>
+          {hasHydrated && isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="pt-4"
+            >
+              {shouldRenderBeam ? (
+                <TracingBeam className="max-w-4xl">{timelineContent}</TracingBeam>
+              ) : (
+                <div className="mx-auto max-w-4xl pl-8 sm:pl-10 md:pl-12">
+                  {timelineContent}
+                </div>
+              )}
+            </motion.div>
           )}
-        </div>
+        </AnimatePresence>
+
       </div>
     </section>
   )

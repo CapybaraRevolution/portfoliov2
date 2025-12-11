@@ -1,6 +1,5 @@
 'use client'
 
-import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -48,45 +47,49 @@ function SocialLink({
 }
 
 export function Footer() {
-  const pathname = (usePathname() || '').split('?')[0].replace(/\/$/, '')
-  const isCaseStudy = pathname.includes('/case-studies/')
-  
-  const container = isCaseStudy
-    ? 'mx-auto max-w-7xl'
-    : 'mx-auto max-w-2xl lg:max-w-5xl'
-
+  const pathname = usePathname()
   const year = new Date().getFullYear()
+  
+  // Case study pages use wider layout (max-w-7xl) to match CaseStudyViewer
+  const isCaseStudy = pathname?.includes('/case-studies/')
 
   return (
     <footer className="w-full bg-transparent">
-      {/* Align to sidebar */}
+      {/* Align to sidebar - matches Layout.tsx main content offset */}
       <div className="lg:ml-72 xl:ml-80">
-        {/* Full-width divider spanning the sidebar-offset area */}
+        {/* Full-width divider */}
         <div className="border-t border-zinc-900/10 dark:border-white/10">
-          <div className={clsx(container, 'px-4 sm:px-6 lg:px-8')}>
-            {/* Footer content */}
-            <div className="py-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-zinc-500 dark:text-zinc-400">
-              <p className="order-2 sm:order-1">
-                © {year} Kyle McGraw. All rights reserved.
-              </p>
+          {/* Match main content padding */}
+          <div className="px-4 sm:px-6 lg:px-8">
+            {/* 
+              Footer content - adaptive width system:
+              - Case studies: max-w-7xl (matches CaseStudyViewer)
+              - Other pages: max-w-3xl lg:max-w-4xl (matches Prose)
+            */}
+            <div className={`py-8 mx-auto ${isCaseStudy ? 'max-w-7xl' : 'max-w-3xl lg:max-w-4xl'}`}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-zinc-500 dark:text-zinc-400">
+                <p className="order-2 sm:order-1">
+                  © {year} Kyle McGraw. All rights reserved.
+                </p>
 
-              <div className="order-1 sm:order-2 flex items-center gap-x-4">
-                <ContactDrawer>
-                  <button className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">
-                    Contact
-                  </button>
-                </ContactDrawer>
-                <span className="text-zinc-300 dark:text-zinc-600">·</span>
-                <SocialLink 
-                  href="https://github.com/CapybaraRevolution" 
-                  ariaLabel="GitHub"
-                  icon={GitHubIcon}
-                />
-                <SocialLink 
-                  href="https://www.linkedin.com/in/kyleryanmcgraw/" 
-                  ariaLabel="LinkedIn"
-                  icon={LinkedInIcon}
-                />
+                <div className="order-1 sm:order-2 flex items-center gap-x-4">
+                  <ContactDrawer>
+                    <button className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">
+                      Contact
+                    </button>
+                  </ContactDrawer>
+                  <span className="text-zinc-300 dark:text-zinc-600">·</span>
+                  <SocialLink 
+                    href="https://github.com/CapybaraRevolution" 
+                    ariaLabel="GitHub"
+                    icon={GitHubIcon}
+                  />
+                  <SocialLink 
+                    href="https://www.linkedin.com/in/kyleryanmcgraw/" 
+                    ariaLabel="LinkedIn"
+                    icon={LinkedInIcon}
+                  />
+                </div>
               </div>
             </div>
           </div>

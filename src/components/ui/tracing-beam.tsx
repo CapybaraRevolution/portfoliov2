@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useId } from "react";
 import {
   motion,
   useTransform,
@@ -15,111 +15,135 @@ export const TracingBeam = ({
   children: React.ReactNode;
   className?: string;
 }) => {
+  const gradientId = useId();
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
   const contentRef = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
+  // Use scroll progress relative to the component
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start center", "end center"],
+  });
+
+  // Update height on mount and when content changes
+  const updateHeight = useCallback(() => {
     if (contentRef.current) {
-      setSvgHeight(contentRef.current.offsetHeight);
+      const height = contentRef.current.offsetHeight;
+      if (height > 0) {
+        setSvgHeight(height);
+      }
     }
   }, []);
 
-  // Reduce animation complexity on mobile for better performance
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-  const springConfig = isMobile 
-    ? { stiffness: 300, damping: 60 } // Lighter config for mobile
-    : { stiffness: 500, damping: 90 } // Full config for desktop
+  useEffect(() => {
+    setIsMounted(true);
+    updateHeight();
 
+    // Use ResizeObserver to track content height changes
+    const resizeObserver = new ResizeObserver(() => {
+      updateHeight();
+    });
+
+    if (contentRef.current) {
+      resizeObserver.observe(contentRef.current);
+    }
+
+    // Also update on window resize
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, [updateHeight]);
+
+  // Delayed height update after children render
+  useEffect(() => {
+    const timeoutId = setTimeout(updateHeight, 100);
+    return () => clearTimeout(timeoutId);
+  }, [children, updateHeight]);
+
+  // Responsive spring config
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const springConfig = isMobile 
+    ? { stiffness: 200, damping: 40 }
+    : { stiffness: 400, damping: 70 };
+
+  // Create smooth animated values for the gradient
   const y1 = useSpring(
-    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
+    useTransform(scrollYProgress, [0, 0.8], [0, svgHeight]),
     springConfig,
   );
   const y2 = useSpring(
-    useTransform(scrollYProgress, [0, 1], [50, svgHeight - 200]),
+    useTransform(scrollYProgress, [0, 1], [0, Math.max(0, svgHeight - 200)]),
     springConfig,
   );
+
+  // Don't render beam until mounted and we have a valid height
+  const showBeam = isMounted && svgHeight > 0;
 
   return (
     <motion.div
       ref={ref}
-      className={cn("relative mx-auto h-full w-full max-w-4xl overflow-visible", className)}
+      className={cn("relative mx-auto h-full w-full", className)}
     >
-      <div className="absolute top-3 left-2 sm:left-3 md:-left-4 lg:-left-12">
-        <motion.div
-          transition={{
-            duration: 0.2,
-            delay: 0.5,
-          }}
-          animate={{
-            boxShadow:
-              scrollYProgress.get() > 0
-                ? "none"
-                : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-          }}
-          className="border-netural-200 ml-[27px] flex h-4 w-4 items-center justify-center rounded-full border shadow-sm"
-        >
-          <motion.div
-            transition={{
-              duration: 0.2,
-              delay: 0.5,
-            }}
-            animate={{
-              backgroundColor: scrollYProgress.get() > 0 ? "white" : "#10b981",
-              borderColor: scrollYProgress.get() > 0 ? "white" : "#059669",
-            }}
-            className="h-2 w-2 rounded-full border border-neutral-300 bg-white"
-          />
-        </motion.div>
-        <svg
-          viewBox={`0 0 20 ${svgHeight}`}
-          width="20"
-          height={svgHeight} // Set the SVG height
-          className="ml-4 block"
-          aria-hidden="true"
-        >
-          <motion.path
-            d={`M 1 0 V ${svgHeight}`}
-            fill="none"
-            stroke="#9091A0"
-            strokeOpacity="0.16"
-            transition={{
-              duration: 10,
-            }}
-          ></motion.path>
-          <motion.path
-            d={`M 1 0 V ${svgHeight}`}
-            fill="none"
-            stroke="url(#gradient)"
-            strokeWidth="1.25"
-            className="motion-reduce:hidden"
-            transition={{
-              duration: 10,
-            }}
-          ></motion.path>
-          <defs>
-            <motion.linearGradient
-              id="gradient"
-              gradientUnits="userSpaceOnUse"
-              x1="0"
-              x2="0"
-              y1={y1} // set y1 for gradient
-              y2={y2} // set y2 for gradient
+      {/* Responsive grid: beam column + content column */}
+      <div className="grid grid-cols-[20px_1fr] sm:grid-cols-[24px_1fr] md:grid-cols-[32px_1fr] gap-3 sm:gap-4 md:gap-6">
+        {/* Beam column - z-30 to be above neon effects (z-20) but below nav (z-40) */}
+        <div className="relative z-30 flex justify-center">
+          {showBeam && (
+            <svg
+              viewBox={`0 0 20 ${svgHeight}`}
+              width="20"
+              height={svgHeight}
+              className="absolute top-0"
+              aria-hidden="true"
+              style={{ overflow: 'visible' }}
             >
-              <stop stopColor="#18CCFC" stopOpacity="0"></stop>
-              <stop stopColor="#18CCFC"></stop>
-              <stop offset="0.325" stopColor="#6344F5"></stop>
-              <stop offset="1" stopColor="#AE48FF" stopOpacity="0"></stop>
-            </motion.linearGradient>
-          </defs>
-        </svg>
+              {/* Background track */}
+              <path
+                d={`M 10 0 V ${svgHeight}`}
+                fill="none"
+                stroke="currentColor"
+                strokeOpacity="0.15"
+                strokeWidth="2"
+                className="text-zinc-400 dark:text-zinc-600"
+              />
+              {/* Animated gradient beam */}
+              <motion.path
+                d={`M 10 0 V ${svgHeight}`}
+                fill="none"
+                stroke={`url(#${gradientId})`}
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="motion-reduce:hidden"
+              />
+              <defs>
+                <motion.linearGradient
+                  id={gradientId}
+                  gradientUnits="userSpaceOnUse"
+                  x1="0"
+                  x2="0"
+                  y1={y1}
+                  y2={y2}
+                >
+                  <stop stopColor="#10b981" stopOpacity="0" />
+                  <stop stopColor="#10b981" />
+                  <stop offset="0.5" stopColor="#3b82f6" />
+                  <stop offset="1" stopColor="#8b5cf6" stopOpacity="0" />
+                </motion.linearGradient>
+              </defs>
+            </svg>
+          )}
+        </div>
+        
+        {/* Content column */}
+        <div ref={contentRef} className="min-w-0">
+          {children}
+        </div>
       </div>
-      <div ref={contentRef}>{children}</div>
     </motion.div>
   );
 };

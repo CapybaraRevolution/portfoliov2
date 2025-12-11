@@ -20,6 +20,10 @@ export interface CaseStudyMetadata {
   goal: string
   /** Optional: Supporting detail for the goal (renders as body text below goal) */
   goalDetail?: string
+  /** Whether this case study is coming soon (not yet available) */
+  comingSoon?: boolean
+  /** Whether this case study is under construction (page exists but not ready) */
+  underConstruction?: boolean
 }
 
 // Case studies data - this will eventually be loaded from MDX frontmatter
@@ -151,7 +155,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Jira", "Confluence"],
     services: ["User Research", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing", "Stakeholder Alignment", "Communication", "Team Facilitation", "PRDs (Specs)", "System Design", "Agile Delivery"],
     order: 7,
-    goal: "Apply systematic UX research and design improvements to lift engagement and fix localization pain across mobile casino games."
+    goal: "Apply systematic UX research and design improvements to lift engagement and fix localization pain across mobile casino games.",
+    underConstruction: true
   },
   {
     title: "Boveda Tr1n1ty",
@@ -169,7 +174,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Notion", "Jira"],
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Management", "Product Analytics"],
     order: 7,
-    goal: "Turn a fragmented workflow into a coherent, measurable experience that stakeholders could rally behind."
+    goal: "Turn a fragmented workflow into a coherent, measurable experience that stakeholders could rally behind.",
+    underConstruction: true
   },
   {
     title: "Houston Ballet",
@@ -189,6 +195,25 @@ export const caseStudies: CaseStudyMetadata[] = [
     order: 3,
     goal: "Create a delightful mobile ticketing experience that guides patrons from ticket purchase to their seats.",
     goalDetail: "An interactive prototype demonstrating the full user journey—from browsing performances to presenting QR tickets at the venue."
+  },
+  {
+    title: "BC Cancer Foundation",
+    descriptiveTitle: "BC Cancer Foundation",
+    client: "BC Cancer Foundation",
+    description: "Digital transformation for a leading cancer research and care foundation.",
+    slug: "bc-cancer-foundation",
+    category: "Strategy",
+    aiAccelerated: false,
+    role: "UX Strategist",
+    engagementType: "Contract",
+    location: "Remote",
+    timeline: "2025",
+    status: "Ongoing",
+    tools: ["Figma", "FigJam"],
+    services: ["Product Vision", "Information Architecture", "Stakeholder Alignment"],
+    order: 8,
+    goal: "Transform the digital experience for donors and supporters of cancer research.",
+    comingSoon: true
   }
 ]
 
@@ -220,4 +245,25 @@ export function getPreviousCaseStudy(currentSlug: string): CaseStudyMetadata | u
 
 export function getAllCaseStudies(): CaseStudyMetadata[] {
   return [...caseStudies].sort((a, b) => a.order - b.order)
+}
+
+/**
+ * Get all case studies sorted for navigation:
+ * - Active (not coming soon, not under construction) first
+ * - Under construction second
+ * - Coming soon last
+ */
+export function getCaseStudiesForNavigation(): CaseStudyMetadata[] {
+  return [...caseStudies].sort((a, b) => {
+    // Coming soon items go last
+    if (a.comingSoon && !b.comingSoon) return 1
+    if (!a.comingSoon && b.comingSoon) return -1
+    
+    // Under construction items go after active, before coming soon
+    if (a.underConstruction && !b.underConstruction && !b.comingSoon) return 1
+    if (!a.underConstruction && !a.comingSoon && b.underConstruction) return -1
+    
+    // Within the same group, sort by order
+    return a.order - b.order
+  })
 }

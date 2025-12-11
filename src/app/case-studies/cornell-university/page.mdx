@@ -68,38 +68,38 @@ export default function CornellUniversityCaseStudy() {
     {
       title: 'Insight work',
       content: (
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Data-Informed, Human-Interpreted</h3>
-          <p>We triangulated quantitative signals (<Tooltip content="Behavior analytics for seeing how people actually navigate via heatmaps, scroll depth, and session replays."><span className="font-bold">Hotjar</span></Tooltip> + <Tooltip content="Google Analytics—traffic and event data that shows what’s happening at scale."><span className="font-bold">GA</span></Tooltip>) with qualitative observation to locate friction and validate what the data couldn’t explain on its own.</p>
-          <p>The output wasn’t a giant research deck. It was a practical map:</p>
+        <div className="prose prose-zinc dark:prose-invert max-w-none"> <h3 className="mt-0">Data-Informed, Human-Interpreted</h3>
+          <p>I thrive on chaos. Take a big mess and throw me into the deep-end..  I'll come back with charts, graphs and relevant memes.  I started by quantitative analysis (<Tooltip content="Behavior analytics for seeing how people actually navigate via heatmaps, scroll depth, and session replays."><span className="font-bold">Hotjar</span></Tooltip> + <Tooltip content="Google Analytics—traffic and event data that shows what’s happening at scale."><span className="font-bold">GA</span></Tooltip>) with qualitative observation to locate friction and validate what the data couldn’t explain on its own.</p>
+          <p>The output wasn’t a giant research deck or 12 step plan, but a practical map:</p>
           <ul>
-            <li>the journeys that matter most (especially prospective students)</li>
-            <li>the pages and modules that were creating drop-offs</li>
-            <li>a clear “problem → hypothesis → design probe → success signal” trail</li>
+            <li>The User Stories  that mattered most (especially prospective students)</li>
+            <li>The pages and modules that were creating drop-offs</li>
+            <li>A clear implementation strategy</li>
           </ul>
           <Accordion type="single" collapsible className="mt-4">
             <AccordionItem value="nerdy-aside">
-              <AccordionTrigger className="font-bold hover:text-emerald-600 dark:hover:text-emerald-400 text-base">
+              <AccordionTrigger className="text-base">
                 Nerdy aside: how we used data without drowning in it
               </AccordionTrigger>
               <AccordionContent>
-                <div className="p-4 mt-2 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg">
-                  <p>
-                    We used data the same way you use a map: not to admire it, but to decide where to walk next.
-                    GA + Hotjar gave us the broad signal—what pages mattered, where people dropped, what they were trying to do when they bailed.
-                    Then we switched to the "metal detector" phase: session replays and journey walk-throughs to see the friction the numbers can't explain.
+                  <div className="my-8 py-8 text-center">
+                    <span className="inline-flex items-center rounded-full bg-red-50 px-4 py-2 text-sm font-medium text-red-700 inset-ring inset-ring-red-600/10 dark:bg-red-400/10 dark:text-red-400 dark:inset-ring-red-400/20">Problem</span>
+                    <span className="mx-3 text-zinc-400 dark:text-zinc-500">→</span>
+                    <span className="inline-flex items-center rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 inset-ring inset-ring-blue-700/10 dark:bg-blue-400/10 dark:text-blue-400 dark:inset-ring-blue-400/30">Hypothesis</span>
+                    <span className="mx-3 text-zinc-400 dark:text-zinc-500">→</span>
+                    <span className="inline-flex items-center rounded-full bg-purple-50 px-4 py-2 text-sm font-medium text-purple-700 inset-ring inset-ring-purple-700/10 dark:bg-purple-400/10 dark:text-purple-400 dark:inset-ring-purple-400/30">Design</span>
+                    <span className="mx-3 text-zinc-400 dark:text-zinc-500">→</span>
+                    <span className="inline-flex items-center rounded-full bg-green-50 px-4 py-2 text-sm font-medium text-green-700 inset-ring inset-ring-green-600/20 dark:bg-green-400/10 dark:text-green-400 dark:inset-ring-green-500/20">Test</span>
+                  </div>
+                  <p className="mb-4 font-semibold">UX Research: Fun for Everyone</p>
+                  <p> We used data the same way you'd use a map, <Tooltip content="Fun Fact: I love maps!"><span className="font-bold">not to admire it</span></Tooltip>, but to plot your course.<em> If we wanted to find the buried treasure we'd first need to know what direction to go. </em> GA & Hotjar heatmaps are wayfinders. They gave us a broad sense of where people were dropping off, and what UI elements they were interacting with most often.
+                    <br /><br />
+                 
+                    Ask any archeologist and they'll tell you that if you want to<em> actually </em> find the treasure, you eventually do have to drop the map, bust out your metal detector and start digging - So there I was, digging through session replays and reviewing Hotjar's screen recordings to see the friction the <Tooltip content={<><span>Seriously, you just watch people click on the same things for hours. </span><em>It's a good thing you were thinking of paying me to do this for you.</em></>}><span className="font-bold">numbers can't explain</span></Tooltip>.
                   </p>
                   <p>
-                    The point wasn't to drown in dashboards. It was to reduce guesswork and get to decisions faster.
-                    Our loop stayed intentionally simple:
-                  </p>
-                  <ul>
-                    <li><strong>Signal:</strong> Find the moments that break momentum (drop-offs, dead-ends, rage clicks, confused scrolling).</li>
-                    <li><strong>Diagnosis:</strong> Watch what users actually do, then translate it into plain-language problems.</li>
-                    <li><strong>Action:</strong> Turn each problem into a clear trail: <em>problem → hypothesis → design probe → success signal</em>.</li>
-                  </ul>
-                  <p>
-                    That's why the output wasn't a giant research deck. It was a practical shortlist of "fix this next" items—
+                    Fun metaphors aside, the point of UX research isn't to drown in dashboards. It's to understand how things are actually being used. I love that instrumentation reduces guesswork because I get to make decisions faster. Also, I get to say these decisions are <Tooltip content="Buzzword for 'I looked at some numbers before making this decision' (usually said while pointing at a chart)."><span className="font-bold">data-driven</span></Tooltip> (people love that.)
+                    Our loop stayed intentionally simple. That's why the output wasn't a giant research deck. It was a practical shortlist of "fix this next" items—
                     tied to specific journeys (especially prospective students) and backed by evidence we could point to in a meeting without theatrics.
                   </p>
                   <div className="my-6">
@@ -116,7 +116,6 @@ export default function CornellUniversityCaseStudy() {
                       Pinpointing the right problems made the design work calmer and faster
                     </p>
                   </div>
-                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -221,7 +220,7 @@ export default function CornellUniversityCaseStudy() {
             <li>implement predictably</li>
             <li>evolve the system without re-breaking consistency</li>
           </ul>
-          <p>This meant clean component structure, naming, <Tooltip content="Design tokens that standardize spacing, color, and typography values so engineers and designers stay in sync."><span className="font-bold">spacing/token logic</span></Tooltip>, and “<Tooltip content="Lightweight product requirements that document intent, states, and edge cases without a bloated PRD."><span className="font-bold">PRD-lite</span></Tooltip>” specs that reduced interpretation gaps.</p>
+          <p>This meant clean component structure, naming, <Tooltip content="Design tokens that standardize spacing, color, and typography values so engineers and designers stay in sync."><span className="font-bold">spacing/token logic</span></Tooltip>, and “<Tooltip content="A Product Requirements Document (PRD) is a formal document that outlines what a product should do, who it's for, and how it should behave. PRD-lite is a lightweight version that documents intent, states, and edge cases without the bloat of a full PRD."><span className="font-bold">PRD-lite</span></Tooltip>” specs that reduced interpretation gaps.</p>
         </div>
       ),
     },
@@ -273,16 +272,15 @@ export default function CornellUniversityCaseStudy() {
         align="center"
       >
         <Heading id="context" level={2} className="mt-0">Context</Heading>
-        <p>In 2016, Cornell combined three business schools under the SC Johnson College of Business (Johnson, Nolan, and Dyson). By 2024, the web experience still behaved like three separate institutions: different navigation patterns, different terminology, and different page structures that made it harder than it should be to do basic tasks.</p>
-        <p>Prospective students were the clearest signal. They were trying to compare programs, understand admissions, and find requirements quickly. Instead, they kept running into mismatch: "same goal, different layout, different labels." That kind of inconsistency quietly erodes trust, and it's especially costly on high-intent journeys.</p>
-        <p>I joined the project via Briteweb to help diagnose the problem, align stakeholders, and design a system Cornell's internal team could own and evolve.</p>
+        <p>In 2016, Cornell combined three business schools under the SC Johnson College of Business. By 2024, the web experience still behaved like three separate institutions with different navigation patterns, different terminology, and different page structures. This made even basic tasks hard to navigate.</p>
+        <p>Prospective students were the most important users group.They were also one of the most troubled. They were trying to compare programs, understand admissions, and find requirements that could take one of three forms. This mismatch of  "same goal, different layout, different verbiage" created inconsistency. The kind of inconsistency that quietly erodes trust. An especially costly dilemma considering the prospective student was the  highest-priority user journey.</p>
       </SplitSection>
 
       {/* The Problem Section - mixed full-width and split layout */}
       <ProseSection className="space-y-8">
         <ProseBlock>
           <Heading id="the-mess" level={2} className="mt-0">The Problem</Heading>
-          <p>The core issue wasn't a lack of content. It was a lack of shared rules.</p>
+          <p>Let's step back and look at the issue from <Tooltip content="Consultant terminology for looking at something from a high-level perspective (usually while standing very far away from the actual problem)."><span className="font-bold">10,000 ft</span></Tooltip>: The core issue wasn't a lack of content (we had plenty), it was a lack of consistency in displaying said content. We needed shared rules around how we were going to present information. A great hunch, but I needed data to back up this hypothesis if I was going to get any traction with the team. The next part: How? </p>
         </ProseBlock>
 
         <SplitSection
@@ -291,8 +289,8 @@ export default function CornellUniversityCaseStudy() {
           visual={
             <div className="w-full rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50">
               <div className="p-4">
-                <Tree initialExpandedItems={['root', 'johnson']} initialSelectedId="johnson-nav">
-                  <Folder element="Root IA (should be one system)" value="root" isSelectable={false}>
+                <Tree initialExpandedItems={['root', 'johnson', 'nolan', 'dyson']} initialSelectedId="johnson-nav">
+                  <Folder element="Root IA" value="root" isSelectable={false}>
                     <Folder element="Johnson" value="johnson">
                       <File value="johnson-nav">nav.json (Programs / Faculty / Apply)</File>
                       <File value="johnson-cta">cta.yaml (Request Info)</File>
@@ -306,7 +304,7 @@ export default function CornellUniversityCaseStudy() {
                       <File value="dyson-cta">cta.json (Meet a counselor)</File>
                     </Folder>
                     <File value="global-search" isSelectable={false}>
-                      search-index.csv (3 schemas, no shared taxonomy)
+                      search-index.csv
                     </File>
                   </Folder>
                 </Tree>
@@ -314,10 +312,14 @@ export default function CornellUniversityCaseStudy() {
             </div>
           }
         >
+          <Heading level={3} className="mt-0">
+            What We Knew{' '}
+            <span className="text-xs font-normal italic text-zinc-500 dark:text-zinc-500">or at least what we could agree upon.</span>
+          </Heading>
           <ul>
             <li>Navigation changed depending on which school you were browsing.</li>
-            <li>Identical concepts were labeled differently across sections.</li>
-            <li>Page modules looked similar enough to feel "almost consistent," but behaved differently in ways that made users second-guess themselves.</li>
+            <li>Identical concepts were presented differently across schools.</li>
+            <li>Pages looked similar enough to feel "almost consistent," but behaved differently enough that users were second-guessing themselves.</li>
             <li>
               Internally, this created a{' '}
               <Tooltip
@@ -344,7 +346,9 @@ export default function CornellUniversityCaseStudy() {
           <Heading id="how-i-created-clarity" level={2} label="Approach">
             How I Created Clarity
           </Heading>
-          <p>I worked as a UX strategist and systems designer. My job was to turn a multi-stakeholder, multi-site reality into a coherent digital experience with rules the team could actually run with. I approached this like any other "merged product": start by understanding where users fall off, then build a system that prevents the same problems from reappearing.</p>
+          <p>
+             I joined the project (via Briteweb). Working as a UX strategist, my job was to somehow attack this messy situation, and change the trajectory toward something resembling a coherent digital experience. We needed to provide rules the team could actually run with, and I was dead-set on creating wireframes and documentation that Cornell's internal team could own and evolve. I approached this like any other project: start by understanding where users fall off. We needed to identify the source of our problems if we wanted to build a system that would prevent these same problems from reappearing.
+          </p>
         </ProseBlock>
         <FadeIn delay={0.1}>
           <div className="mt-10">
@@ -488,14 +492,16 @@ export default function CornellUniversityCaseStudy() {
       </ProseSection>
 
       {/* Credits */}
-      <FadeIn>
-        <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
-          <div className="prose prose-zinc dark:prose-invert max-w-none">
-            <h3>Credits</h3>
-            <p>Cornell SC Johnson College of Business, Briteweb team, and the stakeholders who trusted us to bridge three institutions into one cohesive digital experience.</p>
-          </div>
-        </section>
-      </FadeIn>
+      <ProseSection>
+        <FadeIn>
+          <section className="mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+            <div className="prose prose-zinc dark:prose-invert max-w-none">
+              <h3>Credits</h3>
+              <p>Cornell SC Johnson College of Business, Briteweb team, and the stakeholders who trusted us to bridge three institutions into one cohesive digital experience.</p>
+            </div>
+          </section>
+        </FadeIn>
+      </ProseSection>
     </CaseStudyViewer>
   )
 }

@@ -1,12 +1,34 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
-import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
+import { Figure } from '@/components/mdx/CaseStudyComponents'
+import { GoalBlock } from '@/components/case-studies/GoalBlock'
+import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
+import { SplitSection, OrbitContainer } from '@/components/case-studies/SplitSection'
+import { ProseSection, ProseBlock } from '@/components/case-studies/ProseSection'
+import { Heading } from '@/components/Heading'
+import { OrbitingCircles } from '@/components/ui/orbiting-circles'
+import { Tree, Folder, File } from '@/components/ui/file-tree'
+import { Timeline } from '@/components/ui/newacetimeline'
+import { Tooltip } from '@/components/ui/tooltip-card'
+import { LearningCard } from '@/components/case-studies/LearningCard'
+import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
+import { FadeIn } from '@/components/ui/fade-in'
+import { Building2, Users, Network, Handshake, FileText, MessageSquare, Sparkles } from 'lucide-react'
 
 export const metadata = {
   title: 'Social Finance Fund - Case Study',
   description: 'UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package',
 }
+
+export const sections = [
+  { title: 'Context', id: 'context' },
+  { title: 'The Problem', id: 'the-problem' },
+  { title: 'My Role', id: 'my-role' },
+  { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
+  { title: 'Practical AI', id: 'practical-ai' },
+  { title: 'Outcomes', id: 'outcomes' },
+  { title: 'Learnings', id: 'learnings' },
+]
 
 export default function SocialFinanceFundCaseStudy() {
   const caseStudy = getCaseStudyBySlug('social-finance-fund')
@@ -38,106 +60,322 @@ export default function SocialFinanceFundCaseStudy() {
     },
   ]
 
+  // Timeline data for "How I Created Clarity"
+  const approachTimeline = [
+    {
+      title: 'Survey → shared facts',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">Co-designed role-branched survey</h3>
+          <p>I co-designed a <Tooltip content="Survey logic that shows different questions based on the respondent's role—ensuring each stakeholder type gets relevant questions without overwhelming them."><span className="font-bold">role-branched Microsoft Forms survey</span></Tooltip> that ensured each stakeholder type (SPOs, SFIs, investors, and others) received relevant questions without unnecessary complexity.</p>
+          <p>After collecting responses, I cleaned the data in Excel and synthesized findings in Obsidian as a lightweight knowledge hub—the single source of truth that the whole team could reference and build on.</p>
+          <div className="my-4">
+            <Figure
+              src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
+              alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other user types"
+              caption="Role-based survey branching ensured relevant questions for each stakeholder type"
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Workshops → alignment',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">Facilitated sessions to define shared goals</h3>
+          <p>I facilitated structured workshops to help the group move from conflicting priorities to shared understanding. The sessions focused on:</p>
+          <ul>
+            <li>Defining shared goals that all organizations could rally around</li>
+            <li>Identifying user and content needs across stakeholder types</li>
+            <li>Drafting an information architecture that served everyone</li>
+          </ul>
+          <p>One pivotal session started tense. I led with listening, made space for candid critique, and focused the group on evidence from the survey and the IA. We ended with visible alignment and clear next steps—the tone for future sessions shifted from resistant to collaborative.</p>
+        </div>
+      ),
+    },
+    {
+      title: 'AI-Accelerated concepting',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">LLM-generated alternatives as conversation starters</h3>
+          <p>I used LLMs to generate multiple sitemap alternatives and page flow options. These weren't final designs—they were conversation starters that helped the team debate, select, and refine together.</p>
+          <p>This approach accelerated the ideation phase while keeping humans in control of the decisions. The AI handled the initial generation; the team handled the judgment and refinement.</p>
+        </div>
+      ),
+    },
+    {
+      title: 'Wireframes → proof of intent',
+      content: (
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3 className="mt-0">Mid- to high-fidelity wires for decision-making</h3>
+          <p>I produced mid- to high-fidelity wireframes in Figma for the core pages: homepage, about, articles, impact, and directory. The fidelity was intentional—enough detail to support real decision-making and an open RFP, without getting lost in visual design details.</p>
+          <p>These wireframes became the shared artifacts that resolved abstract disagreements. When stakeholders could see and interact with the structure, alignment happened faster.</p>
+        </div>
+      ),
+    },
+  ]
+
+  // Orbiting circles visual for the Context section - showing stakeholder organizations
+  const orbitingCirclesVisual = (
+    <OrbitContainer
+      height="h-[360px]"
+      center={
+        <div className="flex size-16 items-center justify-center rounded-full bg-emerald-50/90 text-emerald-800 ring-2 ring-emerald-200 backdrop-blur-sm shadow-lg dark:bg-emerald-900/60 dark:text-emerald-100 dark:ring-emerald-800/60">
+          <Handshake className="h-6 w-6" aria-label="Social Finance Fund" />
+        </div>
+      }
+    >
+      {/* Outer orbit - stakeholder organizations */}
+      <OrbitingCircles radius={150} duration={26} iconSize={50}>
+        <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 dark:bg-blue-950 dark:text-blue-200 dark:ring-blue-900/40 font-semibold text-[11px]">
+          Org 1
+        </div>
+        <div className="flex size-full items-center justify-center rounded-full bg-purple-50 text-purple-700 ring-2 ring-purple-100 dark:bg-purple-950 dark:text-purple-200 dark:ring-purple-900/40 font-semibold text-[11px]">
+          Org 2
+        </div>
+        <div className="flex size-full items-center justify-center rounded-full bg-amber-50 text-amber-700 ring-2 ring-amber-100 dark:bg-amber-950 dark:text-amber-200 dark:ring-amber-900/40 font-semibold text-[11px]">
+          Org 3
+        </div>
+        <div className="flex size-full items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-2 ring-emerald-100 dark:bg-emerald-950 dark:text-emerald-200 dark:ring-emerald-900/40 font-semibold text-[11px]">
+          Org 4
+        </div>
+      </OrbitingCircles>
+
+      {/* Inner orbit - process/alignment icons */}
+      <OrbitingCircles radius={95} duration={18} reverse iconSize={42}>
+        <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 dark:bg-blue-950 dark:text-blue-200 dark:ring-blue-900/40">
+          <Users className="h-6 w-6" />
+        </div>
+        <div className="flex size-full items-center justify-center rounded-full bg-purple-50 text-purple-700 ring-2 ring-purple-100 shadow-md dark:bg-purple-950/60 dark:text-purple-200 dark:ring-purple-900/40">
+          <MessageSquare className="h-6 w-6" />
+        </div>
+        <div className="flex size-full items-center justify-center rounded-full bg-amber-50 text-amber-700 ring-2 ring-amber-100 shadow-md dark:bg-amber-950/60 dark:text-amber-200 dark:ring-amber-900/40">
+          <Network className="h-6 w-6" />
+        </div>
+      </OrbitingCircles>
+    </OrbitContainer>
+  )
+
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
-      <ConstructionBanner />
-      <CaseImage
-        src="/images/case-studies/social-finance-fund/sff-logo.png"
-        alt="Social Finance Fund logo"
-        variant="logo"
+      {/* Goal Section */}
+      <GoalBlock
+        goal="Align multi-org stakeholders and ship a usable IA/wireframe package for a government social finance initiative"
+        goalDetail="What began as 'just wireframes' became a wayfinding effort: align people, clarify goals, and create practical deliverables the group could rally around"
       />
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Overview</h2>
-
-        <p>The Social Finance Fund is a government-backed initiative to educate Canadians on social finance. Multiple independent organizations were steering the work—with competing priorities, unclear ownership, and low trust. I was brought in by Briteweb to provide UX strategy and structured facilitation. What began as "just wireframes" became a wayfinding effort: align people, clarify goals, and create a practical IA/wireframe package the group could rally around.</p>
-
-        <h3>Key Challenges</h3>
-        
+      {/* Context Section - 50/50 layout with orbiting circles */}
+      <SplitSection
+        visual={orbitingCirclesVisual}
+        align="center"
+      >
+        <Heading id="context" level={2} className="mt-0">Context</Heading>
+        <p>The Social Finance Fund is a government-backed initiative to educate Canadians on social finance. Soon it'll be a tool. One that connects people like you and me to organizations that are making waves in the social purpose space. Think of it like this:</p>
         <ul>
-          <li><strong>Conflicting priorities:</strong> 3–4 orgs with different mandates.</li>
-          <li><strong>Power dynamics:</strong> one lead org, others hesitant to follow.</li>
-          <li><strong>Low trust & unclear ownership:</strong> no single product owner.</li>
-          <li><strong>Lean budget/timeline:</strong> under $10k to reach a useful outcome.</li>
+          <li>I'm a user who wants to support indigenous-owned businesses.</li>
+          <li>The SFF helps me find organizations that match that, allowing me to compare them.</li>
+          <li>Easier for me to choose which company to invest in. I love the idea.</li>
+          <li>Weaponize capitalism. Save the whales. Support local businesses.</li>
         </ul>
+      </SplitSection>
 
-        <hr />
 
-        <h2>Approach</h2>
+      {/* The Problem Section - 50/50 layout, flipped */}
+      <ProseSection className="space-y-8">
+        <ProseBlock>
+          <Heading id="the-problem" level={2} className="mt-0">The Problem</Heading>
+        </ProseBlock>
+        <p>The problem? Multiple independent organizations were steering the work—with competing priorities, unclear ownership, and low trust. I was brought in by Briteweb to provide UX strategy and structured facilitation. What began as "just wireframes" became a wayfinding effort: align people, clarify goals, and create a practical IA/wireframe package the group could rally around.</p>
+        <p>Challenges I face are often not just design, but human dynamics. With the SFF we had four organizations, each with different mandates, one lead org that others were hesitant to follow, and no single product owner to make final decisions.</p>
+        <SplitSection
+          align="center"
+          flip
+          visual={
+            <div className="w-full rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50">
+              <div className="p-4">
+                <Tree initialExpandedItems={['root', 'org1', 'org2']} initialSelectedId="org1-priorities">
+                  <Folder element="Multi-Org Challenge" value="root" isSelectable={false}>
+                    <Folder element="Organization 1" value="org1">
+                      <File value="org1-priorities">Priorities: Education focus</File>
+                      <File value="org1-mandate">Mandate: Public awareness</File>
+                    </Folder>
+                    <Folder element="Organization 2" value="org2">
+                      <File value="org2-priorities">Priorities: Investment focus</File>
+                      <File value="org2-mandate">Mandate: Capital deployment</File>
+                    </Folder>
+                    <Folder element="Organization 3" value="org3">
+                      <File value="org3-priorities">Priorities: Policy focus</File>
+                      <File value="org3-mandate">Mandate: Regulatory framework</File>
+                    </Folder>
+                    <File value="conflict" isSelectable={false}>
+                      Result: Conflicting priorities, unclear ownership
+                    </File>
+                  </Folder>
+                </Tree>
+              </div>
+            </div>
+          }
+        >
+          <ul>
+            <li><strong>Conflicting priorities:</strong> 3–4 orgs with different mandates, each pushing for their own vision.</li>
+            <li><strong>Power dynamics:</strong> one lead org, others hesitant to follow without clear ownership structure.</li>
+            <li><strong>Low trust & unclear ownership:</strong> no single product owner to make final decisions, leading to circular discussions.</li>
+            <li><strong>Lean budget/timeline:</strong> under $10k to reach a useful outcome—no room for extended discovery or multiple rounds of revision.</li>
+          </ul>
+        </SplitSection>
+      </ProseSection>
 
-        <ul>
-          <li><strong>Survey → shared facts:</strong> Co-designed a role-branched Microsoft Forms survey, cleaned results in Excel, then synthesized in Obsidian as a lightweight knowledge hub (the single source of truth).</li>
-          <li><strong>Workshops → alignment:</strong> Facilitated sessions to define shared goals, user/content needs, and draft IA.</li>
-          <li><strong>AI-Accelerated concepting:</strong> Used LLMs to generate alternative site maps and page flows as conversation starters—the team debated, selected, and we refined.</li>
-          <li><strong>Wireframes → proof of intent:</strong> Produced mid- to high-fidelity wires in Figma for homepage, about, articles, impact, and directory—enough fidelity to support decision-making and an open RFP.</li>
-        </ul>
-      </div>
+      {/* Quote Block */}
+      <QuoteBlock>
+        Sometimes the real UX problem isn't the interface—it's misalignment at the human level.
+      </QuoteBlock>
 
-      <Figure
-        src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
-        alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other user types"
-        caption="Role-based survey branching ensured relevant questions for each stakeholder type"
-      />
+      {/* My Role Section */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="my-role" level={2} className="mt-0">My Role</Heading>
+          <p>I was brought in by Briteweb as a UX strategist and research facilitator. My job was to turn a multi-stakeholder, multi-org reality into a coherent plan the group could actually execute.</p>
+          <p><strong>What I optimized for:</strong></p>
+          <ul>
+            <li><strong>Alignment:</strong> Creating shared understanding and unified vision across competing priorities</li>
+            <li><strong>Clarity:</strong> Turning abstract disagreements into concrete, debatable artifacts</li>
+            <li><strong>Practical deliverables:</strong> Producing IA and wireframes that could support decision-making and an open RFP</li>
+          </ul>
+        </ProseBlock>
+      </ProseSection>
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Deliverables</h2>
+      {/* How I Created Clarity */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="how-i-created-clarity" level={2} label="Approach">
+            How I Created Clarity
+          </Heading>
+          <p>I approached this as a facilitation and strategy challenge first, design challenge second. The goal was to create shared facts, align stakeholders, and produce practical deliverables—all within a lean budget and timeline.</p>
+        </ProseBlock>
+        <FadeIn delay={0.1}>
+          <div className="mt-10">
+            <Timeline data={approachTimeline} />
+          </div>
+        </FadeIn>
+      </ProseSection>
 
-        <ul>
-          <li><strong>User survey design & analysis:</strong> Microsoft Forms + Excel exports.</li>
-          <li><strong>Obsidian research hub:</strong> clear, linkable markdown synthesis for the whole team.</li>
-          <li><strong>Information architecture & sitemap:</strong> AI-assisted variants, refined by hand.</li>
-          <li><strong>Figma wireframes:</strong> homepage, about, articles, impact, directory.</li>
-        </ul>
+      {/* Practical AI */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="practical-ai" level={2} label="AI Integration">Practical AI</Heading>
+          <p>The strategy with AI on this project wasn't "AI magic." It was internal acceleration—fewer hours spent on admin work, more time for facilitation and stakeholder alignment. Fast first drafts, fast consistency checks, more iteration momentum.</p>
+          <p><strong>Where AI helped:</strong></p>
+          <ul>
+            <li><strong><Tooltip content="AI-assisted grouping of content and labels to propose an information architecture faster—humans still approve the final taxonomy."><span className="font-bold">IA concepting</span></Tooltip>:</strong> Generated multiple sitemap alternatives and page flow options to spark stakeholder discussions. The team debated, selected, and we refined.</li>
+            <li><strong>Survey synthesis:</strong> Accelerated theme identification from survey responses, then human-edited for accuracy. This freed up time for the more important work: understanding what the themes meant for the project.</li>
+            <li><strong>Content organization:</strong> Helped cluster and categorize user needs and content requirements, surfacing patterns that might have taken longer to identify manually.</li>
+            <li><strong>Documentation efficiency:</strong> Faster first-draft creation for research synthesis in Obsidian, allowing more time for facilitation and alignment work.</li>
+          </ul>
+          <p><strong>Result:</strong> More time for facilitation and stakeholder alignment, with AI handling initial data processing and ideation. The human judgment and relationship-building remained the core value.</p>
+        </ProseBlock>
+      </ProseSection>
 
-        <hr />
+      {/* Outcomes */}
+      <ProseSection>
+        <ProseBlock className="mb-8">
+          <Heading id="outcomes" level={2}>Outcomes</Heading>
+          <p>The IA, wires, and research package are now driving the open RFP for phase two. Briteweb is well positioned, with a shared vision that lets new partners slot in without relitigating fundamentals.</p>
+        </ProseBlock>
 
-        <h2>Stakeholder Navigation</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+          <LearningCard 
+            title="User Survey Design & Analysis"
+            icon="FileText"
+            index={0}
+          >
+            Microsoft Forms survey with role-based branching, Excel data cleaning, and Obsidian research hub as the single source of truth for the whole team.
+          </LearningCard>
 
-        <p>One pivotal session started tense. I led with listening, made space for candid critique, and focused the group on evidence from the survey and the IA. We ended with visible alignment and clear next steps—the tone for future sessions shifted from resistant to collaborative.</p>
+          <LearningCard 
+            title="Obsidian Research Hub"
+            icon="FileText"
+            index={1}
+          >
+            Clear, linkable markdown synthesis that kept the team fast and aligned—lightweight research that was more useful than heavy decks early in the process.
+          </LearningCard>
 
-        <hr />
+          <LearningCard 
+            title="Information Architecture & Sitemap"
+            icon="Network"
+            index={2}
+          >
+            AI-assisted variants refined by hand, creating a structure that served all stakeholder types and supported the open RFP process.
+          </LearningCard>
 
-        <h2>Where AI helped (AI-Accelerated ✅)</h2>
+          <LearningCard 
+            title="Figma Wireframes"
+            icon="FileText"
+            index={3}
+          >
+            Mid- to high-fidelity wires for homepage, about, articles, impact, and directory—enough fidelity to support decision-making without getting lost in visual design details.
+          </LearningCard>
+        </div>
 
-        <p><strong>LLM-assisted concepting for sitemap/IA variants and page flows; faster theme synthesis from survey notes; used as conversation starters—human-reviewed and refined.</strong></p>
+        {/* Wireframe Gallery - placeholder for when images are added */}
+        <FadeIn delay={0.1}>
+          <div className="my-12">
+            <FocusImageGallery 
+              images={[
+                {
+                  src: "/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png",
+                  alt: "Role-based survey branching logic",
+                  caption: "Survey conditional logic ensured relevant questions for each stakeholder type"
+                }
+                // Additional wireframe images can be added here when available
+              ]}
+            />
+          </div>
+        </FadeIn>
+      </ProseSection>
 
-        <ul>
-          <li><strong>IA concepting:</strong> Generated multiple sitemap alternatives and page flow options to spark stakeholder discussions</li>
-          <li><strong>Survey synthesis:</strong> Accelerated theme identification from survey responses, then human-edited for accuracy</li>
-          <li><strong>Content organization:</strong> Helped cluster and categorize user needs and content requirements</li>
-          <li><strong>Documentation efficiency:</strong> Faster first-draft creation for research synthesis in Obsidian</li>
-        </ul>
+      {/* Learnings */}
+      <ProseSection>
+        <ProseBlock className="mb-8">
+          <Heading id="learnings" level={2}>Learnings</Heading>
+        </ProseBlock>
 
-        <p><strong>Result:</strong> More time for facilitation and stakeholder alignment, with AI handling initial data processing and ideation.</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+          <LearningCard 
+            title="Wireframes are diplomacy tools"
+            icon="Handshake"
+            index={0}
+          >
+            Shared artifacts resolve abstract disagreements. When stakeholders can see and interact with the structure, alignment happens faster than in abstract discussions.
+          </LearningCard>
 
-        <hr />
+          <LearningCard 
+            title="Lightweight research > heavy decks early"
+            icon="FileText"
+            index={1}
+          >
+            Obsidian kept us fast and aligned. The lightweight, linkable format was more useful than polished decks that would have taken longer to create and update.
+          </LearningCard>
 
-        <h2>Outcome</h2>
+          <LearningCard 
+            title="Prototypes spark better conversations"
+            icon="MessageSquare"
+            index={2}
+          >
+            Especially in multi-org, high-stakes contexts. Interactive artifacts compress explanation time and help stakeholders align around concrete examples rather than abstract concepts.
+          </LearningCard>
+        </div>
+      </ProseSection>
 
-        <p>The IA, wires, and research package are now driving the open RFP for phase two. Briteweb is well positioned, with a shared vision that lets new partners slot in without relitigating fundamentals.</p>
-
-        <hr />
-
-        <h2>Learnings</h2>
-
-        <ul>
-          <li><strong>Wireframes are diplomacy tools:</strong> shared artifacts resolve abstract disagreements.</li>
-          <li><strong>Lightweight research &gt; heavy decks early:</strong> Obsidian kept us fast and aligned.</li>
-          <li><strong>Prototypes spark better conversations:</strong> especially in multi-org, high-stakes contexts.</li>
-        </ul>
-
-        <hr />
-
-        <h2>Call to Action</h2>
-
-        <p>Sometimes the real UX problem isn't the interface—it's misalignment at the human level. If you need a strategist who can unite teams and produce shippable IA/wires, let's talk.</p>
-
-        <hr />
-
-        <h3>Credits</h3>
-
-        <p>Social Finance Fund stakeholder organizations, Briteweb team, and Boann for trusting me to navigate complex multi-organizational dynamics and deliver practical UX strategy.</p>
-      </div>
+      {/* Credits */}
+      <FadeIn>
+        <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <h3>Credits</h3>
+            <p>Social Finance Fund stakeholder organizations, Briteweb team, and Boann for trusting me to navigate complex multi-organizational dynamics and deliver practical UX strategy.</p>
+          </div>
+        </section>
+      </FadeIn>
     </CaseStudyViewer>
   )
 }

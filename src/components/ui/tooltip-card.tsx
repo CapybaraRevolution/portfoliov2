@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -13,196 +14,221 @@ export const Tooltip = ({
   containerClassName?: string;
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [mouse, setMouse] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [height, setHeight] = useState(0);
-  const [position, setPosition] = useState<{ x: number; y: number }>({
+  const [isMounted, setIsMounted] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
   });
-  const [isTouch, setIsTouch] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLSpanElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
 
+  // Handle client-side mounting for portal
   useEffect(() => {
-    if (isVisible && contentRef.current) {
-      setHeight(contentRef.current.scrollHeight);
-    }
-  }, [isVisible, content]);
+    setIsMounted(true);
+    // Detect mobile/touch device
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(hover: none)").matches || window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-  const calculatePosition = (
-    mouseX: number,
-    mouseY: number,
-    options?: { preferAbove?: boolean }
-  ) => {
-    const preferAbove = options?.preferAbove ?? false;
-    if (!contentRef.current || !containerRef.current)
-      return {
-        x: mouseX + 12,
-        y: preferAbove ? mouseY - 24 : mouseY + 12,
-      };
+  // Close tooltip when clicking outside on mobile
+  useEffect(() => {
+    if (!isMobile || !isVisible) return;
 
-    const tooltip = contentRef.current;
-    const container = containerRef.current;
-    const containerRect = container.getBoundingClientRect();
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node) &&
+        tooltipRef.current &&
+        !tooltipRef.current.contains(e.target as Node)
+      ) {
+        setIsVisible(false);
+      }
+    };
+
+    // Use a small delay to avoid immediate close on the same tap
+    const timeoutId = setTimeout(() => {
+      document.addEventListener("touchstart", handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isMobile, isVisible]);
+
+  const calculatePosition = useCallback(() => {
+    if (!containerRef.current) return { x: 0, y: 0 };
+
+    const containerRect = containerRef.current.getBoundingClientRect();
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Get tooltip dimensions
-    const tooltipWidth = 240; // min-w-[15rem] = 240px
-    const tooltipHeight = tooltip.scrollHeight;
+    // Tooltip dimensions - larger on mobile
+    const tooltipWidth = isMobile ? Math.min(320, viewportWidth - 32) : 240;
+    const tooltipHeight = contentRef.current?.scrollHeight || 100;
 
-    // Calculate absolute position relative to viewport
-    const absoluteX = containerRect.left + mouseX;
-    const absoluteY = containerRect.top + mouseY;
+    // On mobile, center the tooltip horizontally and position above the element
+    if (isMobile) {
+      const centerX = (viewportWidth - tooltipWidth) / 2;
+      let y = containerRect.top - tooltipHeight - 16;
 
-    let finalX = mouseX + 12;
-    let finalY = preferAbove ? mouseY - tooltipHeight - 16 : mouseY + 12;
+      // If tooltip would go above viewport, position below instead
+      if (y < 16) {
+        y = containerRect.bottom + 16;
+      }
+
+      // If still would go below viewport, center vertically
+      if (y + tooltipHeight > viewportHeight - 16) {
+        y = Math.max(16, (viewportHeight - tooltipHeight) / 2);
+      }
+
+      return { x: centerX, y };
+    }
+
+    // Desktop positioning - follow mouse cursor style
+    let x = containerRect.right + 12;
+    let y = containerRect.top;
 
     // Check if tooltip goes beyond right edge
-    if (absoluteX + 12 + tooltipWidth > viewportWidth) {
-      finalX = mouseX - tooltipWidth - 12;
+    if (x + tooltipWidth > viewportWidth - 16) {
+      x = containerRect.left - tooltipWidth - 12;
     }
 
     // Check if tooltip goes beyond left edge
-    if (absoluteX + finalX < 0) {
-      finalX = -containerRect.left + 12;
+    if (x < 16) {
+      x = 16;
     }
 
     // Check if tooltip goes beyond bottom edge
-    if (absoluteY + 12 + tooltipHeight > viewportHeight) {
-      finalY = mouseY - tooltipHeight - 12;
+    if (y + tooltipHeight > viewportHeight - 16) {
+      y = viewportHeight - tooltipHeight - 16;
     }
 
     // Check if tooltip goes beyond top edge
-    if (absoluteY + finalY < 0) {
-      finalY = -containerRect.top + 12;
+    if (y < 16) {
+      y = 16;
     }
 
-    return { x: finalX, y: finalY };
-  };
+    return { x, y };
+  }, [isMobile]);
 
-  const updateMousePosition = (
-    mouseX: number,
-    mouseY: number,
-    options?: { preferAbove?: boolean }
-  ) => {
-    setMouse({ x: mouseX, y: mouseY });
-    const newPosition = calculatePosition(mouseX, mouseY, options);
-    setPosition(newPosition);
-  };
+  // Update position when visible
+  useEffect(() => {
+    if (isVisible) {
+      const newPosition = calculatePosition();
+      setTooltipPosition(newPosition);
+    }
+  }, [isVisible, calculatePosition]);
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLSpanElement>) => {
-    setIsTouch(false);
+  // Recalculate on scroll
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleScroll = () => {
+      const newPosition = calculatePosition();
+      setTooltipPosition(newPosition);
+    };
+
+    window.addEventListener("scroll", handleScroll, true);
+    return () => window.removeEventListener("scroll", handleScroll, true);
+  }, [isVisible, calculatePosition]);
+
+  const handleMouseEnter = () => {
+    if (isMobile) return;
     setIsVisible(true);
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    updateMousePosition(mouseX, mouseY);
   };
 
   const handleMouseLeave = () => {
-    setIsTouch(false);
-    setMouse({ x: 0, y: 0 });
-    setPosition({ x: 0, y: 0 });
+    if (isMobile) return;
     setIsVisible(false);
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLSpanElement>) => {
-    if (!isVisible) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    updateMousePosition(mouseX, mouseY);
+  const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
+    if (!isMobile) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setIsVisible((prev) => !prev);
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLSpanElement>) => {
-    const touch = e.touches[0];
-    const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = touch.clientX - rect.left;
-    const mouseY = touch.clientY - rect.top;
-    setIsTouch(true);
-    updateMousePosition(mouseX, mouseY, { preferAbove: true });
-    setIsVisible(true);
+    // Prevent default to avoid double-firing with click
+    // But allow the click handler to manage the toggle
   };
 
-  const handleTouchEnd = () => {
-    // Delay hiding to allow for tap interaction
-    setTimeout(() => {
-      setIsVisible(false);
-      setMouse({ x: 0, y: 0 });
-      setPosition({ x: 0, y: 0 });
-      setIsTouch(false);
-    }, 2000);
-  };
-
-  const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
-    // Toggle visibility on click for mobile devices
-    if (window.matchMedia("(hover: none)").matches) {
-      e.preventDefault();
-      setIsTouch(true);
-      if (isVisible) {
-        setIsVisible(false);
-        setMouse({ x: 0, y: 0 });
-        setPosition({ x: 0, y: 0 });
-      } else {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        updateMousePosition(mouseX, mouseY, { preferAbove: true });
-        setIsVisible(true);
-      }
-    }
-  };
-
-  // Update position when tooltip becomes visible or content changes
-  useEffect(() => {
-    if (isVisible && contentRef.current) {
-      const newPosition = calculatePosition(mouse.x, mouse.y, {
-        preferAbove: isTouch,
-      });
-      setPosition(newPosition);
-    }
-  }, [isVisible, height, mouse.x, mouse.y, isTouch]);
+  // Tooltip content component
+  const tooltipContent = (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          ref={tooltipRef}
+          key="tooltip"
+          initial={{ opacity: 0, scale: 0.95, y: isMobile ? 10 : 0 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: isMobile ? 10 : 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+            duration: 0.2,
+          }}
+          className={cn(
+            "fixed z-[9999] overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900",
+            // Larger on mobile for better readability
+            isMobile ? "min-w-[280px] max-w-[calc(100vw-32px)]" : "min-w-[15rem] max-w-[20rem]"
+          )}
+          style={{
+            top: tooltipPosition.y,
+            left: tooltipPosition.x,
+          }}
+        >
+          <div
+            ref={contentRef}
+            className={cn(
+              "text-zinc-600 dark:text-zinc-400",
+              // Larger padding and text on mobile
+              isMobile ? "p-4 text-base leading-relaxed" : "p-3 text-sm"
+            )}
+          >
+            {content}
+          </div>
+          {/* Close hint on mobile */}
+          {isMobile && (
+            <div className="border-t border-zinc-100 bg-zinc-50 px-4 py-2 text-center text-xs text-zinc-400 dark:border-zinc-800 dark:bg-zinc-800/50 dark:text-zinc-500">
+              Tap anywhere to close
+            </div>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 
   return (
-    <span
-      ref={containerRef}
-      className={cn("relative inline-block", containerClassName)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onClick={handleClick}
-    >
-      {children}
-      <AnimatePresence>
-        {isVisible && (
-          <motion.div
-            key={String(isVisible)}
-            initial={{ height: 0, opacity: 1 }}
-            animate={{ height, opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 200,
-              damping: 20,
-            }}
-            className="pointer-events-none absolute z-50 min-w-[15rem] overflow-hidden rounded-md border border-transparent bg-white shadow-sm shadow-black/5 ring-black/5 dark:bg-neutral-900 dark:shadow-white/10 dark:ring-white/5"
-            style={{
-              top: position.y,
-              left: position.x,
-            }}
-          >
-            <div
-              ref={contentRef}
-              className="p-2 text-sm text-neutral-600 md:p-4 dark:text-neutral-400"
-            >
-              {content}
-            </div>
-          </motion.div>
+    <>
+      <span
+        ref={containerRef}
+        className={cn(
+          "relative inline dark:text-neutral-200",
+          // Visual indicator that this is interactive on mobile
+          isMobile && "cursor-pointer",
+          containerClassName
         )}
-      </AnimatePresence>
-    </span>
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onClick={handleClick}
+      >
+        {children}
+      </span>
+      {/* Render tooltip in portal to escape overflow containers */}
+      {isMounted && createPortal(tooltipContent, document.body)}
+    </>
   );
 };

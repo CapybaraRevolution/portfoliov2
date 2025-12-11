@@ -4,10 +4,9 @@ import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
-  TransitionChild,
 } from '@headlessui/react'
-import { motion } from 'framer-motion'
-import { Suspense, createContext, useContext } from 'react'
+import { motion, AnimatePresence, PanInfo } from 'framer-motion'
+import { Suspense, createContext, useContext, useCallback } from 'react'
 import { create } from 'zustand'
 
 import { Header } from '@/components/Header'
@@ -50,32 +49,71 @@ function MobileNavigationDialog({
   isOpen: boolean
   close: () => void
 }) {
+  // Handle swipe to close
+  const handleDragEnd = useCallback(
+    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      // Close if swiped left more than 100px or with velocity
+      if (info.offset.x < -100 || info.velocity.x < -500) {
+        close()
+      }
+    },
+    [close]
+  )
+
   return (
     <Dialog
-      transition
       open={isOpen}
       onClose={close}
       className="fixed inset-0 z-50 lg:hidden"
     >
-      <DialogBackdrop
-        transition
-        className="fixed inset-0 top-14 bg-zinc-400/20 backdrop-blur-xs data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in dark:bg-black/40"
-      />
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <DialogBackdrop
+              as={motion.div}
+              static
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 top-14 bg-zinc-400/20 backdrop-blur-xs dark:bg-black/40"
+              onClick={close}
+            />
 
-      <DialogPanel>
-        <TransitionChild>
-          <Header className="data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in" />
-        </TransitionChild>
+            <DialogPanel static>
+              {/* Header */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Header />
+              </motion.div>
 
-        <TransitionChild>
-          <motion.div
-            layoutScroll
-            className="fixed top-14 bottom-0 left-0 w-full overflow-y-auto bg-white px-4 pt-6 pb-4 shadow-lg ring-1 shadow-zinc-900/10 ring-zinc-900/7.5 duration-500 ease-in-out data-closed:-translate-x-full min-[416px]:max-w-sm sm:px-6 sm:pb-10 dark:bg-zinc-900 dark:ring-zinc-800"
-          >
-            <Navigation />
-          </motion.div>
-        </TransitionChild>
-      </DialogPanel>
+              {/* Swipeable navigation drawer */}
+              <motion.div
+                initial={{ x: '-100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '-100%' }}
+                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={{ left: 0.2, right: 0 }}
+                onDragEnd={handleDragEnd}
+                className="fixed top-14 bottom-0 left-0 w-[85vw] max-w-sm overflow-y-auto bg-white px-4 pt-6 pb-4 shadow-2xl border-r border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 touch-pan-y"
+              >
+                {/* Drag handle indicator */}
+                <div className="absolute top-3 right-2 flex flex-col gap-1 opacity-30">
+                  <div className="w-1 h-8 rounded-full bg-zinc-400 dark:bg-zinc-600" />
+                </div>
+                <Navigation />
+              </motion.div>
+            </DialogPanel>
+          </>
+        )}
+      </AnimatePresence>
     </Dialog>
   )
 }

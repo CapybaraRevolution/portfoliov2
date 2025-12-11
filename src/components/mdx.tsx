@@ -15,7 +15,8 @@ export function wrapper({ children }: { children: React.ReactNode }) {
   return (
     <article className="flex h-full flex-col pt-16 pb-10">
       <Prose className="flex-auto">{children}</Prose>
-      <div className="mx-auto mt-16 w-full max-w-2xl lg:max-w-5xl">
+      {/* Match Prose content width: max-w-3xl on mobile, max-w-4xl on lg */}
+      <div className="mx-auto mt-16 w-full max-w-3xl lg:max-w-4xl">
         <Feedback />
       </div>
     </article>
