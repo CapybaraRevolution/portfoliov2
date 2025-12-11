@@ -1,6 +1,7 @@
 'use server'
 
 import { Resend } from 'resend'
+import { escapeHtml, escapeHtmlWithBreaks } from '@/lib/utils'
 
 export interface FormData {
   name: string
@@ -24,9 +25,19 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
   ])
 }
 
+// Validate and sanitize website URL
+function sanitizeWebsite(website: string): string {
+  if (!website) return ''
+  // Remove any protocol if user included it
+  const cleaned = website.replace(/^https?:\/\//, '').trim()
+  // Basic validation - should not contain spaces or invalid URL chars
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9-_.]*\.[a-zA-Z]{2,}(\/.*)?$/.test(cleaned)) {
+    return '' // Invalid format
+  }
+  return cleaned
+}
+
 export async function submitContactForm(formData: FormData) {
-  console.log('submitContactForm called with:', { name: formData.name, email: formData.email })
-  
   try {
     // Basic validation
     if (!formData.name || !formData.email || !formData.project) {
@@ -39,31 +50,32 @@ export async function submitContactForm(formData: FormData) {
       throw new Error('Invalid email address')
     }
 
+    // Sanitize website
+    const sanitizedWebsite = sanitizeWebsite(formData.website)
+
     // Check if Resend API key is configured
     if (!resend) {
-      console.warn('RESEND_API_KEY not configured, form submission logged but email not sent')
-      console.log('Contact form submission:', formData)
       return { 
         success: true, 
         message: 'Thank you for your inquiry! I\'ll get back to you soon.' 
       }
     }
 
-    // Prepare email content
-    const emailSubject = `New Project Inquiry from ${formData.name}`
+    // Prepare email content with escaped user input
+    const emailSubject = `New Project Inquiry from ${escapeHtml(formData.name)}`
     const emailHtml = `
       <h2>New Project Inquiry</h2>
-      <p><strong>Name:</strong> ${formData.name}</p>
-      <p><strong>Email:</strong> ${formData.email}</p>
-      <p><strong>Company:</strong> ${formData.company || 'Not provided'}</p>
-      <p><strong>Website:</strong> ${formData.website ? `https://${formData.website}` : 'Not provided'}</p>
-      <p><strong>Engagement Type:</strong> ${formData.engagement}</p>
+      <p><strong>Name:</strong> ${escapeHtml(formData.name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(formData.email)}</p>
+      <p><strong>Company:</strong> ${formData.company ? escapeHtml(formData.company) : 'Not provided'}</p>
+      <p><strong>Website:</strong> ${sanitizedWebsite ? `https://${escapeHtml(sanitizedWebsite)}` : 'Not provided'}</p>
+      <p><strong>Engagement Type:</strong> ${escapeHtml(formData.engagement)}</p>
       
       <h3>Project Description:</h3>
-      <p>${formData.project.replace(/\n/g, '<br>')}</p>
+      <p>${escapeHtmlWithBreaks(formData.project)}</p>
       
       <h3>Success Definition:</h3>
-      <p>${formData.success ? formData.success.replace(/\n/g, '<br>') : 'Not provided'}</p>
+      <p>${formData.success ? escapeHtmlWithBreaks(formData.success) : 'Not provided'}</p>
       
       <hr>
       <p><small>Submitted via kylemcgraw.com contact form</small></p>
@@ -75,7 +87,7 @@ New Project Inquiry
 Name: ${formData.name}
 Email: ${formData.email}
 Company: ${formData.company || 'Not provided'}
-Website: ${formData.website ? `https://${formData.website}` : 'Not provided'}
+Website: ${sanitizedWebsite ? `https://${sanitizedWebsite}` : 'Not provided'}
 Engagement Type: ${formData.engagement}
 
 Project Description:
@@ -98,21 +110,17 @@ Submitted via kylemcgraw.com contact form
       text: emailText,
     })
 
-    const { data, error } = await withTimeout(sendEmailPromise, 30000)
+    const { error } = await withTimeout(sendEmailPromise, 30000)
 
     if (error) {
-      console.error('Email sending error:', error)
       throw new Error('Failed to send email')
     }
-
-    console.log('Email sent successfully:', data)
     
     return { 
       success: true, 
       message: 'Thank you for your inquiry! I\'ll get back to you within 1 business day.' 
     }
   } catch (error) {
-    console.error('Form submission error:', error)
     const errorMessage = error instanceof Error 
       ? error.message === 'Request timeout'
         ? 'The request took too long. Please try again.'

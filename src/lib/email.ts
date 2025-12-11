@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { escapeHtml, escapeHtmlWithBreaks } from '@/lib/utils'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -18,13 +19,16 @@ export async function sendCommentNotification(data: CommentNotificationData): Pr
   try {
     // Check if Resend API key is configured
     if (!resend) {
-      console.warn('RESEND_API_KEY not configured, comment notification not sent')
       return false
     }
 
     // Determine page context from itemId
     const pageContext = getPageContextFromItemId(data.itemId)
     const pageUrl = `https://kylemcgraw.com${pageContext.url}`
+    
+    // Escape user-provided content
+    const safeAuthorName = escapeHtml(data.authorName)
+    const safeContent = escapeHtmlWithBreaks(data.content)
     
     // Prepare email content
     const subject = `New Comment on ${pageContext.title}`
@@ -33,14 +37,14 @@ export async function sendCommentNotification(data: CommentNotificationData): Pr
       <h2>New Comment Posted</h2>
       <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin: 16px 0;">
         <p><strong>Page:</strong> ${pageContext.title}</p>
-        <p><strong>Author:</strong> ${data.authorName}</p>
+        <p><strong>Author:</strong> ${safeAuthorName}</p>
         <p><strong>Posted:</strong> ${formatTimestamp(data.timestamp)}</p>
         ${data.mood ? `<p><strong>Mood:</strong> ${formatMood(data.mood)}</p>` : ''}
       </div>
       
       <h3>Comment:</h3>
       <div style="background: #ffffff; border-left: 4px solid #10b981; padding: 16px; margin: 16px 0; border-radius: 4px;">
-        <p style="margin: 0; line-height: 1.5;">${data.content.replace(/\n/g, '<br>')}</p>
+        <p style="margin: 0; line-height: 1.5;">${safeContent}</p>
       </div>
       
       <p><a href="${pageUrl}" style="background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">View Comment</a></p>
@@ -69,7 +73,7 @@ This notification was sent automatically from your portfolio website.
     `.trim()
 
     // Send email using Resend
-    const { data: emailData, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: 'Portfolio Comments <onboarding@resend.dev>',
       to: ['kylemcgraw1993@gmail.com'],
       subject: subject,
@@ -78,15 +82,12 @@ This notification was sent automatically from your portfolio website.
     })
 
     if (error) {
-      console.error('Comment notification email error:', error)
       return false
     }
 
-    console.log('Comment notification email sent successfully:', emailData)
     return true
     
-  } catch (error) {
-    console.error('Failed to send comment notification:', error)
+  } catch {
     return false
   }
 }
@@ -115,7 +116,7 @@ function getPageContextFromItemId(itemId: string): { title: string; url: string 
   }
 
   return pageMap[itemId] || { 
-    title: `Page (${itemId})`, 
+    title: `Page (${escapeHtml(itemId)})`, 
     url: '/' 
   }
 }
@@ -136,7 +137,7 @@ function formatTimestamp(timestamp: string): string {
       timeZoneName: 'short'
     })
   } catch {
-    return timestamp
+    return escapeHtml(timestamp)
   }
 }
 
@@ -152,5 +153,5 @@ function formatMood(mood: string): string {
     'thumbsy': '👍 Thumbsy'
   }
   
-  return moodMap[mood] || mood
+  return moodMap[mood] || escapeHtml(mood)
 }

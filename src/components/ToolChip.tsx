@@ -11,9 +11,8 @@ export function ToolChip({ tool, onClick }: ToolChipProps) {
   const handleClick = () => {
     if (onClick) {
       onClick()
-    } else {
-      console.log(`Navigate to content for ${tool.label}`)
     }
+    // No-op if no onClick handler provided
   }
 
   const icon = (

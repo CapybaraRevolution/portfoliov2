@@ -31,11 +31,9 @@ export function ToolsGrid({ tools }: ToolsGridProps) {
   const handleToolClick = (slug: string) => {
     const toolData = tools.find(t => t.slug === slug)
     if (!toolData) {
-      console.warn(`[TOOLS] Missing content for tool slug: "${slug}". Available tools:`, tools.map(t => t.slug))
       return
     }
 
-    console.log('[DEBUG] Tool clicked:', slug)
     setSelectedTool(slug)
     setIsDrawerOpen(true)
 

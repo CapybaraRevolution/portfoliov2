@@ -1,6 +1,7 @@
 'use server'
 
 import { Resend } from 'resend'
+import { escapeHtml, escapeHtmlWithBreaks } from '@/lib/utils'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -26,13 +27,16 @@ export async function submitFeedback(feedbackData: FeedbackData) {
   try {
     // Check if Resend API key is configured
     if (!resend) {
-      console.warn('RESEND_API_KEY not configured, feedback logged but email not sent')
-      console.log('Feedback submission:', feedbackData)
       return { 
         success: true, 
         message: 'Thank you for your feedback!' 
       }
     }
+
+    // Escape user-provided content
+    const safePageTitle = feedbackData.pageTitle ? escapeHtml(feedbackData.pageTitle) : 'Unknown Page'
+    const safePageUrl = escapeHtml(feedbackData.pageUrl)
+    const safeComment = feedbackData.comment ? escapeHtmlWithBreaks(feedbackData.comment) : ''
 
     // Prepare email content
     const emoji = feedbackData.response === 'yes' ? '👍' : '👎'
@@ -40,7 +44,7 @@ export async function submitFeedback(feedbackData: FeedbackData) {
     const isEasterEgg = feedbackData.pageTitle?.includes('Easter Egg')
     const emailSubject = isEasterEgg 
       ? `🎉 Easter Egg Feedback - ${feedbackData.rating ? `${feedbackData.rating}/5` : 'Site Feedback'}`
-      : `Page Feedback: ${responseText} - ${feedbackData.pageTitle || 'Unknown Page'}`
+      : `Page Feedback: ${responseText} - ${safePageTitle}`
     
     const ratingEmoji = feedbackData.rating 
       ? (feedbackData.rating === 1 ? '😞' : feedbackData.rating === 2 ? '😐' : feedbackData.rating === 3 ? '🙂' : feedbackData.rating === 4 ? '😊' : '🤩')
@@ -51,9 +55,9 @@ export async function submitFeedback(feedbackData: FeedbackData) {
       <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin: 16px 0;">
         ${isEasterEgg ? '' : `<p><strong>Response:</strong> ${emoji} ${responseText}</p>`}
         ${feedbackData.rating ? `<p><strong>Rating:</strong> ${ratingEmoji} ${feedbackData.rating}/5</p>` : ''}
-        <p><strong>Page:</strong> ${feedbackData.pageTitle || 'Unknown Page'}</p>
-        <p><strong>URL:</strong> <a href="${feedbackData.pageUrl}">${feedbackData.pageUrl}</a></p>
-        ${feedbackData.comment ? `<p><strong>Comment:</strong><br>${feedbackData.comment.replace(/\n/g, '<br>')}</p>` : ''}
+        <p><strong>Page:</strong> ${safePageTitle}</p>
+        <p><strong>URL:</strong> <a href="${safePageUrl}">${safePageUrl}</a></p>
+        ${safeComment ? `<p><strong>Comment:</strong><br>${safeComment}</p>` : ''}
         <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-US', {
           weekday: 'short',
           year: 'numeric',
@@ -65,7 +69,7 @@ export async function submitFeedback(feedbackData: FeedbackData) {
         })}</p>
       </div>
       
-      <p><a href="${feedbackData.pageUrl}" style="background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">View Page</a></p>
+      <p><a href="${safePageUrl}" style="background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">View Page</a></p>
       
       <hr style="margin: 24px 0; border: none; border-top: 1px solid #e5e7eb;">
       <p style="color: #6b7280; font-size: 14px;">
@@ -106,21 +110,17 @@ This feedback was submitted automatically from your portfolio website.
       text: emailText,
     })
 
-    const { data, error } = await withTimeout(sendEmailPromise, 30000)
+    const { error } = await withTimeout(sendEmailPromise, 30000)
 
     if (error) {
-      console.error('Email sending error:', error)
       throw new Error('Failed to send feedback')
     }
-
-    console.log('Feedback email sent successfully:', data)
     
     return { 
       success: true, 
       message: 'Thank you for your feedback!' 
     }
   } catch (error) {
-    console.error('Feedback submission error:', error)
     const errorMessage = error instanceof Error 
       ? error.message === 'Request timeout'
         ? 'The request took too long. Please try again.'
@@ -133,11 +133,3 @@ This feedback was submitted automatically from your portfolio website.
     }
   }
 }
-
-
-
-
-
-
-
-

@@ -66,14 +66,14 @@ export default function SocialFinanceFundCaseStudy() {
       title: 'Survey → shared facts',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Co-designed role-branched survey</h3>
-          <p>I co-designed a <Tooltip content="Survey logic that shows different questions based on the respondent's role—ensuring each stakeholder type gets relevant questions without overwhelming them."><span className="font-bold">role-branched Microsoft Forms survey</span></Tooltip> that ensured each stakeholder type (SPOs, SFIs, investors, and others) received relevant questions without unnecessary complexity.</p>
-          <p>After collecting responses, I cleaned the data in Excel and synthesized findings in Obsidian as a lightweight knowledge hub—the single source of truth that the whole team could reference and build on.</p>
+          <h3 className="mt-0">Start with data everyone can point to</h3>
+          <p>I co-designed a <Tooltip content="Survey logic that shows different questions based on the respondent's role, so each stakeholder type gets relevant questions without unnecessary complexity."><span className="font-bold">role-branched survey</span></Tooltip> in Microsoft Forms. Different questions for SPOs, SFIs, investors, and others. 42 responses. Cleaned the data in Excel, synthesized it in Obsidian.</p>
+          <p>The goal wasn't a research deck. It was a single source of truth the whole team could reference when opinions diverged. "Here's what users actually said" ends a lot of circular arguments.</p>
           <div className="my-4">
             <Figure
               src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
               alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other user types"
-              caption="Role-based survey branching ensured relevant questions for each stakeholder type"
+              caption="Role-based survey branching. Different stakeholders, different questions."
             />
           </div>
         </div>
@@ -83,24 +83,19 @@ export default function SocialFinanceFundCaseStudy() {
       title: 'Workshops → alignment',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Facilitated sessions to define shared goals</h3>
-          <p>I facilitated structured workshops to help the group move from conflicting priorities to shared understanding. The sessions focused on:</p>
-          <ul>
-            <li>Defining shared goals that all organizations could rally around</li>
-            <li>Identifying user and content needs across stakeholder types</li>
-            <li>Drafting an information architecture that served everyone</li>
-          </ul>
-          <p>One pivotal session started tense. I led with listening, made space for candid critique, and focused the group on evidence from the survey and the IA. We ended with visible alignment and clear next steps—the tone for future sessions shifted from resistant to collaborative.</p>
+          <h3 className="mt-0">The session that shifted everything</h3>
+          <p>One workshop started tense. You could feel the skepticism. I led with listening, made space for candid critique, and kept pointing back to the survey data and the IA draft. No defensiveness, just "here's what we're seeing, what do you think?"</p>
+          <p>By the end, the tone had shifted. Not because anyone "won," but because we'd built something together. Future sessions were collaborative instead of resistant. That pivot was more valuable than any deliverable.</p>
         </div>
       ),
     },
     {
-      title: 'AI-Accelerated concepting',
+      title: 'AI-accelerated concepting',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">LLM-generated alternatives as conversation starters</h3>
-          <p>I used LLMs to generate multiple sitemap alternatives and page flow options. These weren't final designs—they were conversation starters that helped the team debate, select, and refine together.</p>
-          <p>This approach accelerated the ideation phase while keeping humans in control of the decisions. The AI handled the initial generation; the team handled the judgment and refinement.</p>
+          <h3 className="mt-0">LLMs as conversation starters</h3>
+          <p>I used LLMs to generate multiple sitemap alternatives and page flow options. Not as final designs. As debate fodder. "Here are five ways we could structure this. Which feels closest? What's wrong with it?"</p>
+          <p>Faster than sketching everything by hand. Keeps humans in control of the judgment. The AI generates options; the team decides which ones make sense.</p>
         </div>
       ),
     },
@@ -108,9 +103,9 @@ export default function SocialFinanceFundCaseStudy() {
       title: 'Wireframes → proof of intent',
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Mid- to high-fidelity wires for decision-making</h3>
-          <p>I produced mid- to high-fidelity wireframes in Figma for the core pages: homepage, about, articles, impact, and directory. The fidelity was intentional—enough detail to support real decision-making and an open RFP, without getting lost in visual design details.</p>
-          <p>These wireframes became the shared artifacts that resolved abstract disagreements. When stakeholders could see and interact with the structure, alignment happened faster.</p>
+          <h3 className="mt-0">Concrete beats abstract</h3>
+          <p>Mid- to high-fidelity wireframes in Figma. Homepage, about, articles, impact, directory. Enough detail to support real decisions and an open RFP. Not so polished that we'd get lost debating visual design.</p>
+          <p>When stakeholders could see and interact with the structure, abstract disagreements resolved themselves. "I don't like the IA" becomes "I don't like where this specific thing lives." Much easier to fix.</p>
         </div>
       ),
     },
@@ -161,8 +156,8 @@ export default function SocialFinanceFundCaseStudy() {
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
       {/* Goal Section */}
       <GoalBlock
-        goal="Align multi-org stakeholders and ship a usable IA/wireframe package for a government social finance initiative"
-        goalDetail="What began as 'just wireframes' became a wayfinding effort: align people, clarify goals, and create practical deliverables the group could rally around"
+        goal="Get four organizations to agree on anything, then ship wireframes they could actually use"
+        goalDetail="What started as 'just wireframes' became a diplomacy project. The deliverables mattered less than the alignment."
       />
 
       {/* Context Section - 50/50 layout with orbiting circles */}
@@ -171,13 +166,8 @@ export default function SocialFinanceFundCaseStudy() {
         align="center"
       >
         <Heading id="context" level={2} className="mt-0">Context</Heading>
-        <p>The Social Finance Fund is a government-backed initiative to educate Canadians on social finance. Soon it'll be a tool. One that connects people like you and me to organizations that are making waves in the social purpose space. Think of it like this:</p>
-        <ul>
-          <li>I'm a user who wants to support indigenous-owned businesses.</li>
-          <li>The SFF helps me find organizations that match that, allowing me to compare them.</li>
-          <li>Easier for me to choose which company to invest in. I love the idea.</li>
-          <li>Weaponize capitalism. Save the whales. Support local businesses.</li>
-        </ul>
+        <p>The Social Finance Fund is a government-backed initiative to educate Canadians on social finance. The pitch is compelling: connect regular people to organizations making real impact. Want to support indigenous-owned businesses? Find and compare them. Weaponize capitalism for good. I genuinely love the idea.</p>
+        <p>The challenge? Getting it built requires four different organizations to agree on what it should be. That's where things got interesting.</p>
       </SplitSection>
 
 
@@ -186,8 +176,8 @@ export default function SocialFinanceFundCaseStudy() {
         <ProseBlock>
           <Heading id="the-problem" level={2} className="mt-0">The Problem</Heading>
         </ProseBlock>
-        <p>The problem? Multiple independent organizations were steering the work—with competing priorities, unclear ownership, and low trust. I was brought in by Briteweb to provide UX strategy and structured facilitation. What began as "just wireframes" became a wayfinding effort: align people, clarify goals, and create a practical IA/wireframe package the group could rally around.</p>
-        <p>Challenges I face are often not just design, but human dynamics. With the SFF we had four organizations, each with different mandates, one lead org that others were hesitant to follow, and no single product owner to make final decisions.</p>
+        <p>Four organizations. Different mandates. One lead org that others were hesitant to follow. No single product owner to make final decisions. Under $10k budget. If you've worked in multi-stakeholder environments, you're already wincing.</p>
+        <p>I was brought in by Briteweb to provide UX strategy and structured facilitation. The brief said "wireframes." The actual job was getting people aligned enough that wireframes would even be useful.</p>
         <SplitSection
           align="center"
           flip
@@ -218,10 +208,10 @@ export default function SocialFinanceFundCaseStudy() {
           }
         >
           <ul>
-            <li><strong>Conflicting priorities:</strong> 3–4 orgs with different mandates, each pushing for their own vision.</li>
-            <li><strong>Power dynamics:</strong> one lead org, others hesitant to follow without clear ownership structure.</li>
-            <li><strong>Low trust & unclear ownership:</strong> no single product owner to make final decisions, leading to circular discussions.</li>
-            <li><strong>Lean budget/timeline:</strong> under $10k to reach a useful outcome—no room for extended discovery or multiple rounds of revision.</li>
+            <li><strong>Conflicting priorities:</strong> Education vs. investment vs. policy. Everyone wanted something different.</li>
+            <li><strong>Power dynamics:</strong> One org nominally in charge. Others not quite bought in.</li>
+            <li><strong>No product owner:</strong> Decisions required consensus. Consensus required trust. Trust was thin.</li>
+            <li><strong>Lean budget:</strong> Under $10k. No room for extended discovery or multiple revision rounds.</li>
           </ul>
         </SplitSection>
       </ProseSection>
@@ -235,12 +225,12 @@ export default function SocialFinanceFundCaseStudy() {
       <ProseSection>
         <ProseBlock>
           <Heading id="my-role" level={2} className="mt-0">My Role</Heading>
-          <p>I was brought in by Briteweb as a UX strategist and research facilitator. My job was to turn a multi-stakeholder, multi-org reality into a coherent plan the group could actually execute.</p>
+          <p>UX strategist and research facilitator, brought in by Briteweb. On paper: survey design, workshop facilitation, IA, wireframes. In practice: professional herder of cats.</p>
           <p><strong>What I optimized for:</strong></p>
           <ul>
-            <li><strong>Alignment:</strong> Creating shared understanding and unified vision across competing priorities</li>
-            <li><strong>Clarity:</strong> Turning abstract disagreements into concrete, debatable artifacts</li>
-            <li><strong>Practical deliverables:</strong> Producing IA and wireframes that could support decision-making and an open RFP</li>
+            <li><strong>Alignment first:</strong> Shared understanding before shared artifacts. You can't design for people who don't agree on what they're building.</li>
+            <li><strong>Concrete over abstract:</strong> Turn vague disagreements into things people could point at and debate.</li>
+            <li><strong>Usable deliverables:</strong> IA and wireframes that could support an RFP, not just look good in a presentation.</li>
           </ul>
         </ProseBlock>
       </ProseSection>
@@ -251,7 +241,7 @@ export default function SocialFinanceFundCaseStudy() {
           <Heading id="how-i-created-clarity" level={2} label="Approach">
             How I Created Clarity
           </Heading>
-          <p>I approached this as a facilitation and strategy challenge first, design challenge second. The goal was to create shared facts, align stakeholders, and produce practical deliverables—all within a lean budget and timeline.</p>
+          <p>This was a facilitation challenge wearing a design costume. The wireframes mattered, but they wouldn't matter at all if the group couldn't agree on what they were for. So I started there.</p>
         </ProseBlock>
         <FadeIn delay={0.1}>
           <div className="mt-10">
@@ -264,15 +254,15 @@ export default function SocialFinanceFundCaseStudy() {
       <ProseSection>
         <ProseBlock>
           <Heading id="practical-ai" level={2} label="AI Integration">Practical AI</Heading>
-          <p>The strategy with AI on this project wasn't "AI magic." It was internal acceleration—fewer hours spent on admin work, more time for facilitation and stakeholder alignment. Fast first drafts, fast consistency checks, more iteration momentum.</p>
-          <p><strong>Where AI helped:</strong></p>
+          <p>AI on this project was internal acceleration, not magic. Fewer hours on admin, more hours on the hard stuff: facilitating difficult conversations, building trust, making decisions stick.</p>
+          <p><strong>Where it actually helped:</strong></p>
           <ul>
-            <li><strong><Tooltip content="AI-assisted grouping of content and labels to propose an information architecture faster—humans still approve the final taxonomy."><span className="font-bold">IA concepting</span></Tooltip>:</strong> Generated multiple sitemap alternatives and page flow options to spark stakeholder discussions. The team debated, selected, and we refined.</li>
-            <li><strong>Survey synthesis:</strong> Accelerated theme identification from survey responses, then human-edited for accuracy. This freed up time for the more important work: understanding what the themes meant for the project.</li>
-            <li><strong>Content organization:</strong> Helped cluster and categorize user needs and content requirements, surfacing patterns that might have taken longer to identify manually.</li>
-            <li><strong>Documentation efficiency:</strong> Faster first-draft creation for research synthesis in Obsidian, allowing more time for facilitation and alignment work.</li>
+            <li><strong>IA concepting:</strong> Multiple sitemap alternatives generated fast. Not to ship, but to debate. "Here are five options, what's wrong with each?"</li>
+            <li><strong>Survey synthesis:</strong> Theme identification from 42 responses. Human-edited for accuracy, but the first pass was quick.</li>
+            <li><strong>Content clustering:</strong> Grouping user needs and requirements. Patterns surfaced faster than doing it manually.</li>
+            <li><strong>Documentation:</strong> First drafts in Obsidian. More time for facilitation, less time formatting.</li>
           </ul>
-          <p><strong>Result:</strong> More time for facilitation and stakeholder alignment, with AI handling initial data processing and ideation. The human judgment and relationship-building remained the core value.</p>
+          <p>The human work (judgment, relationships, navigating politics) stayed core. AI just freed up bandwidth to do more of it.</p>
         </ProseBlock>
       </ProseSection>
 
@@ -280,40 +270,40 @@ export default function SocialFinanceFundCaseStudy() {
       <ProseSection>
         <ProseBlock className="mb-8">
           <Heading id="outcomes" level={2}>Outcomes</Heading>
-          <p>The IA, wires, and research package are now driving the open RFP for phase two. Briteweb is well positioned, with a shared vision that lets new partners slot in without relitigating fundamentals.</p>
+          <p>The IA, wireframes, and research package are driving the RFP for phase two. Briteweb is well positioned. More importantly, there's a shared vision now. New partners can slot in without relitigating the fundamentals.</p>
         </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
           <LearningCard 
-            title="User Survey Design & Analysis"
+            title="Survey + Research Hub"
             icon="FileText"
             index={0}
           >
-            Microsoft Forms survey with role-based branching, Excel data cleaning, and Obsidian research hub as the single source of truth for the whole team.
+            Role-branched survey, 42 responses, Obsidian synthesis. Single source of truth when opinions diverged.
           </LearningCard>
 
           <LearningCard 
-            title="Obsidian Research Hub"
-            icon="FileText"
+            title="IA & Sitemap"
+            icon="Network"
             index={1}
           >
-            Clear, linkable markdown synthesis that kept the team fast and aligned—lightweight research that was more useful than heavy decks early in the process.
-          </LearningCard>
-
-          <LearningCard 
-            title="Information Architecture & Sitemap"
-            icon="Network"
-            index={2}
-          >
-            AI-assisted variants refined by hand, creating a structure that served all stakeholder types and supported the open RFP process.
+            AI-assisted variants, refined by hand. Structure that serves all stakeholder types and supports the RFP.
           </LearningCard>
 
           <LearningCard 
             title="Figma Wireframes"
             icon="FileText"
+            index={2}
+          >
+            Five core pages. Enough fidelity to make decisions, not so polished we'd argue about colors.
+          </LearningCard>
+
+          <LearningCard 
+            title="Stakeholder Alignment"
+            icon="Handshake"
             index={3}
           >
-            Mid- to high-fidelity wires for homepage, about, articles, impact, and directory—enough fidelity to support decision-making without getting lost in visual design details.
+            The hardest deliverable. Four orgs, one shared direction. That pivot from resistant to collaborative.
           </LearningCard>
         </div>
 
@@ -346,23 +336,23 @@ export default function SocialFinanceFundCaseStudy() {
             icon="Handshake"
             index={0}
           >
-            Shared artifacts resolve abstract disagreements. When stakeholders can see and interact with the structure, alignment happens faster than in abstract discussions.
+            Abstract disagreements dissolve when people can point at something concrete. "I don't like the direction" becomes "I don't like where this lives." Much easier to solve.
           </LearningCard>
 
           <LearningCard 
-            title="Lightweight research > heavy decks early"
+            title="Lightweight beats polished early"
             icon="FileText"
             index={1}
           >
-            Obsidian kept us fast and aligned. The lightweight, linkable format was more useful than polished decks that would have taken longer to create and update.
+            Obsidian markdown over presentation decks. Fast to update, easy to link, keeps everyone honest. Polish comes later, if it comes at all.
           </LearningCard>
 
           <LearningCard 
-            title="Prototypes spark better conversations"
+            title="Trust before artifacts"
             icon="MessageSquare"
             index={2}
           >
-            Especially in multi-org, high-stakes contexts. Interactive artifacts compress explanation time and help stakeholders align around concrete examples rather than abstract concepts.
+            In multi-org contexts, the relationship work matters more than the deliverables. A perfect wireframe means nothing if no one trusts the process that created it.
           </LearningCard>
         </div>
       </ProseSection>
@@ -372,7 +362,7 @@ export default function SocialFinanceFundCaseStudy() {
         <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
           <div className="prose prose-zinc dark:prose-invert max-w-none">
             <h3>Credits</h3>
-            <p>Social Finance Fund stakeholder organizations, Briteweb team, and Boann for trusting me to navigate complex multi-organizational dynamics and deliver practical UX strategy.</p>
+            <p>Social Finance Fund stakeholder organizations, Briteweb team, and Boann for trusting the process even when it felt uncertain.</p>
           </div>
         </section>
       </FadeIn>

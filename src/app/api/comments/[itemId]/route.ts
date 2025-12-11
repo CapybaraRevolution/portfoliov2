@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import DOMPurify from 'isomorphic-dompurify'
-import { supabase, type Comment, type CommentInsert } from '@/lib/supabase'
 import { sendCommentNotification } from '@/lib/email'
 
-// Fallback in-memory storage if Supabase is not configured
-let comments: { [key: string]: any[] } = {}
-
-// Check if Supabase is properly configured
-const isSupabaseConfigured = (): boolean => {
-  return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && 
-           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
-           process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url_here' &&
-           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== 'your_supabase_anon_key_here')
+// Comment type definition
+interface Comment {
+  id: string
+  item_id: string
+  author: string
+  content: string
+  mood: string | null
+  created_at: string
 }
 
-// Rate limiting storage (in production, use Redis or database)
+// In-memory storage for comments
+let comments: { [key: string]: Comment[] } = {}
+
+// Rate limiting storage
 let rateLimitStore: { [key: string]: { count: number; resetTime: number } } = {}
 
 // Security configuration
@@ -50,6 +51,12 @@ function containsProfanity(text: string): boolean {
 
 // Turnstile verification function
 async function verifyTurnstile(token: string): Promise<boolean> {
+  const secretKey = process.env.TURNSTILE_SECRET_KEY
+  if (!secretKey) {
+    // If no secret key configured, skip verification in development
+    return process.env.NODE_ENV === 'development'
+  }
+  
   try {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
@@ -57,22 +64,37 @@ async function verifyTurnstile(token: string): Promise<boolean> {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        secret: process.env.TURNSTILE_SECRET_KEY!,
+        secret: secretKey,
         response: token,
       }),
     })
     
     const data = await response.json()
     return data.success === true
-  } catch (error) {
-    console.error('Turnstile verification failed:', error)
+  } catch {
     return false
+  }
+}
+
+// Cleanup expired rate limit entries to prevent memory growth
+function cleanupExpiredRateLimits(): void {
+  const now = Date.now()
+  for (const clientId of Object.keys(rateLimitStore)) {
+    if (rateLimitStore[clientId].resetTime < now) {
+      delete rateLimitStore[clientId]
+    }
   }
 }
 
 // Rate limiting middleware
 function checkRateLimit(clientId: string): boolean {
   const now = Date.now()
+  
+  // Cleanup expired entries periodically (every 100 checks)
+  if (Math.random() < 0.01) {
+    cleanupExpiredRateLimits()
+  }
+  
   const clientData = rateLimitStore[clientId]
   
   if (!clientData || now > clientData.resetTime) {
@@ -143,43 +165,17 @@ export async function GET(
   try {
     const { itemId } = await params
     
-    if (isSupabaseConfigured()) {
-      // Use Supabase
-      const { data, error } = await supabase
-        .from('comments')
-        .select('id, item_id, author, content, mood, created_at')
-        .eq('item_id', itemId)
-        .order('created_at', { ascending: false })
-      
-      if (error) {
-        console.error('Supabase error fetching comments:', error)
-        throw error
-      }
-      
-      const response = NextResponse.json({
-        success: true,
-        comments: data || []
-      })
-      
-      // Add cache headers for better performance
-      response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate=30')
-      
-      return response
-    } else {
-      // Fallback to in-memory storage
-      const itemComments = comments[itemId] || []
-      const response = NextResponse.json({
-        success: true,
-        comments: itemComments.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      })
-      
-      // Add cache headers for better performance
-      response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate=30')
-      
-      return response
-    }
-  } catch (error) {
-    console.error('Error fetching comments:', error)
+    const itemComments = comments[itemId] || []
+    const response = NextResponse.json({
+      success: true,
+      comments: itemComments.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    })
+    
+    // Add cache headers for better performance
+    response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate=30')
+    
+    return response
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to fetch comments' },
       { status: 500 }
@@ -244,95 +240,54 @@ export async function POST(
       )
     }
 
-    if (isSupabaseConfigured()) {
-      // Use Supabase
-      const commentData: CommentInsert = {
-        item_id: itemId,
-        author: sanitizedAuthor,
-        content: sanitizedContent,
-        mood: mood || null,
-        client_id: clientId.slice(0, 20)
-      }
-
-      const { data, error } = await supabase
-        .from('comments')
-        .insert(commentData)
-        .select('id, item_id, author, content, mood, created_at')
-        .single()
-
-      if (error) {
-        console.error('Supabase error creating comment:', error)
-        throw new Error('Failed to save comment to database')
-      }
-
-      // Send email notification (don't block response if email fails)
-      sendCommentNotification({
-        authorName: sanitizedAuthor,
-        content: sanitizedContent,
-        itemId: itemId,
-        mood: mood || null,
-        timestamp: data.created_at
-      }).catch(emailError => {
-        console.error('Failed to send comment notification email:', emailError)
-        // Continue execution - email failure shouldn't affect comment creation
-      })
-
-      return NextResponse.json({
-        success: true,
-        comment: data,
-      })
-    } else {
-      // Fallback to in-memory storage
-      const newComment = {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        author: sanitizedAuthor,
-        content: sanitizedContent,
-        mood: mood || null,
-        created_at: new Date().toISOString(),
-        clientId: clientId.slice(0, 20),
-      }
-
-      // Initialize comments array for this item if it doesn't exist
-      if (!comments[itemId]) {
-        comments[itemId] = []
-      }
-
-      // Prevent memory exhaustion - limit comments per item
-      if (comments[itemId].length >= 1000) {
-        comments[itemId] = comments[itemId].slice(0, 999)
-      }
-
-      // Add comment to the beginning of the array
-      comments[itemId].unshift(newComment)
-
-      // Send email notification (don't block response if email fails)
-      sendCommentNotification({
-        authorName: sanitizedAuthor,
-        content: sanitizedContent,
-        itemId: itemId,
-        mood: mood || null,
-        timestamp: newComment.created_at
-      }).catch(emailError => {
-        console.error('Failed to send comment notification email:', emailError)
-        // Continue execution - email failure shouldn't affect comment creation
-      })
-
-      // Remove clientId from response for privacy
-      const responseComment = {
-        id: newComment.id,
-        author: newComment.author,
-        content: newComment.content,
-        mood: newComment.mood,
-        created_at: newComment.created_at
-      }
-      
-      return NextResponse.json({
-        success: true,
-        comment: responseComment,
-      })
+    // Create new comment in memory
+    const newComment: Comment = {
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      item_id: itemId,
+      author: sanitizedAuthor,
+      content: sanitizedContent,
+      mood: mood || null,
+      created_at: new Date().toISOString(),
     }
-  } catch (error) {
-    console.error('Error creating comment:', error)
+
+    // Initialize comments array for this item if it doesn't exist
+    if (!comments[itemId]) {
+      comments[itemId] = []
+    }
+
+    // Prevent memory exhaustion - limit comments per item
+    if (comments[itemId].length >= 1000) {
+      comments[itemId] = comments[itemId].slice(0, 999)
+    }
+
+    // Add comment to the beginning of the array
+    comments[itemId].unshift(newComment)
+
+    // Send email notification (don't block response if email fails)
+    sendCommentNotification({
+      authorName: sanitizedAuthor,
+      content: sanitizedContent,
+      itemId: itemId,
+      mood: mood || null,
+      timestamp: newComment.created_at
+    }).catch(() => {
+      // Continue execution - email failure shouldn't affect comment creation
+    })
+
+    // Return comment without internal fields
+    const responseComment = {
+      id: newComment.id,
+      author: newComment.author,
+      content: newComment.content,
+      mood: newComment.mood,
+      created_at: newComment.created_at
+    }
+    
+    return NextResponse.json({
+      success: true,
+      comment: responseComment,
+    })
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to create comment' },
       { status: 500 }
@@ -356,31 +311,16 @@ export async function DELETE(
       )
     }
 
-    if (isSupabaseConfigured()) {
-      // Use Supabase
-      const { error } = await supabase
-        .from('comments')
-        .delete()
-        .eq('id', commentId)
-        .eq('item_id', itemId) // Additional security check
-      
-      if (error) {
-        console.error('Supabase error deleting comment:', error)
-        throw error
-      }
-    } else {
-      // Fallback to in-memory storage
-      if (comments[itemId]) {
-        comments[itemId] = comments[itemId].filter(comment => comment.id !== commentId)
-      }
+    // Delete from in-memory storage
+    if (comments[itemId]) {
+      comments[itemId] = comments[itemId].filter(comment => comment.id !== commentId)
     }
 
     return NextResponse.json({
       success: true,
       message: 'Comment deleted successfully',
     })
-  } catch (error) {
-    console.error('Error deleting comment:', error)
+  } catch {
     return NextResponse.json(
       { success: false, error: 'Failed to delete comment' },
       { status: 500 }

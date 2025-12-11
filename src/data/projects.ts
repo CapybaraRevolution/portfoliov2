@@ -10,6 +10,7 @@ export interface Project {
   client?: string
   timeline?: string
   status: 'completed' | 'ongoing'
+  comingSoon?: boolean
 }
 
 // Skills organized into new 5-category system

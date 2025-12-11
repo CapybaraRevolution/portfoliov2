@@ -75,12 +75,7 @@ function NavLink({
 }) {
   const isOverview = children === 'Overview' && href.includes('/work/overview') && !isAnchorLink
   
-  // Badge content - small ghosted tag matching text color
-  const badgeContent = badge && (
-    <span className="ml-1.5 inline-flex items-center rounded px-1 py-px text-[9px] font-medium whitespace-nowrap opacity-50 border border-current/40">
-      Soon
-    </span>
-  )
+  // Badge content removed - we now use a header instead
   
   // Render Overview as a MagicUI ghosted ripple button
   if (isOverview) {
@@ -125,7 +120,6 @@ function NavLink({
       >
         <span className="truncate flex items-center">
           {children}
-          {badgeContent}
         </span>
       </span>
     )
@@ -147,7 +141,6 @@ function NavLink({
     >
       <span className="truncate flex items-center gap-1.5">
         {children}
-        {badgeContent}
         {shouldPulse && (
           <motion.span
             initial={{ opacity: 0, x: 4 }}
@@ -484,60 +477,90 @@ function NavigationGroup({
             <ActivePageMarker group={group} pathname={pathname} />
           )}
         </AnimatePresence>
-        <ul role="list" className="border-l border-transparent">
-          {group.links
-            .filter((link) => !(link.title === 'Overview' && link.href.includes('/work/overview')))
-            .map((link, linkIndex, filteredLinks) => {
-              // Check if this is the first case study (Mortgage Platform / Breeze)
-              // and we should show the arrow because Timeline is visible on home page
-              let isFirstCaseStudy = linkIndex === 0 && link.href.includes('/case-studies/')
-              let showArrowForFirstCaseStudy = isFirstCaseStudy && shouldShowFirstCaseStudyArrow && !link.disabled
-              
-              return (
-                <motion.li key={link.href} layout="position" className="relative">
-                  <NavLink 
-                    href={link.href} 
-                    active={link.href === pathname}
-                    shouldPulse={showArrowForFirstCaseStudy}
-                    badge={link.badge}
-                    disabled={link.disabled}
-                  >
-                    {link.title}
-                  </NavLink>
-                {!group.hideChildren && (
-                <AnimatePresence mode="popLayout" initial={false}>
-                  {link.href === pathname && sections.length > 0 && (
-                    <motion.ul
-                      role="list"
-                      initial={{ opacity: 0 }}
-                      animate={{
-                        opacity: 1,
-                        transition: { delay: 0.1 },
-                      }}
-                      exit={{
-                        opacity: 0,
-                        transition: { duration: 0.15 },
-                      }}
-                    >
-                      {sections.map((section) => (
-                        <li key={section.id}>
-                          <NavLink
-                            href={`${link.href}#${section.id}`}
-                            tag={section.tag}
-                            isAnchorLink
-                          >
-                            {section.title}
-                          </NavLink>
-                        </li>
-                      ))}
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-                )}
-                </motion.li>
-              )
-            })}
-        </ul>
+        {(() => {
+          const filteredLinks = group.links.filter(
+            (link) => !(link.title === 'Overview' && link.href.includes('/work/overview'))
+          )
+          const activeLinks = filteredLinks.filter((link) => !link.disabled)
+          const comingSoonLinks = filteredLinks.filter((link) => link.disabled)
+          
+          return (
+            <>
+              <ul role="list" className="border-l border-transparent">
+                {activeLinks.map((link, linkIndex) => {
+                  // Check if this is the first case study (Mortgage Platform / Breeze)
+                  // and we should show the arrow because Timeline is visible on home page
+                  let isFirstCaseStudy = linkIndex === 0 && link.href.includes('/case-studies/')
+                  let showArrowForFirstCaseStudy = isFirstCaseStudy && shouldShowFirstCaseStudyArrow && !link.disabled
+                  
+                  return (
+                    <motion.li key={link.href} layout="position" className="relative">
+                      <NavLink 
+                        href={link.href} 
+                        active={link.href === pathname}
+                        shouldPulse={showArrowForFirstCaseStudy}
+                        badge={link.badge}
+                        disabled={link.disabled}
+                      >
+                        {link.title}
+                      </NavLink>
+                    {!group.hideChildren && (
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      {link.href === pathname && sections.length > 0 && (
+                        <motion.ul
+                          role="list"
+                          initial={{ opacity: 0 }}
+                          animate={{
+                            opacity: 1,
+                            transition: { delay: 0.1 },
+                          }}
+                          exit={{
+                            opacity: 0,
+                            transition: { duration: 0.15 },
+                          }}
+                        >
+                          {sections.map((section) => (
+                            <li key={section.id}>
+                              <NavLink
+                                href={`${link.href}#${section.id}`}
+                                tag={section.tag}
+                                isAnchorLink
+                              >
+                                {section.title}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
+                    )}
+                    </motion.li>
+                  )
+                })}
+              </ul>
+              {comingSoonLinks.length > 0 && (
+                <>
+                  <h3 className="mt-4 mb-2 pl-4 text-[10px] font-medium uppercase tracking-wide text-zinc-400 dark:text-zinc-500">
+                    Coming soon
+                  </h3>
+                  <ul role="list" className="border-l border-transparent">
+                    {comingSoonLinks.map((link) => (
+                      <motion.li key={link.href} layout="position" className="relative">
+                        <NavLink 
+                          href={link.href} 
+                          active={false}
+                          disabled={link.disabled}
+                        >
+                          {link.title}
+                        </NavLink>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </>
+          )
+        })()}
       </div>
     </li>
   )

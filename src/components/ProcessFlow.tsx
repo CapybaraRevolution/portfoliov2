@@ -2291,16 +2291,6 @@ function ProcessFlowContent() {
 
   // Drawer handlers for all steps
   const handleCardClick = (title: string) => {
-    console.log('[DEBUG] Available drawerContent keys:', Object.keys(drawerContent))
-    console.log('[DEBUG] Card clicked with title:', title)
-    
-    const contentExists = !!drawerContent[title as keyof typeof drawerContent]
-    console.log('[DEBUG] Content exists for title:', contentExists)
-    
-    if (!contentExists) {
-      console.warn(`[DRAWER] Missing content for slug: "${title}". Available slugs:`, Object.keys(drawerContent))
-    }
-    
     setSelectedDrawer(title)
     setIsDrawerOpen(true)
     

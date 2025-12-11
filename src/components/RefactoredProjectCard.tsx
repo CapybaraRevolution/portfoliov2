@@ -76,14 +76,16 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
   }
 
   const pattern = { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
+  const isDisabled = project.comingSoon
 
-  return (
-    <Link href={project.href} className="group">
-      <div
-        onMouseMove={onMouseMove}
-        className="relative flex flex-col rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 cursor-pointer border border-zinc-200 dark:border-zinc-700/75 group-hover:border-zinc-300 dark:group-hover:border-zinc-600"
-      >
-      <ProjectCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />
+  const cardContent = (
+    <div
+      onMouseMove={onMouseMove}
+      className={`relative flex flex-col rounded-2xl bg-zinc-50 transition-shadow hover:shadow-md hover:shadow-zinc-900/5 dark:bg-white/2.5 dark:hover:shadow-black/5 ${
+        isDisabled ? 'opacity-60 grayscale cursor-not-allowed' : 'cursor-pointer'
+      } border border-zinc-200 dark:border-zinc-700/75 group-hover:border-zinc-300 dark:group-hover:border-zinc-600`}
+    >
+      {!isDisabled && <ProjectCardPattern {...pattern} mouseX={mouseX} mouseY={mouseY} />}
       
       {/* Header */}
       <div className="relative p-6 pb-4">
@@ -91,20 +93,26 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
             {project.title}
           </h3>
-          <span className={`inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium ${
-            project.status === 'ongoing' 
-              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-              : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
-          }`}>
-            <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
+          {isDisabled ? (
+            <span className="inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-600">
+              Coming Soon
+            </span>
+          ) : (
+            <span className={`inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium ${
               project.status === 'ongoing' 
-                ? 'fill-emerald-500 animate-pulse' 
-                : 'fill-zinc-400'
+                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+                : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
             }`}>
-              <circle r={3} cx={3} cy={3} />
-            </svg>
-            {project.status === 'ongoing' ? 'Ongoing' : 'Completed'}
-          </span>
+              <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
+                project.status === 'ongoing' 
+                  ? 'fill-emerald-500 animate-pulse' 
+                  : 'fill-zinc-400'
+              }`}>
+                <circle r={3} cx={3} cy={3} />
+              </svg>
+              {project.status === 'ongoing' ? 'Ongoing' : 'Completed'}
+            </span>
+          )}
         </div>
       </div>
 
@@ -185,12 +193,21 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
       {/* Footer - Utility Zone */}
       <div className="relative mt-auto bg-zinc-100/50 dark:bg-zinc-800/50 p-6 border-t border-zinc-900/7.5 dark:border-white/10">
         <div className="flex justify-center">
-          <span className="inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 transition-colors">
-            View case study →
+          <span className={`inline-flex items-center text-sm font-medium transition-colors ${
+            isDisabled 
+              ? 'text-zinc-400 dark:text-zinc-500' 
+              : 'text-emerald-600 dark:text-emerald-400'
+          }`}>
+            {isDisabled ? 'Coming soon' : 'View case study →'}
           </span>
         </div>
       </div>
     </div>
-    </Link>
+  )
+
+  return isDisabled ? (
+    <div className="group">{cardContent}</div>
+  ) : (
+    <Link href={project.href} className="group">{cardContent}</Link>
   )
 }

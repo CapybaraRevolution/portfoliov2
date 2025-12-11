@@ -63,7 +63,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Hotjar", "Google Analytics", "LLM assistants"],
     services: ["Information Architecture", "Wireframing", "Prototyping", "Product Vision", "PRDs (Specs)", "Stakeholder Alignment", "System Design"],
     order: 2,
-    goal: "Unify three distinct schools into one digital experience that feels coherent, findable, and maintainable",
+    goal: "Make three schools feel like one product.",
     goalDetail: "This was not a visual refresh. It was a system-building job: shared navigation rules, shared page modules, and shared language, without sanding off each school's identity."
   },
   {
@@ -101,7 +101,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Miro", "Notion"],
     services: ["Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Product Analytics", "Usability Testing", "PRDs (Specs)", "Team Facilitation"],
     order: 4,
-    goal: "Improve navigation and registration through smarter filtering and cross-system user flows."
+    goal: "Improve navigation and registration through smarter filtering and cross-system user flows.",
+    comingSoon: true
   },
   {
     title: "Avatar: Generations",
@@ -119,13 +120,14 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Figma", "FigJam", "Notion", "Jira", "Unity", "Lottie"],
     services: ["Stakeholder Alignment", "System Design", "Wireframing", "Prototyping", "PRDs (Specs)", "Roadmap", "Team Facilitation", "User Research", "Usability Testing", "Product Analytics", "Experimentation"],
     order: 5,
-    goal: "Lead UX across a multi-stakeholder mobile RPG, balancing franchise requirements with player experience."
+    goal: "Lead UX across a multi-stakeholder mobile RPG, balancing franchise requirements with player experience.",
+    comingSoon: true
   },
   {
     title: "Social Finance Fund",
     descriptiveTitle: "Social Finance Fund",
     client: "Social Finance Fund",
-    description: "UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package",
+    description: "Getting four organizations to agree on anything, then shipping wireframes they could actually use.",
     slug: "social-finance-fund",
     category: "Strategy",
     aiAccelerated: true,
@@ -137,7 +139,8 @@ export const caseStudies: CaseStudyMetadata[] = [
     tools: ["Microsoft Forms", "Excel", "Obsidian", "Figma"],
     services: ["Product Vision", "User Research", "Information Architecture", "Wireframing", "Prototyping", "Stakeholder Alignment", "Team Facilitation"],
     order: 6,
-    goal: "Align multi-org stakeholders and ship a usable IA/wireframe package for a government social finance initiative."
+    goal: "Turn multi-org chaos into shared direction. Then ship something useful.",
+    comingSoon: true
   },
   {
     title: "Old Skool Game Studios",
@@ -181,20 +184,20 @@ export const caseStudies: CaseStudyMetadata[] = [
     title: "Houston Ballet",
     descriptiveTitle: "Mobile Ticketing Experience",
     client: "Jixaw Technologies",
-    description: "Designed a mobile-first QR ticketing experience for Houston Ballet patrons, from performance discovery to venue arrival.",
+    description: "A reflection on how AI tooling is changing design work, told through a mobile ticketing prototype built in a day.",
     slug: "houston-ballet",
     category: "UX",
     aiAccelerated: true,
     role: "Product Designer",
     engagementType: "Contract",
     location: "Remote",
-    timeline: "2024",
-    status: "Completed",
+    timeline: "2025 – Present",
+    status: "Ongoing",
     tools: ["Figma", "Figma Make", "React", "Tailwind CSS"],
     services: ["Product Vision", "Information Architecture", "Prototyping", "Visual Design", "Interaction Design"],
     order: 3,
-    goal: "Create a delightful mobile ticketing experience that guides patrons from ticket purchase to their seats.",
-    goalDetail: "An interactive prototype demonstrating the full user journey—from browsing performances to presenting QR tickets at the venue."
+    goal: "Explore what happens when AI tools actually work.",
+    goalDetail: "A functional React prototype, built in a day with Figma Make. Less about the output, more about what it says about where design is headed."
   },
   {
     title: "BC Cancer Foundation",

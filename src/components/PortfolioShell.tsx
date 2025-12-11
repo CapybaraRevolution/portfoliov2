@@ -129,7 +129,8 @@ export function PortfolioShell() {
       href: `/case-studies/${study.slug}`,
       client: study.client,
       timeline: study.timeline,
-      status: study.status === 'Ongoing' ? 'ongoing' as const : 'completed' as const
+      status: study.status === 'Ongoing' ? 'ongoing' as const : 'completed' as const,
+      comingSoon: study.comingSoon
     }))
   }, [allCaseStudies, filters])
   
