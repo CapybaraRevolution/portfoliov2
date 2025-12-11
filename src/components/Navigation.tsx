@@ -405,9 +405,9 @@ function NavigationGroup({
               const nextHref = footerNav.getAttribute('data-next-case-study')
               if (nextHref) {
                 setNextCaseStudyToHighlight(nextHref)
+                // Once set, disconnect - it stays highlighted
+                observer.disconnect()
               }
-            } else {
-              setNextCaseStudyToHighlight(null)
             }
           })
         },
@@ -418,17 +418,10 @@ function NavigationGroup({
       )
       
       observer.observe(footerNav)
-      
-      // Store observer for cleanup
-      ;(window as unknown as { __footerObserver?: IntersectionObserver }).__footerObserver = observer
     }, 200)
     
     return () => {
       clearTimeout(initTimeout)
-      const observer = (window as unknown as { __footerObserver?: IntersectionObserver }).__footerObserver
-      if (observer) {
-        observer.disconnect()
-      }
       setNextCaseStudyToHighlight(null)
     }
   }, [isCaseStudyPage, isWorkGroup, pathname])
@@ -451,23 +444,13 @@ function NavigationGroup({
           entries.forEach((entry) => {
             isTimelineVisible = entry.isIntersecting
             
-            if (entry.isIntersecting) {
-              // Wait 10 seconds before showing the arrow
-              if (!arrowDelayTimeout) {
-                arrowDelayTimeout = setTimeout(() => {
-                  if (isTimelineVisible) {
-                    setShouldShowFirstCaseStudyArrow(true)
-                  }
-                }, 10000)
-              }
-            } else {
-              // Clear the timeout and hide arrow when scrolling away
-              if (arrowDelayTimeout) {
-                clearTimeout(arrowDelayTimeout)
-                arrowDelayTimeout = null
-              }
-              setShouldShowFirstCaseStudyArrow(false)
+            if (entry.isIntersecting && !arrowDelayTimeout) {
+              // Wait 10 seconds before showing the arrow - once shown, it stays
+              arrowDelayTimeout = setTimeout(() => {
+                setShouldShowFirstCaseStudyArrow(true)
+              }, 10000)
             }
+            // Note: We don't reset the arrow when scrolling away - once it's shown, it stays
           })
         },
         {

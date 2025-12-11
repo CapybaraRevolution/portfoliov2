@@ -17,14 +17,18 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
   const [shouldPulse, setShouldPulse] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
-  // Pulse when footer becomes visible
+  // Pulse when footer becomes visible - once triggered, stays pulsing
   useEffect(() => {
     if (!navRef.current || !nextCase) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setShouldPulse(entry.isIntersecting)
+          if (entry.isIntersecting) {
+            setShouldPulse(true)
+            // Once pulsing starts, it stays - disconnect observer
+            observer.disconnect()
+          }
         })
       },
       {
