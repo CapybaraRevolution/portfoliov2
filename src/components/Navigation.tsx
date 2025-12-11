@@ -370,6 +370,9 @@ function NavigationGroup({
   
   // State for showing arrow on first case study when Timeline is visible (home page only)
   let [shouldShowFirstCaseStudyArrow, setShouldShowFirstCaseStudyArrow] = useState(false)
+  
+  // State for showing arrow on next case study when at bottom of current case study
+  let [nextCaseStudyToHighlight, setNextCaseStudyToHighlight] = useState<string | null>(null)
 
   let isActiveGroup =
     group.links.findIndex((link) => link.href === pathname) !== -1
@@ -377,6 +380,58 @@ function NavigationGroup({
   // Check if we're on the home page and the Work group
   const isHomePage = pathname === '/'
   const isWorkGroup = group.title === 'Work'
+  const isCaseStudyPage = pathname?.includes('/case-studies/') && pathname !== '/case-studies/'
+  
+  // Detect when user scrolls to bottom of case study page, show arrow for next case study
+  useEffect(() => {
+    if (!isCaseStudyPage || !isWorkGroup) {
+      setNextCaseStudyToHighlight(null)
+      return
+    }
+    
+    // Small delay to ensure DOM is ready
+    const initTimeout = setTimeout(() => {
+      // Find the case study footer nav
+      const footerNav = document.querySelector('[data-case-study-footer]')
+      if (!footerNav) {
+        return
+      }
+      
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Get the next case study href from the data attribute
+              const nextHref = footerNav.getAttribute('data-next-case-study')
+              if (nextHref) {
+                setNextCaseStudyToHighlight(nextHref)
+              }
+            } else {
+              setNextCaseStudyToHighlight(null)
+            }
+          })
+        },
+        {
+          rootMargin: '0px 0px 0px 0px',
+          threshold: 0.1,
+        }
+      )
+      
+      observer.observe(footerNav)
+      
+      // Store observer for cleanup
+      ;(window as unknown as { __footerObserver?: IntersectionObserver }).__footerObserver = observer
+    }, 200)
+    
+    return () => {
+      clearTimeout(initTimeout)
+      const observer = (window as unknown as { __footerObserver?: IntersectionObserver }).__footerObserver
+      if (observer) {
+        observer.disconnect()
+      }
+      setNextCaseStudyToHighlight(null)
+    }
+  }, [isCaseStudyPage, isWorkGroup, pathname])
   
   // Detect when Timeline section is visible on home page, with delay before showing arrow
   useEffect(() => {
@@ -493,12 +548,15 @@ function NavigationGroup({
                   let isFirstCaseStudy = linkIndex === 0 && link.href.includes('/case-studies/')
                   let showArrowForFirstCaseStudy = isFirstCaseStudy && shouldShowFirstCaseStudyArrow && !link.disabled
                   
+                  // Check if this is the next case study to highlight (when at bottom of current case study)
+                  let showArrowForNextCaseStudy = link.href === nextCaseStudyToHighlight && !link.disabled
+                  
                   return (
                     <motion.li key={link.href} layout="position" className="relative">
                       <NavLink 
                         href={link.href} 
                         active={link.href === pathname}
-                        shouldPulse={showArrowForFirstCaseStudy}
+                        shouldPulse={showArrowForFirstCaseStudy || showArrowForNextCaseStudy}
                         badge={link.badge}
                         disabled={link.disabled}
                       >

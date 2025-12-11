@@ -12,7 +12,11 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
   const nextCase = getNextCaseStudy(currentSlug)
 
   return (
-    <nav className={`border-t border-zinc-200 dark:border-zinc-800 pt-8 mt-16 ${className}`}>
+    <nav 
+      className={`border-t border-zinc-200 dark:border-zinc-800 pt-8 mt-16 ${className}`}
+      data-case-study-footer
+      data-next-case-study={nextCase ? `/case-studies/${nextCase.slug}` : undefined}
+    >
       <div className="flex justify-between items-center">
         {prevCase ? (
           <Link
@@ -34,6 +38,7 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
           <Link
             href={`/case-studies/${nextCase.slug}`}
             className="group flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors text-right max-w-[45%]"
+            data-next-case-study-link
           >
             <div className="flex flex-col items-end sm:flex-row sm:items-center sm:gap-1">
               <span className="sm:hidden font-medium text-zinc-900 dark:text-white">Next</span>
