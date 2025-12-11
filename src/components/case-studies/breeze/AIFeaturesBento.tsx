@@ -8,6 +8,7 @@ import { NumberTicker } from '@/components/ui/number-ticker'
 import { SparklesCore } from '@/components/ui/sparkles'
 import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
 import { cn } from '@/lib/utils'
+import { useMobileCenterDetection } from '@/hooks/useMobileCenterDetection'
 
 const documentTypeColors = {
   Income: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50",
@@ -58,6 +59,12 @@ export function AIFeaturesBento() {
   const [dismissedFields, setDismissedFields] = useState<Set<number>>(new Set())
   const [isResetting, setIsResetting] = useState(false)
   const confettiRef = useRef<ConfettiRef>(null)
+  
+  // Mobile center detection for scroll-based hover effect
+  const { refs: cardRefs, centeredIndex, isMobile } = useMobileCenterDetection<HTMLDivElement>(4)
+  
+  // Helper to check if a card should show active styles on mobile
+  const isMobileCentered = (cardIndex: number) => isMobile && centeredIndex === cardIndex
 
   const handleCardClick = (cardName: string) => {
     setActiveCard(activeCard === cardName ? null : cardName)
@@ -134,12 +141,13 @@ export function AIFeaturesBento() {
     <BentoGrid className="md:grid-cols-2 lg:grid-cols-4 auto-rows-[22rem]">
       {/* Smart Form Assist - with sparkles */}
       <BentoCard
+        ref={cardRefs[0]}
         name="Smart Form Assist"
         description="Reduce typing and rework with intelligent form pre-filling"
         Icon={Sparkles}
         className="col-span-3 md:col-span-1 lg:col-span-2 cursor-pointer"
         onClick={() => handleCardClick('smart-form')}
-        hideContentOnHover={true}
+        isMobileActive={isMobileCentered(0)}
         background={
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/50 dark:to-neutral-800/50" />
@@ -169,6 +177,8 @@ export function AIFeaturesBento() {
                       "transition-all duration-300 ease-out",
                       activeCard === 'smart-form' && "lg:bg-emerald-50/90 dark:lg:bg-emerald-950/30 lg:border-emerald-200 dark:lg:border-emerald-800",
                       "group-hover:bg-emerald-50/90 dark:group-hover:bg-emerald-950/30 group-hover:border-emerald-200 dark:group-hover:border-emerald-800",
+                      // Mobile center detection - apply hover styles when centered
+                      isMobileCentered(0) && "bg-emerald-50/90 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800",
                       // Dismissal animation - collapse height and fade
                       isDismissed ? "opacity-0 scale-95 -translate-x-4 max-h-0 mb-0 p-0 border-0" : "max-h-24 mb-2",
                       // Cascading entrance animation when resetting
@@ -185,14 +195,16 @@ export function AIFeaturesBento() {
                         <div className={cn(
                           "text-xs font-medium text-neutral-500 dark:text-neutral-400 transition-colors duration-300",
                           activeCard === 'smart-form' && "lg:text-emerald-700 dark:lg:text-emerald-300",
-                          "group-hover:text-emerald-700 dark:group-hover:text-emerald-300"
+                          "group-hover:text-emerald-700 dark:group-hover:text-emerald-300",
+                          isMobileCentered(0) && "text-emerald-700 dark:text-emerald-300"
                         )}>
                           {field.field}
                         </div>
                         <div className={cn(
                           "text-sm text-neutral-400 dark:text-neutral-500 italic transition-colors duration-300",
                           activeCard === 'smart-form' && "lg:text-emerald-600 dark:lg:text-emerald-400",
-                          "group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
+                          "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
+                          isMobileCentered(0) && "text-emerald-600 dark:text-emerald-400"
                         )}>
                           {field.value}
                         </div>
@@ -210,7 +222,8 @@ export function AIFeaturesBento() {
                             "h-3 w-3 text-neutral-400 dark:text-neutral-600 transition-all duration-200",
                             "group-hover/undo:rotate-180 group-hover/undo:scale-110",
                             activeCard === 'smart-form' && "lg:text-emerald-600 dark:lg:text-emerald-400",
-                            "group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
+                            "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
+                            isMobileCentered(0) && "text-emerald-600 dark:text-emerald-400"
                           )} />
                         </button>
                         <button 
@@ -225,7 +238,8 @@ export function AIFeaturesBento() {
                             "h-4 w-4 text-neutral-400 dark:text-neutral-600 transition-all duration-200",
                             "group-hover/check:scale-110",
                             activeCard === 'smart-form' && "lg:text-emerald-600 dark:lg:text-emerald-400",
-                            "group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
+                            "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
+                            isMobileCentered(0) && "text-emerald-600 dark:text-emerald-400"
                           )} />
                         </button>
                       </div>
@@ -240,29 +254,34 @@ export function AIFeaturesBento() {
 
       {/* Document Classification - with marquee and ticker */}
       <BentoCard
+        ref={cardRefs[1]}
         name="Document Classification"
         description="Predictive classification so humans can spend more time confirming instead of individually classifying bulk document uploads"
         Icon={FileText}
         className="col-span-3 md:col-span-1 lg:col-span-2 cursor-pointer"
         onClick={() => handleCardClick('document')}
+        isMobileActive={isMobileCentered(1)}
         badge={
           <div className={cn(
             "flex items-baseline gap-1 rounded-full border backdrop-blur-sm px-2.5 py-0.5 text-xs transition-colors duration-300",
             "border-neutral-300 dark:border-neutral-700 bg-neutral-200/80 dark:bg-neutral-800/80",
             activeCard === 'document' && "lg:border-emerald-200 dark:lg:border-emerald-800 lg:bg-emerald-50/80 dark:lg:bg-emerald-950/30",
-            "group-hover:border-emerald-200 dark:group-hover:border-emerald-800 group-hover:bg-emerald-50/80 dark:group-hover:bg-emerald-950/30"
+            "group-hover:border-emerald-200 dark:group-hover:border-emerald-800 group-hover:bg-emerald-50/80 dark:group-hover:bg-emerald-950/30",
+            isMobileCentered(1) && "border-emerald-200 dark:border-emerald-800 bg-emerald-50/80 dark:bg-emerald-950/30"
           )}>
             <span className={cn(
               "font-bold text-neutral-600 dark:text-neutral-400 transition-colors duration-300",
               activeCard === 'document' && "lg:text-emerald-700 dark:lg:text-emerald-300",
-              "group-hover:text-emerald-700 dark:group-hover:text-emerald-300"
+              "group-hover:text-emerald-700 dark:group-hover:text-emerald-300",
+              isMobileCentered(1) && "text-emerald-700 dark:text-emerald-300"
             )}>
               <NumberTicker value={94.5} />%
             </span>
             <span className={cn(
               "text-neutral-500 dark:text-neutral-500 transition-colors duration-300",
               activeCard === 'document' && "lg:text-emerald-600 dark:lg:text-emerald-400",
-              "group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
+              "group-hover:text-emerald-600 dark:group-hover:text-emerald-400",
+              isMobileCentered(1) && "text-emerald-600 dark:text-emerald-400"
             )}>accuracy</span>
           </div>
         }
@@ -289,7 +308,8 @@ export function AIFeaturesBento() {
                       "inline-flex w-fit rounded-full px-2 py-0.5 text-xs font-medium transition-colors duration-300",
                       "bg-neutral-300/80 text-neutral-500 dark:bg-neutral-700/80 dark:text-neutral-400",
                       activeCard === 'document' && `lg:${documentTypeColors[doc.type]}`,
-                      `group-hover:${documentTypeColors[doc.type]}`
+                      `group-hover:${documentTypeColors[doc.type]}`,
+                      isMobileCentered(1) && documentTypeColors[doc.type]
                     )}>
                       {doc.type}
                     </div>
@@ -303,12 +323,13 @@ export function AIFeaturesBento() {
 
       {/* Conversational Guidance - with animated messages */}
       <BentoCard
+        ref={cardRefs[2]}
         name="Conversational Guidance"
         description="Lightweight conversational guidance for complex steps"
         Icon={MessageCircle}
         className="col-span-3 md:col-span-1 lg:col-span-2 cursor-pointer"
         onClick={() => handleCardClick('chat')}
-        hideContentOnHover={true}
+        isMobileActive={isMobileCentered(2)}
         background={
           <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/50 dark:to-neutral-800/50">
             {/* Progressive fade overlay */}
@@ -340,12 +361,14 @@ export function AIFeaturesBento() {
                             ? cn(
                                 "bg-neutral-200/80 dark:bg-neutral-700/80 border border-neutral-300 dark:border-neutral-700 text-neutral-500 dark:text-neutral-400",
                                 activeCard === 'chat' && "lg:bg-purple-100/80 dark:lg:bg-purple-950/30 lg:border-purple-200 dark:lg:border-purple-800 lg:text-purple-900 dark:lg:text-purple-100",
-                                "group-hover:bg-purple-100/80 dark:group-hover:bg-purple-950/30 group-hover:border-purple-200 dark:group-hover:border-purple-800 group-hover:text-purple-900 dark:group-hover:text-purple-100"
+                                "group-hover:bg-purple-100/80 dark:group-hover:bg-purple-950/30 group-hover:border-purple-200 dark:group-hover:border-purple-800 group-hover:text-purple-900 dark:group-hover:text-purple-100",
+                                isMobileCentered(2) && "bg-purple-100/80 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800 text-purple-900 dark:text-purple-100"
                               )
                             : cn(
                                 "bg-neutral-200/80 dark:bg-neutral-800/80 border border-neutral-300 dark:border-neutral-700 text-neutral-500 dark:text-neutral-400",
                                 activeCard === 'chat' && "lg:bg-white/90 dark:lg:bg-neutral-800/90 lg:border-purple-200 dark:lg:border-purple-800 lg:text-purple-700 dark:lg:text-purple-300",
-                                "group-hover:bg-white/90 dark:group-hover:bg-neutral-800/90 group-hover:border-purple-200 dark:group-hover:border-purple-800 group-hover:text-purple-700 dark:group-hover:text-purple-300"
+                                "group-hover:bg-white/90 dark:group-hover:bg-neutral-800/90 group-hover:border-purple-200 dark:group-hover:border-purple-800 group-hover:text-purple-700 dark:group-hover:text-purple-300",
+                                isMobileCentered(2) && "bg-white/90 dark:bg-neutral-800/90 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300"
                               )
                         )}
                       >
@@ -396,7 +419,8 @@ export function AIFeaturesBento() {
                                   "h-3 w-3 text-neutral-400 dark:text-neutral-600 transition-all duration-300",
                                   "group-hover/thumb:scale-110 group-hover/thumb:-rotate-12",
                                   activeCard === 'chat' && "lg:text-purple-600 dark:lg:text-purple-400",
-                                  "group-hover:text-purple-600 dark:group-hover:text-purple-400"
+                                  "group-hover:text-purple-600 dark:group-hover:text-purple-400",
+                                  isMobileCentered(2) && "text-purple-600 dark:text-purple-400"
                                 )} />
                               </button>
                               <button
@@ -411,7 +435,8 @@ export function AIFeaturesBento() {
                                   "h-3 w-3 text-neutral-400 dark:text-neutral-600 transition-all duration-300",
                                   "group-hover/thumb:scale-110 group-hover/thumb:rotate-12",
                                   activeCard === 'chat' && "lg:text-purple-600 dark:lg:text-purple-400",
-                                  "group-hover:text-purple-600 dark:group-hover:text-purple-400"
+                                  "group-hover:text-purple-600 dark:group-hover:text-purple-400",
+                                  isMobileCentered(2) && "text-purple-600 dark:text-purple-400"
                                 )} />
                               </button>
                             </>
@@ -471,11 +496,13 @@ export function AIFeaturesBento() {
 
       {/* AI Writing Assistant - with image */}
       <BentoCard
+        ref={cardRefs[3]}
         name="AI Writing Assistant"
         description="Draft broker-to-client messages with AI assistance and human approval before sending"
         Icon={Bot}
         className="col-span-3 md:col-span-1 lg:col-span-2 cursor-pointer"
         onClick={() => handleCardClick('writing')}
+        isMobileActive={isMobileCentered(3)}
         background={
           <div className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/50 dark:to-neutral-800/50">
             {/* AI Tools Image */}
@@ -487,7 +514,8 @@ export function AIFeaturesBento() {
                   "w-full h-full object-cover transition-all duration-500 ease-out",
                   "opacity-40 grayscale scale-110",
                   activeCard === 'writing' && "lg:opacity-90 lg:grayscale-0",
-                  "group-hover:opacity-90 group-hover:grayscale-0"
+                  "group-hover:opacity-90 group-hover:grayscale-0",
+                  isMobileCentered(3) && "opacity-90 grayscale-0"
                 )}
               />
             </div>
@@ -497,7 +525,8 @@ export function AIFeaturesBento() {
               "absolute inset-0 bg-gradient-to-br transition-all duration-500",
               "from-neutral-50/80 to-neutral-100/80 dark:from-neutral-900/80 dark:to-neutral-800/80",
               activeCard === 'writing' && "lg:from-blue-50/60 lg:to-indigo-50/60 dark:lg:from-blue-950/40 dark:lg:to-indigo-950/40",
-              "group-hover:from-blue-50/60 group-hover:to-indigo-50/60 dark:group-hover:from-blue-950/40 dark:group-hover:to-indigo-950/40"
+              "group-hover:from-blue-50/60 group-hover:to-indigo-50/60 dark:group-hover:from-blue-950/40 dark:group-hover:to-indigo-950/40",
+              isMobileCentered(3) && "from-blue-50/60 to-indigo-50/60 dark:from-blue-950/40 dark:to-indigo-950/40"
             )} />
           </div>
         }

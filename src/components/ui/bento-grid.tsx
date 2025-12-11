@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ReactNode } from "react"
+import { ComponentPropsWithoutRef, ReactNode, forwardRef } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -17,7 +17,8 @@ interface BentoCardProps extends ComponentPropsWithoutRef<"div"> {
   cta?: string
   badge?: ReactNode
   onClick?: () => void
-  hideContentOnHover?: boolean
+  /** When true, applies hover-like styles on mobile (for scroll-based center detection) */
+  isMobileActive?: boolean
 }
 
 const BentoGrid = ({ children, className, ...props }: BentoGridProps) => {
@@ -34,7 +35,7 @@ const BentoGrid = ({ children, className, ...props }: BentoGridProps) => {
   )
 }
 
-const BentoCard = ({
+const BentoCard = forwardRef<HTMLDivElement, BentoCardProps>(({
   name,
   className,
   background,
@@ -44,12 +45,14 @@ const BentoCard = ({
   cta,
   badge,
   onClick,
-  hideContentOnHover = false,
+  isMobileActive = false,
   ...props
-}: BentoCardProps) => (
+}, ref) => (
   <div
+    ref={ref}
     key={name}
     onClick={onClick}
+    data-mobile-active={isMobileActive || undefined}
     className={cn(
       "group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl",
       // light styles
@@ -65,10 +68,7 @@ const BentoCard = ({
     <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-neutral-50 via-neutral-50/80 to-transparent dark:from-neutral-900 dark:via-neutral-900/60 dark:to-transparent pointer-events-none z-[5]" />
     
     <div className="relative z-10 p-4">
-      <div className={cn(
-        "pointer-events-none flex flex-col gap-1 transition-opacity duration-300",
-        hideContentOnHover && "group-hover:opacity-0"
-      )}>
+      <div className="pointer-events-none flex flex-col gap-1">
         <Icon className="h-12 w-12 text-neutral-700 dark:text-neutral-300" />
         <div className="flex items-center gap-2">
           <h3 className="text-xl font-semibold text-neutral-700 dark:text-neutral-300">
@@ -81,8 +81,13 @@ const BentoCard = ({
 
     </div>
 
-    <div className="pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10" />
+    <div className={cn(
+      "pointer-events-none absolute inset-0 transform-gpu transition-all duration-300 group-hover:bg-black/[.03] group-hover:dark:bg-neutral-800/10",
+      isMobileActive && "bg-black/[.03] dark:bg-neutral-800/10"
+    )} />
   </div>
-)
+))
+
+BentoCard.displayName = "BentoCard"
 
 export { BentoCard, BentoGrid }
