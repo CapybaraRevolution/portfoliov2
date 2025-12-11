@@ -442,16 +442,11 @@ function NavigationGroup({
     
     let arrowDelayTimeout: NodeJS.Timeout | null = null
     let isTimelineVisible = false
+    let intersectionObserver: IntersectionObserver | null = null
     
-    // Small delay to ensure DOM is ready after hydration
-    const initTimeout = setTimeout(() => {
-      // Find the Timeline section by data attribute (more reliable than heading ID)
-      const timelineSection = document.querySelector('[data-timeline-section]')
-      if (!timelineSection) {
-        return
-      }
-      
-      const observer = new IntersectionObserver(
+    // Function to set up the intersection observer once timeline is found
+    const setupObserver = (timelineSection: Element) => {
+      intersectionObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             isTimelineVisible = entry.isIntersecting
@@ -481,20 +476,42 @@ function NavigationGroup({
         }
       )
       
-      observer.observe(timelineSection)
+      intersectionObserver.observe(timelineSection)
+    }
+    
+    // Check if timeline already exists
+    const existingTimeline = document.querySelector('[data-timeline-section]')
+    if (existingTimeline) {
+      setupObserver(existingTimeline)
+    } else {
+      // Use MutationObserver to wait for lazy-loaded Timeline to appear
+      const mutationObserver = new MutationObserver((mutations, obs) => {
+        const timelineSection = document.querySelector('[data-timeline-section]')
+        if (timelineSection) {
+          obs.disconnect()
+          setupObserver(timelineSection)
+        }
+      })
       
-      // Store observer for cleanup
-      ;(window as unknown as { __timelineObserver?: IntersectionObserver }).__timelineObserver = observer
-    }, 200)
+      mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+      })
+      
+      // Store mutation observer for cleanup
+      ;(window as unknown as { __timelineMutationObserver?: MutationObserver }).__timelineMutationObserver = mutationObserver
+    }
     
     return () => {
-      clearTimeout(initTimeout)
       if (arrowDelayTimeout) {
         clearTimeout(arrowDelayTimeout)
       }
-      const observer = (window as unknown as { __timelineObserver?: IntersectionObserver }).__timelineObserver
-      if (observer) {
-        observer.disconnect()
+      if (intersectionObserver) {
+        intersectionObserver.disconnect()
+      }
+      const mutationObs = (window as unknown as { __timelineMutationObserver?: MutationObserver }).__timelineMutationObserver
+      if (mutationObs) {
+        mutationObs.disconnect()
       }
     }
   }, [isHomePage, isWorkGroup])
