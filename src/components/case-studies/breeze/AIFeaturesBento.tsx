@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { BentoGrid, BentoCard } from '@/components/ui/bento-grid'
 import { Sparkles, FileText, MessageCircle, Bot, CheckCircle2, ThumbsUp, ThumbsDown, Undo2, X, Send } from 'lucide-react'
 import { Marquee } from '@/components/ui/marquee'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { SparklesCore } from '@/components/ui/sparkles'
+import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
 import { cn } from '@/lib/utils'
 
 const documentTypeColors = {
@@ -56,6 +57,7 @@ export function AIFeaturesBento() {
   const [isExiting, setIsExiting] = useState(false)
   const [dismissedFields, setDismissedFields] = useState<Set<number>>(new Set())
   const [isResetting, setIsResetting] = useState(false)
+  const confettiRef = useRef<ConfettiRef>(null)
 
   const handleCardClick = (cardName: string) => {
     setActiveCard(activeCard === cardName ? null : cardName)
@@ -83,6 +85,16 @@ export function AIFeaturesBento() {
   }
 
   const handleSubmitFeedback = (messageId: string) => {
+    // Fire confetti Easter egg!
+    if (confettiRef.current) {
+      confettiRef.current.fire({
+        particleCount: 150,
+        spread: 100,
+        origin: { x: 0.5, y: 0.5 },
+        colors: ['#a855f7', '#8b5cf6', '#7c3aed', '#ec4899', '#f472b6', '#fbbf24'],
+      })
+    }
+    
     setIsExiting(true)
     setTimeout(() => {
       setShowFeedbackModal(null)
@@ -112,6 +124,13 @@ export function AIFeaturesBento() {
   }
 
   return (
+    <>
+    {/* Confetti canvas for Easter egg celebration */}
+    <Confetti 
+      ref={confettiRef} 
+      manualstart 
+      className="pointer-events-none fixed inset-0 z-[200]" 
+    />
     <BentoGrid className="md:grid-cols-2 lg:grid-cols-4 auto-rows-[22rem]">
       {/* Smart Form Assist - with sparkles */}
       <BentoCard
@@ -484,6 +503,7 @@ export function AIFeaturesBento() {
         }
       />
     </BentoGrid>
+    </>
   )
 }
 

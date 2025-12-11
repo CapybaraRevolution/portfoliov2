@@ -77,7 +77,7 @@ function MobileNavigationDialog({
               onClick={close}
             />
 
-            <DialogPanel static>
+            <DialogPanel>
               {/* Header */}
               <motion.div
                 initial={{ opacity: 0 }}
