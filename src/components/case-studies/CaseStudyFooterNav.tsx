@@ -67,36 +67,100 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
         )}
 
         {nextCase ? (
-          <Link
-            href={`/case-studies/${nextCase.slug}`}
-            className={`group flex items-center gap-2 text-sm transition-colors text-right max-w-[45%] ${
-              shouldPulse 
-                ? 'text-emerald-600 dark:text-emerald-400' 
-                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
-            data-next-case-study-link
+          <motion.div
+            className="relative max-w-[45%]"
+            whileHover={shouldPulse ? "hover" : undefined}
+            initial="initial"
+            animate="initial"
           >
-            <div className="flex flex-col items-end sm:flex-row sm:items-center sm:gap-1">
-              <span className="sm:hidden font-medium text-zinc-900 dark:text-white">Next</span>
-              <span className="hidden sm:inline font-medium truncate">{nextCase.title}</span>
-              <span className="hidden sm:inline text-zinc-400 dark:text-zinc-500 shrink-0">Next</span>
-            </div>
-            {shouldPulse ? (
-              <motion.span
-                initial={{ opacity: 0, x: -4 }}
-                animate={{ opacity: [0, 1, 0], x: [-4, 0, -4] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
+            {/* Emerald glow effect - only shows on hover when pulsing */}
+            {shouldPulse && (
+              <motion.div
+                className="absolute -inset-3 rounded-xl pointer-events-none"
+                variants={{
+                  initial: { 
+                    opacity: 0,
+                    scale: 0.95,
+                  },
+                  hover: { 
+                    opacity: 1,
+                    scale: 1,
+                  },
                 }}
-              >
-                <ArrowRightIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              </motion.span>
-            ) : (
-              <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0" />
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                style={{
+                  background: 'radial-gradient(ellipse at center, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 70%)',
+                  filter: 'blur(8px)',
+                }}
+              />
             )}
-          </Link>
+            {/* Secondary inner glow */}
+            {shouldPulse && (
+              <motion.div
+                className="absolute -inset-2 rounded-lg pointer-events-none"
+                variants={{
+                  initial: { 
+                    opacity: 0,
+                    boxShadow: '0 0 0 rgba(16, 185, 129, 0)',
+                  },
+                  hover: { 
+                    opacity: 1,
+                    boxShadow: '0 0 20px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.1)',
+                  },
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              />
+            )}
+            <Link
+              href={`/case-studies/${nextCase.slug}`}
+              className={`group relative flex items-center gap-2 text-sm transition-all duration-300 text-right ${
+                shouldPulse 
+                  ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300' 
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+              }`}
+              data-next-case-study-link
+            >
+              <motion.div 
+                className="flex flex-col items-end sm:flex-row sm:items-center sm:gap-1"
+                variants={shouldPulse ? {
+                  initial: { scale: 1 },
+                  hover: { scale: 1.02 },
+                } : undefined}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="sm:hidden font-medium text-zinc-900 dark:text-white">Next</span>
+                <span className="hidden sm:inline font-medium truncate">{nextCase.title}</span>
+                <motion.span 
+                  className="hidden sm:inline text-zinc-400 dark:text-zinc-500 shrink-0"
+                  variants={shouldPulse ? {
+                    initial: { color: 'rgb(161, 161, 170)' },
+                    hover: { color: 'rgb(52, 211, 153)' },
+                  } : undefined}
+                  transition={{ duration: 0.3 }}
+                >
+                  Next
+                </motion.span>
+              </motion.div>
+              {shouldPulse ? (
+                <motion.span
+                  initial={{ opacity: 0, x: -4 }}
+                  animate={{ opacity: [0, 1, 0], x: [-4, 0, -4] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  variants={{
+                    hover: { scale: 1.1 },
+                  }}
+                >
+                  <ArrowRightIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                </motion.span>
+              ) : (
+                <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0" />
+              )}
+            </Link>
+          </motion.div>
         ) : (
           <div />
         )}
