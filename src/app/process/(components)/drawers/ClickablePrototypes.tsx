@@ -29,7 +29,7 @@ export function ClickablePrototypes({ className, onClose }: ClickablePrototypesP
       <DrawerLayout
         stepText="Step 3 · Design & Prototyping"
         title="Clickable Prototypes"
-        summary="Make the idea testable in days—click through the real flow, not a slide deck."
+        summary="Click through the real flow, not a slide deck. Test the idea before you build it."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Prototyping"

@@ -28,7 +28,7 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Figma to Production Parity Audit"
-        summary="Pre-release design audits systematically verify that production implementations match approved designs with pixel-perfect accuracy."
+        summary="Does the build match the design? Check before you ship."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Design%20Systems"
@@ -42,7 +42,7 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Pre-release design audits systematically verify that production implementations match approved designs with pixel-perfect accuracy. This comprehensive validation process encompasses visual styles, interaction patterns, and design system conformance. Teams conducting rigorous parity audits achieve 99% design accuracy while preventing costly post-launch rework.
+            &quot;Close enough&quot; isn&apos;t good enough. I run pre-release audits comparing production builds against Figma — pixel-perfect verification, design token compliance, and cross-browser checks. Catch discrepancies before they become design debt.
           </p>
         </div>
 
@@ -77,22 +77,20 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Conduct comprehensive visual audits covering colors, typography, spacing, component consistency using a structured framework",
-              "Execute pixel-perfect verification using overlay methods with opacity adjustment and side-by-side comparison views",
-              "Perform design system conformance testing with Storybook integration via Chromatic and automated token validation",
-              "Implement collaborative review workflows using tools providing dashboard-based reviews and stakeholder feedback loops",
-              "Apply browser-specific optimizations accounting for Safari&apos;s closer Figma matching and device pixel ratio differences",
-              "Establish baseline references creating approved visual snapshots with automated change detection via CI/CD",
-              "Document design discrepancies using native Figma commenting, Kanban workflow boards, and severity classifications",
-              "Generate compliance dashboards showing design system adherence metrics and deviation tracking reports"
+              "Visual audits: colors, typography, spacing, component consistency",
+              "Pixel-perfect verification: overlay, side-by-side, onion skin",
+              "Design system conformance: Storybook + Chromatic, token validation",
+              "Cross-browser checks: Safari renders differently (closer to Figma)",
+              "Baseline snapshots: automated change detection in CI/CD",
+              "Document discrepancies: Figma comments, severity ratings, Kanban tracking"
             ]}
           />
         </div>

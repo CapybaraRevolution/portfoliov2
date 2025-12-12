@@ -29,7 +29,7 @@ export function StakeholderDemosAcceptance({ className, onClose }: StakeholderDe
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Stakeholder Demos & Acceptance"
-        summary="Transform demos from presentations into strategic engagement opportunities that drive business value realization."
+        summary="Show working software, not slide decks. Get sign-off before you ship."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -43,7 +43,7 @@ export function StakeholderDemosAcceptance({ className, onClose }: StakeholderDe
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Stakeholder demos and acceptance represent the critical touchpoint where development work translates into business value. We use structured sprint reviews, collaborative feedback sessions, and formal acceptance procedures to ensure delivered functionality meets business objectives while achieving 78% stakeholder attendance rates.
+            Demos are where development meets reality. I run structured reviews with working software (not mockups), capture feedback in real-time, and get formal acceptance before we call it done.
           </p>
         </div>
 
@@ -78,21 +78,20 @@ export function StakeholderDemosAcceptance({ className, onClose }: StakeholderDe
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Facilitate structured sprint reviews following Scrum.org guidelines with time-boxed sessions (4 hours max for monthly sprints)",
-              "Implement Sprint Review Canvas approach covering sprint goals achievement, challenges encountered, stakeholder input capture",
-              "Orchestrate live demonstrations of working functionality using actual production-ready code, avoiding mockups or slideware",
-              "Apply value-driven presentation frameworks starting with business outcomes and connecting features to measurable results",
-              "Execute multi-channel feedback capture including real-time polling, post-demo surveys, one-on-one interviews with key stakeholders",
-              "Manage formal acceptance procedures using INVEST criteria with Given/When/Then acceptance scenarios",
-              "Conduct stakeholder mapping using influence/interest matrices to optimize meeting schedules and ensure right-level participation"
+              "Structured sprint reviews: time-boxed, focused on what shipped",
+              "Live demos with production-ready code — no mockups, no slideware",
+              "Lead with business outcomes, then show the features",
+              "Real-time feedback capture: polls, surveys, follow-up interviews",
+              "Formal acceptance: Given/When/Then scenarios with sign-off",
+              "Right people in the room: stakeholder mapping by influence and interest"
             ]}
           />
         </div>

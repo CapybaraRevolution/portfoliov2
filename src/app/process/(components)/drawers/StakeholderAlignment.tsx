@@ -28,7 +28,7 @@ export function StakeholderAlignment({ className, onClose }: StakeholderAlignmen
       <DrawerLayout
         stepText="Step 1 · Discovery & Strategy"
         title="Stakeholder Alignment"
-        summary="Align goals, measures, and decision paths so delivery moves faster."
+        summary="Agree on what success looks like before you start building."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Stakeholder%20Alignment"
@@ -60,10 +60,10 @@ export function StakeholderAlignment({ className, onClose }: StakeholderAlignmen
           <BulletList 
             color="emerald"
             items={[
-              "45–60-min workshops to surface goals, non-goals, constraints, assumptions",
-              "Map decision-makers & influencers; capture RACI and escalation paths",
-              "Define a north-star metric plus 2–3 guardrails",
-              "Spin up a living decision log to avoid re-debates",
+              "45–60-min workshops: goals, non-goals, constraints, assumptions",
+              "Map decision-makers and influencers; capture RACI and escalation paths",
+              "Define a north-star metric + 2–3 guardrails",
+              "Spin up a living decision log (so we stop re-arguing the same things)",
               "Timebox risks/unknowns into research spikes"
             ]}
           />

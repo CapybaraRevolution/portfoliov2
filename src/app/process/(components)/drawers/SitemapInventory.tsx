@@ -42,7 +42,7 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            A great IA starts with reality, not wishful thinking. We inventory every page, file, and pathway, then map the true shape of the product. This prevents &quot;lost pages,&quot; duplication, and orphan content before we design navigation.
+            A great IA starts with reality, not wishful thinking. I inventory every page, file, and pathway, then map the true shape of the product. This prevents lost pages, duplication, and orphan content before designing navigation.
           </p>
         </div>
 
@@ -75,10 +75,10 @@ export function SitemapInventory({ className, onClose }: SitemapInventoryProps) 
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"

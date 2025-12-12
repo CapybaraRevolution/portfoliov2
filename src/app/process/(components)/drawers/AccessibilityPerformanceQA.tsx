@@ -29,7 +29,7 @@ export function AccessibilityPerformanceQA({ className, onClose }: Accessibility
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Accessibility and Performance QA"
-        summary="Ensure digital products meet WCAG 2.2 standards while achieving Core Web Vitals benchmarks for inclusive, high-performance experiences."
+        summary="Fast for everyone. Usable by everyone. No exceptions."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Accessibility"
@@ -43,7 +43,7 @@ export function AccessibilityPerformanceQA({ className, onClose }: Accessibility
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Accessibility and performance QA ensures digital products meet WCAG 2.2 standards while achieving Core Web Vitals benchmarks. This dual focus on inclusive design and technical excellence creates experiences usable by all while maintaining optimal performance. As of 2025, ~95% of the web's top home pages contain detectable WCAG 2 A/AA accessibility failures (WebAIM Million), this systematic approach protects both users and organizations.
+            Accessibility isn&apos;t a nice-to-have — it&apos;s table stakes. I test for WCAG 2.2 compliance and Core Web Vitals because slow, inaccessible products lose users and invite lawsuits. (~95% of top sites fail basic accessibility checks.)
           </p>
         </div>
 
@@ -78,21 +78,21 @@ export function AccessibilityPerformanceQA({ className, onClose }: Accessibility
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Execute multi-layered WCAG testing combining automated tools (catching 30-40% of issues), manual verification with keyboard navigation, and user testing with actual disabilities",
-              "Implement automated accessibility testing using axe-core (3,700+ rules), Lighthouse (scoring 0-100), WAVE visual feedback, achieving >90 accessibility scores",
-              "Conduct screen reader validation testing with NVDA plus one other (JAWS/VoiceOver), verifying linear content reading and form interactions",
-              "Apply shift-left performance testing with component-level benchmarks, API-first testing approaches, and developer ownership of performance",
-              "Integrate CI/CD pipeline automation using Pa11y-CI for accessibility, Lighthouse CI for performance, and fail-build thresholds for violations",
-              "Monitor Core Web Vitals tracking LCP ≤2.5 seconds, INP ≤200ms (replacing FID in 2024), CLS ≤0.1, measuring at 75th percentile",
-              "Establish performance budgets limiting critical path to <170KB, targeting <5 second TTI on 3G, maintaining >90 Lighthouse scores"
+              "Automated + manual testing (automated catches 30-40% — the rest needs human eyes)",
+              "axe-core, Lighthouse, WAVE for automated scans; target >90 scores",
+              "Screen reader testing with NVDA + one other (JAWS or VoiceOver)",
+              "Keyboard navigation verification — if you can&apos;t tab to it, it&apos;s broken",
+              "CI/CD integration: Pa11y-CI, Lighthouse CI, fail builds on violations",
+              "Core Web Vitals: LCP ≤2.5s, INP ≤200ms, CLS ≤0.1",
+              "Performance budgets: <170KB critical path, <5s TTI on 3G"
             ]}
           />
         </div>

@@ -29,7 +29,7 @@ export function DevHandoffPackages({ className, onClose }: DevHandoffPackagesPro
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Plan"
         title="Dev Handoff Packages"
-        summary="Create a seamless designer-to-developer handoff with a single source of truth – shared design tokens, specs, and traceable mappings from Figma to code – so nothing gets lost in translation."
+        summary="One source of truth from design to code. Nothing lost in translation."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Design%20Systems"
@@ -43,7 +43,7 @@ export function DevHandoffPackages({ className, onClose }: DevHandoffPackagesPro
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Seamless designer-to-developer handoffs require a single source of truth. We create shared design tokens, detailed specs, and traceable mappings from Figma to code. This prevents &quot;lost in translation&quot; moments and reduces implementation errors.
+            Handoffs fail when the spec lives in someone&apos;s head. I create shared tokens, detailed specs, and traceable mappings from Figma to code — so devs can build without guessing.
           </p>
         </div>
 
@@ -78,10 +78,10 @@ export function DevHandoffPackages({ className, onClose }: DevHandoffPackagesPro
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"

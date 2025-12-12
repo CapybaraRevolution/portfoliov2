@@ -76,10 +76,10 @@ export function ReleasePlanningCutCandidate({ className, onClose }: ReleasePlann
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"

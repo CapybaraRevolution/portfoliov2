@@ -59,7 +59,7 @@ export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
       <DrawerLayout
         stepText="Step 1 · Discovery & Strategy"
         title="System Analysis"
-        summary="Surface constraints, opportunities, and low-risk paths so we design what's feasible and impactful."
+        summary="Know the system before you design for it. Constraints first, creativity second."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=System%20Analysis"

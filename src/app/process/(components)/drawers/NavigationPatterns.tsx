@@ -42,7 +42,7 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            IA isn&apos;t just a tree; it&apos;s how users move. We select the right patterns (mega-menu, hub-and-spoke, faceted filters, breadcrumbs) and design intentional cross-links so people can recover from wrong turns.
+            IA isn&apos;t just a tree — it&apos;s how users move. I select the right patterns (mega-menu, hub-and-spoke, faceted filters, breadcrumbs) and design intentional cross-links so people can recover from wrong turns.
           </p>
         </div>
 
@@ -74,10 +74,10 @@ export function NavigationPatterns({ className, onClose }: NavigationPatternsPro
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"

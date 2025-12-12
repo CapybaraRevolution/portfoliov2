@@ -31,7 +31,7 @@ export function DesignSystems({ className, onClose }: DesignSystemsProps) {
       <DrawerLayout
         stepText="Step 3 · Design & Prototyping"
         title="Design Systems"
-        summary="Reusable parts, shared rules—ship faster with consistent, accessible UI."
+        summary="Reusable parts, shared rules. Ship faster. Stay consistent."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Design%20Systems"

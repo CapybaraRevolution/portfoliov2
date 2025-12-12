@@ -30,7 +30,7 @@ export function TechnicalDebtTriage({ className, onClose }: TechnicalDebtTriageP
       <DrawerLayout
         stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
         title="Technical Debt Triage"
-        summary="We quantify and prioritize technical debt using financial models that translate code quality issues into business impact metrics."
+        summary="Tech debt slows everything down. Quantify it, prioritize it, pay it down."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Technical%20Strategy"
@@ -44,7 +44,7 @@ export function TechnicalDebtTriage({ className, onClose }: TechnicalDebtTriageP
             Overview
           </h3>
           <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            We quantify and prioritize technical debt using financial models that translate code quality issues into business impact metrics. Our approach combines SQALE methodology for debt quantification, Cost of Delay calculations for economic prioritization, and risk-adjusted scoring for security and compliance issues. We maintain technical debt visibility through comprehensive registers, automated tracking via SonarQube integration, and regular portfolio reviews that balance debt paydown with feature delivery using the 20% allocation rule and targeted refactoring strategies.
+            Technical debt isn&apos;t abstract — it&apos;s the reason features take 2x longer than they should. I quantify debt in business terms (velocity loss, risk exposure), prioritize by impact, and enforce the 20% rule: always reserve capacity for paydown.
           </p>
         </div>
 
@@ -82,22 +82,21 @@ export function TechnicalDebtTriage({ className, onClose }: TechnicalDebtTriageP
         </div>
 
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "SQALE implementation: Calculate remediation costs using time estimates for fixing each issue, compute Technical Debt Ratio as percentage of development cost, assign letter grades (A-E) based on debt ratios (A≤5%, B=6-10%, C=11-20%, D=21-50%, E>50%), track debt trends over time",
-              "Cost of Delay quantification: Estimate velocity impact from debt (20-42% productivity loss), calculate defect rate correlations (2-3x increase in high-debt areas), project time-to-market delays (25-60% feature throughput reduction), quantify customer satisfaction impact through performance and reliability metrics",
-              "CD3 prioritization: Calculate Cost of Delay for each debt item including productivity impact, risk exposure, and opportunity costs, estimate remediation duration in person-weeks, compute CD3 score (CoD/Duration), sequence debt items by highest CD3 first",
-              "Risk-adjusted scoring: Apply multipliers for security debt (2-5x for critical vulnerabilities), compliance debt (3-10x for regulatory requirements), performance debt (1.5-3x based on user impact), operational debt (2-4x for reliability concerns), creating composite priority scores",
-              "Debt registry maintenance: Catalog all identified technical debt with business impact assessments, maintain remediation estimates and priority scores, track status and progress on debt reduction initiatives, conduct quarterly reviews to reassess priorities",
-              "Allocation strategy implementation: Enforce 20% capacity rule for debt paydown, implement Boy Scout Rule for continuous improvement, balance dedicated refactoring sprints with ongoing paydown, create technical debt budgets aligned with business goals",
-              "Visualization and reporting: Create debt heat maps showing concentration across codebase, maintain executive dashboards with debt trends and projections, generate burndown charts tracking debt reduction progress, provide ROI analysis for debt paydown investments",
-              "Tool integration management: Configure SonarQube with custom quality gates, integrate debt metrics into CI/CD pipelines, establish automated alerting for debt threshold breaches, enable IDE plugins for real-time developer feedback"
+              "SQALE scoring: technical debt ratio as % of dev cost, letter grades A-E",
+              "Cost of Delay: velocity impact (20-42% loss), defect rate correlation, time-to-market drag",
+              "CD3 prioritization: Cost of Delay ÷ Duration — tackle highest scores first",
+              "Risk multipliers: security debt 2-5x, compliance 3-10x, performance 1.5-3x",
+              "Debt registry: catalog, estimate, track, review quarterly",
+              "20% rule: always reserve capacity for debt paydown (non-negotiable)",
+              "SonarQube integration: automated quality gates, CI/CD enforcement"
             ]}
           />
         </div>

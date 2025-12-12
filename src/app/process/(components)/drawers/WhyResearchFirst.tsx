@@ -49,13 +49,13 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
               color="emerald"
               items={[
                 <>
-                  <strong>Cuts rework:</strong> finding problems on paper or in a prototype is orders of magnitude cheaper than after code ships.
+                  <strong>Cuts rework:</strong> Finding problems in a prototype costs hours. Finding them in production costs sprints.
                 </>,
                 <>
-                  <strong>Focuses effort:</strong> clarifies the few moments that drive outcomes (activation, conversion, retention).
+                  <strong>Focuses effort:</strong> Clarifies the few moments that actually drive outcomes — activation, conversion, retention.
                 </>,
                 <>
-                  <strong>De-risks bets:</strong> decisions reference evidence, not the loudest opinion; stakeholder alignment improves.
+                  <strong>De-risks bets:</strong> When decisions reference evidence instead of opinions, stakeholder debates get a lot shorter.
                 </>
               ]}
               className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
@@ -71,9 +71,9 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
           <BulletList 
             color="emerald"
             items={[
-              "Map risks/opportunities from Step 1 (Stakeholders, Competitive, Systems).",
-              "Tie research questions to business outcomes (e.g., 'What blocks activation?').",
-              "Instrument the minimum events needed to measure impact in Step 5."
+              "Map the risks and unknowns from discovery — what do we still not know?",
+              "Tie every research question to a decision we need to make. No 'nice to know' — only 'need to know.'",
+              "Instrument the minimum events needed to measure impact later."
             ]}
           />
         </div>
@@ -100,8 +100,8 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
           <BulletList 
             color="purple"
             items={[
-              "Fewer 'unknowns' entering sprint planning.",
-              "A small set of decisions unblocked (with owners and timelines)."
+              "Fewer 'unknowns' sneaking into sprint planning.",
+              "Decisions unblocked — with owners and timelines attached."
             ]}
           />
         </div>

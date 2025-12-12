@@ -26,7 +26,7 @@ export function JMJourneys({ className, onClose }: JMJourneysProps) {
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Journey Mapping"
         title="Journeys & top frictions"
-        summary="Map the end-to-end experience to identify friction points and optimization opportunities."
+        summary="Where do users struggle? Where do they drop off? Map it, measure it, fix it."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Journey%20Mapping"
@@ -55,11 +55,11 @@ export function JMJourneys({ className, onClose }: JMJourneysProps) {
           <BulletList 
             color="emerald"
             items={[
-              "End-to-end workflow from awareness to success",
+              "End-to-end flow from first touch to success",
               "Emotional highs and lows at each stage",
               "Touchpoints across channels and systems",
-              "Decision points and potential drop-offs",
-              "Current vs. future state opportunities"
+              "Decision points and drop-off risks",
+              "Current state vs. where we want to be"
             ]}
           />
         </div>
@@ -72,10 +72,10 @@ export function JMJourneys({ className, onClose }: JMJourneysProps) {
           <BulletList 
             color="blue"
             items={[
-              "High-impact pain points backed by data",
-              "Severity and frequency scoring for issues",
-              "Quick wins vs. strategic improvements",
-              "Cross-functional dependencies and blockers"
+              "Pain points ranked by data, not opinion",
+              "Severity × frequency scoring",
+              "Quick wins vs. longer-term bets",
+              "Dependencies and blockers surfaced early"
             ]}
           />
         </div>

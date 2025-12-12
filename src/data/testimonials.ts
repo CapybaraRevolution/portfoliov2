@@ -29,12 +29,6 @@ export const testimonials: Testimonial[] = [
     designation: "CEO, Breeze Mortgage Hub",
     src: getAvatarUrl("Cody Graham", "Breeze Mortgage Hub"),
   },
-  {
-    quote: "Kyle's workshops helped us align on our product vision and roadmap. His ability to distill complex ideas into simple concepts helped us make decisions faster.",
-    name: "Sagar Jani",
-    designation: "Director of Digital, BC Cancer Foundation",
-    src: getAvatarUrl("Sagar Jani", "BC Cancer Foundation"),
-  },
 ]
 
 

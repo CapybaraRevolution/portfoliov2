@@ -28,7 +28,7 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
       <DrawerLayout
         stepText="Step 1 · Discovery & Strategy"
         title="Competitive Analysis"
-        summary="One-liner: Reach parity where it's table‑stakes — and differentiate where it matters."
+        summary="Parity where it's table-stakes. Differentiate where it matters."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Competitive%20Analysis"

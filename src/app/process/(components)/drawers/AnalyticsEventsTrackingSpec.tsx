@@ -29,7 +29,7 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Analytics Events Implementation"
-        summary="Transform raw user interactions into actionable business intelligence through structured tracking plans and rigorous data quality practices."
+        summary="Track the right events. Name them consistently. Trust the data."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Analytics"
@@ -43,7 +43,7 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Analytics events implementation transforms raw user interactions into actionable business intelligence through structured tracking plans and rigorous data quality practices. This systematic approach ensures 99% data accuracy while preventing data debt accumulation. Organizations with mature analytics practices make decisions 5x faster and achieve 23x higher customer acquisition rates.
+            Bad event naming breaks funnels. Missing events leave you guessing. I create structured tracking plans with consistent taxonomy, schema validation, and quality gates so the data you collect is actually usable.
           </p>
         </div>
 
@@ -78,22 +78,21 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Map business goals to measurable events starting with strategic objectives, breaking into KPIs, and identifying specific user actions",
-              "Implement Object-Action taxonomy using &quot;Song Played&quot; format, proper case for events, snake_case for properties, past tense verbs",
-              "Create comprehensive tracking plans documenting 20-300 events (mParticle guideline), event definitions and triggers, property specifications",
-              "Apply schema validation frameworks with proactive validation at instrumentation, automated CI/CD testing, and reactive monitoring for anomalies",
-              "Establish peer review processes treating analytics code as product code, including tracking plan compliance in PRs and requiring validation tests",
-              "Deploy automated testing pyramid with unit tests for event logic, integration tests for triggers, and system tests for complete flows",
-              "Monitor data quality metrics tracking accuracy >99% for critical events, completeness across journeys, and timeliness of data availability",
-              "Prevent data debt through strong governance, automated validation, comprehensive documentation, and regular cleanup of unused events"
+              "Map business goals → KPIs → events",
+              "Object-Action taxonomy: &quot;Song Played&quot;, proper case, snake_case properties, past tense",
+              "Tracking plan: 20-300 events, definitions, triggers, property specs",
+              "Schema validation in CI/CD — bad data fails the build",
+              "Peer review for analytics code (treat it like product code)",
+              "Data quality monitoring: >99% accuracy for critical events",
+              "Regular cleanup: prune unused events before they rot"
             ]}
           />
         </div>

@@ -28,7 +28,7 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
       <DrawerLayout
         stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
         title="Opportunity Backlog"
-        summary="Our opportunity backlog represents the single source of truth for all potential value-creating initiatives, maintained using DEEP principles."
+        summary="One list. One source of truth. Everything that might get built, ranked."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -42,7 +42,7 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Our opportunity backlog represents the single source of truth for all potential value-creating initiatives, maintained using DEEP principles (Detailed appropriately, Estimated, Emergent, Prioritized). We implement continuous refinement processes that keep 2-3 sprints of ready work available while managing backlog health through age analysis, flow metrics, and value tracking. The backlog evolves through structured ceremonies, stakeholder collaboration, and data-driven grooming sessions that transform raw ideas into actionable, well-defined opportunities ready for development.
+            The backlog is where ideas go to become work — or die quietly. I maintain it with DEEP principles (Detailed, Estimated, Emergent, Prioritized), keep 2-3 sprints of ready work available, and regularly prune stale items before they rot.
           </p>
         </div>
 
@@ -74,22 +74,20 @@ export function OpportunityBacklog({ className, onClose }: OpportunityBacklogPro
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "DEEP maintenance: Ensure backlog items are Detailed appropriately, Estimated accurately, Emergent in priority, and Prioritized by value",
-              "Refinement sessions: Conduct regular grooming ceremonies to break down epics, clarify requirements, and estimate complexity",
-              "Value assessment: Score opportunities using weighted criteria including business impact, user value, technical feasibility, and strategic alignment",
-              "Dependency mapping: Identify and document technical, resource, and timeline dependencies across backlog items",
-              "Age analysis: Monitor backlog health through item aging reports, staleness metrics, and regular cleanup of obsolete requirements",
-              "Stakeholder collaboration: Facilitate cross-functional discussions to validate assumptions, clarify acceptance criteria, and align on priorities",
-              "Flow optimization: Maintain 2-3 sprints of ready work while preventing bottlenecks and ensuring smooth handoffs between teams",
-              "Outcome tracking: Connect backlog items to measurable business metrics and user outcomes for post-deployment validation"
+              "DEEP maintenance: Detailed, Estimated, Emergent, Prioritized",
+              "Refinement sessions: break down epics, clarify requirements, estimate complexity",
+              "Value scoring: business impact, user value, feasibility, strategic alignment",
+              "Dependency mapping: surface blockers before they block",
+              "Age analysis: prune stale items, track backlog health",
+              "2-3 sprints of ready work — always"
             ]}
           />
         </div>

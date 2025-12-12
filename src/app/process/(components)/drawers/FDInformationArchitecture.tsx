@@ -26,7 +26,7 @@ export function FDInformationArchitecture({ className, onClose }: FDInformationA
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Flow Design"
         title="Information architecture"
-        summary="Organize content and features in a way that matches users' mental models and supports key tasks."
+        summary="Organize content the way users think — not the way the org chart looks."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Information%20Architecture"

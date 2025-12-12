@@ -25,7 +25,7 @@ export function JMPersonas({ className, onClose }: JMPersonasProps) {
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Journey Mapping"
         title="Personas & contexts"
-        summary="Lightweight personas based on research patterns to guide design decisions."
+        summary="Who are we designing for? What do they need? (Not who we imagine them to be.)"
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Persona%20Development"
@@ -54,11 +54,11 @@ export function JMPersonas({ className, onClose }: JMPersonasProps) {
           <BulletList 
             color="emerald"
             items={[
-              "Goals and motivations driving the user to this product",
-              "Environmental constraints (time, device, location, stress)",
-              "Existing mental models and expectations",
+              "What goals and motivations bring them to this product?",
+              "Environmental constraints: time, device, location, stress level",
+              "Mental models and expectations they bring with them",
               "Key decision points in their workflow",
-              "Success criteria from their perspective"
+              "What does success look like from their perspective?"
             ]}
           />
         </div>

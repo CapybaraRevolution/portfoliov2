@@ -30,7 +30,7 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Stage 1: User Research"
         title="What is user research?"
-        summary="User research replaces assumptions with evidence so design and engineering build the right thing."
+        summary="Replace assumptions with evidence. Build the right thing the first time."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=User%20Research"
@@ -51,9 +51,9 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
             <BulletList 
               color="emerald"
               items={[
-                "Builds empathy and shared language around user goals and constraints.",
-                "Surfaces hidden friction before expensive design/dev cycles.",
-                "Creates a 'source of truth' that aligns stakeholders and speeds decisions."
+                "Builds shared language around what users actually need (not what we think they need).",
+                "Surfaces friction before it becomes expensive to fix.",
+                "Creates a source of truth that ends debates and speeds decisions."
               ]}
               className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
             />
@@ -68,9 +68,9 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
           <BulletList 
             color="emerald"
             items={[
-              "Clarify the decision we're trying to make and the risks of guessing.",
-              "Draft a lightweight research plan (objectives, participants, methods, success signals).",
-              "Recruit a representative slice of users/customers; schedule and consent.",
+              "Clarify what decision we're actually trying to make — and the cost of guessing wrong.",
+              "Draft a lightweight research plan: objectives, participants, methods, success signals.",
+              "Recruit representative users; schedule and consent.",
               "Run sessions (scripted but flexible); capture notes and recordings."
             ]}
           />
@@ -100,8 +100,8 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
           <BulletList 
             color="purple"
             items={[
-              "Team can state the top 3 user goals and top 3 frictions in the same words.",
-              "Clear hypotheses to validate next (and what we'll stop debating)."
+              "Team can state the top 3 user goals and top 3 frictions — in the same words.",
+              "Clear hypotheses to test next, and a list of things we'll stop debating."
             ]}
           />
         </div>

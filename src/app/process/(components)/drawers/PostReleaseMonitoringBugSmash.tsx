@@ -29,7 +29,7 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Ship"
         title="Post-Release Monitoring & Bug Smash"
-        summary="Establish continuous monitoring and rapid response systems to maintain product quality and user experience after deployment."
+        summary="Ship it, watch it, fix what breaks. Fast."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Analytics"
@@ -43,7 +43,7 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Post-release monitoring and bug smash establishes continuous observability and rapid response systems to maintain product quality and user experience after deployment. This vigilant approach transforms launches from one-time events into ongoing quality commitments through proactive monitoring and swift issue resolution. Organizations with mature post-release practices achieve 90% faster issue detection and 65% better customer satisfaction scores.
+            Launching is the beginning, not the end. I set up monitoring so we know what&apos;s working (and what&apos;s on fire) within hours — not weeks. When something breaks, we triage fast and fix faster.
           </p>
         </div>
 
@@ -57,11 +57,11 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
             <BulletList 
               color="emerald"
               items={[
-                "Prevents user churn: 88% of users abandon apps after experiencing bugs, making rapid post-release fixes critical for retention.",
-                "Accelerates product learning: Real user data in the first 48-72 hours provides insights impossible to replicate in testing environments.",
-                "Reduces resolution costs: Issues caught within 24 hours of release cost 10x less to fix than those discovered weeks later.",
-                "Improves deployment confidence: Teams with strong monitoring deploy 3x more frequently with 50% fewer rollbacks.",
-                "Drives continuous improvement: Post-release retrospectives identify process gaps that prevent future issues."
+                "Users don't send bug reports. They just leave. Fast fixes = fewer silent exits.",
+                "The first 48-72 hours of real usage teach you more than months of testing ever could.",
+                "Bugs caught in the first 24 hours cost 10x less to fix than ones discovered weeks later.",
+                "Teams with strong monitoring deploy more often and roll back less. Confidence compounds.",
+                "Post-release retros catch the process gaps that pre-release testing misses."
               ]}
               className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
             />
@@ -78,22 +78,22 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Establish comprehensive monitoring dashboards tracking business metrics, technical health, user behavior, and error rates with real-time alerting for critical thresholds",
-              "Implement post-release validation protocols monitoring success metrics for 48-72 hours, comparing against baselines with statistical significance testing",
-              "Create bug triage and prioritization frameworks using P0-P4 severity levels, customer impact assessment, and business value analysis for rapid decision-making",
-              "Deploy rapid response procedures with <2 hour P0 acknowledgment, dedicated bug smash teams, and escalation paths for critical issues affecting user experience",
-              "Monitor user feedback channels through support tickets, social media, app store reviews, and user session recordings to identify pain points early",
-              "Track performance metrics including Core Web Vitals, API response times, error rates, and user engagement patterns with hourly trend analysis",
-              "Conduct daily post-release health reviews with cross-functional teams sharing monitoring insights, user feedback, and prioritized action items",
-              "Execute comprehensive retrospectives within 1 week of release documenting lessons learned, process improvements, and preventive measures for future releases"
+              "Set up dashboards that surface what matters: errors, drop-offs, performance regressions — with alerts that wake someone up if things go sideways",
+              "Watch the metrics for 48-72 hours post-launch. Compare to baseline. Know if we shipped a win or a problem.",
+              "Triage bugs by severity (P0-P4) and customer impact — not by who's yelling loudest",
+              "Run rapid response: P0 acknowledged in <2 hours, dedicated bug smash mode, clear escalation paths",
+              "Monitor feedback channels — support tickets, reviews, session recordings — to catch pain points before they become patterns",
+              "Track Core Web Vitals, API response times, error rates. Hourly. (Yes, hourly.)",
+              "Daily post-release standups: what's working, what's broken, what's next",
+              "Retro within a week: what did we learn, what do we change for next time"
             ]}
           />
         </div>
@@ -106,14 +106,12 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
           <BulletList 
             color="blue"
             items={[
-              "Real-time monitoring dashboard with success metrics",
-              "Daily post-release health reports",
-              "Bug triage and prioritization matrix",
-              "User feedback analysis and insights",
-              "Performance trend analysis reports",
-              "Incident response action items",
-              "Post-release retrospective documentation",
-              "Continuous improvement recommendations"
+              "Real-time monitoring dashboard",
+              "Daily health reports (first week post-launch)",
+              "Bug triage matrix with severity and owners",
+              "User feedback synthesis",
+              "Performance trend reports",
+              "Retro doc with action items"
             ]}
           />
         </div>
@@ -126,14 +124,12 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
           <BulletList 
             color="purple"
             items={[
-              "Success metrics trending toward targets within 72 hours",
-              "P0/P1 bugs acknowledged <2 hours, resolved <24 hours",
-              "User satisfaction maintained >90% post-release",
-              "Error rate increase <0.5% from pre-release baseline",
-              "Performance regression <5% for Core Web Vitals",
-              "Customer support ticket volume increase <20%",
-              "Post-release retrospective completion 100% within 1 week",
-              "Bug smash team response time <30 minutes for critical issues"
+              "Metrics trending toward targets within 72 hours",
+              "P0/P1 bugs: acknowledged <2 hours, resolved <24 hours",
+              "Error rate stays within 0.5% of baseline",
+              "Core Web Vitals regression <5%",
+              "Support ticket spike <20%",
+              "Retro complete within 1 week"
             ]}
           />
         </div>
@@ -146,11 +142,11 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
           <BulletList 
             color="zinc"
             items={[
-              "Monitoring metrics without user context",
-              "Delayed bug triage leading to cascading issues",
-              "Ignoring edge case feedback",
-              "Treating monitoring as purely technical activity",
-              "Missing cross-functional collaboration in post-release reviews"
+              "Watching metrics without understanding the user story behind them",
+              "Slow triage — small bugs become big bugs fast",
+              "Dismissing edge case feedback (edge cases have a way of becoming common cases)",
+              "Treating monitoring as an engineering-only activity",
+              "Skipping the retro because 'it shipped, we're done'"
             ]}
           />
         </div>
@@ -161,7 +157,7 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
             Instrumentation
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Success metrics trend monitoring, error rate tracking, user feedback sentiment analysis, performance regression detection, bug resolution time measurement, customer satisfaction scoring, team response time tracking
+            Error rate tracking · Performance regression alerts · Bug resolution time · Feedback sentiment · Team response time
           </p>
         </div>
 

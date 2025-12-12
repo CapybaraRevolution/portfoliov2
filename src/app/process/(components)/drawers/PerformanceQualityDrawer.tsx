@@ -35,7 +35,7 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Ship Quality as a Habit, Not a Finale"
-        summary="Building quality as an organizational habit transforms testing from a phase-gate activity into a continuous, collaborative practice embedded throughout development."
+        summary="Quality isn't a phase at the end. It's a habit throughout."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Quality%20Assurance"
@@ -49,7 +49,7 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Building quality as an organizational habit transforms testing from a phase-gate activity into a continuous, collaborative practice embedded throughout development. This cultural shift reduces bugs by 36% during development while accelerating deployment frequency by 50-100%. Teams embrace shared ownership where quality becomes everyone&apos;s responsibility, not just QA&apos;s mandate.
+            Quality that happens at the end is too late. I build testing into every step — devs write tests, QA coaches quality, and everyone owns the outcome. Shift-left catches bugs when they&apos;re cheap to fix.
           </p>
         </div>
 
@@ -84,22 +84,20 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Establish shared ownership model where developers write testable code and unit tests, QA engineers serve as quality coaches",
-              "Implement shift-left testing strategies enabling developers to test at local build stage with optimized containerized test environments",
-              "Deploy comprehensive automated testing following the testing pyramid with 80% minimum unit/integration coverage",
-              "Facilitate peer code reviews maintaining 200-400 lines per session, 60-90 minute maximum duration, near 100% coverage",
-              "Create continuous feedback loops through QA office hours, cross-functional daily meetings, and shared communication channels",
-              "Integrate CI/CD quality gates with four-stage structure (planning, development, testing, deployment) and SonarQube metrics",
-              "Monitor DORA metrics tracking deployment frequency, lead time, change failure rate, and MTTR for elite performance standards",
-              "Build quality-first culture focusing on three pillars: people (collaborative learning), processes (clear frameworks), technology (enabling systems)"
+              "Shared ownership: devs write tests, QA coaches quality",
+              "Shift-left testing: catch bugs at local build, not in staging",
+              "Testing pyramid: 80%+ unit/integration coverage",
+              "Peer reviews: 200-400 lines, 60-90 min max, near 100% coverage",
+              "CI/CD quality gates: SonarQube metrics, fail builds on violations",
+              "DORA metrics: deployment frequency, lead time, change failure rate, MTTR"
             ]}
           />
         </div>

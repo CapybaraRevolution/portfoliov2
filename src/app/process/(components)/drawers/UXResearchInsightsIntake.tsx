@@ -30,7 +30,7 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
       <DrawerLayout
         stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
         title="UX Research Insights Intake"
-        summary="We transform UX research findings into actionable product decisions through systematic synthesis, prioritization, and impact measurement frameworks. Our methodology integrates atomic research principles for knowledge management, opportunity solution trees for research-to-roadmap translation, and mixed-methods validation for confidence scoring."
+        summary="Turn research findings into decisions that ship — not decks that collect dust."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=UX%20Research"
@@ -39,20 +39,22 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
       >
 
         {/* Why it matters */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Why it matters
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Decision confidence: Structured insight prioritization improves product decision confidence by 60% through evidence-based scoring and validation",
-              "Research ROI maximization: Atomic research methodology enables 70% insight reuse across projects, reducing duplicate research and accelerating decision-making",
-              "Impact measurement: Connecting research insights to business metrics demonstrates 35% improvement in feature success rates",
-              "Democratization benefits: Self-service research platforms increase insight consumption by 3x while reducing researcher bottlenecks",
-              "Speed to action: Systematic research-to-roadmap translation reduces time from insight to implementation by 50%"
-            ]}
-          />
+        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
+              Research is only valuable if it changes what you build
+            </h3>
+            <BulletList 
+              color="emerald"
+              items={[
+                "Decisions backed by evidence stick. Decisions backed by opinions get re-argued.",
+                "Insights that live in a searchable repo get reused. Insights buried in Notion die.",
+                "Features tied to research succeed more often. (Turns out users know what they need.)"
+              ]}
+              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
+            />
+          </div>
         </div>
 
         {/* Inputs */}
@@ -61,26 +63,24 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
             Inputs
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-            User interview transcripts and recordings · Usability testing results and task success metrics · Survey responses and quantitative data · Analytics data and behavioral metrics · Customer support tickets and feedback · Competitive analysis and market research · Journey maps and service blueprints · Diary study entries and ethnographic observations
+            Interview transcripts · Usability test results · Survey data · Analytics · Support tickets · Competitive research · Journey maps
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="blue"
             items={[
-              "Affinity mapping synthesis: Facilitate collaborative sessions to cluster observations into themes, use diverge-converge techniques for democratic participation, prioritize theme clusters through dot voting, create actionable insight statements from patterns",
-              "Thematic analysis execution: Apply six-step Braun & Clarke process (familiarization, coding, theme generation, review, definition, reporting), conduct inductive analysis for emergent themes, validate themes through inter-rater reliability checks",
-              "Atomic research implementation: Break insights into reusable components (experiments, facts, insights, conclusions), create searchable taxonomies with global and project-specific tags, enable cross-project insight discovery, maintain evidence provenance for all assertions",
-              "Severity-frequency prioritization: Score usability issues on severity (blocker to cosmetic) and frequency (every use to rare), create prioritization matrices identifying critical issues, calculate cumulative impact for minor but frequent problems",
-              "RICE scoring for insights: Assess Reach (users affected), Impact (0.25-3 scale), Confidence (50-100%), and Effort to address, calculate prioritized scores for research-driven features, document confidence levels based on evidence strength",
-              "Opportunity solution mapping: Connect research insights to desired business outcomes, map customer opportunities from research findings, generate solution hypotheses linked to specific insights, design experiments to validate assumptions",
-              "Mixed-methods validation: Triangulate qualitative findings with quantitative data, calculate statistical significance for behavioral patterns, determine sample sizes for generalization confidence, create confidence intervals for key insights",
-              "Research democratization setup: Implement self-service platforms with role-based access, create insight repositories with standardized formats, develop training programs for non-researchers, establish quality assurance workflows"
+              "Affinity mapping: cluster observations into themes, dot-vote to prioritize, turn patterns into actionable insights",
+              "Atomic research: break insights into reusable pieces (facts, insights, conclusions) with tags so they&apos;re findable later",
+              "Severity × frequency scoring: prioritize usability issues by how bad they are and how often they happen",
+              "RICE scoring: Reach, Impact, Confidence, Effort — score insights so the backlog isn&apos;t just vibes",
+              "Opportunity solution trees: connect insights → opportunities → solutions → experiments",
+              "Mixed-methods validation: back up qualitative with quantitative (or flag when you can&apos;t)"
             ]}
           />
         </div>
@@ -93,14 +93,11 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
           <BulletList 
             color="purple"
             items={[
-              "Research synthesis report with prioritized insights",
-              "Atomic research repository with tagged, searchable insights",
-              "Opportunity solution tree linking insights to product decisions",
-              "Severity-frequency matrix for usability issues",
-              "RICE-scored feature recommendations from research",
-              "Confidence assessment framework with validation metrics",
-              "Research democratization playbook and training materials",
-              "Impact measurement dashboard tracking insight outcomes"
+              "Research synthesis with prioritized insights",
+              "Searchable insight repository (tagged, reusable)",
+              "Opportunity solution tree",
+              "Severity-frequency matrix",
+              "RICE-scored feature recommendations"
             ]}
           />
         </div>
@@ -111,15 +108,12 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
             Signals of success
           </h3>
           <BulletList 
-            color="purple"
+            color="zinc"
             items={[
-              "Insight utilization rate: 80% of research insights influencing product decisions",
-              "Reuse efficiency: 70% of insights referenced across multiple projects",
-              "Decision speed: 50% reduction in time from research to product decision",
-              "Validation confidence: 85% of insights validated through mixed methods",
-              "Democratization adoption: 3x increase in non-researcher insight consumption",
-              "Impact correlation: 75% of successful features traced to research insights",
-              "Repository health: 90% of insights properly tagged and findable"
+              "Research insights actually influence what gets built",
+              "Old insights get reused instead of re-researched",
+              "Time from insight to decision shrinks",
+              "Non-researchers can find and use the research themselves"
             ]}
           />
         </div>
@@ -129,18 +123,25 @@ export function UXResearchInsightsIntake({ className, onClose }: UXResearchInsig
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
             Pitfalls to avoid
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-            Analysis paralysis: Over-analyzing instead of moving to action · Cherry-picking: Selecting only insights that confirm existing beliefs · Context stripping: Removing insights from their original context · Over-democratization: Sacrificing quality for accessibility · Validation gaps: Acting on unvalidated qualitative findings · Taxonomy bloat: Creating overly complex categorization systems · Insight hoarding: Keeping insights in silos rather than sharing broadly
-          </p>
+          <BulletList 
+            color="zinc"
+            items={[
+              "Analysis paralysis — at some point you have to ship",
+              "Cherry-picking insights that confirm what you already wanted to build",
+              "Stripping context until the insight means nothing",
+              "Taxonomy bloat (17 levels of tags nobody uses)",
+              "Hoarding insights in silos instead of sharing them"
+            ]}
+          />
         </div>
 
         {/* Instrumentation */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
             Instrumentation
-          </h3>
+          </h4>
           <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-            Research insight utilization tracking with product decision correlation, atomic research repository health monitoring with tagging and search analytics, validation confidence scoring with mixed-methods verification rates, democratization platform usage analytics with non-researcher adoption metrics
+            Insight utilization tracking · Repository search analytics · Feature-to-insight traceability
           </p>
         </div>
 

@@ -27,7 +27,7 @@ export function CrossFunctionalRiskAssessment({ className, onClose }: CrossFunct
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Cross-Functional Risk Assessment"
-        summary="Bring together diverse expertise to identify, evaluate, and mitigate potential threats before release through structured workshops and risk matrices."
+        summary="What could go wrong? Ask everyone in the room. Then plan for it."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Risk%20Management"
@@ -41,7 +41,7 @@ export function CrossFunctionalRiskAssessment({ className, onClose }: CrossFunct
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Cross-functional risk assessment brings together diverse expertise to identify, evaluate, and mitigate potential threats before release. This collaborative approach uses structured workshops and risk matrices to transform uncertain threats into manageable action items. Teams implementing comprehensive risk assessment reduce incident rates by 40% while improving deployment confidence.
+            Risks you don&apos;t talk about still happen — they just surprise you. I run structured workshops with dev, QA, ops, security, and product to surface risks early and plan mitigations before we ship.
           </p>
         </div>
 
@@ -76,22 +76,20 @@ export function CrossFunctionalRiskAssessment({ className, onClose }: CrossFunct
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Facilitate structured risk workshops with 1-hour minimum sessions, 10-15 participants maximum, using TARA methodology (Transfer, Avoid, Reduce, Accept)",
-              "Apply risk matrix evaluation using likelihood scales (High: <6 months, Medium: <1 year, Low: predicted) and impact categories with weighted scoring systems",
-              "Maintain comprehensive risk registers documenting risk ID/description, probability/impact ratings, ownership assignments, and mitigation strategies",
-              "Develop mitigation strategies setting tolerance thresholds, allocating one sprint quarterly for risk reduction, and creating specific action plans",
-              "Create contingency plans for critical risks with predefined procedures, rollback plans, emergency communications, and automated triggers",
-              "Track risk metrics including velocity of identification/mitigation, burndown progress, coverage percentages, and mitigation effectiveness",
-              "Review risk assessments every 8 months minimum, during major changes, when onboarding new members, applying deletion rules for irrelevant risks",
-              "Categorize risks systematically across technical (legacy code, dependencies), operational (process errors), external (regulatory), and capacity/scaling dimensions"
+              "Structured risk workshops: 1 hour, 10-15 people, TARA method (Transfer, Avoid, Reduce, Accept)",
+              "Risk matrix: likelihood × impact scoring with clear thresholds",
+              "Risk register: ID, description, probability, impact, owner, mitigation",
+              "Mitigation planning: contingency procedures, rollback plans, emergency comms",
+              "Quarterly reviews: reassess, close what&apos;s handled, catch new risks",
+              "Categorize: technical, operational, external, capacity/scaling"
             ]}
           />
         </div>

@@ -28,7 +28,7 @@ export function IncidentRollbackPlan({ className, onClose }: IncidentRollbackPla
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Ship"
         title="Incident & Rollback Plan"
-        summary="Prepare comprehensive incident response and rollback strategies to minimize mean time to recovery during critical production failures."
+        summary="When it breaks (and it will), know exactly what to do. Rollback plans aren't optional."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Risk%20Management"
@@ -42,7 +42,7 @@ export function IncidentRollbackPlan({ className, onClose }: IncidentRollbackPla
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Incident and rollback planning prepares comprehensive response strategies to minimize mean time to recovery during critical production failures. This systematic approach transforms chaotic emergencies into orchestrated responses through predefined runbooks and tested procedures. Organizations with mature incident response achieve 75% faster recovery times while reducing customer impact by 60%.
+            Emergencies feel chaotic when nobody knows what to do. I create runbooks, escalation paths, and tested rollback procedures so when things break, recovery is fast and calm — not improvised.
           </p>
         </div>
 
@@ -77,22 +77,20 @@ export function IncidentRollbackPlan({ className, onClose }: IncidentRollbackPla
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Create comprehensive incident response runbooks documenting detection triggers, escalation matrices, communication protocols, and decision trees for P0-P3 severity levels",
-              "Develop tested rollback procedures with scripted steps, timing estimates (target <15 minutes), verification checklists, and automated rollback triggers where possible",
-              "Establish incident communication frameworks using status page templates, stakeholder notification trees, and customer communication scripts with pre-approved messaging",
-              "Implement monitoring and alerting strategies defining SLI/SLO thresholds, alert fatigue prevention, and escalation policies with oncall rotations",
-              "Conduct tabletop exercises and fire drills quarterly testing runbook effectiveness, team response times, and communication flows under simulated pressure",
-              "Document post-incident review processes using blameless retrospectives, root cause analysis templates, and action item tracking for continuous improvement",
-              "Create rollback decision criteria matrix defining go/no-go thresholds, risk assessment frameworks, and rollback vs. forward-fix decision trees",
-              "Maintain incident knowledge base capturing common failure patterns, resolution playbooks, and lessons learned from previous incidents"
+              "Incident response runbooks: detection triggers, escalation paths, communication protocols, decision trees by severity (P0-P3)",
+              "Tested rollback procedures: scripted steps, target <15 min, verification checklists",
+              "Communication templates: status page copy, stakeholder notifications, customer messaging",
+              "Alerting strategy: SLI/SLO thresholds, alert fatigue prevention, oncall rotations",
+              "Quarterly fire drills: test the runbooks before you need them for real",
+              "Blameless post-mortems: root cause analysis, action items, lessons learned"
             ]}
           />
         </div>

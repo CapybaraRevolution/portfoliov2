@@ -42,7 +42,7 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            We don&apos;t guess. We validate groupings and labels with users, then pressure-test the draft IA in a text-only environment to measure how easily people find things.
+            I don&apos;t guess. I validate groupings and labels with users, then pressure-test the IA in a text-only environment to measure how easily people find things.
           </p>
         </div>
 
@@ -69,10 +69,10 @@ export function ValidateIA({ className, onClose }: ValidateIAProps) {
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"

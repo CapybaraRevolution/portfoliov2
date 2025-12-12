@@ -26,7 +26,7 @@ export function FDTaskValidation({ className, onClose }: FDTaskValidationProps) 
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Flow Design"
         title="Task flow validation"
-        summary="Test and validate flow designs with real users before development begins."
+        summary="Test the flow before you build it. Fix problems when they're cheap."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Usability%20Testing"

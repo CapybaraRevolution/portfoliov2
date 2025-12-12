@@ -25,7 +25,7 @@ export function FDUserFlows({ className, onClose }: FDUserFlowsProps) {
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Flow Design"
         title="User flow diagrams"
-        summary="Map task paths and decision points to ensure smooth, logical user experiences."
+        summary="Map where users go, where they get stuck, and where they drop off."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=User%20Flow%20Design"

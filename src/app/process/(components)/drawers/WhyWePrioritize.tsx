@@ -42,7 +42,7 @@ export function WhyWePrioritize({ className, onClose }: WhyWePrioritizeProps) {
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Strategic prioritization transforms organizational chaos into focused execution by systematically evaluating opportunities against business objectives, resource constraints, and market dynamics. This capability drives 40% more value delivery compared to organizations using traditional allocation methods, while reducing portfolio waste from 20% to under 5%. We implement evidence-based prioritization frameworks that align stakeholder expectations, optimize resource utilization, and maximize business outcomes through disciplined decision-making processes.
+            You can&apos;t do everything. Prioritization forces the hard conversations about what matters most — and what we&apos;re explicitly choosing not to do (for now). Without it, teams spread thin and ship nothing well.
           </p>
         </div>
 
@@ -77,21 +77,20 @@ export function WhyWePrioritize({ className, onClose }: WhyWePrioritizeProps) {
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Strategic alignment assessment: Evaluate all proposed initiatives against organizational strategic pillars using weighted scoring models, ensuring every investment directly supports business objectives with measurable impact projections",
-              "Cost of Delay calculations: Quantify the financial impact of delaying each initiative using CD3 methodology (Cost of Delay Divided by Duration), creating economic sequencing that maximizes value capture and minimizes opportunity costs",
-              "Stakeholder value mapping: Conduct cross-functional workshops to identify and weight decision criteria, building consensus through structured facilitation techniques and creating shared understanding of trade-offs",
-              "Resource capacity modeling: Analyze team capabilities, current commitments, and available capacity to create realistic prioritization scenarios that account for dependencies, skill constraints, and organizational change capacity",
-              "Risk-adjusted scoring: Apply multipliers for security (2-5x), compliance (3-10x), performance (1.5-3x), and operational risks (2-4x) to ensure critical issues receive appropriate prioritization weight",
-              "Portfolio optimization: Use mathematical optimization techniques to identify the combination of initiatives that maximizes strategic value within resource constraints, creating multiple scenarios for executive decision-making",
-              "Decision documentation: Create comprehensive prioritization rationale documents that capture assumptions, scoring methodology, stakeholder input, and decision logic for future reference and organizational learning"
+              "Strategic alignment: score everything against business objectives",
+              "Cost of Delay: what&apos;s the cost of not doing this? Sequence by urgency.",
+              "Stakeholder alignment: cross-functional workshops to agree on criteria",
+              "Capacity reality check: what can we actually do with the team we have?",
+              "Risk-adjusted scoring: security and compliance issues get weighted higher",
+              "Document the decisions: rationale, assumptions, trade-offs — for future reference"
             ]}
           />
         </div>

@@ -25,7 +25,7 @@ export function JMDecisions({ className, onClose }: JMDecisionsProps) {
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Journey Mapping"
         title="Turn signals into decisions"
-        summary="Transform journey insights into actionable roadmap priorities with clear success criteria."
+        summary="Insights without action are just expensive documentation. Ship something."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Strategic%20Planning"

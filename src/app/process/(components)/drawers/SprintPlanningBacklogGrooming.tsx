@@ -29,7 +29,7 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Plan"
         title="Sprint Planning & Backlog Grooming"
-        summary="Plan each sprint with a well-groomed backlog and clear criteria so the team works only on ready, high-value items."
+        summary="A clean backlog means fewer surprises mid-sprint. Plan the work, then work the plan."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -43,7 +43,7 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Strong sprint planning starts with a well-groomed backlog. We hold regular refinement sessions, apply Definition of Ready (DoR) and Done (DoD) checklists, use data-informed prioritization, and enforce WIP limits. This creates predictable sprints where teams work on clear, high-value items.
+            Most sprint chaos comes from starting work that wasn&apos;t ready. I run refinement sessions, enforce Definition of Ready checklists, and keep WIP limits tight. The goal: predictable sprints where nobody&apos;s blocked waiting for answers that should&apos;ve been sorted last week.
           </p>
         </div>
 
@@ -57,10 +57,10 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
             <BulletList 
               color="emerald"
               items={[
-                "Clarity upfront reduces churn: A strong Definition of Ready ensures each story is fully understood before sprint start, minimizing mid-sprint surprises.",
-                "Quality and consistency: A shared Definition of Done sets quality benchmarks, preventing half-baked features and reducing post-sprint defects.",
-                "Faster flow with small batches: Working in small batches improves throughput and feedback, reducing time to find and fix issues.",
-                "WIP limits improve throughput: Capping Work In Progress forces focus, helping teams finish work faster and exposing bottlenecks early."
+                "If a story isn't ready, it shouldn't be in the sprint. Simple rule, routinely ignored, always regretted.",
+                "A shared Definition of Done prevents half-baked features from sneaking into production.",
+                "Small batches = faster feedback. You find problems sooner and fix them cheaper.",
+                "WIP limits aren't about slowing down — they're about finishing things instead of starting them."
               ]}
               className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
             />
@@ -77,20 +77,20 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Hold regular backlog refinement sessions (~10% of sprint time) to prune, detail, and estimate upcoming stories",
-              "Apply Definition of Ready checklists to each candidate story (clear business value, acceptance criteria, size feasible, dependencies resolved)",
-              "Use prioritization models (RICE scoring for product features, WSJF for scaled program items) to sequence work objectively",
-              "Sprint planning commits to a sprint goal and stories that meet DoR and fit team capacity",
-              "Set explicit Definition of Done checkpoints (code complete, tested, integrated, etc.)",
-              "Enforce WIP limits (e.g. no more than 1-2 tasks per dev in progress) and encourage swarming on blocked work"
+              "Run regular refinement (~10% of sprint time) to prune, detail, and estimate upcoming work",
+              "Apply Definition of Ready: clear value, acceptance criteria, right-sized, dependencies resolved",
+              "Prioritize with RICE or WSJF — not gut feel, not who asked loudest",
+              "Sprint planning = sprint goal + stories that are actually ready + realistic capacity",
+              "Definition of Done checkpoints: code complete, tested, integrated, documented",
+              "Enforce WIP limits (1-2 tasks per dev max) and swarm on blockers"
             ]}
           />
         </div>
@@ -103,11 +103,11 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
           <BulletList 
             color="blue"
             items={[
-              "Prioritized Product Backlog (constantly refined list of user stories and tasks)",
-              "Definition of Ready checklist (criteria a backlog item must meet before pulling into a sprint)",
-              "Definition of Done checklist (quality criteria for completed increments)",
-              "Sprint plans with sprint goal, committed backlog items and estimates",
-              "Prioritization matrix (RICE/WSJF scoring to show how items stack rank)"
+              "Prioritized backlog (always current, never stale)",
+              "Definition of Ready checklist",
+              "Definition of Done checklist",
+              "Sprint plan with goal, committed items, and estimates",
+              "Prioritization matrix (RICE/WSJF scores visible)"
             ]}
           />
         </div>
@@ -120,12 +120,12 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
           <BulletList 
             color="purple"
             items={[
-              "≥80% of planned sprint stories completed within sprint (high-performing teams hit ~90%)",
-              "Zero stories blocked for unclear requirements during sprint (all pulled work met DoR)",
-              "<5% of tasks regularly carry over to next sprint",
-              "Cycle time (idea to done) trending downward after implementing WIP limits",
-              ">90% of sprint work aligns with top product OKRs or roadmap priorities",
-              "Shorter lead time for changes (story from definition to release in under a week)"
+              "≥80% of planned stories completed (good teams hit 90%)",
+              "Zero mid-sprint blocks from unclear requirements",
+              "<5% carryover to next sprint",
+              "Cycle time trending down after WIP limits kick in",
+              ">90% of sprint work ties to top OKRs",
+              "Story to release in under a week"
             ]}
           />
         </div>
@@ -138,11 +138,11 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
           <BulletList 
             color="zinc"
             items={[
-              "Skipping refinement sessions",
-              "Relying blindly on numeric prioritization without strategic context",
-              "Ignoring WIP limits",
-              "Vague Definition of Done",
-              "Neglecting cross-team dependencies in planning"
+              "Skipping refinement ('we'll figure it out in the sprint')",
+              "Trusting the RICE score without strategic context",
+              "Ignoring WIP limits when things get 'urgent'",
+              "Vague Definition of Done ('it works on my machine')",
+              "Forgetting cross-team dependencies until they bite you"
             ]}
           />
         </div>
@@ -153,7 +153,7 @@ export function SprintPlanningBacklogGrooming({ className, onClose }: SprintPlan
             Instrumentation
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Sprint commitment vs completion rate, story blocked flags and block reasons, kanban WIP limit alerts, RICE/WSJF score tracking, cycle time and lead time measurement from idea to deployment
+            Commitment vs completion rate · Blocked story flags · WIP limit alerts · Cycle time tracking · Lead time (idea → deployment)
           </p>
         </div>
 

@@ -30,7 +30,7 @@ export function DailyDesignQA({ className, onClose }: DailyDesignQAProps) {
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Daily Design QA"
-        summary="Establish continuous quality checkpoints that prevent visual and interaction debt from accumulating during development."
+        summary="Catch visual bugs daily, not at the end. Small drift becomes big debt."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Design%20Systems"
@@ -44,7 +44,7 @@ export function DailyDesignQA({ className, onClose }: DailyDesignQAProps) {
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Daily Design QA establishes continuous quality checkpoints that prevent visual and interaction debt from accumulating during development. This proactive approach compares implementation against design specifications in real-time, catching discrepancies before they compound while achieving 90%+ visual accuracy.
+            Design drift happens slowly, then all at once. I compare implementation against specs daily — not at the end of the sprint when everything&apos;s already built wrong.
           </p>
         </div>
 
@@ -79,21 +79,20 @@ export function DailyDesignQA({ className, onClose }: DailyDesignQAProps) {
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Execute component-level testing rather than full-page reviews, enabling granular quality control with 500+ concurrent experiments monthly",
-              "Implement automated visual regression testing using Chromatic, Percy, or Applitools integrated into CI/CD pipelines",
-              "Apply pixel-perfect verification techniques including overlay methods, side-by-side comparisons, and onion skin mode alternating between design and implementation",
-              "Validate typography, spacing, and colors through automated token checking and browser-specific rendering tests",
-              "Utilize professional QA tools like Pixel Perfect Pro, Avocode&apos;s Pixel Checker, and Figma QA plugins for systematic comparison",
-              "Conduct cross-browser consistency checks accounting for font rendering variance (Safari matches Figma more closely)",
-              "Maintain design debt prevention strategies following the Boy Scout Rule and allocating 20-30% sprint time for quality improvements"
+              "Component-level QA, not full-page reviews — catch issues at the source",
+              "Visual regression testing in CI/CD (Chromatic, Percy) so broken visuals fail the build",
+              "Side-by-side, overlay, and onion-skin comparisons against Figma",
+              "Automated token checking: typography, spacing, colors",
+              "Cross-browser checks (Safari renders differently than Chrome — Figma matches Safari closer)",
+              "Boy Scout Rule: leave the UI cleaner than you found it"
             ]}
           />
         </div>

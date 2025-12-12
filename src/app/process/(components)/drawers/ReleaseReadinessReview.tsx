@@ -28,7 +28,7 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Release Readiness Review"
-        summary="Provide systematic validation that all technical, operational, and business criteria are met before production deployment through structured go/no-go decision frameworks."
+        summary="Is it ready? Really ready? Go/no-go before it hits production."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -42,7 +42,7 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Release readiness review provides systematic validation that all technical, operational, and business criteria are met before production deployment. This formal checkpoint integrates multi-team perspectives through structured go/no-go decision frameworks. Organizations with mature readiness reviews achieve 99% deployment success rates while reducing rollback frequency by 70%.
+            Before anything goes to production, I run a formal go/no-go review. All teams sign off. All criteria are met. No &quot;almost ready&quot; — either it&apos;s ready or it waits.
           </p>
         </div>
 
@@ -76,19 +76,19 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "Execute formal readiness checklists covering planning artifacts, development completion, testing validation, and documentation updates",
-              "Validate testing completion ensuring >80% unit test coverage, integration tests passed, performance benchmarks met, security scans clear",
-              "Coordinate multi-team sign-offs from development, QA, operations, security, product, and support teams",
-              "Facilitate go/no-go meetings lasting 5-15 minutes maximum, with clear decision criteria and documented rationale",
-              "Track readiness metrics including release success rate, change failure rate, deployment frequency, and mean time to recovery"
+              "Readiness checklist: planning done, dev complete, tests passed, docs updated",
+              "Quality gates: >80% test coverage, integration tests green, perf benchmarks met, security scans clear",
+              "Multi-team sign-off: dev, QA, ops, security, product, support",
+              "Go/no-go meeting: 5-15 minutes, clear criteria, documented decision",
+              "Track: release success rate, change failure rate, MTTR"
             ]}
           />
         </div>

@@ -44,7 +44,7 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
             Overview
           </h3>
           <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            We deploy a sophisticated toolkit of prioritization frameworks tailored to context, combining quantitative scoring models with qualitative assessment techniques. Our multi-framework approach includes RICE for data-driven feature prioritization, WSJF for economic sequencing in agile environments, Kano model for customer delight optimization, MoSCoW for time-boxed deliveries, and Impact/Effort matrices for rapid decision-making. Each framework is calibrated to organizational context with clear scoring rubrics, inter-rater reliability measures, and continuous refinement based on outcome analysis.
+            &quot;We should build X&quot; isn&apos;t a strategy. I use structured frameworks — RICE for features, WSJF for sequencing, Impact/Effort for quick calls — to turn opinions into ranked priorities backed by evidence.
           </p>
         </div>
 
@@ -79,22 +79,20 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
           </p>
         </div>
 
-        {/* What we do */}
+        {/* What I do */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What we do
+            What I do
           </h3>
           <BulletList 
             color="emerald"
             items={[
-              "RICE implementation: Score initiatives using Reach (users impacted quarterly), Impact (0.25-3 scale), Confidence (50-100%), and Effort (person-months), calculating final scores as (R×I×C)/E with documented rationale for each component",
-              "WSJF calculation: Quantify Cost of Delay using business value, time criticality, and risk reduction factors (Fibonacci scale 1-20), divide by job duration to sequence work for maximum economic benefit",
-              "Kano analysis execution: Design and deploy feature preference surveys with functional/dysfunctional question pairs, analyze responses to categorize features as Must-Be, Performance, or Attractive, prioritizing based on customer satisfaction impact",
-              "MoSCoW categorization: Facilitate stakeholder workshops to classify requirements as Must-Have (max 60%), Should-Have, Could-Have (20% buffer), and Won't-Have, using evidence-based negotiation to resolve conflicts",
-              "Impact/Effort matrix plotting: Conduct collaborative workshops using dot voting to place initiatives in quadrants (Quick Wins, Major Projects, Fill-ins, Thankless Tasks), focusing resources on high-impact/low-effort opportunities",
-              "Framework calibration sessions: Run quarterly calibration workshops to align scoring interpretations across teams, review historical scores against actual outcomes, and refine estimation accuracy",
-              "Multi-framework synthesis: Apply appropriate frameworks based on context—RICE for product features, WSJF for agile programs, Kano for customer experience, MoSCoW for fixed timelines—combining insights for comprehensive prioritization",
-              "Scoring documentation: Maintain detailed records of all scoring decisions including assumptions, data sources, confidence levels, and dissenting opinions for future reference and continuous improvement"
+              "RICE scoring: Reach × Impact × Confidence ÷ Effort — with documented rationale",
+              "WSJF: Cost of Delay ÷ Duration for economic sequencing",
+              "Kano analysis: Must-Be vs. Performance vs. Attractive features",
+              "MoSCoW: Must-Have (max 60%), Should, Could, Won&apos;t — for fixed timelines",
+              "Impact/Effort matrix: quick wins, major projects, fill-ins, thankless tasks",
+              "Quarterly calibration: compare past scores to actual outcomes, refine the model"
             ]}
           />
         </div>
