@@ -28,7 +28,7 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
       <DrawerLayout
         stepText="Step 1 · Discovery & Strategy"
         title="Competitive Analysis"
-        summary="Parity where it's table-stakes. Differentiate where it matters."
+        summary="Parity where it&apos;s table-stakes. Differentiate where it matters."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Competitive%20Analysis"
@@ -42,7 +42,7 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
           Why it matters
         </h2>
         <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-          Customers judge us against what they already use. Per Jakob’s Law, users spend most of their time on other products and expect familiar patterns here. Let’s meet expectations where it’s standard, and invest in differentiation where it moves outcomes.
+          Users judge your product against what they already use. Per Jakob&apos;s Law, they spend most of their time elsewhere and expect familiar patterns here. Meet expectations where it&apos;s standard. Differentiate where it actually moves outcomes.
         </p>
         <a
           href="https://www.nngroup.com/videos/jakobs-law-internet-ux/"
@@ -50,7 +50,7 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
           rel="noopener noreferrer"
           className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 underline"
         >
-          Jakob’s Law on NN/g
+          Jakob&apos;s Law on NN/g
         </a>
       </div>
 
@@ -62,10 +62,10 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
           <BulletList 
             color="emerald"
             items={[
-              "Research 5–8 relevant competitors/analogs (same segment + a few inspirational adjacents).",
-              "Heuristic evaluation of onboarding, IA/navigation, search, checkout/flows, and empty/error states.",
-              "Feature gap analysis: Where our product is behind, at parity, or ahead (note impact/effort).",
-              "Screenshot teardowns of good patterns + cautionary examples with commentary."
+              "Research 5–8 relevant competitors/analogs (same segment + a few inspirational adjacents)",
+              "Heuristic evaluation of onboarding, IA/navigation, search, checkout/flows, and empty/error states",
+              "Feature gap analysis: where the product is behind, at parity, or ahead (with impact/effort notes)",
+              "Screenshot teardowns of good patterns + cautionary examples with commentary"
             ]}
           />
         </div>
@@ -78,10 +78,10 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
           <BulletList 
             color="blue"
             items={[
-              "Competitive report summarizing parity gaps, UX patterns, and quick wins.",
-              "Annotated screen library (key flows with pros/cons notes).",
-              "Opportunity list: quick wins, medium bets, and \"prove it\" ideas.",
-              "Measurement & research plan: what to instrument and how we'll validate impact."
+              "Competitive report: parity gaps, UX patterns, quick wins",
+              "Annotated screen library (key flows with pros/cons notes)",
+              "Opportunity list: quick wins, medium bets, and \"prove it\" ideas",
+              "Measurement plan: what to instrument and how to validate impact"
             ]}
           />
         </div>
@@ -94,9 +94,9 @@ export function CompetitiveAnalysis({ className, onClose }: CompetitiveAnalysisP
           <BulletList 
             color="purple"
             items={[
-              "Shared understanding of table‑stakes for MVP/next release.",
-              "Prioritized opportunity list with owners and success criteria.",
-              "Instrumentation plan merged into analytics backlog (events & dashboards defined)."
+              "Shared understanding of table-stakes for MVP/next release",
+              "Prioritized opportunity list with owners and success criteria",
+              "Instrumentation plan merged into analytics backlog"
             ]}
           />
         </div>

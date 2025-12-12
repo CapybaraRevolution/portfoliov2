@@ -172,10 +172,10 @@ export function PersonaJourneyMapping({ className, onClose }: PersonaJourneyMapp
           {/* Content */}
           <div className="relative z-10 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed italic">
-              Every Member of Our Team Should Know the Top 3 User Goals
+              Can your team name the top 3 user goals? They should be able to.
             </h3>
             <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Design with the end user in mind. Clear personas and journeys turn scattered anecdotes into evidence we can design against—so teams agree on who we&apos;re serving, what they&apos;re trying to do, and how we&apos;ll measure progress.
+              Personas turn scattered anecdotes into evidence you can design against. When the team agrees on who they&apos;re serving and what those people are trying to do, decisions get easier and debates get shorter.
             </p>
           </div>
         </div>

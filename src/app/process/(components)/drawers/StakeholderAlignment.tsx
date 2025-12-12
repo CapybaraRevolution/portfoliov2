@@ -63,7 +63,7 @@ export function StakeholderAlignment({ className, onClose }: StakeholderAlignmen
               "45–60-min workshops: goals, non-goals, constraints, assumptions",
               "Map decision-makers and influencers; capture RACI and escalation paths",
               "Define a north-star metric + 2–3 guardrails",
-              "Spin up a living decision log (so we stop re-arguing the same things)",
+              "Spin up a living decision log — stops the same debates from recurring",
               "Timebox risks/unknowns into research spikes"
             ]}
           />
