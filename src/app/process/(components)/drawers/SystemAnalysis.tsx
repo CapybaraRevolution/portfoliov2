@@ -1,9 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
@@ -16,7 +14,6 @@ interface SystemAnalysisProps {
 export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
   const [carouselIndex, setCarouselIndex] = useState(0)
   
-  // Sample images - placeholders until assets are provided
   const sampleImages = [
     { 
       image: '/images/samples/system-analysis/context-diagram.png', 
@@ -59,7 +56,7 @@ export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
       <DrawerLayout
         stepText="Step 1 · Discovery & Strategy"
         title="System Analysis"
-        summary="Know the system before you design for it. Constraints first, creativity second."
+        summary="Know the constraints before you start designing. Otherwise you&apos;ll design something that can&apos;t be built."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=System%20Analysis"
@@ -67,81 +64,52 @@ export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
         itemId="system-analysis"
       >
 
-      {/* Why it matters - Feature card with gradient */}
-      <div className="mb-8">
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          {/* Subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          
-          {/* Content */}
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Technical debt kills velocity—system awareness prevents it.
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Understanding constraints early means designing solutions that ship fast and scale well.
-            </p>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            I&apos;ve seen designers hand off beautiful work that engineering looked at and said &quot;...we can&apos;t do that.&quot; Not because it was bad design, but because nobody checked what the system could actually support. Maybe the API doesn&apos;t return that data. Maybe the auth model doesn&apos;t work that way. Maybe that &quot;simple&quot; feature touches six services nobody mentioned.
+          </p>
+          <p>
+            System analysis is about understanding the machine before you try to redesign it. I sit down with engineers early — not to slow things down, but to avoid wasted effort later. What does the stack look like? Where does data live? What&apos;s instrumented and what&apos;s a black box?
+          </p>
+          <p>
+            The payoff is designing within reality instead of discovering constraints at the worst possible moment.
+          </p>
+        </div>
+
+        {/* How I approach it */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            How I approach it
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Talk to the people who built it.</strong> Engineers know where the bodies are buried. A 30-minute conversation can save weeks of rework.</li>
+              <li><strong>Map what exists.</strong> I sketch out the current system — domains, services, data stores, integrations. Nothing fancy, just enough to see the shape.</li>
+              <li><strong>Find the blind spots.</strong> What isn&apos;t being tracked? What data do we wish we had? This informs what to instrument later.</li>
+              <li><strong>Spot quick wins.</strong> Sometimes there&apos;s low-hanging fruit — things the team can ship immediately while bigger work is in progress.</li>
+            </ul>
           </div>
         </div>
-      </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Meet key engineers/owners to understand the stack and touchpoints.",
-              "Map current-state context (domains, services, data stores, auth, integrations).",
-              "Review data pipeline/event taxonomy to reveal blind spots.",
-              "Propose future-state deltas and a low-risk migration path.",
-              "Compile a quick-wins list the team can ship immediately."
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Current/Future system diagram (C4-ish) — annotate in Figma.",
-              "Tracking plan (events, properties, IDs) where applicable.",
-              "Quick-wins list with owners + effort."
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Fewer \"unknowns\" entering sprint planning.",
-              "Events instrumented for measurement in Step 5.",
-              "Reduced rework from overlooked constraints."
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Sprint planning has fewer &quot;unknowns&quot; and nobody&apos;s surprised mid-sprint by a technical constraint that should have been obvious.
+          </p>
         </div>
 
         {/* Sample - Image carousel */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Sample
+            Sample outputs
           </h3>
           <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
             <div className="relative">
-              {/* Carousel container */}
               <div className="relative aspect-[4/3] bg-zinc-100 dark:bg-zinc-700 rounded-lg overflow-hidden">
-                {/* Placeholder for images */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 mx-auto mb-4 bg-zinc-200 dark:bg-zinc-600 rounded-lg flex items-center justify-center">
@@ -153,12 +121,11 @@ export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
                       {sampleImages[carouselIndex].caption}
                     </p>
                     <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      Sample image {carouselIndex + 1} of {sampleImages.length}
+                      {carouselIndex + 1} of {sampleImages.length}
                     </p>
                   </div>
                 </div>
                 
-                {/* Navigation arrows */}
                 <button
                   onClick={prevImage}
                   className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/20 hover:bg-black/40 text-white transition-colors"
@@ -175,7 +142,6 @@ export function SystemAnalysis({ className, onClose }: SystemAnalysisProps) {
                 </button>
               </div>
 
-              {/* Carousel indicators */}
               {sampleImages.length > 1 && (
                 <div className="flex justify-center mt-4 space-x-2">
                   {sampleImages.map((_, index) => (

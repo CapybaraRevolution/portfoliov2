@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 import { trackProcessDrawerOpen } from '@/components/GoogleAnalytics'
@@ -13,7 +12,6 @@ interface PerformanceQualityDrawerProps {
 }
 
 export function PerformanceQualityDrawer({ className, onClose }: PerformanceQualityDrawerProps) {
-  // Track drawer open on mount
   useEffect(() => {
     trackProcessDrawerOpen('Performance & Quality')
   }, [])
@@ -22,7 +20,6 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
     <ToolSection 
       tools={[
         toolPill("github", "GitHub Actions", "md"),
-        toolPill("sonarqube", "SonarQube", "md"),
         toolPill("jest", "Jest", "md"),
         toolPill("cypress", "Cypress", "md"),
         toolPill("storybook", "Storybook", "md")
@@ -34,8 +31,8 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
     <div className={className}>
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
-        title="Ship Quality as a Habit, Not a Finale"
-        summary="Quality isn't a phase at the end. It's a habit throughout."
+        title="Quality as a Habit"
+        summary="Quality isn&apos;t a phase at the end. It&apos;s a habit throughout."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Quality%20Assurance"
@@ -43,122 +40,41 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
         itemId="ship-quality-habit"
       >
 
-        {/* Overview */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Overview
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Quality that happens at the end is too late. I build testing into every step — devs write tests, QA coaches quality, and everyone owns the outcome. Shift-left catches bugs when they&apos;re cheap to fix.
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            I&apos;ve seen teams treat quality like a gate at the end — build the feature, throw it over the wall to QA, wait for the bug list, fix, repeat. It&apos;s slow and demoralizing.
+          </p>
+          <p>
+            The alternative: quality is everyone&apos;s job, built into every step. Devs write tests. QA coaches quality instead of policing it. Code review isn&apos;t a rubber stamp — it&apos;s a real conversation. When something ships, everyone owns the outcome.
+          </p>
+          <p>
+            &quot;Shift-left&quot; is the buzzword, but the idea is simple: catch bugs when they&apos;re cheap to fix (at the developer&apos;s machine), not when they&apos;re expensive (in production).
           </p>
         </div>
 
-        {/* Why it matters - Feature card */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Reduces correction costs 10x: Preventive quality measures cost 90% less than reactive fixes, saving up to $67 million per 5,000 employees.",
-                "Accelerates delivery: Teams with excellent test coverage are 2.5x more likely to achieve 50-100% deployment frequency improvements.",
-                "Decreases failure rates: Strong quality cultures see 46% fewer mistakes and achieve 0-15% change failure rates (elite performer standard).",
-                "Improves team velocity: Near 100% code review coverage reduces post-merge errors while maintaining 300-500 lines/hour review speeds.",
-                "Enables sustainable pace: Shift-left testing catches issues early when they&apos;re cheapest to fix, preventing technical debt accumulation."
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* What this looks like */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What this looks like
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Testing pyramid.</strong> Lots of unit tests, fewer integration tests, even fewer E2E. Fast feedback loops.</li>
+              <li><strong>Peer reviews that matter.</strong> 200-400 lines at a time, not rubber-stamping 2,000-line PRs. Reviewers actually read the code.</li>
+              <li><strong>CI/CD quality gates.</strong> If tests fail, the build fails. If coverage drops, the build fails. No exceptions, no &quot;we&apos;ll fix it later.&quot;</li>
+              <li><strong>Shared ownership.</strong> QA isn&apos;t the last line of defense — they&apos;re coaches helping the team get better at not needing them.</li>
+            </ul>
           </div>
         </div>
 
-        {/* Inputs */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Team capability assessments · Current quality metrics baseline · Development workflow documentation · Testing infrastructure inventory · Historical defect data
-          </p>
-        </div>
-
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Shared ownership: devs write tests, QA coaches quality",
-              "Shift-left testing: catch bugs at local build, not in staging",
-              "Testing pyramid: 80%+ unit/integration coverage",
-              "Peer reviews: 200-400 lines, 60-90 min max, near 100% coverage",
-              "CI/CD quality gates: SonarQube metrics, fail builds on violations",
-              "DORA metrics: deployment frequency, lead time, change failure rate, MTTR"
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Quality culture maturity assessment",
-              "Automated testing framework documentation",
-              "Code review standards and checklists",
-              "CI/CD pipeline configuration with quality gates",
-              "Team quality dashboard with DORA metrics",
-              "Shift-left testing playbook",
-              "Peer review process documentation",
-              "Quality metrics reporting templates"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Code review coverage >95% of all changes",
-              "Unit test coverage >80% for new code",
-              "Change failure rate <15% (elite performer level)",
-              "Mean time to recovery <1 hour for critical issues",
-              "Deployment frequency >1 per day for mature teams",
-              "Review turnaround time <24 hours for most changes",
-              "Defect escape rate <10% to production",
-              "Team quality NPS >70 indicating culture adoption"
-            ]}
-          />
-        </div>
-
-        {/* Pitfalls to avoid */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Pitfalls to avoid
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Treating quality as solely QA team&apos;s responsibility, focusing only on test quantity over quality, implementing tools without cultural change, creating quality gates that become bottlenecks, measuring activity instead of outcomes
-          </p>
-        </div>
-
-        {/* Instrumentation */}
+        {/* When it's working */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Instrumentation
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Code review coverage tracking, automated test coverage reporting, DORA metrics dashboard (deployment frequency, lead time, change failure rate, MTTR), defect escape rate monitoring, team quality culture surveys
+            The team deploys multiple times a day and nobody&apos;s anxious about it. Bugs still happen, but they&apos;re rare and recovery is fast. QA stops feeling like a bottleneck and starts feeling like a partner.
           </p>
         </div>
 
@@ -170,7 +86,6 @@ export function PerformanceQualityDrawer({ className, onClose }: PerformanceQual
           <div className="flex flex-wrap gap-2">
             <NavigationChip skill="Quality Assurance" variant="default" size="sm" />
             <NavigationChip skill="Process Design" variant="outline" size="sm" />
-            <NavigationChip skill="Communication" variant="outline" size="sm" />
             <NavigationChip skill="Team Leadership" variant="outline" size="sm" />
           </div>
         </div>

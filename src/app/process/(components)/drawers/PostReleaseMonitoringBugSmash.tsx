@@ -1,7 +1,6 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 
@@ -18,7 +17,6 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
         genericTool("Amplitude"),
         toolPill("ga4", "GA4", "md"),
         genericTool("Sentry"),
-        genericTool("Hotjar"),
         toolPill("linear", "Linear", "md")
       ]}
     />
@@ -37,127 +35,54 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
         itemId="post-release-monitoring-bug-smash"
       >
 
-        {/* Overview */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Overview
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Launching is the beginning, not the end. I set up monitoring so we know what&apos;s working (and what&apos;s on fire) within hours — not weeks. When something breaks, we triage fast and fix faster.
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            Launching is the beginning, not the end. Users don&apos;t file bug reports — they just leave. So the first 48-72 hours after release are critical. I set up monitoring so we know what&apos;s working (and what&apos;s on fire) within hours, not weeks.
+          </p>
+          <p>
+            When something breaks, we triage fast and fix faster. P0 bugs get acknowledged in under 2 hours. Everything else gets prioritized by customer impact, not by who&apos;s yelling loudest.
           </p>
         </div>
 
-        {/* Why it matters - Feature card */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Users don't send bug reports. They just leave. Fast fixes = fewer silent exits.",
-                "The first 48-72 hours of real usage teach you more than months of testing ever could.",
-                "Bugs caught in the first 24 hours cost 10x less to fix than ones discovered weeks later.",
-                "Teams with strong monitoring deploy more often and roll back less. Confidence compounds.",
-                "Post-release retros catch the process gaps that pre-release testing misses."
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* What I watch */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I watch
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Error rates.</strong> Sentry, DataDog — anything that&apos;s throwing exceptions that weren&apos;t there before.</li>
+              <li><strong>Performance regressions.</strong> Core Web Vitals, API response times. Slow is broken.</li>
+              <li><strong>Funnel metrics.</strong> Did the change move the needle? Or did we break something upstream?</li>
+              <li><strong>Support tickets.</strong> The canary in the coal mine. Spikes mean something&apos;s wrong.</li>
+              <li><strong>Session recordings.</strong> Watch real users hit real problems in real time.</li>
+            </ul>
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* The rhythm */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
+            The first week
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Success metrics and KPIs · Error tracking and logging setup · User feedback collection systems · Performance monitoring baselines · Rollback procedures and criteria
-          </p>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Day 1:</strong> Hourly check-ins on dashboards. Any red flags?</li>
+              <li><strong>Days 2-3:</strong> Compare metrics to baseline. Are we trending the right direction?</li>
+              <li><strong>Day 4-5:</strong> Triage bugs by severity. Assign owners. Start fixing.</li>
+              <li><strong>Day 7:</strong> Retro. What did we learn? What do we change next time?</li>
+            </ul>
+          </div>
         </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Set up dashboards that surface what matters: errors, drop-offs, performance regressions — with alerts that wake someone up if things go sideways",
-              "Watch the metrics for 48-72 hours post-launch. Compare to baseline. Know if we shipped a win or a problem.",
-              "Triage bugs by severity (P0-P4) and customer impact — not by who's yelling loudest",
-              "Run rapid response: P0 acknowledged in <2 hours, dedicated bug smash mode, clear escalation paths",
-              "Monitor feedback channels — support tickets, reviews, session recordings — to catch pain points before they become patterns",
-              "Track Core Web Vitals, API response times, error rates. Hourly. (Yes, hourly.)",
-              "Daily post-release standups: what's working, what's broken, what's next",
-              "Retro within a week: what did we learn, what do we change for next time"
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Real-time monitoring dashboard",
-              "Daily health reports (first week post-launch)",
-              "Bug triage matrix with severity and owners",
-              "User feedback synthesis",
-              "Performance trend reports",
-              "Retro doc with action items"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Metrics trending toward targets within 72 hours",
-              "P0/P1 bugs: acknowledged <2 hours, resolved <24 hours",
-              "Error rate stays within 0.5% of baseline",
-              "Core Web Vitals regression <5%",
-              "Support ticket spike <20%",
-              "Retro complete within 1 week"
-            ]}
-          />
-        </div>
-
-        {/* Pitfalls to avoid */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Pitfalls to avoid
-          </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Watching metrics without understanding the user story behind them",
-              "Slow triage — small bugs become big bugs fast",
-              "Dismissing edge case feedback (edge cases have a way of becoming common cases)",
-              "Treating monitoring as an engineering-only activity",
-              "Skipping the retro because 'it shipped, we're done'"
-            ]}
-          />
-        </div>
-
-        {/* Instrumentation */}
+        {/* When it's working */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Instrumentation
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Error rate tracking · Performance regression alerts · Bug resolution time · Feedback sentiment · Team response time
+            A bug gets reported and someone says &quot;yeah, we already saw that in the dashboard and there&apos;s a fix in review.&quot; Proactive, not reactive.
           </p>
         </div>
 
@@ -169,7 +94,6 @@ export function PostReleaseMonitoringBugSmash({ className, onClose }: PostReleas
           <div className="flex flex-wrap gap-2">
             <NavigationChip skill="Data Analysis" variant="default" size="sm" />
             <NavigationChip skill="Quality Assurance" variant="outline" size="sm" />
-            <NavigationChip skill="User Research" variant="outline" size="sm" />
             <NavigationChip skill="Process Design" variant="outline" size="sm" />
           </div>
         </div>

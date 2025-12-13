@@ -1,8 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface JMJourneysProps {
   className?: string
@@ -26,7 +26,7 @@ export function JMJourneys({ className, onClose }: JMJourneysProps) {
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Journey Mapping"
         title="Journeys & top frictions"
-        summary="Where do users struggle? Where do they drop off? Map it, measure it, fix it."
+        summary="Where do users get stuck? Where do they leave? Map the friction, then fix it."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Journey%20Mapping"
@@ -34,66 +34,50 @@ export function JMJourneys({ className, onClose }: JMJourneysProps) {
         itemId="journey-mapping-journeys"
       >
 
-        {/* Why it matters */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Map the friction, measure the improvement
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Journey maps reveal where users struggle most, giving us clear targets for optimization and measurement.
-            </p>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            A journey map is just a visual story of how someone goes from &quot;I have a problem&quot; to &quot;problem solved&quot; (or, more commonly, &quot;I gave up&quot;). The value isn&apos;t in the artifact — it&apos;s in the conversations it forces about where things break down.
+          </p>
+          <p>
+            I map the whole flow: first touch to success. Along the way I note where emotions spike (good or bad), where people drop off, and where the current experience doesn&apos;t match what users expect. Those gaps are opportunities.
+          </p>
+        </div>
+
+        {/* What I look for */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I look for
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Drop-off points.</strong> Where in the flow do people leave? Is it confusion, friction, or just a natural exit?</li>
+              <li><strong>Emotional peaks.</strong> Delight moments we should amplify, frustration moments we should fix.</li>
+              <li><strong>Channel handoffs.</strong> Email → app → phone? Those transitions are often where trust breaks.</li>
+              <li><strong>Unmet expectations.</strong> What did they expect to happen that didn&apos;t?</li>
+            </ul>
           </div>
         </div>
 
-        {/* What I map */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I map
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "End-to-end flow from first touch to success",
-              "Emotional highs and lows at each stage",
-              "Touchpoints across channels and systems",
-              "Decision points and drop-off risks",
-              "Current state vs. where we want to be"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            The team can point to the journey map and say &quot;this is the highest-friction moment&quot; — and everyone agrees because there&apos;s data backing it up.
+          </p>
         </div>
 
-        {/* Friction analysis */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Friction analysis
+            Related Skills
           </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Pain points ranked by data, not opinion",
-              "Severity × frequency scoring",
-              "Quick wins vs. longer-term bets",
-              "Dependencies and blockers surfaced early"
-            ]}
-          />
-        </div>
-
-        {/* Measurement plan */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Measurement plan
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Key metrics for each journey stage",
-              "Event instrumentation for drop-off analysis",
-              "Baseline measurements before optimization",
-              "Success criteria for journey improvements"
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="User Research" variant="default" size="sm" />
+            <NavigationChip skill="Product Analytics" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

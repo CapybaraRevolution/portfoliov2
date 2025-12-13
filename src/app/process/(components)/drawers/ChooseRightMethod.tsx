@@ -1,9 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface ChooseRightMethodProps {
   className?: string
@@ -16,9 +15,7 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
       tools={[
         toolPill("userinterviews", "UserInterviews"),
         toolPill("typeform", "Typeform"),
-        toolPill("google-forms", "Google Forms"),
         toolPill("maze", "Maze"),
-        toolPill("useberry", "Useberry"),
         toolPill("zoom", "Zoom"),
         toolPill("loom", "Loom"),
         toolPill("figjam", "FigJam")
@@ -30,8 +27,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
     <div className={className}>
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Stage 1: User Research"
-        title="Choose the right method"
-        summary="Match the method to the decision, not the fashion."
+        title="Choosing the right method"
+        summary="Interviews, surveys, usability tests — each answers different questions. Pick wrong and you get noise."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=UX%20Research"
@@ -39,34 +36,28 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
         itemId="user-research-method"
       >
 
-        {/* Why it matters - Feature card with gradient */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          {/* Subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          
-          {/* Content */}
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              The wrong method produces confident-sounding noise. The right one answers the question you actually have.
-            </p>
-          </div>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            Not all research methods are interchangeable. Interviews tell you <em>why</em> people behave a certain way. Surveys tell you <em>how many</em> share that behavior. Usability tests tell you <em>whether they can actually do the thing</em>. Use the wrong one and you&apos;ll get confident-sounding answers to the wrong question.
+          </p>
+          <p>
+            I&apos;ve seen teams run surveys when they should have done interviews, then wonder why the data was useless. The method has to match the question.
+          </p>
         </div>
 
         {/* Method chooser */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Method chooser (quick map)
+            Quick decision guide
           </h3>
           <div className="space-y-4">
             <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-emerald-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Understand why people behave a certain way</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Semi-structured interviews (5–7)</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">&quot;Why do users do this?&quot;</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Interviews. 5–7 is usually enough to see patterns.</p>
                 </div>
               </div>
             </div>
@@ -74,8 +65,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Measure how many share a behavior/attitude</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Survey with clean branching</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">&quot;How many users feel this way?&quot;</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Survey. But only after you know what questions to ask.</p>
                 </div>
               </div>
             </div>
@@ -83,8 +74,8 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Verify can they do it</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Task-based usability test with success criteria</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">&quot;Can users actually complete this task?&quot;</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ Usability test with clear success criteria.</p>
                 </div>
               </div>
             </div>
@@ -92,56 +83,34 @@ export function ChooseRightMethod({ className, onClose }: ChooseRightMethodProps
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0 w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
                 <div>
-                  <p className="text-zinc-900 dark:text-white font-medium">Compare alternatives</p>
-                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ A/B or multivariate once you have traffic + events</p>
+                  <p className="text-zinc-900 dark:text-white font-medium">&quot;Which version performs better?&quot;</p>
+                  <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">→ A/B test — but only once you have traffic and instrumentation.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Draft scripts and pilots to remove bias.",
-              "Recruit ethically and representatively; incentive appropriately.",
-              "Run and record; timestamp notable moments for fast synthesis later."
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Stakeholders agree on the method <em>before</em> any sessions run. No one argues about methodology after the fact because it was decided upfront.
+          </p>
         </div>
 
-        {/* Deliverables */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Outputs & Deliverables
+            Related Skills
           </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Method + sample size rationale",
-              "Scripts / tasks",
-              "Scheduling + consent kit"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Stakeholders agree on the method before any sessions run.",
-              "Sessions yield usable quotes, clips, and task metrics (not just opinions)."
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="User Research" variant="default" size="sm" />
+            <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
+            <NavigationChip skill="Product Analytics" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

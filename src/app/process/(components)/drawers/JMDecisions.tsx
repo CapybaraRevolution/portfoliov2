@@ -1,8 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface JMDecisionsProps {
   className?: string
@@ -15,7 +15,7 @@ export function JMDecisions({ className, onClose }: JMDecisionsProps) {
       tools={[
         toolPill("notion", "Notion", "md"),
         toolPill("figma", "Figma", "md"),
-        genericTool("Prioritization frameworks")
+        genericTool("Prioritization")
       ]}
     />
   )
@@ -24,8 +24,8 @@ export function JMDecisions({ className, onClose }: JMDecisionsProps) {
     <div className={className}>
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Journey Mapping"
-        title="Turn signals into decisions"
-        summary="Insights without action are just expensive documentation. Ship something."
+        title="Turn insights into decisions"
+        summary="Insights without action are just expensive documentation. Pick something and ship it."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Strategic%20Planning"
@@ -33,66 +33,50 @@ export function JMDecisions({ className, onClose }: JMDecisionsProps) {
         itemId="journey-mapping-decisions"
       >
 
-        {/* Why it matters */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Research without action is just expensive documentation
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Bridge the gap between insights and implementation by translating journey findings into prioritized initiatives.
-            </p>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            Journey maps are great, but they&apos;re not the goal. The goal is making something better. I&apos;ve seen teams create beautiful journey maps that sit in a FigJam file forever while the actual product stays broken.
+          </p>
+          <p>
+            The point of mapping is to prioritize. You found 15 friction points? Cool. Which 3 matter most? Which ones can you actually fix with the team and time you have? That&apos;s where the real work starts.
+          </p>
+        </div>
+
+        {/* How I move from map to action */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            How I move from map to action
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Score by impact × effort.</strong> Big pain that&apos;s easy to fix? Do that first.</li>
+              <li><strong>Identify quick wins.</strong> Things you can ship in under 2 weeks to build momentum and show value.</li>
+              <li><strong>Surface dependencies.</strong> Some fixes require coordination across teams. Better to know that now.</li>
+              <li><strong>Define success criteria.</strong> How will you know if the fix worked? Decide before you build.</li>
+            </ul>
           </div>
         </div>
 
-        {/* Decision framework */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Decision framework
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Impact scoring based on user pain severity",
-              "Effort estimation with engineering input",
-              "Risk assessment for technical and business factors",
-              "Dependency mapping across teams and systems",
-              "Timeline alignment with business objectives"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            The journey map has dates on it — &quot;Fixed in Q2,&quot; &quot;Experiment running,&quot; &quot;Deprioritized because X.&quot; A map that&apos;s annotated with decisions is a map that&apos;s actually being used.
+          </p>
         </div>
 
-        {/* Prioritization outputs */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Prioritization outputs
+            Related Skills
           </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Ranked opportunity backlog with RICE scores",
-              "Quick wins that can ship within 2 weeks",
-              "Strategic initiatives requiring cross-team coordination",
-              "Experiment hypotheses for uncertain opportunities"
-            ]}
-          />
-        </div>
-
-        {/* Success tracking */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Success tracking
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Clear success metrics for each initiative",
-              "Timeline for measuring impact post-launch",
-              "Owner assignment and accountability framework",
-              "Regular review cadence for course correction"
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Prioritization" variant="default" size="sm" />
+            <NavigationChip skill="Product Strategy" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

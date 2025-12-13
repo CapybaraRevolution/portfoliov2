@@ -1,8 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface JMPersonasProps {
   className?: string
@@ -14,8 +14,7 @@ export function JMPersonas({ className, onClose }: JMPersonasProps) {
     <ToolSection 
       tools={[
         toolPill("figma", "Figma", "md"),
-        toolPill("notion", "Notion", "md"),
-        toolPill("google", "Interviews", "md")
+        toolPill("notion", "Notion", "md")
       ]}
     />
   )
@@ -25,7 +24,7 @@ export function JMPersonas({ className, onClose }: JMPersonasProps) {
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Journey Mapping"
         title="Personas & contexts"
-        summary="Who are we designing for? What do they need? (Not who we imagine them to be.)"
+        summary="Context beats demographics. What are they trying to do, and what&apos;s getting in the way?"
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Persona%20Development"
@@ -33,65 +32,50 @@ export function JMPersonas({ className, onClose }: JMPersonasProps) {
         itemId="journey-mapping-personas"
       >
 
-        {/* Why it matters */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Context beats demographics every time
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Focus on what users are trying to accomplish and the constraints they face, not just who they are.
-            </p>
-          </div>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            I don&apos;t care that &quot;Marketing Mary is 34 and lives in the suburbs.&quot; That tells me nothing useful. What I care about is: what is she trying to accomplish? What constraints is she operating under? What has she already tried?
+          </p>
+          <p>
+            Good personas are about context, not demographics. Someone using your product on their phone while commuting has different needs than someone at a desk with a second monitor. The same person, different context — different design requirements.
+          </p>
         </div>
 
         {/* What I focus on */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I focus on
+            What I actually want to know
           </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "What goals and motivations bring them to this product?",
-              "Environmental constraints: time, device, location, stress level",
-              "Mental models and expectations they bring with them",
-              "Key decision points in their workflow",
-              "What does success look like from their perspective?"
-            ]}
-          />
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Goals.</strong> What are they trying to accomplish? What does success look like from their perspective?</li>
+              <li><strong>Constraints.</strong> Time pressure? Mobile vs. desktop? Interrupted attention? Low technical confidence?</li>
+              <li><strong>Mental models.</strong> What do they expect based on other products they use?</li>
+              <li><strong>Decision points.</strong> Where in their workflow do they need to make a choice?</li>
+            </ul>
+          </div>
         </div>
 
-        {/* Key outputs */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Key outputs
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "2-3 primary personas with contextual scenarios",
-              "Jobs-to-be-done statements for each persona",
-              "Contextual constraints and pain points",
-              "Success metrics aligned to user outcomes"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Design discussions include phrases like &quot;but in that context, they&apos;d need...&quot; instead of just arguing about button colors.
+          </p>
         </div>
 
-        {/* Success signals */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Success signals
+            Related Skills
           </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Team can name the top 3 user goals without looking",
-              "Design decisions reference specific persona needs",
-              "Feature discussions include context scenarios"
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="User Research" variant="default" size="sm" />
+            <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

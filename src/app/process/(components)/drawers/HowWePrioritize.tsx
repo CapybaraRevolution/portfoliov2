@@ -1,7 +1,6 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 
@@ -17,10 +16,7 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
         toolPill("notion", "Notion", "md"),
         toolPill("figma", "FigJam", "md"),
         toolPill("google", "Google Sheets", "md"),
-        genericTool("RICE framework"),
-        genericTool("WSJF framework"),
-        genericTool("Kano model tools"),
-        genericTool("Planning Poker")
+        genericTool("RICE / WSJF")
       ]}
     />
   )
@@ -29,8 +25,8 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
     <div className={className}>
       <DrawerLayout
         stepText="Step 2 · Planning & Architecture · Stage 1: Prioritization"
-        title="How We Prioritize"
-        summary="RICE, impact scoring, and other frameworks to rank opportunities objectively."
+        title="How to Prioritize"
+        summary="RICE, impact/effort, cost of delay — frameworks that turn opinions into ranked decisions."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -38,130 +34,48 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
         itemId="how-we-prioritize"
       >
 
-        {/* Overview */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Overview
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            &quot;We should build X&quot; isn&apos;t a strategy. I use structured frameworks — RICE for features, WSJF for sequencing, Impact/Effort for quick calls — to turn opinions into ranked priorities backed by evidence.
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            &quot;We should build X&quot; isn&apos;t a strategy. Neither is &quot;the CEO wants it.&quot; You need a way to compare options that doesn&apos;t just come down to who argues loudest.
+          </p>
+          <p>
+            Frameworks help. Not because they give you perfect answers — they don&apos;t — but because they force you to think through the same dimensions for every option. Impact. Effort. Confidence. Reach. Suddenly the debate shifts from &quot;I think X is important&quot; to &quot;X scores higher because...&quot;
           </p>
         </div>
 
-        {/* Why it matters - Feature card */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Bias reduction: Structured frameworks eliminate 70% of cognitive biases in decision-making, replacing subjective preferences with objective scoring criteria",
-                "Consistency improvement: Teams using calibrated frameworks report 40-60% improvement in prioritization confidence and 50% reduction in decision reversal rates",
-                "Stakeholder buy-in: Transparent methodologies increase stakeholder agreement by 85% through clear scoring logic and documented rationale",
-                "Speed enhancement: Framework-based decisions are made 3x faster than unstructured deliberations while maintaining higher quality outcomes",
-                "Economic optimization: WSJF implementation improves economic returns by 25-40% through optimal job sequencing based on cost of delay"
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* Frameworks I use */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            Frameworks I actually use
+          </h3>
+          <div className="space-y-4">
+            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-900 dark:text-white font-medium">RICE</p>
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">Reach × Impact × Confidence ÷ Effort. Good for comparing features with different scopes.</p>
+            </div>
+            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-900 dark:text-white font-medium">Impact / Effort matrix</p>
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">Quick and dirty. Plot things on 2x2, do the quick wins first.</p>
+            </div>
+            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-900 dark:text-white font-medium">Cost of Delay</p>
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">What does it cost us each week we don&apos;t ship this? Helps with sequencing.</p>
+            </div>
+            <div className="bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-4">
+              <p className="text-zinc-900 dark:text-white font-medium">MoSCoW</p>
+              <p className="text-zinc-600 dark:text-zinc-400 text-sm mt-1">Must / Should / Could / Won&apos;t. Useful for fixed timelines. Keep Must-Have under 60%.</p>
+            </div>
           </div>
         </div>
 
-        {/* Inputs */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Quantitative metrics: user analytics, conversion rates, revenue data · Qualitative research: user interviews, usability findings, support tickets · Technical assessments: effort estimates, architectural impact, dependencies · Market intelligence: competitive analysis, industry trends, regulatory changes · Resource constraints: team capacity, skill availability, budget limitations · Strategic priorities: business objectives, OKRs, executive mandates · Risk evaluations: security assessments, compliance requirements, technical debt
-          </p>
-        </div>
-
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "RICE scoring: Reach × Impact × Confidence ÷ Effort — with documented rationale",
-              "WSJF: Cost of Delay ÷ Duration for economic sequencing",
-              "Kano analysis: Must-Be vs. Performance vs. Attractive features",
-              "MoSCoW: Must-Have (max 60%), Should, Could, Won&apos;t — for fixed timelines",
-              "Impact/Effort matrix: quick wins, major projects, fill-ins, thankless tasks",
-              "Quarterly calibration: compare past scores to actual outcomes, refine the model"
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "RICE scoring spreadsheet with automated calculations and visualizations",
-              "WSJF priority matrix with economic sequencing recommendations",
-              "Kano model analysis report with feature categorization and satisfaction projections",
-              "MoSCoW requirement breakdown with resource allocation percentages",
-              "Impact/Effort quadrant visualization with action recommendations",
-              "Framework selection guide mapping contexts to appropriate methodologies",
-              "Calibration workshop reports with inter-rater reliability metrics",
-              "Prioritization decision log with comprehensive scoring rationale"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Scoring consistency: Inter-rater reliability coefficient >0.8 across teams",
-              "Framework adoption: 100% of product decisions using structured frameworks",
-              "Prediction accuracy: 85% correlation between predicted and actual impact",
-              "Decision speed: Average prioritization time reduced from days to hours",
-              "Stakeholder satisfaction: 90% agreement with framework-based decisions",
-              "Value delivery: 30% increase in delivered value per sprint",
-              "Feature success rate: 75% of prioritized features meeting success metrics"
-            ]}
-          />
-        </div>
-
-        {/* Pitfalls to avoid */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Pitfalls to avoid
-          </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Framework rigidity: Applying frameworks without considering context or exceptions",
-              "Over-precision: Creating false accuracy with excessive decimal places in scoring",
-              "Gaming the system: Manipulating inputs to achieve desired prioritization outcomes",
-              "Single framework dependence: Using one framework for all situations regardless of fit",
-              "Calibration drift: Allowing scoring interpretations to diverge over time",
-              "Documentation gaps: Failing to record rationale for future learning",
-              "Stakeholder exclusion: Not involving key perspectives in scoring processes"
-            ]}
-          />
-        </div>
-
-        {/* Instrumentation */}
+        {/* When it's working */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Instrumentation
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Inter-rater reliability scoring for framework consistency, prediction accuracy tracking comparing forecasted to actual impact, decision velocity measurement from request to prioritization, stakeholder satisfaction surveys with framework confidence ratings
+            Stakeholders stop lobbying for their pet features and start asking &quot;how did this score?&quot; That&apos;s when you know the framework has credibility.
           </p>
         </div>
 
@@ -174,7 +88,6 @@ export function HowWePrioritize({ className, onClose }: HowWePrioritizeProps) {
             <NavigationChip skill="Prioritization" variant="default" size="sm" />
             <NavigationChip skill="OKRs" variant="outline" size="sm" />
             <NavigationChip skill="Roadmap" variant="outline" size="sm" />
-            <NavigationChip skill="Communication" variant="outline" size="sm" />
           </div>
         </div>
 

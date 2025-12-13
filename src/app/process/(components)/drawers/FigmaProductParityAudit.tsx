@@ -1,7 +1,6 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 
@@ -17,8 +16,7 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
         toolPill("figma", "Figma", "md"),
         genericTool("Chromatic"),
         genericTool("Storybook"),
-        genericTool("Pixel Perfect Pro"),
-        genericTool("Visual regression tools")
+        genericTool("DevTools")
       ]}
     />
   )
@@ -28,7 +26,7 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Figma to Production Parity Audit"
-        summary="Does the build match the design? Check before you ship."
+        summary="Does the build match the design? Check before you ship, not after."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Design%20Systems"
@@ -36,129 +34,54 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
         itemId="figma-product-parity-audit"
       >
 
-        {/* Overview */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Overview
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            &quot;Close enough&quot; isn&apos;t good enough. I run pre-release audits comparing production builds against Figma — pixel-perfect verification, design token compliance, and cross-browser checks. Catch discrepancies before they become design debt.
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            This is basically Daily Design QA, but as a pre-release gate. Before a feature ships, I do a final audit: Figma on one side, staging build on the other. Pixel-perfect? No. But close enough that users won&apos;t notice? Yes.
+          </p>
+          <p>
+            The audit isn&apos;t about catching everything — it&apos;s about catching the stuff that matters. A 2px padding difference? Probably fine. A completely wrong hover state? That&apos;s a blocker.
           </p>
         </div>
 
-        {/* Why it matters - Feature card */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Ensures brand consistency: Only 20% of organizations currently implement systematic design system testing, missing critical quality opportunities.",
-                "Reduces revision cycles: Catching design discrepancies pre-release eliminates 60% of post-launch design tickets.",
-                "Validates design system adoption: Regular audits ensure component library usage and prevent pattern proliferation.",
-                "Maintains user experience quality: Pixel-perfect implementation directly correlates with user satisfaction and conversion rates.",
-                "Prevents design technical debt: Systematic audits avoid the accumulated cost of minor deviations that compound over time."
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* What I check */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I check
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Visual fidelity.</strong> Colors, typography, spacing. The stuff that&apos;s obviously wrong if you look.</li>
+              <li><strong>Interactions.</strong> Hover states, focus rings, transitions. Easy to forget, easy to ship broken.</li>
+              <li><strong>Responsive behavior.</strong> Does it actually work at mobile breakpoints, or did someone just shrink the desktop version?</li>
+              <li><strong>Design token compliance.</strong> Are we using the system, or did someone hardcode a hex value?</li>
+              <li><strong>Cross-browser.</strong> Safari renders differently than Chrome. Figma is closer to Safari, which surprises people.</li>
+            </ul>
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* How I do it */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
+            How I do it
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Finalized Figma designs with annotations · Design system documentation and tokens · Staging environment builds · Browser/device testing matrix
-          </p>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <p>
+              Figma DevMode on one monitor, staging on the other. I&apos;ll do overlay comparisons for layout-heavy screens, side-by-side for everything else. Issues get logged directly in Figma comments with severity ratings (blocker, should-fix, nice-to-have).
+            </p>
+            <p>
+              For teams with visual regression testing (Chromatic, Percy), I&apos;ll review the automated diffs too. But I don&apos;t rely on them exclusively — tools miss context that humans catch.
+            </p>
+          </div>
         </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Visual audits: colors, typography, spacing, component consistency",
-              "Pixel-perfect verification: overlay, side-by-side, onion skin",
-              "Design system conformance: Storybook + Chromatic, token validation",
-              "Cross-browser checks: Safari renders differently (closer to Figma)",
-              "Baseline snapshots: automated change detection in CI/CD",
-              "Document discrepancies: Figma comments, severity ratings, Kanban tracking"
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Pre-release design audit report with severity ratings",
-              "Pixel-perfect verification screenshots",
-              "Design token compliance matrix",
-              "Component deviation documentation",
-              "Cross-browser rendering analysis",
-              "Design system adoption metrics",
-              "Visual regression test results",
-              "Sign-off documentation from design team"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Visual accuracy >99% for critical UI components",
-              "Design token compliance 100% for colors and typography",
-              "Component library usage >90% across features",
-              "Zero critical design discrepancies at release",
-              "Audit completion time <4 hours for standard releases",
-              "Cross-browser consistency >95% for all viewports",
-              "Design debt accumulation <5% per quarter",
-              "Stakeholder approval rate >95% on first review"
-            ]}
-          />
-        </div>
-
-        {/* Pitfalls to avoid */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Pitfalls to avoid
-          </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Auditing only after development completion",
-              "Ignoring responsive design breakpoints",
-              "Accepting \"close enough\" implementations",
-              "Missing micro-interactions and animations",
-              "Insufficient documentation of approved variations"
-            ]}
-          />
-        </div>
-
-        {/* Instrumentation */}
+        {/* When it's working */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Instrumentation
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Visual regression testing automation, design token compliance monitoring, cross-browser rendering analysis, component library usage tracking, audit completion time measurement, stakeholder approval rate tracking
+            Designers stop being surprised by production. &quot;Wait, that&apos;s not what I designed&quot; becomes rare because discrepancies get caught before release, not after.
           </p>
         </div>
 
@@ -171,7 +94,6 @@ export function FigmaProductParityAudit({ className, onClose }: FigmaProductPari
             <NavigationChip skill="Design Systems" variant="default" size="sm" />
             <NavigationChip skill="Quality Assurance" variant="outline" size="sm" />
             <NavigationChip skill="Visual Design" variant="outline" size="sm" />
-            <NavigationChip skill="Process Design" variant="outline" size="sm" />
           </div>
         </div>
 

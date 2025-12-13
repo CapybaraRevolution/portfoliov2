@@ -1,8 +1,7 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
-import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { ToolSection, toolPill } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 
 interface WireframesProps {
@@ -16,10 +15,7 @@ export function Wireframes({ className, onClose }: WireframesProps) {
       tools={[
         toolPill("figma", "Figma", "md"),
         toolPill("figma", "FigJam", "md"),
-        genericTool("Axure"),
-        toolPill("notion", "Notion", "md"),
-        toolPill("confluence", "Confluence", "md"),
-        toolPill("loom", "Loom", "md")
+        toolPill("notion", "Notion", "md")
       ]}
     />
   )
@@ -29,7 +25,7 @@ export function Wireframes({ className, onClose }: WireframesProps) {
       <DrawerLayout
         stepText="Step 3 · Design & Prototyping"
         title="Wireframes"
-        summary="Structure before polish—fast frames answer &quot;what goes where and why.&quot;"
+        summary="Structure before polish. Figure out what goes where before you argue about button colors."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=UX%20Design"
@@ -37,68 +33,40 @@ export function Wireframes({ className, onClose }: WireframesProps) {
         itemId="wireframes"
       >
 
-        {/* Why it matters */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              De-risk navigation and scope
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Wireframes de-risk navigation and scope. They align people on layout, hierarchy, and flow so we catch gaps before pixels and code get expensive.
-            </p>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            Wireframes are ugly on purpose. Gray boxes. No colors. Placeholder text. The point is to focus on structure — what goes where, in what order, with what priority — without getting distracted by aesthetics.
+          </p>
+          <p>
+            I&apos;ve seen teams burn weeks polishing high-fidelity mockups only to realize the layout didn&apos;t work. Wireframes catch that early, when it&apos;s cheap to change.
+          </p>
+        </div>
+
+        {/* What I include */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I include
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Information hierarchy.</strong> What&apos;s most important? What comes first? What can be collapsed?</li>
+              <li><strong>All the states.</strong> Empty, loading, error, success. If I don&apos;t wireframe it, engineers will have to invent it.</li>
+              <li><strong>Mobile and desktop.</strong> They&apos;re different layouts, not just smaller/bigger versions of each other.</li>
+              <li><strong>Annotations.</strong> What happens when you click this? Where does this data come from? What are the constraints?</li>
+            </ul>
           </div>
         </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Map key tasks → screens → states (happy + known friction)",
-              "Draft low–mid fidelity frames that show information priority, not visual design",
-              "Annotate interactions, empty/error/loading states, and content sources",
-              "Validate edge cases and accessibility basics (reading order, focus, tap targets)"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Stakeholders can walk through the wireframe and describe the user journey in their own words. And engineering can give rough estimates without asking &quot;where does this live?&quot;
+          </p>
         </div>
-
-        {/* Outputs & deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Outputs &amp; deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Screen list + sitemap",
-              "Wireframe set (desktop + mobile variants)",
-              "Interaction notes and acceptance criteria",
-              "&quot;Open questions&quot; list for stakeholders/dev"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Stakeholders can navigate the wireframe and describe the journey in the same words",
-              "Dev estimates unlocked with <10% churn from layout surprises",
-              "Fewer &quot;where does this live?&quot; questions during prototyping"
-            ]}
-          />
-        </div>
-
-        {/* Future lightbox placeholder */}
-        {/* TODO: Add lightbox section for 3-5 hero frames (Home, Task start, Decision point, Error, Success) */}
 
         {/* Related Skills */}
         <div>
@@ -109,7 +77,6 @@ export function Wireframes({ className, onClose }: WireframesProps) {
             <NavigationChip skill="Wireframing" variant="default" size="sm" />
             <NavigationChip skill="Information Architecture" variant="outline" size="sm" />
             <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
-            <NavigationChip skill="Communication" variant="outline" size="sm" />
           </div>
         </div>
 

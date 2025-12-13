@@ -1,9 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface WhyResearchFirstProps {
   className?: string
@@ -27,7 +26,7 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Stage 1: User Research"
         title="Why research first?"
-        summary="Research is the cheapest way to avoid building the wrong thing."
+        summary="Because guessing is expensive. Research is cheap insurance."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -35,75 +34,54 @@ export function WhyResearchFirst({ className, onClose }: WhyResearchFirstProps) 
         itemId="user-research-why"
       >
 
-        {/* Why it matters - Feature card with gradient */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          {/* Subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          
-          {/* Content */}
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                <>
-                  <strong>Cuts rework:</strong> Finding problems in a prototype costs hours. Finding them in production costs sprints.
-                </>,
-                <>
-                  <strong>Focuses effort:</strong> Clarifies the few moments that actually drive outcomes — activation, conversion, retention.
-                </>,
-                <>
-                  <strong>De-risks bets:</strong> When decisions reference evidence instead of opinions, stakeholder debates get a lot shorter.
-                </>
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            Here&apos;s the uncomfortable truth: most product decisions are educated guesses. That&apos;s fine — you can&apos;t know everything. But some guesses are more expensive to get wrong than others.
+          </p>
+          <p>
+            Research is how you figure out which bets are risky before you make them. Finding a problem in a prototype costs hours. Finding it in production costs sprints. Finding it after launch costs customers.
+          </p>
+          <p>
+            I&apos;m not saying research everything to death. I&apos;m saying be strategic about what you validate. The goal is fewer surprises, not perfect certainty.
+          </p>
+        </div>
+
+        {/* How I think about it */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            How I think about it
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <p>
+              Every research question should connect to a decision. &quot;What do users think about feature X?&quot; is not a research question — it&apos;s trivia. &quot;Should we build feature X, and if so, what version?&quot; is a decision. Research answers that.
+            </p>
+            <p>
+              I start by listing the unknowns from discovery, then ask: which ones could sink us if we guess wrong? Those get research. The rest get timeboxed assumptions we&apos;ll validate later with data.
+            </p>
           </div>
         </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Map the risks and unknowns from discovery — what do we still not know?",
-              "Tie every research question to a decision we need to make. No 'nice to know' — only 'need to know.'",
-              "Instrument the minimum events needed to measure impact later."
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Sprint planning has fewer &quot;unknowns&quot; and stakeholder debates end with &quot;the research showed...&quot; instead of &quot;I think...&quot;
+          </p>
         </div>
 
-        {/* Deliverables */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Outputs & Deliverables
+            Related Skills
           </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Risk-to-research matrix (question → method → expected decision)",
-              "'If we learn X, we'll do Y' decision table"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Fewer 'unknowns' sneaking into sprint planning.",
-              "Decisions unblocked — with owners and timelines attached."
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="User Research" variant="default" size="sm" />
+            <NavigationChip skill="Product Strategy" variant="outline" size="sm" />
+            <NavigationChip skill="Prioritization" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

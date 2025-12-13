@@ -1,7 +1,6 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 
@@ -17,8 +16,6 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
         genericTool("Amplitude"),
         toolPill("ga4", "GA4", "md"),
         genericTool("Segment"),
-        genericTool("mParticle"),
-        genericTool("Schema validation tools"),
         toolPill("notion", "Notion", "md")
       ]}
     />
@@ -29,7 +26,7 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Analytics Events Implementation"
-        summary="Track the right events. Name them consistently. Trust the data."
+        summary="Name your events consistently. Track the right things. Actually trust the data."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Analytics"
@@ -37,123 +34,60 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
         itemId="analytics-events-tracking-spec"
       >
 
-        {/* Overview */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Overview
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Bad event naming breaks funnels. Missing events leave you guessing. I create structured tracking plans with consistent taxonomy, schema validation, and quality gates so the data you collect is actually usable.
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            Analytics is one of those things that&apos;s easy to do badly. You fire off events with whatever names make sense at the time, properties are inconsistent, and six months later nobody trusts the data because &quot;checkout_complete&quot; and &quot;CheckoutCompleted&quot; and &quot;purchase_done&quot; are all measuring... something?
+          </p>
+          <p>
+            I&apos;ve seen teams with dashboards nobody looks at because the data is too messy to trust. That&apos;s a waste. The fix isn&apos;t complicated — it&apos;s just discipline. Consistent naming. Clear definitions. Schema validation so bad data fails the build instead of silently corrupting your funnel.
           </p>
         </div>
 
-        {/* Why it matters - Feature card */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Accelerates decision-making: Companies with reliable analytics make data-driven decisions 5x faster than competitors.",
-                "Prevents data debt: Proactive validation costs $1 per record versus $10 for reactive fixes and $100/year for inaction.",
-                "Enables personalization: Proper event tracking powers recommendation engines that drive 35% of Amazon&apos;s revenue.",
-                "Improves product development: Teams with comprehensive analytics ship features 2x faster with higher success rates.",
-                "Drives revenue growth: Data-driven organizations are 23x more likely to acquire customers and 6x more likely to retain them."
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* How I approach it */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            How I approach it
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Start with the questions.</strong> What do you actually need to know? Map business goals → KPIs → events. Don&apos;t track everything; track what matters.</li>
+              <li><strong>Object-Action naming.</strong> &quot;Song Played&quot;, &quot;Cart Updated&quot;, &quot;Checkout Completed&quot;. Past tense, proper case, snake_case properties. Pick a convention and stick to it.</li>
+              <li><strong>Tracking plan as source of truth.</strong> Every event has a definition, trigger condition, and property spec. Engineers reference this, not Slack threads.</li>
+              <li><strong>Schema validation in CI.</strong> If an event doesn&apos;t match the spec, the build fails. Sounds strict, but it&apos;s the only way to keep things clean.</li>
+              <li><strong>Treat analytics code like product code.</strong> Peer review. Tests. The same rigor you&apos;d apply to anything else.</li>
+            </ul>
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* Sample */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
+            Sample event spec
           </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Business goals and KPIs · User journey maps · Feature specifications · Data governance policies · Technology stack details
-          </p>
+          <div className="bg-zinc-900 rounded-lg p-4 overflow-x-auto">
+            <pre className="text-sm text-green-400 whitespace-pre">
+{`{
+  "event": "Checkout Step Completed",
+  "trigger": "User completes a checkout step",
+  "properties": {
+    "step_number": "integer (1-4)",
+    "step_name": "string (shipping|payment|review|confirm)",
+    "cart_value": "number (USD)",
+    "item_count": "integer"
+  }
+}`}
+            </pre>
+          </div>
         </div>
 
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Map business goals → KPIs → events",
-              "Object-Action taxonomy: &quot;Song Played&quot;, proper case, snake_case properties, past tense",
-              "Tracking plan: 20-300 events, definitions, triggers, property specs",
-              "Schema validation in CI/CD — bad data fails the build",
-              "Peer review for analytics code (treat it like product code)",
-              "Data quality monitoring: >99% accuracy for critical events",
-              "Regular cleanup: prune unused events before they rot"
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Analytics tracking plan documentation",
-              "Event taxonomy guide with naming conventions",
-              "Implementation code review checklist",
-              "Automated test suite for analytics",
-              "Data quality dashboard",
-              "Schema validation reports",
-              "Event coverage heat map",
-              "Analytics implementation roadmap"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Data accuracy >99% for mission-critical events",
-              "Event coverage >90% for primary user journeys",
-              "Schema validation pass rate 100% in production",
-              "Implementation review time <4 hours average",
-              "Data downtime <4 hours monthly (TTD + TTR)",
-              "Table uptime >95% for production systems",
-              "Zero privacy violations or data breaches",
-              "Analytics adoption >80% across teams"
-            ]}
-          />
-        </div>
-
-        {/* Pitfalls to avoid */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Pitfalls to avoid
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Using dynamic event names that break funnel analysis, implementing without clear business goals, neglecting data governance and privacy, creating event sprawl without documentation, treating analytics as developer-only concern
-          </p>
-        </div>
-
-        {/* Instrumentation */}
+        {/* When it's working */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Instrumentation
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Event accuracy monitoring with schema validation, data quality dashboards tracking completeness and consistency, automated test coverage reporting, peer review compliance tracking, real-time data flow monitoring
+            Someone asks &quot;how many users completed checkout last week?&quot; and you can answer in 30 seconds — confidently — because you know exactly what &quot;completed checkout&quot; means and trust the data behind it.
           </p>
         </div>
 
@@ -166,7 +100,6 @@ export function AnalyticsEventsTrackingSpec({ className, onClose }: AnalyticsEve
             <NavigationChip skill="Data Analysis" variant="default" size="sm" />
             <NavigationChip skill="Product Strategy" variant="outline" size="sm" />
             <NavigationChip skill="Quality Assurance" variant="outline" size="sm" />
-            <NavigationChip skill="Process Design" variant="outline" size="sm" />
           </div>
         </div>
 

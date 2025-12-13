@@ -1,7 +1,6 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
 import { NavigationChip } from '@/components/NavigationChip'
 
@@ -15,9 +14,7 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
     <ToolSection 
       tools={[
         toolPill("notion", "Notion", "md"),
-        genericTool("Linear"),
-        toolPill("jira", "Jira", "md"),
-        genericTool("Release checklists"),
+        genericTool("Linear / Jira"),
         genericTool("Quality dashboards")
       ]}
     />
@@ -28,7 +25,7 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
       <DrawerLayout
         stepText="Step 4 · Implementation Support · Execute"
         title="Release Readiness Review"
-        summary="Is it ready? Really ready? Go/no-go before it hits production."
+        summary="Is it ready? Really ready? A 15-minute go/no-go before anything hits production."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Product%20Strategy"
@@ -36,122 +33,39 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
         itemId="release-readiness-review"
       >
 
-        {/* Overview */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Overview
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300 mb-4">
-            Before anything goes to production, I run a formal go/no-go review. All teams sign off. All criteria are met. No &quot;almost ready&quot; — either it&apos;s ready or it waits.
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            &quot;It&apos;s almost ready&quot; is not ready. Before anything goes to production, I run a quick go/no-go review. All teams sign off. All criteria are met. If something&apos;s not right, we don&apos;t ship it.
+          </p>
+          <p>
+            This isn&apos;t bureaucracy — it&apos;s a 15-minute checkpoint that prevents &quot;wait, was that supposed to go out?&quot; conversations at midnight.
           </p>
         </div>
 
-        {/* Why it matters - Feature card */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Reduces deployment failures: Formal readiness reviews decrease change failure rates from 45% to less than 15%.",
-                "Prevents customer impact: Structured validation catches 95% of potential issues before they reach production.",
-                "Aligns stakeholders: Multi-team sign-off ensures organizational readiness beyond just technical completion.",
-                "Accelerates recovery: Clear rollback procedures reduce MTTR by 75% when issues occur."
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* What I check */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I check
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Tests passing.</strong> Not &quot;mostly passing.&quot; All of them.</li>
+              <li><strong>Docs updated.</strong> If it changes user behavior, someone needs to know.</li>
+              <li><strong>Rollback plan.</strong> If this goes wrong, how do we undo it?</li>
+              <li><strong>Sign-offs.</strong> Dev, QA, product, ops. Everyone who needs to say yes has said yes.</li>
+              <li><strong>Monitoring ready.</strong> Will we know if it breaks? What alerts fire?</li>
+            </ul>
           </div>
         </div>
 
-        {/* Inputs */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Inputs
-          </h3>
-          <p className="text-zinc-700 dark:text-zinc-300">
-            Release scope documentation · Test completion reports · Quality metrics dashboard · Security scan results · Support team preparedness status
-          </p>
-        </div>
-
-        {/* What I do */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Readiness checklist: planning done, dev complete, tests passed, docs updated",
-              "Quality gates: >80% test coverage, integration tests green, perf benchmarks met, security scans clear",
-              "Multi-team sign-off: dev, QA, ops, security, product, support",
-              "Go/no-go meeting: 5-15 minutes, clear criteria, documented decision",
-              "Track: release success rate, change failure rate, MTTR"
-            ]}
-          />
-        </div>
-
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Release readiness checklist completed",
-              "Multi-team sign-off documentation",
-              "Go/no-go decision record",
-              "Test completion certificates",
-              "Quality metrics report",
-              "Deployment runbook verified"
-            ]}
-          />
-        </div>
-
-        {/* Signals of success */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Go/no-go meeting duration <15 minutes consistently",
-              "First-time go rate >85% for releases",
-              "Sign-off completion 100% before deployment",
-              "Release success rate >99% achieved",
-              "Rollback invocation <5% of deployments"
-            ]}
-          />
-        </div>
-
-        {/* Pitfalls to avoid */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Pitfalls to avoid
-          </h3>
-          <BulletList 
-            color="zinc"
-            items={[
-              "Treating review as rubber stamp exercise",
-              "Missing key stakeholder sign-offs",
-              "Unclear go/no-go criteria",
-              "Accepting \"almost ready\" status",
-              "Skipping documentation updates"
-            ]}
-          />
-        </div>
-
-        {/* Instrumentation */}
+        {/* When it's working */}
         <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
-          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-4">
-            Instrumentation
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
           </h4>
           <p className="text-zinc-700 dark:text-zinc-300">
-            Release success rate tracking, go/no-go decision time measurement, sign-off completion monitoring, rollback frequency analysis, stakeholder satisfaction surveys
+            Releases are boring. No surprises, no scrambling, no &quot;who approved this?&quot; Just a quick check, a green light, and a clean deployment.
           </p>
         </div>
 
@@ -163,8 +77,6 @@ export function ReleaseReadinessReview({ className, onClose }: ReleaseReadinessR
           <div className="flex flex-wrap gap-2">
             <NavigationChip skill="Quality Assurance" variant="default" size="sm" />
             <NavigationChip skill="Process Design" variant="outline" size="sm" />
-            <NavigationChip skill="Communication" variant="outline" size="sm" />
-            <NavigationChip skill="Team Leadership" variant="outline" size="sm" />
           </div>
         </div>
 

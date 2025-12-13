@@ -1,8 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface FDTaskValidationProps {
   className?: string
@@ -15,7 +15,6 @@ export function FDTaskValidation({ className, onClose }: FDTaskValidationProps) 
       tools={[
         toolPill("figma", "Figma", "md"),
         genericTool("Maze"),
-        genericTool("UserTesting"),
         toolPill("hotjar", "Hotjar", "md")
       ]}
     />
@@ -25,8 +24,8 @@ export function FDTaskValidation({ className, onClose }: FDTaskValidationProps) 
     <div className={className}>
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Flow Design"
-        title="Task flow validation"
-        summary="Test the flow before you build it. Fix problems when they're cheap."
+        title="Task Flow Validation"
+        summary="Test the flow before you build it. Fixing problems in prototypes is cheap. Fixing them in production isn&apos;t."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=Usability%20Testing"
@@ -34,68 +33,50 @@ export function FDTaskValidation({ className, onClose }: FDTaskValidationProps) 
         itemId="flow-design-validation"
       >
 
-        {/* Why it matters */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Test early, fix cheap
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Validating flows before development catches usability issues when they&apos;re easy and inexpensive to fix.
-            </p>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            You can stare at a flow diagram all day and still miss obvious problems. The only way to know if it works is to put it in front of real users and watch them try to use it.
+          </p>
+          <p>
+            I test flows with low-fidelity prototypes — clickable wireframes, basically. Not because pretty doesn&apos;t matter, but because at this stage, I want feedback on the logic, not the visuals. Does this sequence make sense? Do people understand what&apos;s being asked of them?
+          </p>
+        </div>
+
+        {/* How I test */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            How I test
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Task-based scenarios.</strong> &quot;You want to do X. Show me how you&apos;d do it.&quot; Then shut up and watch.</li>
+              <li><strong>Think-aloud protocol.</strong> Ask them to narrate what they&apos;re thinking. The confusion they vocalize is gold.</li>
+              <li><strong>Error recovery.</strong> Intentionally break things. Can they figure out how to get back on track?</li>
+              <li><strong>5 users is enough.</strong> You&apos;ll catch most of the big issues. Don&apos;t over-test at this stage.</li>
+            </ul>
           </div>
         </div>
 
-        {/* Testing approach */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Testing approach
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Task-based scenarios reflecting real user goals",
-              "Low-fidelity prototypes to focus on flow logic",
-              "Think-aloud protocol to capture mental models",
-              "Error recovery and edge case validation",
-              "Cross-device testing for responsive flows"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            You find problems in the prototype that would have been expensive to fix in code. That&apos;s the whole point.
+          </p>
         </div>
 
-        {/* Success metrics */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Success metrics
+            Related Skills
           </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Task completion rates above 85%",
-              "Time on task within expected ranges",
-              "Error rates and recovery success",
-              "User confidence and satisfaction scores",
-              "Cognitive load and confusion indicators"
-            ]}
-          />
-        </div>
-
-        {/* Iteration process */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Iteration process
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Identify top usability issues from testing",
-              "Prioritize fixes by impact and effort",
-              "Rapid prototype iteration and re-testing",
-              "Stakeholder alignment on final flow decisions",
-              "Documentation for development handoff"
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Usability Testing" variant="default" size="sm" />
+            <NavigationChip skill="Prototyping" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

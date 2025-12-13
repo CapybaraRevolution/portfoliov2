@@ -1,9 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
-import { Chip } from '@/components/ui/Chip'
 import { ToolSection, toolPill } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface WhatIsUserResearchProps {
   className?: string
@@ -16,10 +15,8 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
       tools={[
         toolPill("figma", "Figma/FigJam"),
         toolPill("typeform", "Typeform"),
-        toolPill("google-forms", "Google Forms"),
         toolPill("userinterviews", "UserInterviews"),
-        toolPill("calendly", "Calendly"),
-        toolPill("notion", "Notion/Obsidian"),
+        toolPill("notion", "Notion/Dovetail"),
         toolPill("loom", "Loom")
       ]}
     />
@@ -30,7 +27,7 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Stage 1: User Research"
         title="What is user research?"
-        summary="Replace assumptions with evidence. Build the right thing the first time."
+        summary="Talking to users so you can stop guessing what they want."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=User%20Research"
@@ -38,72 +35,63 @@ export function WhatIsUserResearch({ className, onClose }: WhatIsUserResearchPro
         itemId="user-research-what"
       >
 
-        {/* Why it matters - Feature card with gradient */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          {/* Subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          
-          {/* Content */}
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Why it matters
-            </h3>
-            <BulletList 
-              color="emerald"
-              items={[
-                "Builds shared language around what users actually need (not what we think they need).",
-                "Surfaces friction before it becomes expensive to fix.",
-                "Creates a source of truth that ends debates and speeds decisions."
-              ]}
-              className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed"
-            />
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            User research is just... talking to people. Watching them use things. Asking why they do what they do. It sounds simple because it is. The hard part is doing it rigorously enough that the insights are trustworthy.
+          </p>
+          <p>
+            The goal isn&apos;t to validate your ideas (that&apos;s confirmation bias wearing a lab coat). It&apos;s to understand the problem space well enough that good solutions become obvious. Sometimes that means learning you were headed in the wrong direction — and that&apos;s a win.
+          </p>
+        </div>
+
+        {/* How I approach it */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            How I approach it
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Start with the decision.</strong> What are we trying to figure out, and what happens if we guess wrong?</li>
+              <li><strong>Keep it lightweight.</strong> A research plan shouldn&apos;t be a thesis. Objectives, participants, method, done.</li>
+              <li><strong>Recruit carefully.</strong> The wrong participants give you confidently wrong answers. Screen for the people who actually represent your users.</li>
+              <li><strong>Run scripted sessions.</strong> Flexibility is good, but consistency makes synthesis possible. Same core questions, every time.</li>
+            </ul>
           </div>
         </div>
 
-        {/* What I do */}
+        {/* What comes out */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            What I do
+            What comes out of it
           </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Clarify what decision we're actually trying to make — and the cost of guessing wrong.",
-              "Draft a lightweight research plan: objectives, participants, methods, success signals.",
-              "Recruit representative users; schedule and consent.",
-              "Run sessions (scripted but flexible); capture notes and recordings."
-            ]}
-          />
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <p>
+              Not a 50-page report. A clear summary: here&apos;s what we learned, here&apos;s what it means, here&apos;s what we should do about it. Plus the raw notes and recordings for anyone who wants to go deeper.
+            </p>
+          </div>
         </div>
 
-        {/* Deliverables */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Outputs & Deliverables
-          </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Research plan + screener",
-              "Interview script(s)",
-              "Note pack + recordings",
-              "Quick-read summary of key insights"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            The team can articulate the top 3 user goals and top 3 frictions — in the same words. That&apos;s shared understanding, and it changes how decisions get made.
+          </p>
         </div>
 
-        {/* Signals of success */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Signals of success
+            Related Skills
           </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Team can state the top 3 user goals and top 3 frictions — in the same words.",
-              "Clear hypotheses to test next, and a list of things we'll stop debating."
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="User Research" variant="default" size="sm" />
+            <NavigationChip skill="Usability Testing" variant="outline" size="sm" />
+            <NavigationChip skill="Storytelling" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>

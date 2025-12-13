@@ -1,8 +1,8 @@
 'use client'
 
 import { DrawerLayout } from '@/components/ui/DrawerLayout'
-import { BulletList } from '@/components/ui/BulletList'
 import { ToolSection, toolPill, genericTool } from '@/components/ui/ToolSection'
+import { NavigationChip } from '@/components/NavigationChip'
 
 interface FDUserFlowsProps {
   className?: string
@@ -24,8 +24,8 @@ export function FDUserFlows({ className, onClose }: FDUserFlowsProps) {
     <div className={className}>
       <DrawerLayout
         stepText="Step 2 · IA & Flows · Flow Design"
-        title="User flow diagrams"
-        summary="Map where users go, where they get stuck, and where they drop off."
+        title="User Flows"
+        summary="Map the paths users take — the happy path, the edge cases, and the places they get stuck."
         tools={tools}
         caseStudyUrl="/work/overview"
         caseStudyFilters="skills=User%20Flow%20Design"
@@ -33,67 +33,50 @@ export function FDUserFlows({ className, onClose }: FDUserFlowsProps) {
         itemId="flow-design-flows"
       >
 
-        {/* Why it matters */}
-        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/5 to-blue-400/5 animate-pulse"></div>
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-4 leading-relaxed">
-              Map the invisible paths users actually take
-            </h3>
-            <p className="text-base text-emerald-800 dark:text-emerald-200 leading-relaxed">
-              Flow diagrams reveal gaps between intended and actual user behavior, preventing costly redesigns later.
-            </p>
+        {/* The idea */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <p>
+            A user flow is just a diagram of how someone gets from A to B in your product. Start here, click this, see that, done. Simple in theory, surprisingly easy to get wrong in practice.
+          </p>
+          <p>
+            The value of mapping flows is forcing yourself to think through the edge cases. What if they&apos;re not logged in? What if the data is empty? What if they hit the back button? These questions are easier to answer on a whiteboard than in code.
+          </p>
+        </div>
+
+        {/* What I include */}
+        <div>
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
+            What I include in a flow
+          </h3>
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <ul>
+              <li><strong>Entry points.</strong> How did they get here? Direct link? Navigation? Search?</li>
+              <li><strong>Decision points.</strong> Where do they need to make a choice? What information do they need to make it?</li>
+              <li><strong>Error states.</strong> What happens when something goes wrong? Can they recover?</li>
+              <li><strong>Exit points.</strong> Where do they go next? Back to home? To another flow?</li>
+            </ul>
           </div>
         </div>
 
-        {/* Flow mapping approach */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Flow mapping approach
-          </h3>
-          <BulletList 
-            color="emerald"
-            items={[
-              "Start with user goals, not feature lists",
-              "Map happy path, edge cases, and error scenarios",
-              "Include entry and exit points for each flow",
-              "Document decision points and branching logic",
-              "Consider cross-device and multi-session journeys"
-            ]}
-          />
+        {/* When it's working */}
+        <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-lg p-6 border border-zinc-200 dark:border-zinc-700">
+          <h4 className="text-base font-semibold text-zinc-900 dark:text-white mb-3">
+            You know it&apos;s working when...
+          </h4>
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Engineers aren&apos;t asking &quot;what happens if...?&quot; during implementation because the flow diagram already answered it.
+          </p>
         </div>
 
-        {/* Key considerations */}
+        {/* Related Skills */}
         <div>
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Key considerations
+            Related Skills
           </h3>
-          <BulletList 
-            color="blue"
-            items={[
-              "Authentication and permission states",
-              "Loading, empty, and error state handling",
-              "Progressive disclosure and step optimization",
-              "Back navigation and state preservation",
-              "Mobile-specific interaction patterns"
-            ]}
-          />
-        </div>
-
-        {/* Validation outputs */}
-        <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">
-            Validation outputs
-          </h3>
-          <BulletList 
-            color="purple"
-            items={[
-              "Annotated flow diagrams with context and constraints",
-              "Step-by-step wireframes for complex interactions",
-              "State machine documentation for dynamic content",
-              "Analytics event plan for flow optimization tracking"
-            ]}
-          />
+          <div className="flex flex-wrap gap-2">
+            <NavigationChip skill="Information Architecture" variant="default" size="sm" />
+            <NavigationChip skill="Wireframing" variant="outline" size="sm" />
+          </div>
         </div>
 
       </DrawerLayout>
