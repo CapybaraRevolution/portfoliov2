@@ -282,7 +282,7 @@ export function MercuryToast() {
                   </div>
                   <div>
                     <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-                      Cover Letter for Mercury
+                      A Note to Mercury
                     </h2>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Principal Product Designer - Experiences
