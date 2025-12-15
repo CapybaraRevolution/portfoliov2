@@ -9,19 +9,17 @@ import { cn } from '@/lib/utils'
 const TOAST_DURATION = 8000 // 8 seconds
 
 const letterContent = {
-  greeting: 'Hi Mercury team —',
+  greeting: '',
   paragraphs: [
-    'I applied for the Principal Product Designer – Experiences role through Greenhouse. There wasn\'t a place to attach a cover letter, so I\'m leaving a short note here in case it\'s useful context alongside my resume and portfolio.',
-    'When your job description opened with A Pattern Language, I have to say it immediately signaled the kind of systems work you care about: coherence, care, and human judgment—not scale for its own sake. That balance is rare, and it matches how I approach design.',
-    'What stands out about Mercury is how reliably complex, high‑stakes financial actions stay understandable in the human sense—not just "possible," but legible and confidence‑building. In my experience, the challenge shifts as products add more workflows, more roles, and more entities. That\'s where experience drift creeps in: the same intent expressed in different places starts to behave differently, and edge cases become harder to reason about. The Experiences charter feels like the place where that drift gets prevented and corrected—so the product stays coherent as it grows.',
-    'The work I tend to lead sits right at that boundary between clarity and growth. Day to day, that looks like partnering closely with design, product, and engineering to define the problem precisely, making decisions based on impact (not taste), and leaving behind artifacts that help teams move faster with less re‑litigation. I also care a lot about what it feels like to work together: I try to run critiques that are specific and generous, coach designers through ambiguity without taking ownership away from them, and translate between executives who need a clear story and teams who need concrete, shippable direction.',
-    'If I joined, I\'d be excited to lead work across teams in three areas:\n\t•\tA shared interaction framework for money movement and review — including exception and "something needs attention" states, so trust is built through predictable behavior.\n\t•\tNavigation and context patterns that scale to multi‑entity and multi‑role usage, without making the product feel heavier as it expands.\n\t•\tA global "find and act" layer that makes it fast to move from intent to action across accounts, vendors, bills, cards, and settings.',
-    'I generally approach product design through user pathways rather than isolated features. In large products, intent often stays constant while context changes, and designing feature‑by‑feature can make those transitions feel fragmented. I anchor decisions in where users already are when they act, then shape patterns that support those flows across the product. My working style is collaborative and grounded in real usage: I start with cross‑surface audits of everyday journeys and failure modes, partner with the designers closest to each area to understand where patterns diverge and why, and prototype early—often with realistic data—because interaction decisions around dense tables, review states, and permissions tend to resolve themselves only through use.',
-    'Over the past few years, my work has increasingly included AI‑assisted workflows. My bias there is toward legibility and control: make system behavior visible, allow quick correction, and avoid hiding consequences behind "smart" defaults. In financial and operational tools, trust is built through predictability—and AI should reinforce that, not undermine it.',
-    'If this is aligned with what you\'re looking for, I\'d welcome the chance to share examples of system audits, pattern‑level work, and interaction prototypes—and to talk through how I\'d approach Experiences as Mercury continues to grow.',
+    'I\'m Kyle McGraw, a Product designer and AI integrator, applying for the Principal Product Designer – Experiences role. I\'m drawn to the work because Mercury is at an inflection point: the product is expanding from core banking into more workflows, and the connective tissue—navigation, shared patterns, notifications, and system-level craft—will determine whether that expansion stays coherent as teams and surface area grow.',
+    'One of the things that stood out to me about Mercury is how consistently it makes high-stakes financial actions feel straightforward — something that\'s difficult to maintain as products expand across banking, spend, payables, reimbursements, treasury, and founder/personal use. I\'ve seen in similar environments that this stage of growth is where experience drift can creep in, which is why the mandate of the Experiences group resonates strongly with me.',
+    'If there\'s a strong fit, I\'d be particularly interested in leading and guiding work in three areas: establishing a shared interaction framework for money movement and review (including exception states), shaping navigation and context patterns that scale to multi-entity use, and helping define a global "find and act" layer that makes it fast for users to move from intent to action across the product.',
+    'My working style is practical and collaborative. I typically start with a horizontal audit of everyday journeys and failure modes, pair that with instrumentation and targeted research, and then work closely with designers, developers and product partners to codify what we learn into patterns teams can reuse. I prototype early—sometimes in Figma, sometimes in code—because interaction decisions around dense tables, review states, and permissions tend to surface most clearly in motion and with real data.',
+    'I\'ve spent the last few years at the intersection of UX, analysis, and AI integration—often leading cross-team efforts to turn ambiguous and messy workflows into reusable systems and patterns that feel simple and trustworthy. I also spend a lot of time mentoring designers and helping teams navigate ambiguity, setting clear direction when tradeoffs around craft, clarity, or system integrity arise. My bias is toward transparency and reversibility in AI-assisted interactions: show what the system did, let users correct it quickly, and never hide the cost of an action behind a "smart" UI.',
+    'If this sounds aligned, I\'d welcome the chance to share examples of pattern-level work, system audits, and prototypes—and to talk through how I\'d approach supporting the Experiences group as Mercury continues to grow.',
   ],
-  closing: 'Sincerely,',
-  signature: 'Kyle McGraw',
+  closing: '',
+  signature: '',
 }
 
 export function MercuryToast() {
@@ -321,19 +319,21 @@ export function MercuryToast() {
                   }}
                   className="prose prose-sm prose-zinc max-w-none dark:prose-invert"
                 >
-                  <motion.p
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.4, ease: 'easeOut' },
-                      },
-                    }}
-                    className="font-medium text-zinc-900 dark:text-zinc-100"
-                  >
-                    {letterContent.greeting}
-                  </motion.p>
+                  {letterContent.greeting && (
+                    <motion.p
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.4, ease: 'easeOut' },
+                        },
+                      }}
+                      className="font-medium text-zinc-900 dark:text-zinc-100"
+                    >
+                      {letterContent.greeting}
+                    </motion.p>
+                  )}
 
                   {letterContent.paragraphs.map((paragraph, index) => (
                     <motion.div
@@ -366,24 +366,23 @@ export function MercuryToast() {
                     </motion.div>
                   ))}
 
-                  <motion.div
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.4, ease: 'easeOut' },
-                      },
-                    }}
-                    className="mt-6 space-y-1"
-                  >
-                    <p className="text-zinc-900 dark:text-zinc-100">
-                      {letterContent.closing}
-                    </p>
-                    <p className="font-medium text-zinc-900 dark:text-white">
-                      {letterContent.signature}
-                    </p>
-                  </motion.div>
+                  {letterContent.closing && (
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.4, ease: 'easeOut' },
+                        },
+                      }}
+                      className="mt-6"
+                    >
+                      <p className="text-zinc-900 dark:text-zinc-100">
+                        {letterContent.closing}
+                      </p>
+                    </motion.div>
+                  )}
                 </motion.div>
               </div>
 
