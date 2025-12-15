@@ -270,7 +270,7 @@ export function MercuryToast() {
               className={cn(
                 'sticky top-0 z-10',
                 'px-6 py-4',
-                'bg-white/95 dark:bg-zinc-900/95',
+                'bg-zinc-50/95 dark:bg-zinc-800/95',
                 'backdrop-blur-sm',
                 'border-b border-zinc-900/5 dark:border-zinc-100/5',
               )}
@@ -405,7 +405,7 @@ export function MercuryToast() {
                 className={cn(
                   'sticky bottom-0',
                   'px-6 py-4',
-                  'bg-gradient-to-t from-white via-white to-white/80 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-900/80',
+                  'bg-gradient-to-t from-zinc-50 via-zinc-50 to-zinc-50/80 dark:from-zinc-800 dark:via-zinc-800 dark:to-zinc-800/80',
                   'border-t border-zinc-900/5 dark:border-zinc-100/5',
                 )}
               >
