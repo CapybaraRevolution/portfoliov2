@@ -9,16 +9,17 @@ import { cn } from '@/lib/utils'
 const TOAST_DURATION = 8000 // 8 seconds
 
 const letterContent = {
-  greeting: '',
+  greeting: 'Hi Mercury team —',
   paragraphs: [
-    'I\'m Kyle McGraw, a Product designer and AI integrator, applying for the Principal Product Designer – Experiences role. I\'m drawn to the work because Mercury is at an inflection point: the product is expanding from core banking into more workflows, and the connective tissue—navigation, shared patterns, notifications, and system-level craft—will determine whether that expansion stays coherent as teams and surface area grow.',
-    'One of the things that stood out to me about Mercury is how consistently it makes high-stakes financial actions feel straightforward — something that\'s difficult to maintain as products expand across banking, spend, payables, reimbursements, treasury, and founder/personal use. I\'ve seen in similar environments that this stage of growth is where experience drift can creep in, which is why the mandate of the Experiences group resonates strongly with me.',
-    'If there\'s a strong fit, I\'d be particularly interested in leading and guiding work in three areas: establishing a shared interaction framework for money movement and review (including exception states), shaping navigation and context patterns that scale to multi-entity use, and helping define a global "find and act" layer that makes it fast for users to move from intent to action across the product.',
-    'My working style is practical and collaborative. I typically start with a horizontal audit of everyday journeys and failure modes, pair that with instrumentation and targeted research, and then work closely with designers, developers and product partners to codify what we learn into patterns teams can reuse. I prototype early—sometimes in Figma, sometimes in code—because interaction decisions around dense tables, review states, and permissions tend to surface most clearly in motion and with real data.',
-    'I\'ve spent the last few years at the intersection of UX, analysis, and AI integration—often leading cross-team efforts to turn ambiguous and messy workflows into reusable systems and patterns that feel simple and trustworthy. I also spend a lot of time mentoring designers and helping teams navigate ambiguity, setting clear direction when tradeoffs around craft, clarity, or system integrity arise. My bias is toward transparency and reversibility in AI-assisted interactions: show what the system did, let users correct it quickly, and never hide the cost of an action behind a "smart" UI.',
-    'If this sounds aligned, I\'d welcome the chance to share examples of pattern-level work, system audits, and prototypes—and to talk through how I\'d approach supporting the Experiences group as Mercury continues to grow.',
+    'I\'m Kyle McGraw. I applied for the Principal Product Designer – Experiences role, and since there wasn\'t a place to include a cover letter, I wanted to leave a short note about why this role and this moment at Mercury stand out to me.',
+    'Mercury feels like it\'s at a real turning point. The product is growing beyond core banking into more workflows, and the connective tissue of the experience matters more and more. Navigation, shared patterns, notifications, and overall system craft will shape whether that growth continues to feel clear as the product and teams scale.',
+    'One thing I admire about Mercury\'s mission -> making high-stakes financial actions still feel straightforward and calm. That\'s hard to hold onto as products expand across banking, spend, payables, reimbursements, treasury, etc. The list of features grows, but so must our design patterns. I\'ve seen this stage of growth as the point where experience drift starts to show up quietly. That\'s why the work of the Experiences group feels especially important.',
+    'If there\'s a strong fit, I\'d be excited to help lead work in a few areas. That includes establishing shared interaction patterns for money movement and review, shaping navigation and context patterns that work well for multi-entity use, and helping define a global "find and act" layer so users can move from intent to action without friction.',
+    'My working style is practical and collaborative. I usually start by looking across everyday journeys and failure modes, then work closely with designers, engineers, and product partners to turn what we learn into patterns teams can reuse. I prototype early, sometimes in Figma and sometimes in code, because many interaction decisions only become clear when you see them in motion with real data.',
+    'Over the past few years, my work has focused on helping teams turn messy workflows into systems that feel simple and trustworthy. I spend a lot of time mentoring designers and helping teams navigate ambiguity, especially when tradeoffs around craft, clarity, or system integrity come up. When it comes to AI-assisted interactions, my bias is toward legibility and control. Show what the system did, let people correct it quickly, and don\'t hide consequences behind "smart" defaults.',
+    'If this sounds aligned, I\'d be glad to share examples of pattern-level work, system audits, and prototypes, and to talk through how I\'d support the Experiences group as Mercury continues to grow.',
   ],
-  closing: '',
+  closing: '— Kyle',
   signature: '',
 }
 
@@ -319,21 +320,19 @@ export function MercuryToast() {
                   }}
                   className="prose prose-sm prose-zinc max-w-none dark:prose-invert"
                 >
-                  {letterContent.greeting && (
-                    <motion.p
-                      variants={{
-                        hidden: { opacity: 0, y: 20 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          transition: { duration: 0.4, ease: 'easeOut' },
-                        },
-                      }}
-                      className="font-medium text-zinc-900 dark:text-zinc-100"
-                    >
-                      {letterContent.greeting}
-                    </motion.p>
-                  )}
+                  <motion.p
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.4, ease: 'easeOut' },
+                      },
+                    }}
+                    className="font-medium text-zinc-900 dark:text-zinc-100"
+                  >
+                    {letterContent.greeting}
+                  </motion.p>
 
                   {letterContent.paragraphs.map((paragraph, index) => (
                     <motion.div
@@ -366,23 +365,21 @@ export function MercuryToast() {
                     </motion.div>
                   ))}
 
-                  {letterContent.closing && (
-                    <motion.div
-                      variants={{
-                        hidden: { opacity: 0, y: 20 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          transition: { duration: 0.4, ease: 'easeOut' },
-                        },
-                      }}
-                      className="mt-6"
-                    >
-                      <p className="text-zinc-900 dark:text-zinc-100">
-                        {letterContent.closing}
-                      </p>
-                    </motion.div>
-                  )}
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.4, ease: 'easeOut' },
+                      },
+                    }}
+                    className="mt-6"
+                  >
+                    <p className="text-zinc-900 dark:text-zinc-100">
+                      {letterContent.closing}
+                    </p>
+                  </motion.div>
                 </motion.div>
               </div>
 
