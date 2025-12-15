@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import { XMarkIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
@@ -11,14 +11,14 @@ const TOAST_DURATION = 8000 // 8 seconds
 const letterContent = {
   greeting: 'Hi Mercury team —',
   paragraphs: [
-    'I\'m Kyle McGraw. I applied for the Principal Product Designer – Experiences role, and since there wasn\'t a place to include a cover letter, I wanted to leave a short note about why this role and this moment at Mercury stand out to me.',
-    'Mercury feels like it\'s at a real turning point. The product is growing beyond core banking into more workflows, and the connective tissue of the experience matters more and more. Navigation, shared patterns, notifications, and overall system craft will shape whether that growth continues to feel clear as the product and teams scale.',
-    'One thing I admire about Mercury\'s mission -> making high-stakes financial actions still feel straightforward and calm. That\'s hard to hold onto as products expand across banking, spend, payables, reimbursements, treasury, etc. The list of features grows, but so must our design patterns. I\'ve seen this stage of growth as the point where experience drift starts to show up quietly. That\'s why the work of the Experiences group feels especially important.',
-    'If there\'s a strong fit, I\'d be excited to help lead work in a few areas. That includes establishing shared interaction patterns for money movement and review, shaping navigation and context patterns that work well for multi-entity use, and helping define a global "find and act" layer so users can move from intent to action without friction.',
-    'My working style is practical and collaborative. I usually start by looking across everyday journeys and failure modes, then work closely with designers, engineers, and product partners to turn what we learn into patterns teams can reuse. I prototype early, sometimes in Figma and sometimes in code, because many interaction decisions only become clear when you see them in motion with real data.',
-    'Over the past few years, my work has focused on helping teams turn messy workflows into systems that feel simple and trustworthy. I spend a lot of time mentoring designers and helping teams navigate ambiguity, especially when tradeoffs around craft, clarity, or system integrity come up. When it comes to AI-assisted interactions, my bias is toward legibility and control. Show what the system did, let people correct it quickly, and don\'t hide consequences behind "smart" defaults.',
-    'If this sounds aligned, I\'d be glad to share examples of pattern-level work, system audits, and prototypes, and to talk through how I\'d support the Experiences group as Mercury continues to grow.',
-  ],
+    <>I'm <strong>Kyle McGraw</strong>. I applied for the <em>Principal Product Designer – Experiences</em> role, and since there wasn't a place to include a cover letter, I wanted to leave a short note about why <strong>this role and this moment at Mercury</strong> stand out to me.</>,
+    <><strong>First of all</strong>, Mercury feels like it's at a <em>real turning point</em>. The product is growing beyond core banking into more workflows, and the <strong>connective tissue of the experience</strong> matters more and more. Navigation, shared patterns, notifications, and overall system craft will shape whether that growth continues to feel clear as the product and teams scale.</>,
+    <>One thing I admire about Mercury's mission → making <strong>high-stakes financial actions still feel straightforward and calm</strong>. That's hard to hold onto as products expand across banking, spend, payables, reimbursements, treasury, etc. The list of features grows, but so must our design patterns. I've seen this stage of growth as the point where <em>experience drift</em> starts to show up quietly. That's why the work of the <strong>Experiences group</strong> feels especially important.</>,
+    <>If there's a strong fit, I'd be excited to help lead work in a few areas. That includes establishing <strong>shared interaction patterns</strong> for money movement and review, shaping navigation and context patterns that work well for multi-entity use, and helping define a <em>global "find and act" layer</em> so users can move from intent to action without friction.</>,
+    <>My working style is <strong>practical and collaborative</strong>. I usually start by looking across everyday journeys and failure modes, then work closely with designers, engineers, and product partners to turn what we learn into patterns teams can reuse. I <em>prototype early</em>, sometimes in Figma and sometimes in code, because many interaction decisions only become clear when you see them in motion with real data.</>,
+    <>Over the past few years, my work has focused on helping teams turn <em>messy workflows into systems that feel simple and trustworthy</em>. I spend a lot of time mentoring designers and helping teams navigate ambiguity, especially when tradeoffs around craft, clarity, or system integrity come up. When it comes to AI-assisted interactions, my bias is toward <strong>legibility and control</strong>. Show what the system did, let people correct it quickly, and don't hide consequences behind "smart" defaults.</>,
+    <>If this sounds aligned, I'd be glad to share examples of pattern-level work, system audits, and prototypes, and to talk through how I'd support the Experiences group as Mercury continues to grow.</>,
+  ] as React.ReactNode[],
   closing: '— Kyle',
   signature: '',
 }
@@ -349,7 +349,7 @@ export function MercuryToast() {
                   </motion.p>
 
                   {letterContent.paragraphs.map((paragraph, index) => (
-                    <motion.div
+                    <motion.p
                       key={index}
                       variants={{
                         hidden: { opacity: 0, y: 20 },
@@ -361,22 +361,8 @@ export function MercuryToast() {
                       }}
                       className="leading-relaxed text-zinc-700 dark:text-zinc-300"
                     >
-                      {paragraph.split('\n').map((line, lineIndex) => {
-                        if (line.startsWith('\t•\t')) {
-                          return (
-                            <div key={lineIndex} className="ml-6 mt-2">
-                              <span className="mr-2">•</span>
-                              {line.replace('\t•\t', '')}
-                            </div>
-                          )
-                        }
-                        return (
-                          <p key={lineIndex} className={lineIndex > 0 ? 'mt-4' : ''}>
-                            {line}
-                          </p>
-                        )
-                      })}
-                    </motion.div>
+                      {paragraph}
+                    </motion.p>
                   ))}
 
                   <motion.div
