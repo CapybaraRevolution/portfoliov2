@@ -215,9 +215,12 @@ export const Tooltip = ({
       <span
         ref={containerRef}
         className={cn(
-          "relative inline dark:text-neutral-200",
-          // Visual indicator that this is interactive on mobile
-          isMobile && "cursor-pointer",
+          "relative inline cursor-pointer",
+          // Visual styling to indicate this is interactive/hoverable
+          "text-emerald-700 dark:text-emerald-400",
+          "underline decoration-emerald-500/40 decoration-dotted underline-offset-2",
+          "hover:decoration-emerald-500 hover:decoration-solid",
+          "transition-all duration-150",
           containerClassName
         )}
         onMouseEnter={handleMouseEnter}

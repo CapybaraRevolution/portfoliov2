@@ -31,10 +31,10 @@ function Eyebrow({ tag, label }: { tag?: string; label?: string }) {
     <div className="flex items-center gap-x-3">
       {tag && <Tag>{tag}</Tag>}
       {tag && label && (
-        <span className="h-0.5 w-0.5 rounded-full bg-emerald-300 dark:bg-emerald-600" />
+        <span className="h-0.5 w-0.5 rounded-full bg-zinc-400 dark:bg-zinc-500" />
       )}
       {label && (
-        <span className="text-sm font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">{label}</span>
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">{label}</span>
       )}
     </div>
   )

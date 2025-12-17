@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { ContactDrawer } from '@/components/ContactDrawer'
+import { MotionToggle } from '@/components/MotionToggle'
 
 function GitHubIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -89,6 +90,8 @@ export function Footer() {
                     ariaLabel="LinkedIn"
                     icon={LinkedInIcon}
                   />
+                  <span className="text-zinc-300 dark:text-zinc-600">·</span>
+                  <MotionToggle />
                 </div>
               </div>
             </div>

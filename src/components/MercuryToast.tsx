@@ -1,10 +1,11 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { XMarkIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 
 const TOAST_DURATION = 8000 // 8 seconds
 
@@ -33,6 +34,54 @@ export function MercuryToast() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
   const startTimeRef = useRef<number>(0)
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Animation config that respects reduced motion
+  const toastAnimation = {
+    initial: prefersReducedMotion 
+      ? { opacity: 0 }
+      : { opacity: 0, scale: 0.7, y: 10 },
+    animate: prefersReducedMotion
+      ? { opacity: 1 }
+      : { opacity: 1, scale: 1, y: 0 },
+    exit: prefersReducedMotion
+      ? { opacity: 0 }
+      : { opacity: 0, scale: 0.7 },
+    transition: prefersReducedMotion
+      ? { duration: 0.1 }
+      : {
+          duration: 0.3,
+          ease: [0.34, 1.56, 0.64, 1] as const,
+          scale: { type: 'spring' as const, stiffness: 400, damping: 15 }
+        }
+  }
+
+  const modalAnimation = {
+    initial: prefersReducedMotion
+      ? { opacity: 0 }
+      : { scale: 0.96, opacity: 0 },
+    animate: prefersReducedMotion
+      ? { opacity: 1 }
+      : { scale: 1, opacity: 1 },
+    exit: prefersReducedMotion
+      ? { opacity: 0 }
+      : { scale: 0.96, opacity: 0 },
+    transition: prefersReducedMotion
+      ? { duration: 0.1 }
+      : { type: 'spring' as const, stiffness: 260, damping: 20, mass: 0.8 }
+  }
+
+  const contentAnimation = {
+    hidden: { opacity: 0, ...(prefersReducedMotion ? {} : { y: 20 }) },
+    visible: { 
+      opacity: 1, 
+      ...(prefersReducedMotion ? {} : { y: 0 }),
+    }
+  }
+
+  const contentTransition = prefersReducedMotion
+    ? { duration: 0.1 }
+    : { duration: 0.4, ease: 'easeOut' as const }
 
   // Show toast on mount
   useEffect(() => {
@@ -115,31 +164,12 @@ export function MercuryToast() {
       {isVisible && !isExpanded && (
         <motion.div
           key="toast"
-          initial={{ opacity: 0, scale: 0.7, y: 10 }}
-          animate={{ 
-            opacity: 1, 
-            scale: 1, 
-            y: 0,
-            transition: {
-              duration: 0.3,
-              ease: [0.34, 1.56, 0.64, 1], // Bouncy ease for "poof" effect
-              scale: {
-                type: 'spring',
-                stiffness: 400,
-                damping: 15,
-              }
-            }
-          }}
-          exit={{ 
-            opacity: 0, 
-            scale: 0.7,
-            transition: {
-              duration: 0.2,
-              ease: [0.4, 0, 1, 1], // Quick fade out
-            }
-          }}
+          initial={toastAnimation.initial}
+          animate={toastAnimation.animate}
+          exit={toastAnimation.exit}
+          transition={toastAnimation.transition}
           className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6"
-          layoutId="mercury-container"
+          layoutId={prefersReducedMotion ? undefined : "mercury-container"}
         >
           <div
             className={cn(
@@ -247,16 +277,11 @@ export function MercuryToast() {
 
           {/* Letter modal */}
           <motion.div
-            layoutId="mercury-container"
-            initial={{ scale: 0.96, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.96, opacity: 0 }}
-            transition={{
-              type: 'spring',
-              stiffness: 260,
-              damping: 20,
-              mass: 0.8,
-            }}
+            layoutId={prefersReducedMotion ? undefined : "mercury-container"}
+            initial={modalAnimation.initial}
+            animate={modalAnimation.animate}
+            exit={modalAnimation.exit}
+            transition={modalAnimation.transition}
             className={cn(
               'relative flex max-h-[85vh] w-full max-w-2xl flex-col',
               'overflow-hidden rounded-2xl',
@@ -326,23 +351,18 @@ export function MercuryToast() {
                   initial="hidden"
                   animate="visible"
                   variants={{
+                    hidden: {},
                     visible: {
                       transition: {
-                        staggerChildren: 0.05,
+                        staggerChildren: prefersReducedMotion ? 0 : 0.05,
                       },
                     },
                   }}
                   className="prose prose-sm prose-zinc max-w-none dark:prose-invert"
                 >
                   <motion.p
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.4, ease: 'easeOut' },
-                      },
-                    }}
+                    variants={contentAnimation}
+                    transition={contentTransition}
                     className="font-medium text-zinc-900 dark:text-zinc-100"
                   >
                     {letterContent.greeting}
@@ -351,14 +371,8 @@ export function MercuryToast() {
                   {letterContent.paragraphs.map((paragraph, index) => (
                     <motion.p
                       key={index}
-                      variants={{
-                        hidden: { opacity: 0, y: 20 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          transition: { duration: 0.4, ease: 'easeOut' },
-                        },
-                      }}
+                      variants={contentAnimation}
+                      transition={contentTransition}
                       className="leading-relaxed text-zinc-700 dark:text-zinc-300"
                     >
                       {paragraph}
@@ -366,14 +380,8 @@ export function MercuryToast() {
                   ))}
 
                   <motion.div
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.4, ease: 'easeOut' },
-                      },
-                    }}
+                    variants={contentAnimation}
+                    transition={contentTransition}
                     className="mt-6"
                   >
                     <p className="text-zinc-900 dark:text-zinc-100">

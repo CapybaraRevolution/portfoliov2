@@ -271,7 +271,7 @@ export default function CornellUniversityCaseStudy() {
         visual={orbitingCirclesVisual}
         align="center"
       >
-        <Heading id="context" level={2} className="mt-0">Context</Heading>
+        <Heading id="context" level={2} label="Background" className="mt-0">Context</Heading>
         <p>In 2016, Cornell combined three business schools under the SC Johnson College of Business. By 2024, the web experience still behaved like three separate institutions with different navigation patterns, different terminology, and different page structures. This made even basic tasks hard to navigate.</p>
         <p>Prospective students were the most important users group.They were also one of the most troubled. They were trying to compare programs, understand admissions, and find requirements that could take one of three forms. This mismatch of  "same goal, different layout, different verbiage" created inconsistency. The kind of inconsistency that quietly erodes trust. An especially costly dilemma considering the prospective student was the  highest-priority user journey.</p>
       </SplitSection>
@@ -279,7 +279,7 @@ export default function CornellUniversityCaseStudy() {
       {/* The Problem Section - mixed full-width and split layout */}
       <ProseSection className="space-y-8">
         <ProseBlock>
-          <Heading id="the-mess" level={2} className="mt-0">The Problem</Heading>
+          <Heading id="the-problem" level={2} label="Challenge" className="mt-0">The Problem</Heading>
           <p>Let's step back and look at the issue from <Tooltip content="Consultant terminology for looking at something from a high-level perspective (usually while standing very far away from the actual problem)."><span className="font-bold">10,000 ft</span></Tooltip>: The core issue wasn't a lack of content (there was plenty), it was a lack of consistency in displaying said content. I needed to establish shared rules around how information would be presented. A great hunch, but I needed data to back up this hypothesis if I was going to get any traction with the team. The next part: How? </p>
         </ProseBlock>
 
@@ -375,7 +375,7 @@ export default function CornellUniversityCaseStudy() {
       {/* Outcomes & Artefacts */}
       <ProseSection>
         <ProseBlock className="mb-8">
-          <Heading id="outcomes" level={2}>Outcomes & Artefacts</Heading>
+          <Heading id="outcomes" level={2} label="Results">Outcomes & Artefacts</Heading>
         </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
@@ -461,7 +461,7 @@ export default function CornellUniversityCaseStudy() {
       {/* Learnings */}
       <ProseSection>
         <ProseBlock className="mb-8">
-          <Heading id="learnings" level={2}>Learnings</Heading>
+          <Heading id="learnings" level={2} label="Takeaways">Learnings</Heading>
         </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">

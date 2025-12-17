@@ -1,9 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion } from 'motion/react'
 
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 
 type ThreeDMarqueeProps = {
   images: string[]
@@ -16,7 +17,7 @@ export function ThreeDMarquee({
   className,
   speedSeconds = 28,
 }: ThreeDMarqueeProps) {
-  const shouldReduceMotion = useReducedMotion()
+  const shouldReduceMotion = usePrefersReducedMotion()
   const reel = [...images, ...images] // duplicate to avoid gaps during loop
 
   return (

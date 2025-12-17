@@ -3,6 +3,7 @@
 import { motion, type Variants } from 'motion/react'
 import { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 
 type AnimationVariant = 'fadeUp' | 'fadeDown' | 'fadeLeft' | 'fadeRight' | 'fade' | 'scale'
 
@@ -75,6 +76,13 @@ export function FadeIn({
   viewportMargin = '-80px',
   once = true,
 }: FadeInProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Skip animation entirely if reduced motion is preferred
+  if (prefersReducedMotion) {
+    return <div className={cn(className)}>{children}</div>
+  }
+
   return (
     <motion.div
       className={cn(className)}
@@ -127,6 +135,13 @@ export function StaggerContainer({
   viewportMargin = '-80px',
   once = true,
 }: StaggerContainerProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Skip stagger animation if reduced motion is preferred
+  if (prefersReducedMotion) {
+    return <div className={cn(className)}>{children}</div>
+  }
+
   return (
     <motion.div
       className={cn(className)}
@@ -163,6 +178,13 @@ export function StaggerItem({
   className,
   variant = 'fadeUp',
 }: StaggerItemProps) {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Skip animation if reduced motion is preferred
+  if (prefersReducedMotion) {
+    return <div className={cn(className)}>{children}</div>
+  }
+
   return (
     <motion.div
       className={cn(className)}

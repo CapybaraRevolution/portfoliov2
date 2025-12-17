@@ -145,10 +145,32 @@ function CodePanel({
   let child = Children.only(children)
 
   if (isValidElement(child)) {
-    const props = child.props as { tag?: string; label?: string; code?: string }
+    const props = child.props as { tag?: string; label?: string; code?: string; children?: React.ReactNode }
     tag = props.tag ?? tag
     label = props.label ?? label
     code = props.code ?? code
+    
+    // Extract code from children if not provided as prop
+    if (!code && props.children) {
+      // Helper function to recursively extract text content
+      const extractTextContent = (node: React.ReactNode): string => {
+        if (typeof node === 'string') {
+          return node
+        }
+        if (typeof node === 'number') {
+          return String(node)
+        }
+        if (Array.isArray(node)) {
+          return node.map(extractTextContent).join('')
+        }
+        if (isValidElement(node) && node.props && 'children' in node.props) {
+          return extractTextContent(node.props.children)
+        }
+        return ''
+      }
+      
+      code = extractTextContent(props.children)
+    }
   }
 
   if (!code) {

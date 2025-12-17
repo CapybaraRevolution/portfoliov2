@@ -92,6 +92,9 @@ export function HalfContentSection({
     return () => window.removeEventListener('scroll', handleScroll)
   }, [parallax])
 
+  // Eyebrow uses small caps with emerald accent - more contrast in light mode
+  const eyebrowStyle = 'text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400'
+  
   const accentColors = {
     emerald: 'text-emerald-600 dark:text-emerald-400',
     indigo: 'text-indigo-600 dark:text-indigo-400',
@@ -184,7 +187,7 @@ export function HalfContentSection({
               flip ? 'lg:mr-8 lg:ml-0' : 'lg:ml-8'
             }`}>
               {eyebrow && (
-                <p className={`text-base/7 font-semibold ${accentColors[accentColor]}`}>
+                <p className={eyebrowStyle}>
                   {eyebrow}
                 </p>
               )}
@@ -240,7 +243,7 @@ export function HalfContentSection({
               flip ? 'lg:mr-8 lg:ml-0' : 'lg:mr-0 lg:ml-8'
             }`}>
               {eyebrow && (
-                <p className={`text-base/7 font-semibold ${accentColors[accentColor]}`}>
+                <p className={eyebrowStyle}>
                   {eyebrow}
                 </p>
               )}

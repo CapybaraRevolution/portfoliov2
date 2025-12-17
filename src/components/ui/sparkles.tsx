@@ -1,11 +1,12 @@
 "use client";
-import React, { useId, useMemo } from "react";
+import React, { useId } from "react";
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { cn } from "@/lib/utils";
 import { motion, useAnimation } from "motion/react";
+import { usePrefersReducedMotion } from "@/contexts/ReducedMotionContext";
 
 type ParticlesProps = {
   id?: string;
@@ -30,13 +31,18 @@ export const SparklesCore = (props: ParticlesProps) => {
     particleDensity,
   } = props;
   const [init, setInit] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   useEffect(() => {
+    // Don't initialize particles engine if reduced motion is preferred
+    if (prefersReducedMotion) return;
+    
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
     }).then(() => {
       setInit(true);
     });
-  }, []);
+  }, [prefersReducedMotion]);
   const controls = useAnimation();
 
   const particlesLoaded = async (container?: Container) => {
@@ -51,6 +57,19 @@ export const SparklesCore = (props: ParticlesProps) => {
   };
 
   const generatedId = useId();
+
+  // Static fallback for reduced motion
+  if (prefersReducedMotion) {
+    return (
+      <div
+        className={cn("h-full w-full", className)}
+        style={{
+          background: background || "#0d47a1",
+        }}
+      />
+    );
+  }
+
   return (
     <motion.div animate={controls} className={cn("opacity-0", className)}>
       {init && (

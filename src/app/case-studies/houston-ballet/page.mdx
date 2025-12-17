@@ -7,7 +7,7 @@ import { LearningCard } from '@/components/case-studies/LearningCard'
 import { Tooltip } from '@/components/ui/tooltip-card'
 import { Highlighter } from '@/components/ui/highlighter'
 import { FadeIn } from '@/components/ui/fade-in'
-import { QrCode, MapPin, Calendar, Armchair, Sparkles, Zap, Clock } from 'lucide-react'
+import { QrCode, MapPin, Calendar, Armchair, Sparkles, Zap, Clock, Code, FileCode, Palette, FileText } from 'lucide-react'
 import PrototypeEmbed from '@/components/prototypes/houston-ballet/PrototypeEmbed'
 
 export const metadata = {
@@ -15,12 +15,11 @@ export const metadata = {
   description: 'A reflection on how AI tooling is changing design work, told through a mobile ticketing prototype.',
 }
 
-// Note: sections are defined here for reference but not exported
-// (Layout only imports sections from .mdx files)
-const pageSections = [
+export const sections = [
   { title: 'Context', id: 'context' },
   { title: 'The Experiment', id: 'the-experiment' },
   { title: 'Try It', id: 'try-it' },
+  { title: 'What Happened Next', id: 'what-happened-next' },
   { title: 'What This Means', id: 'what-this-means' },
 ]
 
@@ -33,22 +32,24 @@ export default function HoustonBalletCaseStudy() {
 
   const metrics = [
     {
-      label: 'Concept to Prototype',
-      value: 1,
-      suffix: ' day',
-      description: 'From grey boxes to functional React code',
+      label: 'Infrastructure Code',
+      value: 4900,
+      suffix: '+ lines',
+      description: 'Types, services, hooks, config, tokens, themes',
       highlight: true,
     },
     {
-      label: 'Screens',
-      value: 8,
-      description: 'Complete flows you can actually tap through',
+      label: 'TypeScript Interfaces',
+      value: 15,
+      suffix: '+',
+      description: 'Contracts for APIs that don\'t exist yet',
       highlight: true,
     },
     {
-      label: 'Lines of Code Written',
-      value: 0,
-      description: 'Figma Make generated it all',
+      label: 'Developer Guide',
+      value: 337,
+      suffix: ' lines',
+      description: 'Handoff documentation with open questions documented',
       highlight: true,
     }
   ]
@@ -59,7 +60,7 @@ export default function HoustonBalletCaseStudy() {
       {/* Context - lighter touch */}
       <ProseSection>
         <ProseBlock>
-          <Heading id="context" level={2} className="mt-0">Context</Heading>
+          <Heading id="context" level={2} label="Background" className="mt-0">Context</Heading>
           <p>
             I've been working with Houston Ballet through <Tooltip containerClassName="inline" content="A technology consultancy I work with on ticketing and venue experience projects."><span className="font-bold">Jixaw Technologies</span></Tooltip> for a while now. Ticketing flows, purchase paths, the usual. They're a good client. Clear feedback, realistic timelines, no drama. If you've freelanced, you know how rare that is.
           </p>
@@ -75,7 +76,7 @@ export default function HoustonBalletCaseStudy() {
       {/* The Experiment - Figma Make */}
       <ProseSection>
         <ProseBlock>
-          <Heading id="the-experiment" level={2}>The Experiment</Heading>
+          <Heading id="the-experiment" level={2} label="Process">The Experiment</Heading>
           <p>
             Look, I'll be honest: natural language prompting has been pretty rough for a while. I've tried the "describe what you want and watch it appear" tools. Most of them produce something that looks like a website from 2008 had a fever dream. The gap between "what I imagined" and "what appeared" was usually big enough to make the whole exercise feel pointless.
           </p>
@@ -138,12 +139,8 @@ export default function HoustonBalletCaseStudy() {
         </FadeIn>
 
         <ProseBlock delay={0.2}>
-          <h3>What's Still Clunky</h3>
           <p>
-            I'm not going to pretend this was seamless. The exported code needed cleanup. Naming conventions were inconsistent, some components were over-nested, and the responsive behavior required manual adjustment. If you're expecting "prompt → production," you'll be disappointed.
-          </p>
-          <p>
-            But here's the thing: I wasn't expecting that. I was expecting "prompt → something we can look at together and pick apart." And that's exactly what I got. The time I saved on boilerplate meant more time on the decisions that actually matter: interaction patterns, information hierarchy, the stuff that makes a prototype <em>useful</em> instead of just pretty.
+            The time I saved on boilerplate meant more time on the decisions that actually matter: interaction patterns, information hierarchy, the stuff that makes a prototype <em>useful</em> instead of just pretty.
           </p>
         </ProseBlock>
       </ProseSection>
@@ -164,7 +161,7 @@ export default function HoustonBalletCaseStudy() {
       {/* Interactive Prototype + Design Approach - Side by Side on Desktop */}
       <section className="mb-16">
         <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
-          <Heading id="try-it" level={2}>Try It</Heading>
+          <Heading id="try-it" level={2} label="Prototype">Try It</Heading>
           <p>
             Here's the prototype. Tap around, explore the ticket list, view QR codes, check account settings, browse venue info. It's a real React app, not a clickable mockup. That distinction matters when you're trying to communicate <em>how something feels</em>, not just how it looks.
           </p>
@@ -257,20 +254,173 @@ export default function HoustonBalletCaseStudy() {
             </div>
           </div>
         </div>
+
+        {/* Bridge to next section */}
+        <div className="prose prose-zinc dark:prose-invert max-w-none mt-12">
+          <p>
+            The prototype did its job. Houston Ballet could tap through it, feel the interactions, point at things and say "more like this" or "less like that." But showing what something <em>could</em> feel like is only half the work. And the exported code had rough edges—inconsistent naming, over-nested components, hardcoded values everywhere.
+          </p>
+        </div>
       </section>
+
+      {/* What Happened Next */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="what-happened-next" level={2} label="Refinement">What Happened Next</Heading>
+          <p>
+            I spent another day turning the prototype into something developers could actually build on. Taking it from "thing that works" to "thing that's ready" meant confronting a different set of problems. Not <em>can we make this?</em> but <em>can this scale? Can someone else work on it? What happens when we don't know the answer yet?</em>
+          </p>
+        </ProseBlock>
+
+        <ProseBlock delay={0.1} className="mt-8">
+          <h3>The Gap Between Working and Ready</h3>
+          <p>
+            The Figma Make export ran. You could tap through it, see the QR codes, browse the venue info. But under the hood:
+          </p>
+          <ul>
+            <li>The logo was a 40-character hash string</li>
+            <li>Mock data lived directly in the main component</li>
+            <li>Colors were hardcoded hex values scattered across files</li>
+            <li>There was no concept of "this is Houston Ballet's app" vs "this could be anyone's app"</li>
+          </ul>
+          <p>
+            None of that matters for a demo. All of it matters when you're handing code to developers who need to build on it.
+          </p>
+        </ProseBlock>
+
+        <ProseBlock delay={0.15} className="mt-8">
+          <h3>Designing for Questions You Can't Answer Yet</h3>
+          <p>
+            Here's what I didn't know when I started the architecture work:
+          </p>
+          <ul>
+            <li>How does the proprietary QR code system work? (Gary—another dev on the team—is building it, not me)</li>
+            <li>What does <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura's</span></Tooltip> API actually return? (The middleware doesn't exist yet)</li>
+            <li>Will clients want redirect auth or embedded SSO? (Depends on the client)</li>
+            <li>What content blocks will different venues want? (Nobody's asked them yet)</li>
+          </ul>
+          <p>
+            The temptation is to wait until you have answers. But waiting means the developers have nothing to work with. So instead, you design <em>interfaces</em> that define the contract without defining the implementation.
+          </p>
+        </ProseBlock>
+
+        {/* Code Snippet - Interface Design */}
+        <FadeIn delay={0.2}>
+          <div className="my-8 bg-zinc-900 dark:bg-zinc-800/50 rounded-xl border border-zinc-700 overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 dark:bg-zinc-700/50 border-b border-zinc-700">
+              <Code className="h-4 w-4 text-zinc-400" />
+              <span className="text-xs text-zinc-400 font-mono">QRCodeDisplayProps.ts</span>
+            </div>
+            <pre className="p-4 text-sm overflow-x-auto">
+              <code className="text-zinc-300 font-mono">
+{`// I don't know how Gary's QR code works.
+// But I know what it needs to accept.
+export interface QRCodeDisplayProps {
+  data: string;      // The ticket data to encode
+  size?: number;     // Display size (default 200)
+  className?: string;
+}`}
+              </code>
+            </pre>
+            <div className="px-4 py-3 bg-zinc-800/50 border-t border-zinc-700">
+              <p className="text-xs text-zinc-400">
+                Gary can implement whatever he wants behind that interface. The rest of the app doesn't care.
+              </p>
+            </div>
+          </div>
+        </FadeIn>
+
+        <ProseBlock delay={0.25} className="mt-8">
+          <h3>Multi-Tenancy from Day One</h3>
+          <p>
+            Gary's QR code interface was one piece. The bigger architectural decision was treating Houston Ballet as client #1—not the only client. The architecture assumes client #2 exists.
+          </p>
+        </ProseBlock>
+
+        {/* Architecture Cards */}
+        <FadeIn delay={0.3}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+            <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 p-5">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
+                  <FileCode className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Isolated Brand Assets</h4>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Each tenant gets their own folder. Houston Ballet's logo isn't scattered—it lives in one place.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 p-5">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
+                  <Palette className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Theme Overrides</h4>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Colors, fonts, spacing—all parameterized. Change one CSS file and the whole app rebrands.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 p-5">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
+                  <Code className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Feature Flags</h4>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Not every venue needs ticket transfers or venue guides. Config controls what shows up.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 p-5">
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
+                  <FileText className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
+                </div>
+                <div>
+                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Developer Handoff</h4>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    337-line guide for the dev team with open questions documented, not assumed.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+
+        <ProseBlock delay={0.35}>
+          <p>
+            This might seem like overkill for a single client. But the cost of building it now is low. The cost of retrofitting it later—when you have production code, real users, and tight deadlines—is high.
+          </p>
+          <p>
+            When client #2 shows up, the path is clear: add a folder, add a theme file, set an environment variable.
+          </p>
+        </ProseBlock>
+
+      </ProseSection>
 
       {/* What This Means */}
       <ProseSection>
         <ProseBlock>
-          <Heading id="what-this-means" level={2}>What This Means</Heading>
+          <Heading id="what-this-means" level={2} label="Takeaways">What This Means</Heading>
           <p>
-            I've been thinking about this a lot. AI isn't replacing designers—at least not yet, and probably not in the way people fear. What it's doing is shifting where we spend our time.
+            I've been thinking about this a lot. AI isn't replacing designers—at least not yet. What it's doing is shifting where we spend our time.
           </p>
           <p>
-            Before tools like this, a significant chunk of my energy went into <em>production</em>: translating decisions into pixels, wiring up interactions, making sure the spacing was consistent. That work still matters, but the tools are getting better at handling it. What they can't do is make the decisions in the first place.
+            Before tools like this, a significant chunk of my energy went into production: translating decisions into pixels, wiring up interactions. That work still matters, but the tools are getting better at handling it. What they can't do is make the decisions—or, as it turns out, the architecture decisions that make prototypes actually usable.
           </p>
           <p>
-            This prototype took a day. But the thinking behind it—what information matters on a QR screen, why venue planning deserves its own section, how to design for a theater lobby instead of an idealized user testing lab—that's where the value lives. The tool let me spend more time there.
+            The prototype took a day. The architecture took another. That second day—the multi-tenant setup, the TypeScript interfaces for APIs that don't exist yet, the documentation written for the developers who'd inherit this—that's what makes the prototype matter. The tools didn't just make the first day faster. They made room for the second day to exist.
           </p>
         </ProseBlock>
 
@@ -280,29 +430,29 @@ export default function HoustonBalletCaseStudy() {
             icon="ArrowRight"
             index={0}
           >
-            Production time compresses. Decision time stays the same (or expands, because you can explore more options). The designers who thrive will be the ones who are good at decisions, not just execution.
-          </LearningCard>
-
-          <LearningCard 
-            title="Modularity matters"
-            icon="Layers"
-            index={1}
-          >
-            Figma Make works well because Figma is modular. Components, variants, design tokens. The cleaner your inputs, the better the outputs. This isn't new advice, but it's more consequential now.
+            Production time compresses. Decision time stays the same (or expands). The designers who thrive will be the ones who are good at decisions, not just execution.
           </LearningCard>
 
           <LearningCard 
             title="I'm cautiously optimistic"
             icon="Eye"
+            index={1}
+          >
+            The hype cycle is real. Not every AI tool is worth the breathless LinkedIn posts. But this one actually changed how I worked. That's worth paying attention to.
+          </LearningCard>
+
+          <LearningCard 
+            title="Compound decisions"
+            icon="Layers"
             index={2}
           >
-            The hype cycle is real. Not every AI tool is worth the breathless LinkedIn posts. But this one? It actually changed how I worked on this project. That's worth paying attention to.
+            Multi-tenancy, design tokens, service abstractions—these feel like overkill for one client. But each decision makes the next client easier. Architecture is about making future work cheaper.
           </LearningCard>
         </div>
 
         <ProseBlock delay={0.1}>
           <p>
-            I don't know where this goes. Maybe these tools plateau. Maybe they get dramatically better. Either way, I'd rather be experimenting with them now than catching up later. This prototype was one experiment. There will be more.
+            I don't know where this goes. Maybe these tools plateau. Maybe they get dramatically better. Either way, I'd rather be experimenting with them now than catching up later. This was one experiment. There will be more.
           </p>
         </ProseBlock>
       </ProseSection>
@@ -311,11 +461,9 @@ export default function HoustonBalletCaseStudy() {
       <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
         <div className="prose prose-zinc dark:prose-invert max-w-none">
           <h3>Credits</h3>
-          <p>Houston Ballet, Jixaw Technologies, and the teams working to make the patron experience seamless from purchase to performance.</p>
+          <p>Houston Ballet, Jixaw Technologies, Gary & Sunny on the dev team, and everyone working to make the patron experience seamless from purchase to performance.</p>
         </div>
       </section>
     </CaseStudyViewer>
   )
 }
-
-export const dynamic = 'error'

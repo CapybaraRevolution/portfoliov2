@@ -330,7 +330,7 @@ export function RaycastFigureCard({
       <div className="flex items-start justify-between gap-3">
         <div>
           {eyebrow ? (
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-emerald-500 dark:text-emerald-300">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">
               {eyebrow}
             </p>
           ) : null}

@@ -293,6 +293,34 @@
     }
   }
 
+  /* User-toggled reduced motion (via data attribute set by ReducedMotionContext) */
+  html[data-reduced-motion="true"] {
+    [style*="timeline-bob"], 
+    [style*="photo-breathe"],
+    [style*="electrical-sparkle"],
+    [style*="aura-pulse"],
+    [style*="lightning-trace"],
+    [style*="slideDown"],
+    [style*="emeraldWaveReveal"],
+    [style*="fadeInUp"],
+    [style*="emerald-ripple"],
+    [style*="pulse-glow"],
+    .animate-\[bounce-subtle_3s_ease-in-out_infinite\],
+    .animate-\[pulse-glow_3s_ease-in-out_infinite\],
+    .animate-rainbow,
+    .animate-shine,
+    .animate-marquee,
+    .animate-marquee-vertical {
+      animation: none !important;
+    }
+
+    /* Disable transitions on elements with explicit animations */
+    *[class*="animate-"] {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+
   /* Line clamp utilities */
   .line-clamp-1 {
     overflow: hidden;
