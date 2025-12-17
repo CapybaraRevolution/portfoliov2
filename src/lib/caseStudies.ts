@@ -182,7 +182,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "Houston Ballet",
-    descriptiveTitle: "Mobile Ticketing Experience",
+    descriptiveTitle: "Ticketing App",
     client: "Jixaw Technologies",
     description: "A reflection on how AI tooling is changing design work, told through a mobile ticketing prototype built in a day.",
     slug: "houston-ballet",
