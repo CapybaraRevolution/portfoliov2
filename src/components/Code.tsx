@@ -163,8 +163,8 @@ function CodePanel({
         if (Array.isArray(node)) {
           return node.map(extractTextContent).join('')
         }
-        if (isValidElement(node) && node.props && 'children' in node.props) {
-          return extractTextContent(node.props.children)
+        if (isValidElement(node) && node.props && Object.prototype.hasOwnProperty.call(node.props, 'children')) {
+          return extractTextContent((node.props as { children?: React.ReactNode }).children)
         }
         return ''
       }
