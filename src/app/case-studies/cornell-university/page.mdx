@@ -27,7 +27,7 @@ export const metadata = {
 
 export const sections = [
   { title: 'Context', id: 'context' },
-  { title: 'The Problem', id: 'the-mess' },
+  { title: 'The Problem', id: 'the-problem' },
   { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
   { title: 'Practical AI', id: 'where-ai-helped' },
   { title: 'Outcomes & Artefacts', id: 'outcomes' },
@@ -161,13 +161,13 @@ export default function CornellUniversityCaseStudy() {
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
           <h3 className="mt-0">Keeping Things Systematic</h3>
-          <p>I built a library of <Tooltip content="Prebuilt, reusable page building blocks that share inputs, variants, and rules—keeping pages consistent and faster to assemble."><span className="font-bold">reusable page modules</span></Tooltip> (heroes, program cards, stats blocks, admissions CTAs, content sections) with true/false logic, variables, and swappable nested components—while my design partner analyzed competitor patterns to inform what we needed.</p>
+          <p>I built a library of <Tooltip content="Prebuilt, reusable page building blocks that share inputs, variants, and rules—keeping pages consistent and faster to assemble."><span className="font-bold">reusable page modules</span></Tooltip> (heroes, program cards, stats blocks, admissions CTAs, content sections) with <em>true/false logic</em>, variables, and swappable nested components—while my design partner analyzed competitor patterns to inform what we needed.</p>
           <ul>
             <li>clear inputs</li>
             <li>clear variants</li>
             <li>rules for when to use what</li>
           </ul>
-          <p>This is where the consistency debt gets paid down. Once modules are stable, pages stop feeling like bespoke one-offs and start feeling like one product.</p>
+          <p>This is where the <strong>consistency debt gets paid down</strong>. Once modules are stable, pages stop feeling like bespoke one-offs and start feeling like <em>one product</em>.</p>
           <Figure
             src="/images/case-studies/cornell-university/cornell-fieldchip.avif"
             alt="Standardized module components and documentation"
@@ -213,14 +213,14 @@ export default function CornellUniversityCaseStudy() {
       content: (
         <div className="prose prose-zinc dark:prose-invert max-w-none">
           <h3 className="mt-0">So our work lives beyond us</h3>
-          <p>The work only matters if it survives the handoff.</p>
+          <p>The work only matters if it <strong>survives the handoff</strong>.</p>
           <p>I built and organized the <Tooltip content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> and documentation so Cornell’s team could:</p>
           <ul>
             <li>onboard quickly</li>
             <li>implement predictably</li>
             <li>evolve the system without re-breaking consistency</li>
           </ul>
-          <p>I owned the component architecture, typography system, and spacing rules—building logic-based components with variables that made the system extensible. This meant clean component structure, naming, <Tooltip content="Design tokens that standardize spacing, color, and typography values so engineers and designers stay in sync."><span className="font-bold">spacing/token logic</span></Tooltip>, and “<Tooltip content="A Product Requirements Document (PRD) is a formal document that outlines what a product should do, who it's for, and how it should behave. PRD-lite is a lightweight version that documents intent, states, and edge cases without the bloat of a full PRD."><span className="font-bold">PRD-lite</span></Tooltip>” specs that reduced interpretation gaps.</p>
+          <p>I owned the component architecture, typography system, and spacing rules—building logic-based components with variables that made the system <em>extensible</em>. This meant clean component structure, naming, <Tooltip content="Design tokens that standardize spacing, color, and typography values so engineers and designers stay in sync."><span className="font-bold">spacing/token logic</span></Tooltip>, and “<Tooltip content="A Product Requirements Document (PRD) is a formal document that outlines what a product should do, who it's for, and how it should behave. PRD-lite is a lightweight version that documents intent, states, and edge cases without the bloat of a full PRD."><span className="font-bold">PRD-lite</span></Tooltip>” specs that <strong>reduced interpretation gaps</strong>.</p>
         </div>
       ),
     },
@@ -272,15 +272,15 @@ export default function CornellUniversityCaseStudy() {
         align="center"
       >
         <Heading id="context" level={2} label="Background" className="mt-0">Context</Heading>
-        <p>In 2016, Cornell combined three business schools under the SC Johnson College of Business. By 2024, the web experience still behaved like three separate institutions with different navigation patterns, different terminology, and different page structures. This made even basic tasks hard to navigate.</p>
-        <p>Prospective students were the most important users group.They were also one of the most troubled. They were trying to compare programs, understand admissions, and find requirements that could take one of three forms. This mismatch of  "same goal, different layout, different verbiage" created inconsistency. The kind of inconsistency that quietly erodes trust. An especially costly dilemma considering the prospective student was the  highest-priority user journey.</p>
+        <p>In 2016, Cornell combined three business schools under the SC Johnson College of Business. By 2024, the web experience <em>still</em> behaved like three separate institutions → different navigation patterns, different terminology, different page structures. This made even basic tasks hard to navigate.</p>
+        <p>Prospective students were the <strong>most important user group</strong>. They were also one of the most troubled. They were trying to compare programs, understand admissions, and find requirements that could take one of three forms. This mismatch of <em>&quot;same goal, different layout, different verbiage&quot;</em> created inconsistency. The kind of inconsistency that <strong>quietly erodes trust</strong>. An especially costly dilemma considering the prospective student was the highest-priority user journey.</p>
       </SplitSection>
 
       {/* The Problem Section - mixed full-width and split layout */}
       <ProseSection className="space-y-8">
         <ProseBlock>
           <Heading id="the-problem" level={2} label="Challenge" className="mt-0">The Problem</Heading>
-          <p>Let's step back and look at the issue from <Tooltip content="Consultant terminology for looking at something from a high-level perspective (usually while standing very far away from the actual problem)."><span className="font-bold">10,000 ft</span></Tooltip>: The core issue wasn't a lack of content (there was plenty), it was a lack of consistency in displaying said content. I needed to establish shared rules around how information would be presented. A great hunch, but I needed data to back up this hypothesis if I was going to get any traction with the team. The next part: How? </p>
+          <p>Let&apos;s step back and look at the issue from <Tooltip content="Consultant terminology for looking at something from a high-level perspective (usually while standing very far away from the actual problem)."><span className="font-bold">10,000 ft</span></Tooltip>: The core issue wasn&apos;t a lack of content (there was <em>plenty</em>), it was a <strong>lack of consistency</strong> in displaying said content. I needed to establish shared rules around how information would be presented. A great hunch, but I needed <em>data</em> to back up this hypothesis if I was going to get any traction with the team. The next part: <strong>How?</strong></p>
         </ProseBlock>
 
         <SplitSection
@@ -347,7 +347,7 @@ export default function CornellUniversityCaseStudy() {
             How I Created Clarity
           </Heading>
           <p>
-             I joined the project (via Briteweb). Working as a UX strategist, my job was to somehow attack this messy situation, and change the trajectory toward something resembling a coherent digital experience. I needed to provide rules the team could actually run with, and I was dead-set on creating wireframes and documentation that Cornell's internal team could own and evolve. I approached this like any other project: start by understanding where users fall off. I needed to identify the source of our problems if we wanted to build a system that would prevent these same problems from reappearing.
+             I joined the project (via Briteweb). Working as a UX strategist, my job was to somehow attack this messy situation, and change the trajectory toward something resembling a <strong>coherent digital experience</strong>. I needed to provide rules the team could actually run with, and I was dead-set on creating wireframes and documentation that Cornell&apos;s internal team could <em>own and evolve</em>. I approached this like any other project: start by understanding where users fall off. I needed to identify the <strong>source of our problems</strong> if we wanted to build a system that would prevent these same problems from reappearing.
           </p>
         </ProseBlock>
         <FadeIn delay={0.1}>
@@ -361,7 +361,7 @@ export default function CornellUniversityCaseStudy() {
       <ProseSection>
         <ProseBlock>
           <Heading id="where-ai-helped" level={2} label="AI Integration">Practical AI</Heading>
-          <p>The strategy with AI on this project wasn't "AI magic." It was internal acceleration—fewer hours spent on admin work, more time making the system coherent. Fast first drafts, fast consistency checks, more iteration momentum, more time for the real work: stakeholder alignment, simplifying journeys, attacking user problems.</p>
+          <p>The strategy with AI on this project wasn&apos;t &quot;AI magic.&quot; It was <strong>internal acceleration</strong> → fewer hours spent on admin work, more time making the system coherent. Fast first drafts, fast consistency checks, more iteration momentum, more time for the <em>real</em> work: stakeholder alignment, simplifying journeys, attacking user problems.</p>
           <p><strong>Where AI helped:</strong></p>
           <ul>
             <li><strong><Tooltip content="AI-assisted grouping of content and labels to propose an information architecture faster—humans still approve the final taxonomy."><span className="font-bold">IA clustering support</span></Tooltip>:</strong> accelerated early grouping and surfaced naming collisions. We made the decisions.</li>
@@ -384,7 +384,7 @@ export default function CornellUniversityCaseStudy() {
             icon="Search"
             index={0}
           >
-            Time-to-find dropped to under two minutes for core program information in prototype testing. The IA restructure turned navigation from a guessing game into a predictable path.
+            Time-to-find dropped to under two minutes for core program information in prototype testing. The <Tooltip content="The structural design of how content and features are organized, labeled, and connected—the blueprint for where things live and how users find them."><span className="font-bold">IA</span></Tooltip> restructure turned navigation from a guessing game into a <strong>predictable path</strong>.
           </LearningCard>
 
           <LearningCard 
