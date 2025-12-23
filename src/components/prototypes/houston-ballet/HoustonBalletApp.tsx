@@ -1,61 +1,47 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
-import PerformanceList, { type Performance } from './PerformanceList'
-import QRCodeView from './QRCodeView'
-import SideMenu from './SideMenu'
-import AccountSettings from './AccountSettings'
-import PlanningYourVisit from './PlanningYourVisit'
+/**
+ * 🎭 JixTix Houston Ballet App
+ * 
+ * ARCHITECTURE:
+ * - The app content is fully responsive and uses safe-area-insets
+ * - The phone mockup is a separate wrapper for demo/client viewing
+ * - Navigation is simple state-based
+ * 
+ * CURRENT STATE:
+ * - Uses mock data from ./mockData
+ * - No real auth (everyone's "logged in")
+ * - Full ticket carousel with swipe support
+ */
 
-const mockPerformances: Performance[] = [
-  {
-    id: '1',
-    title: 'The Nutcracker',
-    date: 'Dec 20, 2025',
-    time: '7:30 PM',
-    venue: 'Wortham Theater Center',
-    seats: 'Orchestra, Row F, Seats 12-13',
-    image: 'https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxudXRjcmFja2VyJTIwYmFsbGV0fGVufDF8fHx8MTc2NTMwODAwOXww&ixlib=rb-4.1.0&q=80&w=1080'
-  },
-  {
-    id: '2',
-    title: 'Swan Lake',
-    date: 'Jan 15, 2026',
-    time: '8:00 PM',
-    venue: 'Wortham Theater Center',
-    seats: 'Mezzanine, Row C, Seats 8-9',
-    image: 'https://images.unsplash.com/photo-1684251198295-6c0682080278?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzd2FuJTIwbGFrZSUyMGJhbGxldHxlbnwxfHx8fDE3NjUyNDQ1NTd8MA&ixlib=rb-4.1.0&q=80&w=1080'
-  },
-  {
-    id: '3',
-    title: 'Giselle',
-    date: 'Feb 22, 2026',
-    time: '7:30 PM',
-    venue: 'Wortham Theater Center',
-    seats: 'Orchestra, Row D, Seats 15-16',
-    image: 'https://images.unsplash.com/photo-1760543320338-7bde1336eaef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWxsZXQlMjBwZXJmb3JtYW5jZSUyMHN0YWdlfGVufDF8fHx8MTc2NTI4ODgwMnww&ixlib=rb-4.1.0&q=80&w=1080'
-  }
-]
+import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import PerformanceList from './PerformanceList';
+import QRCodeView from './QRCodeView';
+import SideMenu from './SideMenu';
+import AccountSettings from './AccountSettings';
+import PlanningYourVisit from './PlanningYourVisit';
+import PastPerformances from './PastPerformances';
+import { mockPerformances, mockPastPerformances, type Performance } from './mockData';
 
-type ViewType = 'tickets' | 'settings' | 'planning' | 'transfers'
+type ViewType = 'tickets' | 'settings' | 'planning' | 'transfers' | 'history';
 
 export default function HoustonBalletApp() {
-  const [selectedPerformance, setSelectedPerformance] = useState<Performance | null>(null)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [currentView, setCurrentView] = useState<ViewType>('tickets')
+  const [selectedPerformance, setSelectedPerformance] = useState<Performance | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentView, setCurrentView] = useState<ViewType>('tickets');
 
   const handleNavigate = (view: string) => {
-    setCurrentView(view as ViewType)
-    setSelectedPerformance(null)
-  }
+    setCurrentView(view as ViewType);
+    setSelectedPerformance(null);
+  };
 
   const handleBackToTickets = () => {
-    setCurrentView('tickets')
-  }
+    setCurrentView('tickets');
+  };
 
   return (
-    <div className="h-full relative">
+    <div className="h-full w-full bg-white relative overflow-hidden">
       <AnimatePresence mode="wait">
         {currentView === 'tickets' && selectedPerformance ? (
           <QRCodeView 
@@ -80,24 +66,20 @@ export default function HoustonBalletApp() {
             key="planning-view"
             onBack={handleBackToTickets}
           />
+        ) : currentView === 'history' ? (
+          <PastPerformances 
+            key="history-view"
+            performances={mockPastPerformances}
+            onBack={handleBackToTickets}
+          />
         ) : null}
       </AnimatePresence>
 
-      {/* Side Menu */}
       <SideMenu 
         isOpen={isMenuOpen} 
         onClose={() => setIsMenuOpen(false)}
         onNavigate={handleNavigate}
       />
     </div>
-  )
+  );
 }
-
-
-
-
-
-
-
-
-

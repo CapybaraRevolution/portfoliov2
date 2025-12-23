@@ -1,27 +1,30 @@
-'use client'
+'use client';
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { Ticket, MapPin, Settings, LogOut, X, RefreshCw } from 'lucide-react'
-import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion';
+import { Ticket, MapPin, Settings, LogOut, X, RefreshCw, History } from 'lucide-react';
+
+// Houston Ballet branding
+const LOGO_URL = '/images/case-studies/houston-ballet/houston-ballet-logo.png';
 
 interface SideMenuProps {
-  isOpen: boolean
-  onClose: () => void
-  onNavigate: (view: string) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onNavigate: (view: string) => void;
 }
 
 export default function SideMenu({ isOpen, onClose, onNavigate }: SideMenuProps) {
   const handleNavigate = (view: string) => {
-    onNavigate(view)
-    onClose()
-  }
+    onNavigate(view);
+    onClose();
+  };
 
   const menuItems = [
     { icon: Ticket, label: 'My Tickets', active: true, view: 'tickets' },
+    { icon: History, label: 'Performance History', active: false, view: 'history' },
     { icon: RefreshCw, label: 'Transfers', active: false, view: 'transfers', comingSoon: true },
     { icon: MapPin, label: 'Planning Your Visit', active: false, view: 'planning' },
     { icon: Settings, label: 'Account Settings', active: false, view: 'settings' },
-  ]
+  ];
 
   return (
     <AnimatePresence>
@@ -45,20 +48,20 @@ export default function SideMenu({ isOpen, onClose, onNavigate }: SideMenuProps)
             className="absolute top-0 left-0 h-full w-[280px] bg-white z-50 shadow-2xl"
           >
             {/* Header */}
-            <div className="pt-12 pb-6 px-6 bg-[#322F3C]">
+            <div className="pt-12 pb-6 px-6 bg-[#322F3C] relative">
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
+                className="absolute top-12 right-4 text-white hover:bg-white/20 rounded-full p-2 transition-colors"
               >
                 <X className="size-5" />
               </button>
               
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <span className="text-white text-xl">SM</span>
+                  <span className="text-white text-xl font-semibold">SM</span>
                 </div>
               </div>
-              <h2 className="text-white mb-1">Sarah Mitchell</h2>
+              <h2 className="text-white text-lg font-semibold mb-1">Sarah Mitchell</h2>
               <p className="text-sm text-white/70">Welcome back!</p>
             </div>
 
@@ -113,14 +116,5 @@ export default function SideMenu({ isOpen, onClose, onNavigate }: SideMenuProps)
         </>
       )}
     </AnimatePresence>
-  )
+  );
 }
-
-
-
-
-
-
-
-
-
