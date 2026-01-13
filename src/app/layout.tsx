@@ -19,12 +19,12 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://kylemcgraw.io'),
   title: {
     template: '%s - Kyle McGraw',
-    default: 'Kyle McGraw - Product Manager & UX Designer',
+    default: 'Kyle McGraw - Business Analyst & UX Designer',
   },
-  description: 'Proven methodology, flexible to your goals. Five phases that turn insight into measurable outcomes.',
+  description: 'Hybrid UX Designer and Business Analyst turning messy problem spaces into clear, testable ideas. Fewer handoffs, faster alignment, designs grounded in real requirements.',
   openGraph: {
-    title: 'Kyle McGraw - Product Manager & UX Designer',
-    description: 'Proven methodology, flexible to your goals. Five phases that turn insight into measurable outcomes.',
+    title: 'Kyle McGraw - Business Analyst & UX Designer',
+    description: 'Hybrid UX Designer and Business Analyst turning messy problem spaces into clear, testable ideas. Fewer handoffs, faster alignment, designs grounded in real requirements.',
     url: 'https://kylemcgraw.io',
     siteName: 'Kyle McGraw',
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: '/images/kyle-mcgraw.jpg',
         width: 1200,
         height: 630,
-        alt: 'Kyle McGraw - Product Manager & UX Designer',
+        alt: 'Kyle McGraw - Business Analyst & UX Designer',
       },
     ],
     locale: 'en_US',
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kyle McGraw - Product Manager & UX Designer',
-    description: 'Proven methodology, flexible to your goals. Five phases that turn insight into measurable outcomes.',
+    title: 'Kyle McGraw - Business Analyst & UX Designer',
+    description: 'Hybrid UX Designer and Business Analyst turning messy problem spaces into clear, testable ideas. Fewer handoffs, faster alignment, designs grounded in real requirements.',
     images: ['/images/kyle-mcgraw.jpg'],
   },
   icons: {
