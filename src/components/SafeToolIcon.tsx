@@ -15,6 +15,9 @@ const ALIAS: Record<string, string> = {
   figma_make: 'figma',    // Alias for Figma Make
 }
 
+// Tools that use PNG instead of SVG
+const PNG_TOOLS: string[] = ['unity']
+
 // Mapping of tool slugs to Simple Icons slugs (for tools not in our local assets)
 // Simple Icons uses lowercase with hyphens: https://simpleicons.org/
 const SIMPLE_ICONS_MAP: Record<string, string | null> = {
@@ -34,7 +37,8 @@ const SIMPLE_ICONS_MAP: Record<string, string | null> = {
 
 export default function SafeToolIcon({ slug, size = 24, alt, className }: Props) {
   const initialSlug = ALIAS[slug] ?? slug
-  const [src, setSrc] = useState(`/images/tools/${initialSlug}.svg`)
+  const extension = PNG_TOOLS.includes(initialSlug) ? 'png' : 'svg'
+  const [src, setSrc] = useState(`/images/tools/${initialSlug}.${extension}`)
   const [useSimpleIcon, setUseSimpleIcon] = useState(false)
   const [visible, setVisible] = useState(true)
 

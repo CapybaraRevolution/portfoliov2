@@ -1,19 +1,27 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
-import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
+import { Figure } from '@/components/mdx/CaseStudyComponents'
+import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
+import { SplitSection } from '@/components/case-studies/SplitSection'
+import { ProseSection, ProseBlock } from '@/components/case-studies/ProseSection'
+import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
+import { Heading } from '@/components/Heading'
+import { Tooltip } from '@/components/ui/tooltip-card'
+import { LearningCard } from '@/components/case-studies/LearningCard'
+import { FadeIn } from '@/components/ui/fade-in'
+import { ClarityTabs } from '@/components/case-studies/navigator/ClarityTabs'
+import Image from 'next/image'
 
 export const metadata = {
   title: 'Avatar: Generations - Case Study',
-  description: 'UX leadership across a multi-stakeholder mobile RPG',
+  description: 'Systems-level UX documentation for a UI-heavy mobile RPG where the interface was the product.',
 }
 
 export const sections = [
-  { title: 'Overview', id: 'overview' },
-  { title: 'Context', id: 'context' },
+  { title: 'The Problem', id: 'the-problem' },
   { title: 'My Role', id: 'my-role' },
-  { title: 'Key Outcomes', id: 'key-outcomes' },
-  { title: 'Selected Work', id: 'selected-work' },
+  { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
+  { title: 'What Shipped', id: 'what-shipped' },
   { title: 'Learnings', id: 'learnings' },
 ]
 
@@ -24,160 +32,209 @@ export default function AvatarGenerationsCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data with real impact measurements
   const metrics = [
     {
-      label: 'Feature Delivery Acceleration',
+      label: 'Feature Dev Time',
       value: 42,
-      suffix: '%',
-      description: 'Faster delivery with standardized UX process',
+      suffix: '% ↓',
+      description: 'Reduction through documented specs',
       highlight: true,
     },
     {
-      label: 'Design Rework Reduction',
+      label: 'Design Rework',
       value: 34,
-      suffix: '%',
-      description: 'Fewer design-related iterations and revisions',
+      suffix: '% ↓',
+      description: 'Fewer implementation mismatches',
       highlight: true,
     },
     {
-      label: 'Onboarding Improvement',
+      label: 'Onboarding Completion',
       value: 25,
-      suffix: '%',
-      description: 'Lift in user onboarding completion rate',
+      suffix: '% ↑',
+      description: 'Data-driven iteration',
       highlight: true,
     }
   ]
 
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
-      <ConstructionBanner />
-      <CaseImage
-        src="/images/case-studies/avatar-generations/avatarlogo.png"
-        alt="Avatar: Generations logo"
-        variant="logo"
-      />
+    <CaseStudyViewer 
+      caseStudy={caseStudy} 
+      metrics={metrics}
+      heroImage={
+        <FadeIn>
+          <Image
+            src="/images/case-studies/avatar-generations/hero.png"
+            alt="Avatar: Generations key art featuring Team Avatar in action"
+            width={1920}
+            height={1080}
+            className="w-full h-auto rounded-xl"
+            priority
+          />
+        </FadeIn>
+      }
+    >
+      
+      {/* The Problem */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="the-problem" level={2} label="Challenge" className="mt-0">The Problem</Heading>
+          <p>Avatar: Generations was a mobile RPG based on Avatar: The Last Airbender. Unlike action games where UI supports gameplay, this was a game where players spent most of their time <em>in</em> menus—managing characters, customizing outfits, navigating stores, tracking progression.</p>
+          <p>This was the sort of project where the UI wasn&apos;t just decoration but a central part of the product.</p>
+        </ProseBlock>
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h2>Executive summary</h2>
+        <ProseBlock>
+          <p>Mid-project, I joined a team that was building complex features without a clear <Tooltip containerClassName="inline" content="The repeatable process for how design decisions become documented specs become shipped features."><span className="font-bold">UI/UX pipeline</span></Tooltip>. Design created beautiful concepts. Engineering needed to build them. But the space between those two disciplines was filled with guesswork and interpretation.</p>
+          <p>Screens touched multiple systems. Engineering was mostly in Vancouver, BC, with the team spread across time zones—they needed specs they could build from without guessing. The gap between &quot;design intent&quot; and &quot;shipped implementation&quot; was growing with every feature.</p>
+          <p><strong>Before:</strong> Engineers asked 3-4 clarifying questions per screen. <strong>After:</strong> Questions dropped to near-zero when specs included comprehensive state documentation.</p>
+        </ProseBlock>
+      </ProseSection>
 
-        <p>Multi-studio collaboration on a live-ops, UI-heavy mobile RPG demands clarity, pace, and consistency. I led UX across partners (Navigator Games, Square Enix London Mobile, Paramount), established a scalable UX process, and delivered system-level improvements to combat, navigation, and core UI patterns—making the game easier to learn and more satisfying to play.</p>
-
-        <h3>Why it matters</h3>
-
-        <p>When art, design, and engineering operate on different clocks, UX becomes the translator. Strong UX process turns "good ideas" into shippable, learnable features that reduce rework and keep everyone aligned.</p>
-
-        <hr />
-
-        <h2>What I did</h2>
-
+      {/* My Role - 50/50 layout flipped */}
+      <SplitSection
+        flip
+        align="top"
+        visual={
+          <FadeIn delay={0.1}>
+            <div className="relative w-full max-w-[400px] mx-auto">
+              <Image
+                src="/images/case-studies/avatar-generations/ux-process.png"
+                alt="UX Process diagram showing parallel Art and Engineering tracks converging"
+                width={1590}
+                height={3200}
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+          </FadeIn>
+        }
+      >
+        <Heading id="my-role" level={2} label="Scope" className="mt-0">My Role</Heading>
+        <p>I was the <Tooltip containerClassName="inline" content="The role that sits between disciplines, converting design intent into engineering-ready specifications."><span className="font-bold">translation layer</span></Tooltip> between art and engineering.</p>
+        <p>The design team created beautiful concepts. Engineering needed to build them. My job was to bridge that gap—turning visual ideas into documented systems that anyone could understand and implement consistently.</p>
+        <p><strong>What I owned:</strong></p>
         <ul>
-          <li>Built a common UX process (brief → flows → IA → wireframes → prototype → spec → review) so teams could move in step.</li>
-          <li>Redesigned the combat UI to surface depth (turn order, ability states, readable targeting).</li>
-          <li>Standardized patterns for modals, menus, and in-game navigation via a reusable component library.</li>
-          <li>Authored specs & review gates (PRDs, acceptance criteria, motion notes) to tighten design↔dev loop.</li>
-          <li>Drove alignment across SE London Mobile + Paramount on brand, accessibility, and review cadence.</li>
-          <li>Instrumented learning goals and ran lightweight tests to prioritize fixes with the biggest impact.</li>
+          <li><strong>User flow documentation</strong> — every path, decision point, and <Tooltip containerClassName="inline" content="A scenario that occurs at the boundaries of normal use—rare but important to handle."><span className="font-bold">edge case</span></Tooltip></li>
+          <li><strong>Component anatomy specs</strong> — screen regions, interaction behaviors, <Tooltip containerClassName="inline" content="A defined visual/behavioral variation of a UI element (default, hover, active, disabled, etc.)."><span className="font-bold">state definitions</span></Tooltip></li>
+          <li><strong>Design system foundations</strong> — button hierarchies, typography rules, spacing standards</li>
+          <li><strong>Implementation review</strong> — flagging issues before they shipped</li>
         </ul>
+      </SplitSection>
 
-        <hr />
+      {/* Quote */}
+      <QuoteBlock className="my-16">
+        Documentation isn&apos;t bureaucracy, but rather communication that can scale.
+      </QuoteBlock>
 
-        <h2>Selected work</h2>
+      {/* How I Created Clarity Section */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="how-i-created-clarity" level={2} label="Approach">How I Created Clarity</Heading>
+          <p>The gap between design and engineering wasn&apos;t a people problem—it was a <strong>documentation problem</strong>. Without shared artifacts that both sides could reference, every handoff became a game of telephone.</p>
+          <p>I focused on three types of <Tooltip containerClassName="inline" content="Tangible outputs that capture design decisions and make them referenceable—wireframes, flow diagrams, component specs."><span className="font-bold">UX artifacts</span></Tooltip> that would create a single source of truth:</p>
+        </ProseBlock>
 
-        <h3>1) Combat clarity pass</h3>
+        {/* Tabbed Content */}
+        <ClarityTabs />
+      </ProseSection>
 
-        <p><strong>Problem:</strong> Deep system; UI hid affordances (turn order, status, target state).</p>
-        <p><strong>Approach:</strong> Grouped related elements, clear hierarchy, explicit turn queue, consistent iconography, inline affordances.</p>
-      </div>
+      {/* What Shipped Section */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="what-shipped" level={2} label="Results">What Shipped</Heading>
+          <p>Avatar: Generations launched on iOS and Android. Servers have since <Tooltip containerClassName="inline" content="When a live service game's servers are permanently shut down, ending online play."><span className="font-bold">sunset</span></Tooltip>, but the work remains.</p>
+          <p>The documentation practices established here drove real efficiency gains—specs replaced guesswork, alignment replaced back-and-forth, and features shipped with fewer implementation mismatches.</p>
+        </ProseBlock>
 
-      <Figure
-        src="/images/case-studies/avatar-generations/avatarcombatui.png"
-        alt="Combat UI with clearer hierarchy and turn order"
-        caption="Surfacing the right signals makes depth approachable."
-      />
+        {/* Image Gallery */}
+        <FadeIn delay={0.1}>
+          <div className="my-12">
+            <FocusImageGallery 
+              images={[
+                {
+                  src: "/images/case-studies/avatar-generations/shipped-story.png",
+                  alt: "Story dialogue scene with the Cabbage Merchant",
+                  caption: "Narrative moments: the iconic Cabbage Merchant brought humor and personality to story sequences."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/shipped-battle-select.png",
+                  alt: "Battle screen showing character selection and ability cards",
+                  caption: "Battle preparation: turn order on the left, character abilities at bottom, clear action hierarchy."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/shipped-combat-action.png",
+                  alt: "Combat action showing Whirling Strike with Extra Turn indicator",
+                  caption: "Combat feedback: ability names, status effects, and extra turn indicators keep players informed mid-battle."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/shipped-combat-chaos.png",
+                  alt: "Intense combat with multiple damage numbers and combo counter",
+                  caption: "Visual clarity under pressure: hit counters, damage numbers, and combo totals readable even in chaotic moments."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/shipped-character-stats.png",
+                  alt: "Character stats panel showing Kiwaq with abilities and detailed stats",
+                  caption: "Stat transparency: HP, ATK, DEF, SPD, CRIT, ACC, RES—all visible with ability tooltips for informed decisions."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/shipped-victory.png",
+                  alt: "Victory screen showing PvP match results",
+                  caption: "Victory celebration: clear winner/loser display with rating changes for competitive context."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/avatarcombatui.png",
+                  alt: "Combat UI with clear hierarchy",
+                  caption: "Combat UI redesign: surfacing the right signals made depth approachable."
+                },
+                {
+                  src: "/images/case-studies/avatar-generations/aresmodal.png",
+                  alt: "Standard modal pattern",
+                  caption: "One pattern, many contexts: modular modals meant faster builds and consistent UX."
+                }
+              ]}
+            />
+          </div>
+        </FadeIn>
+      </ProseSection>
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>2) Consistent, scalable UI patterns</h3>
+      {/* Learnings Section */}
+      <ProseSection className="mb-0">
+        <ProseBlock className="mb-8">
+          <Heading id="learnings" level={2} label="Takeaways">Learnings</Heading>
+        </ProseBlock>
 
-        <p><strong>Problem:</strong> Inconsistent modals/menus slowed delivery and confused users.</p>
-        <p><strong>Approach:</strong> Modular system for dialogs, confirmations, and menu layouts; brand-safe, accessible.</p>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+          <LearningCard 
+            title="Documentation isn't bureaucracy"
+            icon="FileText"
+            index={0}
+          >
+            It&apos;s communication. Every hour spent on specs saves ten hours of back-and-forth, rework, and &quot;that&apos;s not what I meant.&quot;
+          </LearningCard>
 
-      <Figure
-        src="/images/case-studies/avatar-generations/aresmodal.png"
-        alt="Standard confirmation modal pattern"
-        caption="One pattern, many contexts: fewer decisions, faster builds."
-      />
+          <LearningCard 
+            title="UI-heavy games need systems thinking"
+            icon="Layers"
+            index={1}
+          >
+            When the interface IS the experience, you can&apos;t design screens in isolation. Everything connects. Document the connections.
+          </LearningCard>
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>3) PVP progression & motivation</h3>
+          <LearningCard 
+            title="The translation layer compounds"
+            icon="GitBranch"
+            index={2}
+          >
+            The more you bridge art and engineering, the more both sides trust the process. That trust speeds everything up.
+          </LearningCard>
+        </div>
+      </ProseSection>
 
-        <p><strong>Problem:</strong> Competitive loop needed clarity around ranking, rewards, and match flow.</p>
-        <p><strong>Approach:</strong> Interactive prototypes with motion cues for matchmaking, rank change, and rewards.</p>
-      </div>
-
-      <Figure
-        src="/images/case-studies/avatar-generations/arena.png"
-        alt="Arena/PVP overview"
-        caption="Transparent rules and rewards keep players competing (and coming back)."
-      />
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <h3>Process snapshot</h3>
-      </div>
-
-      <Figure
-        src="/images/case-studies/avatar-generations/AvatarUXProcess.png"
-        alt="Standardized UX process flow"
-        caption="Shared map = fewer detours. This became the team's default path from idea to build."
-      />
-
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <hr />
-
-        <h2>Outputs & deliverables</h2>
-
-        <ul>
-          <li>UX process playbook and team-wide flowchart</li>
-          <li>Combat UI redesign (flows, wireframes, prototypes, motion references)</li>
-          <li>Design system foundations (modals, toasts, menus, nav; tokens + redlines)</li>
-          <li>PRDs/specs with acceptance criteria, edge-case handling, and handoff notes</li>
-          <li>PVP wireframes/prototypes (progression, matchmaking, results)</li>
-          <li>Instrumentation plan for new flows (onboarding & combat learnability)</li>
-        </ul>
-
-        <hr />
-
-        <h2>Team & stakeholders</h2>
-
-        <ul>
-          <li><strong>Partners:</strong> Navigator Games, Square Enix London Mobile, Paramount Pictures</li>
-          <li><strong>Cross-functional:</strong> Design, Engineering, Art, Production, QA</li>
-          <li><strong>My role:</strong> UX Lead (process, systems, combat UI, specs, reviews, facilitation)</li>
-        </ul>
-
-        <hr />
-
-        <h2>Risks & constraints</h2>
-
-        <ul>
-          <li>Multi-party approvals (brand/IP) extended review cycles.</li>
-          <li>Live-ops cadence demanded incremental, low-risk changes.</li>
-          <li>Project ultimately sunset due to business priorities outside the UX team.</li>
-        </ul>
-
-        <hr />
-
-        <h2>What I learned</h2>
-
-        <p>Great game UX is a leadership job as much as a design job. A steady process, clear patterns, and respectful facilitation let teams ship clarity without sacrificing depth—even with multiple stakeholders.</p>
-
-        <hr />
-
-        <h3>Credits</h3>
-
-        <p>Navigator Games, Square Enix London Mobile, Paramount Pictures, and the talented cross-functional teams who brought Avatar: Generations to life.</p>
-      </div>
+      {/* Credits */}
+      <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+        <div className="prose prose-zinc dark:prose-invert max-w-none">
+          <h3>Credits</h3>
+          <p>Navigator Games, Square Enix London Mobile, Paramount Pictures, and the talented cross-functional teams who brought Avatar: Generations to life.</p>
+        </div>
+      </section>
     </CaseStudyViewer>
   )
 }
