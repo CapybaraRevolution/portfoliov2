@@ -37,3 +37,11 @@ next-env.d.ts
 
 # Protocol template folder (reference only)
 protocol-ts/
+
+# Working docs (local only)
+docs/archive/
+docs/working/
+
+# Large temporary files
+*.psd
+*.sketch

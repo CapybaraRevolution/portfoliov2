@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline"
+import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline"
 import { Lens } from "@/components/ui/lens"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -22,6 +22,8 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
   const [hovered, setHovered] = useState<number | null>(null)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [magnifierActive, setMagnifierActive] = useState(false)
+  const imageContainerRef = useRef<HTMLDivElement>(null)
 
   const openLightbox = (index: number) => {
     setActiveIndex(index)
@@ -30,14 +32,17 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
 
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false)
+    setMagnifierActive(false)
   }, [])
 
   const goToPrevious = useCallback(() => {
     setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+    setMagnifierActive(false)
   }, [images.length])
 
   const goToNext = useCallback(() => {
     setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+    setMagnifierActive(false)
   }, [images.length])
 
   // Handle keyboard navigation
@@ -87,16 +92,19 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
               />
             </div>
             
-            {/* Magnifying glass overlay - appears on hover */}
+            {/* Expand overlay - appears on hover */}
             <div
               className={cn(
-                "absolute inset-0 bg-black/0 group-hover:bg-black/20 flex items-center justify-center transition-all duration-300 rounded-lg",
+                "absolute inset-0 bg-black/0 group-hover:bg-black/30 flex flex-col items-center justify-center gap-2 transition-all duration-300 rounded-lg",
                 hovered === index ? "opacity-100" : "opacity-0"
               )}
             >
               <div className="w-12 h-12 rounded-full bg-white/90 dark:bg-zinc-900/90 flex items-center justify-center shadow-lg transform transition-all duration-300 group-hover:scale-110">
-                <MagnifyingGlassIcon className="w-6 h-6 text-zinc-600 dark:text-zinc-300" />
+                <MagnifyingGlassPlusIcon className="w-6 h-6 text-zinc-600 dark:text-zinc-300" />
               </div>
+              <span className="text-xs font-medium text-white bg-black/60 px-2 py-1 rounded-full backdrop-blur-sm">
+                Click to expand
+              </span>
             </div>
             
             {image.caption && (
@@ -128,12 +136,31 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
           >
             {/* Close Button */}
             <button
-              onClick={closeLightbox}
+              onClick={(e) => {
+                e.stopPropagation()
+                closeLightbox()
+              }}
               className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
               aria-label="Close lightbox"
             >
               <XMarkIcon className="w-6 h-6 text-white" />
             </button>
+
+            {/* Magnifier Status Indicator */}
+            <AnimatePresence>
+              {magnifierActive && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 backdrop-blur-sm"
+                >
+                  <MagnifyingGlassPlusIcon className="w-4 h-4 text-white" />
+                  <span className="text-xs text-white/90 font-medium">Magnifier active</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Navigation - Previous */}
             {images.length > 1 && (
@@ -163,34 +190,46 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
               </button>
             )}
 
-            {/* Content */}
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
+            {/* Content - clicking outside the image closes lightbox */}
+            <div
               className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
-              onClick={(e) => e.stopPropagation()}
+              onClick={closeLightbox}
             >
-              {/* Image with Lens */}
-              <div className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0">
-                <Lens zoomFactor={1.5} lensSize={300}>
-                  <motion.img
-                    key={activeImage.src}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    src={activeImage.src}
-                    alt={activeImage.alt}
-                    className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
-                  />
-                </Lens>
-              </div>
+              {/* Image with Lens - only this area captures clicks for magnifier */}
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                ref={imageContainerRef}
+                className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div 
+                  onClick={() => setMagnifierActive(prev => !prev)}
+                  className="relative"
+                >
+                  <Lens zoomFactor={1.5} lensSize={300}>
+                    <motion.img
+                      key={activeImage.src}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      src={activeImage.src}
+                      alt={activeImage.alt}
+                      className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                    />
+                  </Lens>
+                </div>
+              </motion.div>
 
-              {/* Caption */}
+              {/* Caption - clicking here also closes */}
               {activeImage.caption && (
-                <div className="w-full max-w-4xl mt-6 text-center">
+                <div 
+                  className="w-full max-w-4xl mt-6 text-center"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <motion.p
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -213,7 +252,7 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                   )}
                 </div>
               )}
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

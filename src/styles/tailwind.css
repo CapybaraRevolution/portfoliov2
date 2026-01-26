@@ -626,3 +626,277 @@
     background-size: 300% 300%;
   }
 }
+
+/* ==========================================================================
+   Mermaid Diagram Design System Overrides
+   
+   These styles ensure Mermaid diagrams match the site's visual language:
+   - Typography matches site fonts
+   - Border-radius matches site's rounded corners
+   - Colors integrate with the design system
+   ========================================================================== */
+
+@layer components {
+  /* Container styling */
+  .diagram-container {
+    --diagram-radius: 0.75rem; /* rounded-xl equivalent */
+    --diagram-node-spacing: 100px; /* Horizontal space between nodes */
+    --diagram-rank-spacing: 80px; /* Vertical space between ranks */
+  }
+
+  .diagram-wrapper {
+    position: relative;
+  }
+  
+  /* Ensure diagrams have proper spacing - minimal vertical padding */
+  .mermaid-diagram svg {
+    padding: 12px 0;
+  }
+
+  /* Mermaid SVG base styling */
+  .mermaid-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mermaid-diagram .mermaid-svg {
+    /* Responsive sizing */
+    max-width: 100%;
+    height: auto;
+    min-height: 80px;
+  }
+
+  /* Node styling - rounded corners to match site */
+  .mermaid-diagram .node rect,
+  .mermaid-diagram .node circle,
+  .mermaid-diagram .node ellipse,
+  .mermaid-diagram .node polygon,
+  .mermaid-diagram .node path {
+    rx: 8px;
+    ry: 8px;
+  }
+
+  /* Ensure node text doesn't clip - systematic fix */
+  .mermaid-diagram .node {
+    overflow: visible;
+  }
+  
+  .mermaid-diagram .node foreignObject {
+    overflow: visible;
+  }
+  
+  .mermaid-diagram .node .nodeLabel,
+  .mermaid-diagram .node .label {
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+  
+  /* Give nodes minimum padding to prevent text clipping */
+  .mermaid-diagram .node > rect,
+  .mermaid-diagram .node > polygon {
+    /* Add extra width via transform to accommodate text */
+    transform-origin: center;
+  }
+
+  /* Flowchart nodes */
+  .mermaid-diagram .flowchart-link {
+    stroke-width: 2px;
+  }
+
+  /* Text styling - match site typography, sized for readability */
+  .mermaid-diagram text,
+  .mermaid-diagram .nodeLabel,
+  .mermaid-diagram .edgeLabel,
+  .mermaid-diagram .label {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .mermaid-diagram .nodeLabel {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  /* Edge labels - with proper padding and contrast */
+  .mermaid-diagram .edgeLabel {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .mermaid-diagram .edgeLabel rect {
+    rx: 6px;
+    ry: 6px;
+  }
+  
+  .mermaid-diagram .edgeLabel foreignObject {
+    overflow: visible;
+  }
+  
+  .mermaid-diagram .edgeLabel span {
+    padding: 4px 10px;
+    display: inline-block;
+  }
+
+  /* Cluster/subgraph styling */
+  .mermaid-diagram .cluster rect {
+    rx: 12px;
+    ry: 12px;
+    stroke-width: 1.5px;
+  }
+
+  .mermaid-diagram .cluster-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  /* Arrow markers */
+  .mermaid-diagram marker path {
+    stroke-width: 1px;
+  }
+
+  /* Edge label cleanup - aggressive reset to prevent multiple overlapping boxes */
+  .mermaid-diagram .edgeLabel {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Hide ALL auto-generated backgrounds - we'll style only the text container */
+  .mermaid-diagram .edgeLabel rect,
+  .mermaid-diagram .edgeLabel path,
+  .mermaid-diagram .edgeLabel polygon {
+    display: none !important;
+  }
+
+  /* Reset all nested divs/spans to remove unwanted styling */
+  .mermaid-diagram .edgeLabel * {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Style ONLY the direct foreignObject child */
+  .mermaid-diagram .edgeLabel foreignObject {
+    overflow: visible !important;
+  }
+
+  /* Style ONLY the innermost text span */
+  .mermaid-diagram .edgeLabel span {
+    display: inline-block !important;
+    padding: 6px 14px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Light mode edge labels - clean single background */
+  :root .mermaid-diagram .edgeLabel span {
+    background: #18181b !important;
+    color: #fafafa !important;
+    fill: #fafafa !important;
+    border: 1px solid #27272a !important;
+  }
+  
+  :root .mermaid-diagram .flowchart-link {
+    stroke: #52525b !important;
+    stroke-width: 2px !important;
+  }
+  
+  :root .mermaid-diagram .marker {
+    fill: #52525b !important;
+    stroke: #52525b !important;
+  }
+
+  /* Dark mode edge labels - clean single background */
+  .dark .mermaid-diagram .edgeLabel span {
+    background: #27272a !important;
+    color: #fafafa !important;
+    fill: #fafafa !important;
+    border: 1px solid #52525b !important;
+  }
+  
+  .dark .mermaid-diagram .flowchart-link {
+    stroke: #71717a !important;
+    stroke-width: 2px !important;
+  }
+  
+  .dark .mermaid-diagram .marker {
+    fill: #71717a !important;
+    stroke: #71717a !important;
+  }
+
+  /* Responsive behavior for diagram containers */
+  .diagram-scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: #71717a transparent;
+  }
+
+  .diagram-scrollable::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .diagram-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .diagram-scrollable::-webkit-scrollbar-thumb {
+    background-color: #71717a;
+    border-radius: 3px;
+  }
+
+  .dark .diagram-scrollable {
+    scrollbar-color: #52525b transparent;
+  }
+
+  .dark .diagram-scrollable::-webkit-scrollbar-thumb {
+    background-color: #52525b;
+  }
+
+  /* Size variants for better readability */
+  .mermaid-diagram[data-size="lg"] text,
+  .mermaid-diagram[data-size="lg"] .nodeLabel,
+  .mermaid-diagram[data-size="lg"] .label {
+    font-size: 18px;
+  }
+
+  .mermaid-diagram[data-size="lg"] .edgeLabel {
+    font-size: 15px;
+  }
+  
+  /* Diamond/decision node text centering fix */
+  .mermaid-diagram .node .label,
+  .mermaid-diagram .label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Ensure diamond nodes have proper padding */
+  .mermaid-diagram .node polygon + foreignObject,
+  .mermaid-diagram .node polygon + text {
+    text-anchor: middle;
+  }
+  
+  /* Center text in diamond shapes */
+  .mermaid-diagram g.label foreignObject {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mermaid-diagram g.label foreignObject > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+}
