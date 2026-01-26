@@ -29,6 +29,10 @@ interface LensProps {
   lensColor?: string
   /** The aria label of the lens */
   ariaLabel?: string
+  /** Whether lens activates on hover (default: true). If false, requires click to activate */
+  hoverable?: boolean
+  /** Callback when lens active state changes */
+  onActiveChange?: (active: boolean) => void
 }
 
 export function Lens({
@@ -41,6 +45,8 @@ export function Lens({
   duration = 0.15,
   lensColor = "black",
   ariaLabel = "Zoom Area",
+  hoverable = true,
+  onActiveChange,
 }: LensProps) {
   if (zoomFactor < 1) {
     throw new Error("zoomFactor must be greater than 1")
@@ -58,8 +64,25 @@ export function Lens({
   const containerRef = useRef<HTMLDivElement>(null)
   const touchStartTimeRef = useRef<number>(0)
 
-  // Check if user has seen the tooltip recently (within 4 hours) and auto-dismiss after 3 seconds
+  // Define dismissTooltip first so it can be used in useEffect
+  const dismissTooltip = useCallback(() => {
+    setShowTooltip(false)
+    // Only persist dismissal for hover mode - click-to-activate always shows tooltip
+    if (hoverable) {
+      localStorage.setItem('lens-tooltip-dismissed-time', Date.now().toString())
+    }
+  }, [hoverable])
+
+  // Check if user has seen the tooltip recently (within 4 hours)
+  // For click-to-activate mode (hoverable=false), always show tooltip since behavior is less discoverable
   useEffect(() => {
+    if (!hoverable) {
+      // Click-to-activate mode: always show tooltip to teach the interaction
+      setShowTooltip(true)
+      return
+    }
+    
+    // Hover mode: check localStorage to avoid showing too frequently
     const lastDismissed = localStorage.getItem('lens-tooltip-dismissed-time')
     const fourHoursInMs = 4 * 60 * 60 * 1000 // 4 hours in milliseconds
     
@@ -73,21 +96,23 @@ export function Lens({
       // First time ever - show tooltip
       setShowTooltip(true)
     }
+  }, [hoverable])
+
+  // Auto-dismiss tooltip after 3 seconds
+  useEffect(() => {
+    if (!showTooltip) return
     
-    // Auto-dismiss after 3 seconds if showing
-    if (showTooltip) {
-      const timer = setTimeout(() => {
-        dismissTooltip()
-      }, 3000)
+    const timer = setTimeout(() => {
+      dismissTooltip()
+    }, 3000)
 
-      return () => clearTimeout(timer)
-    }
-  }, [showTooltip])
+    return () => clearTimeout(timer)
+  }, [showTooltip, dismissTooltip])
 
-  const dismissTooltip = useCallback(() => {
-    setShowTooltip(false)
-    localStorage.setItem('lens-tooltip-dismissed-time', Date.now().toString())
-  }, [])
+  // Notify parent when active state changes (must be in useEffect to avoid setState during render)
+  useEffect(() => {
+    onActiveChange?.(isActive)
+  }, [isActive, onActiveChange])
 
   const currentPosition = useMemo(() => {
     if (isStatic) return position
@@ -181,9 +206,11 @@ export function Lens({
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       setIsHovering(false)
-      setIsActive(false)
+      if (isActive) {
+        setIsActive(false)
+      }
     }
-  }, [])
+  }, [isActive])
 
   const maskImage = useMotionTemplate`radial-gradient(circle ${
     lensSize / 2
@@ -272,7 +299,9 @@ export function Lens({
     )
   }, [currentPosition, lensSize, lensColor, zoomFactor, children, duration, maskImage])
 
-  const shouldShowLens = isHovering || isActive
+  // When hoverable is false, only show lens when explicitly clicked (isActive)
+  // When hoverable is true (default), show on hover OR click
+  const shouldShowLens = hoverable ? (isHovering || isActive) : isActive
 
   return (
     <div
@@ -329,7 +358,7 @@ export function Lens({
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" 
                   />
                 </svg>
-                <p className="text-sm font-medium whitespace-nowrap">Click to magnify</p>
+                <p className="text-sm font-medium whitespace-nowrap">{hoverable ? "Hover to magnify" : "Click or tap to magnify"}</p>
               </div>
               <button
                 onClick={(e) => {

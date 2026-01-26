@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline"
+import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline"
 import { Lens } from "@/components/ui/lens"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -23,7 +23,6 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const [magnifierActive, setMagnifierActive] = useState(false)
-  const imageContainerRef = useRef<HTMLDivElement>(null)
 
   const openLightbox = (index: number) => {
     setActiveIndex(index)
@@ -202,26 +201,25 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                ref={imageContainerRef}
                 className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div 
-                  onClick={() => setMagnifierActive(prev => !prev)}
-                  className="relative"
+                <Lens 
+                  zoomFactor={1.5} 
+                  lensSize={300}
+                  hoverable={false}
+                  onActiveChange={setMagnifierActive}
                 >
-                  <Lens zoomFactor={1.5} lensSize={300}>
-                    <motion.img
-                      key={activeImage.src}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                      src={activeImage.src}
-                      alt={activeImage.alt}
-                      className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
-                    />
-                  </Lens>
-                </div>
+                  <motion.img
+                    key={activeImage.src}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    src={activeImage.src}
+                    alt={activeImage.alt}
+                    className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                  />
+                </Lens>
               </motion.div>
 
               {/* Caption - clicking here also closes */}

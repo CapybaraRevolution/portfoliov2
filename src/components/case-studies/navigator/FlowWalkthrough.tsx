@@ -418,12 +418,12 @@ export function FlowWalkthrough({ currentStep: controlledStep, onStepChange }: F
               </div>
             )}
 
-            {/* Single images with Lens hover-to-zoom (slightly smaller) */}
+            {/* Single images with Lens click-to-zoom */}
             {currentStepData.images && currentStepData.images.length > 0 && (
               <div className="pt-4 space-y-4">
                 {currentStepData.images.map((image, idx) => (
                   <div key={idx} className="space-y-2 max-w-2xl mx-auto">
-                    <Lens zoomFactor={1.6} lensSize={160}>
+                    <Lens zoomFactor={1.5} lensSize={280} hoverable={false}>
                       <Image
                         src={image.src}
                         alt={image.alt}
