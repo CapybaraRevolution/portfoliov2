@@ -13,10 +13,12 @@ type Props = {
 const ALIAS: Record<string, string> = {
   figjam: 'figma',        // the only special-case fallback
   figma_make: 'figma',    // Alias for Figma Make
+  'monday.com': 'monday', // Monday.com → monday.png
+  'delta_dna': 'deltadna', // Delta DNA → deltadna.png
 }
 
 // Tools that use PNG instead of SVG
-const PNG_TOOLS: string[] = ['unity']
+const PNG_TOOLS: string[] = ['unity', 'ngui', 'monday.com', 'perforce', 'deltadna', 'delta_dna']
 
 // Mapping of tool slugs to Simple Icons slugs (for tools not in our local assets)
 // Simple Icons uses lowercase with hyphens: https://simpleicons.org/

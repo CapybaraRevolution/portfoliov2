@@ -117,7 +117,7 @@ export const caseStudies: CaseStudyMetadata[] = [
     location: "Remote",
     timeline: "September 2021 – September 2023",
     status: "Completed",
-    tools: ["Figma", "FigJam", "Notion", "Jira", "Unity", "NGUI"],
+    tools: ["Figma", "FigJam", "Monday.com", "Confluence", "Jira", "Perforce", "Unity", "NGUI", "Delta DNA"],
     services: ["User Flows", "Component Documentation", "Design Systems", "PRDs (Specs)", "Stakeholder Alignment", "System Design", "Implementation Review"],
     order: 5,
     goal: "When the UI is the game, documentation becomes the product.",
