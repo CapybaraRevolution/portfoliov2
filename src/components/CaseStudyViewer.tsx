@@ -64,7 +64,7 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: Cas
         <>
           <ImpactSection title="Results" metrics={metrics} className="mb-4" contained />
           <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center mb-12">
-            Metrics are internal directional indicators; details available if helpful.
+            * Internal directional indicators; details available if helpful.
           </p>
         </>
       )}
