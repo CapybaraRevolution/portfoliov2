@@ -50,13 +50,21 @@ I help teams figure out what they&apos;re actually building (which is sometimes 
 </FadeIn>
 
 <FadeIn variant="fadeUp" delay={0.3}>
-<div className="not-prose mt-6 mb-16 flex gap-3">
-  <Button href="/work/overview" arrow="right">
-    <>View My Work</>
-  </Button>
-  <Button href="https://www.linkedin.com/in/kyleryanmcgraw/" variant="outline">
-    <>Let&apos;s Connect</>
-  </Button>
+<div className="not-prose mt-8 mb-16">
+  <a 
+    href="/case-studies/breeze-mortgage-hub" 
+    className="group relative inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4 text-lg font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all hover:shadow-xl hover:shadow-emerald-500/30 hover:scale-[1.02] dark:from-emerald-400 dark:to-teal-400 dark:shadow-emerald-400/20 dark:hover:shadow-emerald-400/25"
+  >
+    <span>Start with my latest case study</span>
+    <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+      <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+    </svg>
+  </a>
+  <div className="mt-4">
+    <Button href="/work/overview" variant="text" arrow="right">
+      <>View All Work</>
+    </Button>
+  </div>
 </div>
 </FadeIn>
 
