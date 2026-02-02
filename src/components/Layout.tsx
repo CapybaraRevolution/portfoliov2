@@ -11,7 +11,6 @@ import { Navigation } from '@/components/Navigation'
 import { SectionProvider, type Section } from '@/components/SectionProvider'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { HeroPattern } from '@/components/HeroPattern'
-import { MercuryToast } from '@/components/MercuryToast'
 
 export function Layout({
   children,
@@ -27,7 +26,6 @@ export function Layout({
   const LayoutContent = () => (
     <ErrorBoundary>
       <SectionProvider sections={allSections[pathname] ?? []}>
-        <MercuryToast />
         <div className="flex min-h-screen flex-col">
           {/* Main content area with sidebar */}
           <div className="flex-1">
