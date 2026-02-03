@@ -46,25 +46,31 @@ export const Header = forwardRef<
   let bgOpacityDark = useTransform(scrollY, [0, 72], ['20%', '80%'])
 
   return (
-    <motion.div
-      {...props}
-      ref={ref}
-      className={clsx(
-        className,
-        'fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80',
-        !isInsideMobileNavigation &&
-          'backdrop-blur-xs lg:left-72 xl:left-80 dark:backdrop-blur-sm',
-        isInsideMobileNavigation
-          ? 'bg-white dark:bg-zinc-900'
-          : 'bg-white/(--bg-opacity-light) dark:bg-zinc-900/(--bg-opacity-dark)',
-      )}
-      style={
-        {
-          '--bg-opacity-light': bgOpacityLight,
-          '--bg-opacity-dark': bgOpacityDark,
-        } as React.CSSProperties
-      }
-    >
+    <>
+      {/* Solid background layer to clip content from showing behind header on scroll */}
+      <div 
+        className="fixed inset-x-0 top-0 h-14 bg-white dark:bg-zinc-900 z-40 lg:left-72 lg:z-20 xl:left-80"
+        aria-hidden="true"
+      />
+      <motion.div
+        {...props}
+        ref={ref}
+        className={clsx(
+          className,
+          'fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80',
+          !isInsideMobileNavigation &&
+            'backdrop-blur-xs lg:left-72 xl:left-80 dark:backdrop-blur-sm',
+          isInsideMobileNavigation
+            ? 'bg-white dark:bg-zinc-900'
+            : 'bg-white/(--bg-opacity-light) dark:bg-zinc-900/(--bg-opacity-dark)',
+        )}
+        style={
+          {
+            '--bg-opacity-light': bgOpacityLight,
+            '--bg-opacity-dark': bgOpacityDark,
+          } as React.CSSProperties
+        }
+      >
       <div
         className={clsx(
           'absolute inset-x-0 top-full h-px transition',
@@ -119,5 +125,6 @@ export const Header = forwardRef<
         </div>
       </div>
     </motion.div>
+    </>
   )
 })
