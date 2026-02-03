@@ -46,7 +46,7 @@ export function Layout({
                   <Navigation className="hidden lg:mt-10 lg:block" />
                 </div>
               </motion.header>
-              <div className="relative flex h-full flex-col px-4 pt-14 sm:px-6 lg:px-8">
+              <div className="relative isolate flex h-full flex-col px-4 pt-14 sm:px-6 lg:px-8">
                 <main className="flex-auto">
                   <ErrorBoundary>
                     {children}

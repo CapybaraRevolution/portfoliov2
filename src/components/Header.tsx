@@ -62,6 +62,10 @@ export const Header = forwardRef<
         {
           '--bg-opacity-light': bgOpacityLight,
           '--bg-opacity-dark': bgOpacityDark,
+          // Force GPU compositing layer for Safari iOS - prevents content bleed-through
+          transform: 'translateZ(0)',
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
         } as React.CSSProperties
       }
     >
