@@ -23,6 +23,7 @@ export const Tooltip = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLSpanElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const lastTouchTime = useRef<number>(0);
 
   // Handle client-side mounting for portal
   useEffect(() => {
@@ -153,14 +154,20 @@ export const Tooltip = ({
 
   const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (!isMobile) return;
+    // Skip if we just handled a touch event (prevents double-firing)
+    if (Date.now() - lastTouchTime.current < 500) return;
     e.preventDefault();
     e.stopPropagation();
     setIsVisible((prev) => !prev);
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLSpanElement>) => {
-    // Prevent default to avoid double-firing with click
-    // But allow the click handler to manage the toggle
+  const handleTouchEnd = (e: React.TouchEvent<HTMLSpanElement>) => {
+    if (!isMobile) return;
+    // Record touch time to prevent click from double-firing
+    lastTouchTime.current = Date.now();
+    e.preventDefault();
+    e.stopPropagation();
+    setIsVisible((prev) => !prev);
   };
 
   // Tooltip content component
@@ -225,8 +232,9 @@ export const Tooltip = ({
         )}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         onClick={handleClick}
+        style={{ touchAction: "manipulation" }}
       >
         {children}
       </span>
