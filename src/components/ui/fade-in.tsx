@@ -1,7 +1,7 @@
 "use client"
 
-import { motion, type Variants } from 'motion/react'
-import { ReactNode } from 'react'
+import { motion, type Variants, useReducedMotion } from 'motion/react'
+import { ReactNode, useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 
@@ -77,9 +77,21 @@ export function FadeIn({
   once = true,
 }: FadeInProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
+  const shouldReduceMotion = useReducedMotion()
+  const [hasMounted, setHasMounted] = useState(false)
+
+  // Ensure content becomes visible after mount as a fallback
+  // This handles cases where whileInView doesn't trigger on mobile
+  useEffect(() => {
+    // Small delay to allow whileInView to work first, then force visibility
+    const timer = setTimeout(() => {
+      setHasMounted(true)
+    }, 100 + (delay * 1000))
+    return () => clearTimeout(timer)
+  }, [delay])
 
   // Skip animation entirely if reduced motion is preferred
-  if (prefersReducedMotion) {
+  if (prefersReducedMotion || shouldReduceMotion) {
     return <div className={cn(className)}>{children}</div>
   }
 
@@ -88,11 +100,12 @@ export function FadeIn({
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, margin: viewportMargin }}
+      animate={hasMounted ? "visible" : undefined}
+      viewport={{ once, margin: viewportMargin, amount: 0.01 }}
       variants={variants[variant]}
       transition={{
         duration,
-        delay,
+        delay: hasMounted ? 0 : delay,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
