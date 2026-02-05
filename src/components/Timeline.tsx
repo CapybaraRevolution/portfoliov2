@@ -43,7 +43,6 @@ const mapServiceToSkillIds = (service: string): string[] => {
     'Prototypes': ['prototyping'],
     'User Research': ['user-research'],
     'UX Research': ['user-research'],
-    'Information Architecture': ['ux-design-principles'],
     'Usability Testing': ['usability-testing'],
     'Design Thinking': ['design-thinking'],
     
@@ -96,7 +95,6 @@ const mapServiceToSkillIds = (service: string): string[] => {
     'Data-Driven Decisions': ['data-driven-decision-making'],
     
     // Visual/Interaction Design
-    'Visual Design': ['ux-design-principles'],
     'Interaction Design': ['prototyping'],
     
     // Experimentation

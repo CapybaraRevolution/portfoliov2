@@ -24,7 +24,6 @@ export const skillNameToStandardizedId: Record<string, string> = {
   // Discovery & Design Skills
   'User Research': 'user-research',
   'User Interviews': 'user-research',
-  'Information Architecture': 'ux-design-principles',
   'Journey Mapping': 'design-thinking',
   'Service Design': 'design-thinking',
   'Design Thinking': 'design-thinking',
