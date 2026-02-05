@@ -188,14 +188,14 @@ export default function HoustonBalletCaseStudy() {
               </p>
             </div>
 
-            {/* Design Decision Cards - 2-up at md, back to 1-up at xl when side-by-side with prototype */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-4">
+            {/* Design Decision Cards */}
+            <div className="space-y-4">
               <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 p-5">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <QrCode className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">High Contrast QR Codes</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Dark purple borders on white. Scans reliably even in dim lobby lighting. (This sounds obvious until you've watched someone struggle with a low-contrast QR code at a venue entrance.)
@@ -209,7 +209,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <Armchair className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Seat Info on the QR Screen</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Ushers always ask "which section?" while scanning. Keeping seat info visible eliminates that back-and-forth. Small thing, but it matters when you're holding up a line.
@@ -223,7 +223,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <MapPin className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Planning Gets Its Own Section</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Parking, dining, venue details. Not buried in settings. For occasional theater-goers, this practical info often matters more than account preferences.
@@ -237,7 +237,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <Calendar className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div className="min-w-0">
+                  <div>
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Date-Sorted by Default</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Most people check their tickets close to showtime. Soonest first makes sense. Title sort exists for the season-ticket holders managing multiple performances.
@@ -245,13 +245,12 @@ export default function HoustonBalletCaseStudy() {
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Explore box spans full width */}
-              <div className="md:col-span-2 bg-zinc-50 dark:bg-zinc-800/30 rounded-xl p-5 border border-zinc-200 dark:border-zinc-700">
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  <span className="font-semibold text-zinc-900 dark:text-white">Explore:</span> Tap the hamburger menu to see different sections. Select a performance for the QR view. Hit "View Details" for the full venue guide.
-                </p>
-              </div>
+            <div className="bg-zinc-50 dark:bg-zinc-800/30 rounded-xl p-5 border border-zinc-200 dark:border-zinc-700">
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                <span className="font-semibold text-zinc-900 dark:text-white">Explore:</span> Tap the hamburger menu to see different sections. Select a performance for the QR view. Hit "View Details" for the full venue guide.
+              </p>
             </div>
           </div>
         </div>
