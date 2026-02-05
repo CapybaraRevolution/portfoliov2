@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { trackScrollDepth } from '@/components/GoogleAnalytics'
+import { triggerHotjarEvent } from '@/components/Hotjar'
 
 interface UseScrollDepthOptions {
   thresholds?: number[]
@@ -37,6 +38,11 @@ export function useScrollDepth(options: UseScrollDepthOptions = {}) {
         if (scrollPercent >= threshold && !trackedThresholds.current.has(threshold)) {
           trackedThresholds.current.add(threshold)
           trackScrollDepth(pagePath, threshold, timeElapsed)
+
+          // Fire Hotjar event at 75% so recordings can be filtered for deep readers
+          if (threshold === 75 && pagePath.includes('/case-studies/')) {
+            triggerHotjarEvent('case_study_deep_read')
+          }
         }
       }
     }

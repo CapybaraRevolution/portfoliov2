@@ -9,13 +9,15 @@ interface ProseSectionProps {
   className?: string
   /** Animation delay in seconds */
   delay?: number
+  /** Optional section name for analytics tracking via useSectionVisibility */
+  sectionName?: string
 }
 
 /**
  * Animated prose section wrapper for case study content.
  * Provides consistent scroll-triggered fade-up animation.
  */
-export function ProseSection({ children, className, delay = 0 }: ProseSectionProps) {
+export function ProseSection({ children, className, delay = 0, sectionName }: ProseSectionProps) {
   return (
     <motion.section
       className={cn('mb-16 text-zinc-700 dark:text-zinc-300', className)}
@@ -27,6 +29,7 @@ export function ProseSection({ children, className, delay = 0 }: ProseSectionPro
         delay,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
+      {...(sectionName ? { 'data-section': sectionName } : {})}
     >
       {children}
     </motion.section>

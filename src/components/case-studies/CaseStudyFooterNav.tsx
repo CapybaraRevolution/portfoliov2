@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid'
 import { motion } from 'framer-motion'
 import { type CaseStudyMetadata, getNextCaseStudy, getPreviousCaseStudy } from '@/lib/caseStudies'
+import { trackNavigationClick } from '@/components/GoogleAnalytics'
 
 interface CaseStudyFooterNavProps {
   currentSlug: string
@@ -54,6 +55,7 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
           <Link
             href={`/case-studies/${prevCase.slug}`}
             className="group flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors max-w-[45%]"
+            onClick={() => trackNavigationClick(prevCase.title, `/case-studies/${prevCase.slug}`, 'case_study_footer_prev')}
           >
             <ArrowLeftIcon className="w-4 h-4 transition-transform group-hover:-translate-x-1 shrink-0" />
             <div className="flex flex-col items-start sm:flex-row sm:items-center sm:gap-1">
@@ -119,6 +121,7 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
               data-next-case-study-link
+              onClick={() => trackNavigationClick(nextCase.title, `/case-studies/${nextCase.slug}`, 'case_study_footer_next')}
             >
               <motion.div 
                 className="flex flex-col items-end sm:flex-row sm:items-center sm:gap-1"

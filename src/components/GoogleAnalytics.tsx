@@ -200,6 +200,30 @@ export const trackTimeOnPage = (page: string, duration: number) => {
   })
 }
 
+// Highlights (CaseSummaryCard) tracking
+export const trackHighlightsExpanded = (caseStudy: string) => {
+  trackEvent('highlights_expanded', {
+    case_study: caseStudy,
+    event_category: 'engagement',
+  })
+}
+
+export const trackHighlightsCollapsed = (caseStudy: string, timeExpanded: number) => {
+  trackEvent('highlights_collapsed', {
+    case_study: caseStudy,
+    time_expanded_seconds: timeExpanded,
+    event_category: 'engagement',
+  })
+}
+
+// Journey step tracking (for funnel analysis)
+export const trackJourneyStep = (step: string, page: string) => {
+  trackEvent('journey_step', {
+    step,
+    page,
+  })
+}
+
 // Helper to categorize referrer
 function getReferrerType(referrer: string): string {
   if (!referrer) return 'direct'

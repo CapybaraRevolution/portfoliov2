@@ -5,6 +5,7 @@ import { EnhancedPhoto } from '@/components/EnhancedPhoto'
 import { MorphingText } from '@/components/ui/morphing-text'
 import { Ripple } from '@/components/ui/ripple'
 import { FadeIn } from '@/components/ui/fade-in'
+import { JourneyTracker } from '@/components/JourneyTracker'
 import Image from 'next/image'
 import kyleMcGrawPhoto from '@/images/kyle-mcgraw.jpg'
 
@@ -19,6 +20,8 @@ export const sections = [
   { title: 'My Clients', id: 'my-clients' },
   { title: 'My Journey', id: 'my-journey' },
 ]
+
+<JourneyTracker step="homepage_visit" page="/" />
 
 <HeroPattern />
 

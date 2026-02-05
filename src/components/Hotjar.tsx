@@ -5,6 +5,16 @@ import Script from 'next/script'
 const HOTJAR_ID = 2369912
 const HOTJAR_VERSION = 6
 
+/**
+ * Trigger a custom Hotjar event so you can filter session recordings
+ * and heatmaps by user behaviour (e.g. "highlights_expanded").
+ */
+export function triggerHotjarEvent(eventName: string) {
+  if (typeof window !== 'undefined' && (window as any).hj) {
+    ;(window as any).hj('event', eventName)
+  }
+}
+
 export function Hotjar() {
   // Only load in production
   if (process.env.NODE_ENV !== 'production') {

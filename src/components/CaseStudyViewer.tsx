@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react'
 import { CaseStudyHeader } from '@/components/CaseStudyHeader'
 import { CaseSummaryCard, type CaseSummaryData } from '@/components/case-studies/CaseSummaryCard'
-import { trackCaseStudyEntry, trackCaseStudyView } from '@/components/GoogleAnalytics'
+import { trackCaseStudyEntry, trackCaseStudyView, trackJourneyStep } from '@/components/GoogleAnalytics'
+import { triggerHotjarEvent } from '@/components/Hotjar'
 import { useScrollDepth } from '@/hooks/useScrollDepth'
 import { useTimeOnPage } from '@/hooks/useTimeOnPage'
+import { useSectionVisibility } from '@/hooks/useSectionVisibility'
 import { GoalBlock } from '@/components/case-studies/GoalBlock'
 import { ImpactSection } from '@/components/case-studies/ImpactSection'
 import { CaseStudyFooterNav } from '@/components/case-studies/CaseStudyFooterNav'
@@ -33,6 +35,8 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, summary, childr
     const referrer = document.referrer
     trackCaseStudyEntry(caseStudy.title, referrer)
     trackCaseStudyView(caseStudy.title)
+    trackJourneyStep('case_study_opened', `/case-studies/${caseStudy.slug}`)
+    triggerHotjarEvent('case_study_entry')
   }, [caseStudy.title])
 
   // Track scroll depth
@@ -41,6 +45,9 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, summary, childr
   // Track time on page
   useTimeOnPage({ page: `/case-studies/${caseStudy.slug}` })
 
+  // Track section visibility (requires data-section attributes on child elements)
+  useSectionVisibility({ page: `/case-studies/${caseStudy.slug}` })
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
@@ -48,7 +55,9 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, summary, childr
 
       {/* At a Glance — scannable summary for decision-makers */}
       {summary && (
-        <CaseSummaryCard summary={summary} className="mb-12" />
+        <div data-section="highlights">
+          <CaseSummaryCard summary={summary} caseStudySlug={caseStudy.slug} className="mb-12" />
+        </div>
       )}
       
       {/* Optional Hero Image - renders above goal */}
@@ -60,20 +69,24 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, summary, childr
 
       {/* Goal Block - renders before Results */}
       {caseStudy.goal && (
-        <GoalBlock 
-          goal={caseStudy.goal} 
-          goalDetail={caseStudy.goalDetail} 
-          className="mb-12" 
-        />
+        <div data-section="goal">
+          <GoalBlock 
+            goal={caseStudy.goal} 
+            goalDetail={caseStudy.goalDetail} 
+            className="mb-12" 
+          />
+        </div>
       )}
       
       {/* Results/Metrics Section */}
       {metrics && metrics.length > 0 && (
-        <ImpactSection title="Results" metrics={metrics} className="mb-12" contained />
+        <div data-section="results">
+          <ImpactSection title="Results" metrics={metrics} className="mb-12" contained />
+        </div>
       )}
 
       {/* Content Section */}
-      <div className="mb-12">
+      <div className="mb-12" data-section="content">
         {children}
           </div>
 

@@ -16,6 +16,7 @@ import {
   trackContactStepCompleted,
   trackContactFormAbandoned
 } from '@/components/GoogleAnalytics'
+import { triggerHotjarEvent } from '@/components/Hotjar'
 import { Confetti, type ConfettiRef } from '@/components/ui/confetti'
 import { useContactFormPersistence, getInitialContactFormState } from '@/hooks/useContactFormPersistence'
 
@@ -788,6 +789,7 @@ function ContactContent() {
   const handleBegin = useCallback(() => {
     setHasStarted(true)
     trackEvent('contact_form_started')
+    triggerHotjarEvent('contact_form_started')
     // Trigger ripple on the background grid (we'll emit a custom event)
     window.dispatchEvent(new CustomEvent('trigger-contact-ripple'))
   }, [])
