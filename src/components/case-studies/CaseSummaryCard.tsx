@@ -103,7 +103,7 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
         {/* ── Shimmer sweep — runs once on mount when collapsed ── */}
         {!isExpanded && !shimmerDone && (
           <motion.div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/[0.09] to-transparent dark:via-emerald-400/[0.07]"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-zinc-400/30 to-transparent dark:via-white/[0.06]"
             initial={{ x: '-100%' }}
             animate={{ x: '250%' }}
             transition={{ duration: 1.6, delay: 1, ease: 'easeInOut' }}
@@ -115,14 +115,14 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              className="pointer-events-none absolute inset-0 rounded-xl bg-emerald-500/[0.04] dark:bg-emerald-500/[0.02]"
+              className="pointer-events-none absolute inset-0 rounded-xl bg-zinc-300/10 dark:bg-emerald-500/[0.02]"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0] }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.9, ease: 'easeOut' }}
               style={{
                 boxShadow:
-                  '0 0 50px rgba(16, 185, 129, 0.22), inset 0 0 40px rgba(16, 185, 129, 0.07)',
+                  '0 0 40px rgba(16, 185, 129, 0.12), inset 0 0 40px rgba(16, 185, 129, 0.04)',
               }}
             />
           )}
