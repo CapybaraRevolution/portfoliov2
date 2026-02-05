@@ -7,9 +7,11 @@ interface ImpactSectionProps {
   className?: string
   /** If true, removes default padding and max-width (for use inside containers with their own padding) */
   contained?: boolean
+  /** Optional legend/footnote text to display below the metrics (e.g., "* Internal directional indicators...") */
+  legend?: string
 }
 
-export function ImpactSection({ title = 'Impact', metrics, className, contained = false }: ImpactSectionProps) {
+export function ImpactSection({ title = 'Impact', metrics, className, contained = false, legend }: ImpactSectionProps) {
   if (!metrics?.length) return null
 
   const isHighlightedMetric = (metric: ImpactMetricProps) => {
@@ -18,6 +20,21 @@ export function ImpactSection({ title = 'Impact', metrics, className, contained 
     if (metric.suffix === 'x') return metric.value >= 2
     return false
   }
+
+  // Determine if legend should be shown
+  const hasDirectionalIndicators = legend || metrics.some((metric) => {
+    // Check if any metric has directional flag
+    if (metric.directional) return true
+    
+    // Check if any metric label or description contains an asterisk
+    const labelStr = typeof metric.label === 'string' ? metric.label : String(metric.label)
+    const descStr = typeof metric.description === 'string' ? metric.description : String(metric.description || '')
+    const suffixStr = metric.suffix || ''
+    
+    return labelStr.includes('*') || descStr.includes('*') || suffixStr.includes('*')
+  })
+
+  const legendText = legend || '* Internal directional indicators; details available if helpful.'
 
   return (
     <section
@@ -45,6 +62,12 @@ export function ImpactSection({ title = 'Impact', metrics, className, contained 
           return <ImpactMetric key={metricKey} {...metric} highlight={isHighlightedMetric(metric)} />
         })}
       </div>
+
+      {hasDirectionalIndicators && (
+        <p className="mt-4 text-xs text-zinc-500 dark:text-zinc-400 text-center">
+          {legendText}
+        </p>
+      )}
     </section>
   )
 }

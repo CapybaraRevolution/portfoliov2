@@ -12,6 +12,8 @@ export interface ImpactMetricProps {
   description?: ReactNode
   className?: string
   highlight?: boolean
+  /** Indicates this metric uses directional indicators (e.g., asterisks) */
+  directional?: boolean
 }
 
 export function ImpactMetric({ label, value, suffix, description, className, highlight }: ImpactMetricProps) {

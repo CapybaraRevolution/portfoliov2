@@ -18,7 +18,7 @@ interface ProseSectionProps {
 export function ProseSection({ children, className, delay = 0 }: ProseSectionProps) {
   return (
     <motion.section
-      className={cn('mb-16', className)}
+      className={cn('mb-16 text-zinc-700 dark:text-zinc-300', className)}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}

@@ -1,32 +1,31 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
 import { Figure } from '@/components/mdx/CaseStudyComponents'
-import { GoalBlock } from '@/components/case-studies/GoalBlock'
-import { QuoteBlock } from '@/components/case-studies/QuoteBlock'
 import { SplitSection, OrbitContainer } from '@/components/case-studies/SplitSection'
 import { ProseSection, ProseBlock } from '@/components/case-studies/ProseSection'
 import { Heading } from '@/components/Heading'
 import { OrbitingCircles } from '@/components/ui/orbiting-circles'
-import { Tree, Folder, File } from '@/components/ui/file-tree'
-import { Timeline } from '@/components/ui/newacetimeline'
 import { Tooltip } from '@/components/ui/tooltip-card'
 import { LearningCard } from '@/components/case-studies/LearningCard'
-import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
 import { FadeIn } from '@/components/ui/fade-in'
-import { Building2, Users, Network, Handshake, FileText, MessageSquare, Sparkles } from 'lucide-react'
+import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
+import { ProcessStrip } from '@/components/case-studies/sff/ProcessStrip'
+import { JourneyWalkthrough } from '@/components/case-studies/sff/JourneyWalkthrough'
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
+import { Users, DollarSign, Search, FileText, Network, Database, Lightbulb, Map } from 'lucide-react'
 
 export const metadata = {
   title: 'Social Finance Fund - Case Study',
-  description: 'UX strategy + facilitation to align multi-org stakeholders and ship a usable IA/wireframe package',
+  description: 'Product definition under political constraints: turning stakeholder ambiguity into an RFP-ready product definition for Canada\'s social finance ecosystem.',
 }
 
 export const sections = [
-  { title: 'Context', id: 'context' },
   { title: 'The Problem', id: 'the-problem' },
   { title: 'My Role', id: 'my-role' },
   { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
   { title: 'Practical AI', id: 'practical-ai' },
   { title: 'Outcomes', id: 'outcomes' },
+  { title: 'Wrap-Up', id: 'wrap-up' },
   { title: 'Learnings', id: 'learnings' },
 ]
 
@@ -37,116 +36,62 @@ export default function SocialFinanceFundCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data - directional stakeholder alignment outcomes
   const metrics = [
     {
-      label: 'Stakeholder Alignment',
-      value: 95,
-      suffix: '%',
-      description: 'From conflicting priorities to unified vision',
-      highlight: true,
-    },
-    {
-      label: 'Users Surveyed',
+      label: 'Stakeholders Surveyed',
       value: 42,
-      description: 'Role-based insights from 4 stakeholder types',
+      description: 'Role-branched survey across four partner organizations.',
       highlight: true,
     },
     {
-      label: 'Pages Wireframed',
-      value: 5,
-      description: 'Core pages from homepage to impact directory',
+      label: 'Wireframe Templates',
+      value: 9,
+      suffix: '+',
+      description: 'Directory, profile template, learning hub, and role-based entry points.',
+      highlight: true,
+    },
+    {
+      label: 'Knowledge Bank Longevity',
+      value: 6,
+      suffix: '–7 mo',
+      description: 'Documentation remained the team\'s source of truth after my contract ended.',
       highlight: true,
     },
   ]
 
-  // Timeline data for "How I Created Clarity"
-  const approachTimeline = [
-    {
-      title: 'Survey → shared facts',
-      content: (
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Start with data everyone can point to</h3>
-          <p>I co-designed a <Tooltip content="Survey logic that shows different questions based on the respondent's role, so each stakeholder type gets relevant questions without unnecessary complexity."><span className="font-bold">role-branched survey</span></Tooltip> in Microsoft Forms. Different questions for SPOs, SFIs, investors, and others. 42 responses. Cleaned the data in Excel, synthesized it in Obsidian.</p>
-          <p>The goal wasn't a research deck. It was a single source of truth the whole team could reference when opinions diverged. "Here's what users actually said" ends a lot of circular arguments.</p>
-          <div className="my-4">
-            <Figure
-              src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
-              alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other user types"
-              caption="Role-based survey branching. Different stakeholders, different questions."
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: 'Workshops → alignment',
-      content: (
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">The session that shifted everything</h3>
-          <p>One workshop started tense. You could feel the skepticism. I led with listening, made space for candid critique, and kept pointing back to the survey data and the IA draft. No defensiveness, just "here's what we're seeing, what do you think?"</p>
-          <p>By the end, the tone had shifted. Not because anyone "won," but because we'd built something together. Future sessions were collaborative instead of resistant. That pivot was more valuable than any deliverable.</p>
-        </div>
-      ),
-    },
-    {
-      title: 'AI-accelerated concepting',
-      content: (
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">LLMs as conversation starters</h3>
-          <p>I used LLMs to generate multiple sitemap alternatives and page flow options. Not as final designs. As debate fodder. "Here are five ways we could structure this. Which feels closest? What's wrong with it?"</p>
-          <p>Faster than sketching everything by hand. Keeps humans in control of the judgment. The AI generates options; the team decides which ones make sense.</p>
-        </div>
-      ),
-    },
-    {
-      title: 'Wireframes → proof of intent',
-      content: (
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3 className="mt-0">Concrete beats abstract</h3>
-          <p>Mid- to high-fidelity wireframes in Figma. Homepage, about, articles, impact, directory. Enough detail to support real decisions and an open RFP. Not so polished that we'd get lost debating visual design.</p>
-          <p>When stakeholders could see and interact with the structure, abstract disagreements resolved themselves. "I don't like the IA" becomes "I don't like where this specific thing lives." Much easier to fix.</p>
-        </div>
-      ),
-    },
-  ]
-
-  // Orbiting circles visual for the Context section - showing stakeholder organizations
-  const orbitingCirclesVisual = (
+  const ecosystemVisual = (
     <OrbitContainer
       height="h-[360px]"
       center={
         <div className="flex size-16 items-center justify-center rounded-full bg-emerald-50/90 text-emerald-800 ring-2 ring-emerald-200 backdrop-blur-sm shadow-lg dark:bg-emerald-900/60 dark:text-emerald-100 dark:ring-emerald-800/60">
-          <Handshake className="h-6 w-6" aria-label="Social Finance Fund" />
+          <Search className="h-6 w-6" aria-label="Discovery" />
         </div>
       }
     >
-      {/* Outer orbit - stakeholder organizations */}
       <OrbitingCircles radius={150} duration={26} iconSize={50}>
-        <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 dark:bg-blue-950 dark:text-blue-200 dark:ring-blue-900/40 font-semibold text-[11px]">
-          Org 1
+        <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 dark:bg-blue-950 dark:text-blue-200 dark:ring-blue-900/40 font-semibold text-[10px] text-center leading-tight px-1">
+          SPOs
         </div>
-        <div className="flex size-full items-center justify-center rounded-full bg-purple-50 text-purple-700 ring-2 ring-purple-100 dark:bg-purple-950 dark:text-purple-200 dark:ring-purple-900/40 font-semibold text-[11px]">
-          Org 2
+        <div className="flex size-full items-center justify-center rounded-full bg-purple-50 text-purple-700 ring-2 ring-purple-100 dark:bg-purple-950 dark:text-purple-200 dark:ring-purple-900/40 font-semibold text-[10px] text-center leading-tight px-1">
+          SFIs
         </div>
-        <div className="flex size-full items-center justify-center rounded-full bg-amber-50 text-amber-700 ring-2 ring-amber-100 dark:bg-amber-950 dark:text-amber-200 dark:ring-amber-900/40 font-semibold text-[11px]">
-          Org 3
+        <div className="flex size-full items-center justify-center rounded-full bg-amber-50 text-amber-700 ring-2 ring-amber-100 dark:bg-amber-950 dark:text-amber-200 dark:ring-amber-900/40 font-semibold text-[10px] text-center leading-tight px-1">
+          Investors
         </div>
-        <div className="flex size-full items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-2 ring-emerald-100 dark:bg-emerald-950 dark:text-emerald-200 dark:ring-emerald-900/40 font-semibold text-[11px]">
-          Org 4
+        <div className="flex size-full items-center justify-center rounded-full bg-slate-50 text-slate-700 ring-2 ring-slate-100 dark:bg-slate-950 dark:text-slate-200 dark:ring-slate-900/40 font-semibold text-[10px] text-center leading-tight px-1">
+          Other
         </div>
       </OrbitingCircles>
 
-      {/* Inner orbit - process/alignment icons */}
       <OrbitingCircles radius={95} duration={18} reverse iconSize={42}>
-        <div className="flex size-full items-center justify-center rounded-full bg-blue-50 text-blue-700 ring-2 ring-blue-100 dark:bg-blue-950 dark:text-blue-200 dark:ring-blue-900/40">
-          <Users className="h-6 w-6" />
+        <div className="flex size-full items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-2 ring-emerald-100 dark:bg-emerald-950 dark:text-emerald-200 dark:ring-emerald-900/40">
+          <DollarSign className="h-5 w-5" />
         </div>
-        <div className="flex size-full items-center justify-center rounded-full bg-purple-50 text-purple-700 ring-2 ring-purple-100 shadow-md dark:bg-purple-950/60 dark:text-purple-200 dark:ring-purple-900/40">
-          <MessageSquare className="h-6 w-6" />
+        <div className="flex size-full items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-2 ring-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-200 dark:ring-emerald-900/40">
+          <Network className="h-5 w-5" />
         </div>
-        <div className="flex size-full items-center justify-center rounded-full bg-amber-50 text-amber-700 ring-2 ring-amber-100 shadow-md dark:bg-amber-950/60 dark:text-amber-200 dark:ring-amber-900/40">
-          <Network className="h-6 w-6" />
+        <div className="flex size-full items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-2 ring-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-200 dark:ring-emerald-900/40">
+          <Lightbulb className="h-5 w-5" />
         </div>
       </OrbitingCircles>
     </OrbitContainer>
@@ -154,178 +99,326 @@ export default function SocialFinanceFundCaseStudy() {
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
-      {/* Goal Section */}
-      <GoalBlock
-        goal="Get four organizations to agree on anything, then ship wireframes they could actually use"
-        goalDetail="What started as 'just wireframes' became a diplomacy project. The deliverables mattered less than the alignment."
-      />
-
-      {/* Context Section - 50/50 layout with orbiting circles */}
-      <SplitSection
-        visual={orbitingCirclesVisual}
-        align="center"
-      >
-        <Heading id="context" level={2} label="Background" className="mt-0">Context</Heading>
-        <p>The Social Finance Fund is a government-backed initiative to educate Canadians on social finance. The pitch is compelling: connect regular people to organizations making real impact. Want to support indigenous-owned businesses? Find and compare them. Weaponize capitalism for good. I genuinely love the idea.</p>
-        <p>The challenge? Getting it built requires four different organizations to agree on what it should be. That's where things got interesting.</p>
-      </SplitSection>
-
-
-      {/* The Problem Section - 50/50 layout, flipped */}
-      <ProseSection className="space-y-8">
+      
+      {/* ============================================
+          THE PROBLEM
+          ============================================ */}
+      <ProseSection>
         <ProseBlock>
           <Heading id="the-problem" level={2} label="Challenge" className="mt-0">The Problem</Heading>
+          <p>Four organizations were tasked with building a government-backed social finance resource—but there was no shared definition of what &quot;the product&quot; actually was.</p>
+          <p><strong>Social Finance Fund</strong> is the initiative.<br /><strong>Social Finance Hub</strong> is the product I helped define.</p>
         </ProseBlock>
-        <p>Four organizations. Different mandates. One lead org that others were hesitant to follow. No single product owner to make final decisions. Under $10k budget. If you've worked in multi-stakeholder environments, you're already wincing.</p>
-        <p>I was brought in by Briteweb to provide UX strategy and structured facilitation. The brief said "wireframes." The actual job was getting people aligned enough that wireframes would even be useful.</p>
+
         <SplitSection
+          visual={ecosystemVisual}
           align="center"
-          flip
-          visual={
-            <div className="w-full rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/50">
-              <div className="p-4">
-                <Tree initialExpandedItems={['root', 'org1', 'org2']} initialSelectedId="org1-priorities">
-                  <Folder element="Multi-Org Challenge" value="root" isSelectable={false}>
-                    <Folder element="Organization 1" value="org1">
-                      <File value="org1-priorities">Priorities: Education focus</File>
-                      <File value="org1-mandate">Mandate: Public awareness</File>
-                    </Folder>
-                    <Folder element="Organization 2" value="org2">
-                      <File value="org2-priorities">Priorities: Investment focus</File>
-                      <File value="org2-mandate">Mandate: Capital deployment</File>
-                    </Folder>
-                    <Folder element="Organization 3" value="org3">
-                      <File value="org3-priorities">Priorities: Policy focus</File>
-                      <File value="org3-mandate">Mandate: Regulatory framework</File>
-                    </Folder>
-                    <File value="conflict" isSelectable={false}>
-                      Result: Conflicting priorities, unclear ownership
-                    </File>
-                  </Folder>
-                </Tree>
-              </div>
-            </div>
-          }
         >
+          <p>Some stakeholders saw the Hub as an educational site. Others saw it as a functional directory.</p>
+          <p>Because one organization was positioned as the lead, even low-fidelity design decisions felt political—comments about &quot;copy&quot; were often debates about ownership and narrative control.</p>
+          <p><strong>Constraints:</strong></p>
           <ul>
-            <li><strong>Conflicting priorities:</strong> Education vs. investment vs. policy. Everyone wanted something different.</li>
-            <li><strong>Power dynamics:</strong> One org nominally in charge. Others not quite bought in.</li>
-            <li><strong>No product owner:</strong> Decisions required consensus. Consensus required trust. Trust was thin.</li>
-            <li><strong>Lean budget:</strong> Under $10k. No room for extended discovery or multiple revision rounds.</li>
+            <li>Lean budget and limited engagement time</li>
+            <li>No existing product definition or agreed scope</li>
+            <li>Multiple audiences with conflicting jobs-to-be-done (<Tooltip containerClassName="inline" content="Investors seeking both financial return and measurable social/environmental impact. May be new to the social finance realm or already familiar with impact investing."><span className="font-bold">Impact Investors</span></Tooltip>, <Tooltip containerClassName="inline" content="Nonprofits, co-ops, and social enterprises seeking funding to generate social/environmental impact."><span className="font-bold">Social Purpose Organizations</span></Tooltip>, <Tooltip containerClassName="inline" content="Organizations that connect investors to SPOs, facilitating the flow of capital toward impact."><span className="font-bold">Intermediaries</span></Tooltip>)</li>
           </ul>
+          <p>Without a shared definition, any development RFP would be vague, contested, and expensive to build against.</p>
         </SplitSection>
       </ProseSection>
 
-      {/* Quote Block */}
-      <QuoteBlock>
-        Sometimes the real UX problem isn't the interface—it's misalignment at the human level.
-      </QuoteBlock>
-
-      {/* My Role Section */}
+      {/* ============================================
+          MY ROLE
+          ============================================ */}
       <ProseSection>
         <ProseBlock>
           <Heading id="my-role" level={2} label="Scope" className="mt-0">My Role</Heading>
-          <p>UX strategist and research facilitator, brought in by Briteweb. On paper: survey design, workshop facilitation, IA, wireframes. In practice: professional herder of cats.</p>
-          <p><strong>What I optimized for:</strong></p>
-          <ul>
-            <li><strong>Alignment first:</strong> Shared understanding before shared artifacts. You can't design for people who don't agree on what they're building.</li>
-            <li><strong>Concrete over abstract:</strong> Turn vague disagreements into things people could point at and debate.</li>
-            <li><strong>Usable deliverables:</strong> IA and wireframes that could support an RFP, not just look good in a presentation.</li>
-          </ul>
+          <p>I was brought in through Briteweb as the UX strategist responsible for turning stakeholder ambiguity into a buildable product definition. I bridge UX and business analysis—translating stakeholder input into functional requirements (data fields, filter logic, and content governance assumptions) alongside IA and wireframes. I owned research design, synthesis, information architecture, wireframes, and lightweight documentation in Obsidian.</p>
+          <p>The stakeholder group skewed toward intermediaries, so I intentionally protected the first‑time investor experience (plain language, fast verification cues, and clear discovery paths).</p>
+        </ProseBlock>
+
+        <FadeIn delay={0.1}>
+          <ProcessStrip />
+        </FadeIn>
+
+        <ProseBlock>
+          <p>In practice, I acted as a neutral translation layer. When feedback became political—stakeholders debating placeholder copy instead of product decisions—I redirected conversation to user needs and the decisions required to produce an RFP-ready blueprint.</p>
         </ProseBlock>
       </ProseSection>
 
-      {/* How I Created Clarity */}
+      {/* ============================================
+          HOW I CREATED CLARITY
+          ============================================ */}
       <ProseSection>
         <ProseBlock>
-          <Heading id="how-i-created-clarity" level={2} label="Approach">
-            How I Created Clarity
-          </Heading>
-          <p>This was a facilitation challenge wearing a design costume. The wireframes mattered, but they wouldn't matter at all if the group couldn't agree on what they were for. So I started there.</p>
+          <Heading id="how-i-created-clarity" level={2} label="Approach">How I Created Clarity</Heading>
         </ProseBlock>
-        <FadeIn delay={0.1}>
-          <div className="mt-10">
-            <Timeline data={approachTimeline} />
+
+        {/* SURVEY SECTION */}
+        <div className="mt-8 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+              <Users className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Survey: Segmenting the Ecosystem</h3>
           </div>
-        </FadeIn>
+          
+          <p>I designed a role-branched survey to force clarity on who the Hub was actually for. Stakeholders self-identified into four paths (SPO, SFI, Investor, Other), which revealed where needs overlapped—and where they diverged.</p>
+
+          <FadeIn delay={0.1}>
+            <div className="my-8">
+              <Figure
+                src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
+                alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other stakeholder types"
+                caption="Role-based survey branching. Different stakeholders, different questions, shared insights."
+                imageClassName="border border-zinc-200/40 dark:border-zinc-700/40"
+              />
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* SYNTHESIS SECTION */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300">
+              <Lightbulb className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Synthesis — Turning responses into decisions</h3>
+          </div>
+
+          <p>The survey responses confirmed what the Hub needed to be:</p>
+          <ul>
+            <li><strong>Directory-first product</strong> — discovery tools over generic education</li>
+            <li><strong>Role-based entry points</strong> — each audience had distinct vocabulary, goals, and success criteria</li>
+            <li><strong>Comparable profiles</strong> — stakeholders wanted to evaluate options, not just learn about social finance</li>
+          </ul>
+        </div>
+
+        {/* IA SECTION */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
+              <Network className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Information Architecture</h3>
+          </div>
+
+          <p>With the core value proposition clarified, I structured the Hub around a <strong>Directory</strong> (searchable discovery + comparable profiles), supported by a <strong>Learning Hub</strong> (resources that reduce jargon barriers), and routed via <strong>role-based entry points</strong> for Investors, SPOs, and Intermediaries.</p>
+        </div>
+
+        {/* WIREFRAMES SECTION */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
+              <FileText className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Wireframes</h3>
+          </div>
+
+          <p>I created a template wireframe system that made the concept buildable:</p>
+          
+          <ul>
+            <li><strong>Directory browsing</strong> — expand/collapse rows for fast scanning without deep navigation</li>
+            <li><strong>Filters</strong> — Sector, Impact Focus, Region, Stage, with clearable filter chips</li>
+            <li><strong>Profile template</strong> — standardized fields, &quot;In the news&quot; credibility cue, space for impact evidence</li>
+          </ul>
+
+          <p>Verification standards weren&apos;t defined yet. Instead of pretending they were, I designed the structure to allow verification later (consistent fields, traceable sources) and documented governance as an open decision.</p>
+        </div>
+
+        {/* FUNCTIONAL REQUIREMENTS SECTION */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300">
+              <FileText className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Functional Requirements</h3>
+          </div>
+
+          <p>I translated wireframes into buildable specs for the dev team—defining search, filters, data structure, and interaction patterns that made discovery fast and comparison easy.</p>
+
+          <ul>
+            <li><strong>Search &amp; filtering</strong> — multi-select filters with removable chips helped users narrow down options without losing context</li>
+            <li><strong>Expand/collapse interaction</strong> — side-by-side comparison without forced navigation kept users in flow</li>
+            <li><strong>Standardized data model</strong> — consistent profile fields (stage, location, fund size) enabled comparison and future governance</li>
+            <li><strong>Credibility scaffolding</strong> — &quot;In the news&quot; module added external validation to reduce trust friction for first-time investors</li>
+            <li><strong>Role-based routing</strong> — distinct entry points matched language and priorities to audience segments</li>
+          </ul>
+        </div>
+
+        {/* DOCUMENTATION SECTION */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+              <Database className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Documentation</h3>
+          </div>
+
+          <p>I documented decisions, assumptions, page templates, and terminology in Obsidian so the RFP could be written from a single source of truth—and so the team could keep moving after my engagement ended.</p>
+        </div>
       </ProseSection>
 
-      {/* Practical AI */}
+      {/* ============================================
+          PRACTICAL AI
+          ============================================ */}
       <ProseSection>
         <ProseBlock>
           <Heading id="practical-ai" level={2} label="AI Integration">Practical AI</Heading>
-          <p>AI on this project was internal acceleration, not magic. Fewer hours on admin, more hours on the hard stuff: facilitating difficult conversations, building trust, making decisions stick.</p>
-          <p><strong>Where it actually helped:</strong></p>
-          <ul>
-            <li><strong>IA concepting:</strong> Multiple sitemap alternatives generated fast. Not to ship, but to debate. "Here are five options, what's wrong with each?"</li>
-            <li><strong>Survey synthesis:</strong> Theme identification from 42 responses. Human-edited for accuracy, but the first pass was quick.</li>
-            <li><strong>Content clustering:</strong> Grouping user needs and requirements. Patterns surfaced faster than doing it manually.</li>
-            <li><strong>Documentation:</strong> First drafts in Obsidian. More time for facilitation, less time formatting.</li>
-          </ul>
-          <p>The human work (judgment, relationships, navigating politics) stayed core. AI just freed up bandwidth to do more of it.</p>
+          <p>AI accelerated synthesis without replacing judgment:</p>
         </ProseBlock>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+          <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900/50 p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300">
+                <Network className="h-5 w-5" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-white m-0">Survey Clustering</h4>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm">Used AI to cluster qualitative survey responses into themes, then manually validated before presenting to stakeholders.</p>
+          </div>
+
+          <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900/50 p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300">
+                <Users className="h-5 w-5" />
+              </div>
+              <h4 className="font-semibold text-zinc-900 dark:text-white m-0">Persona Drafts</h4>
+            </div>
+            <p className="text-zinc-600 dark:text-zinc-400 text-sm">Used AI to generate first-pass persona skeletons for review. Final framing was human-led; AI outputs were speed tools, not decisions.</p>
+          </div>
+        </div>
       </ProseSection>
 
-      {/* Outcomes */}
+      {/* ============================================
+          OUTCOMES
+          ============================================ */}
       <ProseSection>
-        <ProseBlock className="mb-8">
+        <ProseBlock>
           <Heading id="outcomes" level={2} label="Results">Outcomes</Heading>
-          <p>The IA, wireframes, and research package are driving the RFP for phase two. Briteweb is well positioned. More importantly, there's a shared vision now. New partners can slot in without relitigating the fundamentals.</p>
+          <p><strong>Delivered:</strong></p>
+          <ul>
+            <li>Role-based stakeholder survey (42 respondents across four orgs)</li>
+            <li>Directory-first IA + role-based entry points</li>
+            <li>9+ template wireframes + user flow map</li>
+            <li>User flow / journey map (end‑to‑end discovery path)</li>
+            <li>Lightweight functional requirements + data model documented in Obsidian (directory fields, filter taxonomy, interaction rules, and open governance decisions)</li>
+            <li>Obsidian knowledge base (decisions, terminology, templates, open questions)</li>
+            <li>RFP-ready product definition package</li>
+          </ul>
+          <p>Briteweb submitted a proposal for development but didn&apos;t win the build contract (tech stack fit). My involvement ended after the RFP stage, but the client team continued using the knowledge base as their source of truth for 6–7 months.</p>
         </ProseBlock>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-          <LearningCard 
-            title="Survey + Research Hub"
-            icon="FileText"
-            index={0}
-          >
-            Role-branched survey, 42 responses, Obsidian synthesis. Single source of truth when opinions diverged.
-          </LearningCard>
-
-          <LearningCard 
-            title="IA & Sitemap"
-            icon="Network"
-            index={1}
-          >
-            AI-assisted variants, refined by hand. Structure that serves all stakeholder types and supports the RFP.
-          </LearningCard>
-
-          <LearningCard 
-            title="Figma Wireframes"
-            icon="FileText"
-            index={2}
-          >
-            Five core pages. Enough fidelity to make decisions, not so polished we'd argue about colors.
-          </LearningCard>
-
-          <LearningCard 
-            title="Stakeholder Alignment"
-            icon="Handshake"
-            index={3}
-          >
-            The hardest deliverable. Four orgs, one shared direction. That pivot from resistant to collaborative.
-          </LearningCard>
-        </div>
-
-        {/* Wireframe Gallery - placeholder for when images are added */}
-        <FadeIn delay={0.1}>
-          <div className="my-12">
+        {/* Artifacts Section */}
+        <div className="mt-12">
+          <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-6">Artifacts</h3>
+          
+          {/* Wireframes Gallery */}
+          <FadeIn delay={0.1}>
             <FocusImageGallery 
               images={[
                 {
-                  src: "/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png",
-                  alt: "Role-based survey branching logic",
-                  caption: "Survey conditional logic ensured relevant questions for each stakeholder type"
+                  src: "/images/case-studies/social-finance-fund/directory-browsing-template.png",
+                  alt: "Directory browsing interface with filters and expand/collapse functionality",
+                  caption: "Directory browsing template: multi-select filters, expand/collapse rows, and side-by-side comparison without deep navigation."
+                },
+                {
+                  src: "/images/case-studies/social-finance-fund/directory-entry-template.png",
+                  alt: "Directory entry template showing trust scaffolding elements and profile structure",
+                  caption: "Directory entry template: standardized profile fields with 'In the news' credibility cues—trust scaffolding for first-time investors."
                 }
-                // Additional wireframe images can be added here when available
               ]}
             />
-          </div>
-        </FadeIn>
+          </FadeIn>
+
+          {/* User Journey Accordion - outer container provides consistent stroke */}
+          <FadeIn delay={0.2}>
+            <Accordion type="single" collapsible className="mt-8">
+              <AccordionItem value="user-journey" className="border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden bg-transparent">
+                <AccordionTrigger className="px-4 py-4 border-0 rounded-none hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                      <Map className="h-4 w-4" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-zinc-900 dark:text-white">User Journey Walkthrough</div>
+                      <div className="text-xs text-zinc-500 dark:text-zinc-400 font-normal">Interactive flow diagram with step-by-step annotations</div>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="p-0 border-0 [&>div]:p-0 [&>div]:border-0">
+                  <JourneyWalkthrough seamless />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </FadeIn>
+        </div>
       </ProseSection>
 
-      {/* Learnings */}
+      {/* ============================================
+          WRAP-UP
+          ============================================ */}
       <ProseSection>
+        <ProseBlock>
+          <Heading id="wrap-up" level={2} label="Wrap-Up">Bringing It Together</Heading>
+          <p>
+            The artifacts above came from a process—not a template. Each step built on the last.
+          </p>
+        </ProseBlock>
+
+        <div className="space-y-4 my-8">
+          <div className="flex items-start gap-4">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/50 flex-shrink-0">
+              <Users className="h-4 w-4 text-blue-700 dark:text-blue-300" />
+            </div>
+            <div>
+              <div className="font-medium text-zinc-900 dark:text-white">Survey</div>
+              <div className="text-sm text-zinc-600 dark:text-zinc-400">I couldn&apos;t assume everyone was on the same page. Multiple orgs, competing priorities—I needed to hear from them directly before designing anything.</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-4">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-violet-100 dark:bg-violet-900/50 flex-shrink-0">
+              <Lightbulb className="h-4 w-4 text-violet-700 dark:text-violet-300" />
+            </div>
+            <div>
+              <div className="font-medium text-zinc-900 dark:text-white">Synthesis</div>
+              <div className="text-sm text-zinc-600 dark:text-zinc-400">Responses revealed gaps and contradictions. I turned that mess into a shared picture of what we knew, what we didn&apos;t, and what needed deciding.</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-4">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-purple-100 dark:bg-purple-900/50 flex-shrink-0">
+              <Network className="h-4 w-4 text-purple-700 dark:text-purple-300" />
+            </div>
+            <div>
+              <div className="font-medium text-zinc-900 dark:text-white">Information Architecture</div>
+              <div className="text-sm text-zinc-600 dark:text-zinc-400">Defined the user journeys, then built the site structure around them. The navigation had to reflect how people actually think—not org charts.</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-4">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/50 flex-shrink-0">
+              <FileText className="h-4 w-4 text-amber-700 dark:text-amber-300" />
+            </div>
+            <div>
+              <div className="font-medium text-zinc-900 dark:text-white">Wireframes</div>
+              <div className="text-sm text-zinc-600 dark:text-zinc-400">Not just layouts—connections. I focused on the paths between pages, the lateral moves users make when comparing options or changing their minds.</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-4">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/50 flex-shrink-0">
+              <Database className="h-4 w-4 text-emerald-700 dark:text-emerald-300" />
+            </div>
+            <div>
+              <div className="font-medium text-zinc-900 dark:text-white">Requirements &amp; Documentation</div>
+              <div className="text-sm text-zinc-600 dark:text-zinc-400">Everything went into a linked Obsidian vault—searchable, connected, easy to update. The team kept using it long after I handed it off. That&apos;s the part I&apos;m most proud of.</div>
+            </div>
+          </div>
+        </div>
+      </ProseSection>
+
+      {/* ============================================
+          LEARNINGS
+          ============================================ */}
+      <ProseSection className="mb-0">
         <ProseBlock className="mb-8">
           <Heading id="learnings" level={2} label="Takeaways">Learnings</Heading>
         </ProseBlock>
@@ -336,15 +429,15 @@ export default function SocialFinanceFundCaseStudy() {
             icon="Handshake"
             index={0}
           >
-            Abstract disagreements dissolve when people can point at something concrete. "I don't like the direction" becomes "I don't like where this lives." Much easier to solve.
+            When organizations can&apos;t agree on abstract direction, put something concrete in front of them. Shared artifacts resolve disagreements that words cannot.
           </LearningCard>
 
           <LearningCard 
-            title="Lightweight beats polished early"
+            title="Lightweight documentation scales"
             icon="FileText"
             index={1}
           >
-            Obsidian markdown over presentation decks. Fast to update, easy to link, keeps everyone honest. Polish comes later, if it comes at all.
+            I built an Obsidian knowledge bank—fast, linked, searchable. When the engagement ended, they kept using it.
           </LearningCard>
 
           <LearningCard 
@@ -352,17 +445,19 @@ export default function SocialFinanceFundCaseStudy() {
             icon="MessageSquare"
             index={2}
           >
-            In multi-org contexts, the relationship work matters more than the deliverables. A perfect wireframe means nothing if no one trusts the process that created it.
+            In multi-org contexts, relationship work matters more than deliverables. A perfect wireframe means nothing if no one trusts the process.
           </LearningCard>
         </div>
       </ProseSection>
 
-      {/* Credits */}
+      {/* ============================================
+          CREDITS
+          ============================================ */}
       <FadeIn>
         <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
           <div className="prose prose-zinc dark:prose-invert max-w-none">
             <h3>Credits</h3>
-            <p>Social Finance Fund stakeholder organizations, Briteweb team, and Boann for trusting the process even when it felt uncertain.</p>
+            <p>Briteweb, BOANN Social Impact, and the partner organizations working to grow Canada&apos;s social finance ecosystem.</p>
           </div>
         </section>
       </FadeIn>

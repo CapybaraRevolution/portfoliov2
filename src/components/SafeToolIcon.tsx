@@ -15,6 +15,7 @@ const ALIAS: Record<string, string> = {
   figma_make: 'figma',    // Alias for Figma Make
   'monday.com': 'monday', // Monday.com → monday.png
   'delta_dna': 'deltadna', // Delta DNA → deltadna.png
+  'excel': 'ms_excel',    // Excel → ms_excel.svg
 }
 
 // Tools that use PNG instead of SVG
@@ -29,6 +30,13 @@ const SIMPLE_ICONS_MAP: Record<string, string | null> = {
   'google_analytics': 'googleanalytics',
   'google-analytics': 'googleanalytics',
   'ga4': 'googleanalytics',
+  'google_forms': 'googleforms',
+  'microsoft_forms': 'microsoftforms',
+  'excel': 'microsoftexcel',
+  'obsidian': 'obsidian',
+  'claude': 'anthropic',
+  'monday': 'mondaydotcom',
+  'miro': 'miro',
   'react': 'react',
   'tailwind_css': 'tailwindcss',
   'tailwindcss': 'tailwindcss',
@@ -83,7 +91,7 @@ export default function SafeToolIcon({ slug, size = 24, alt, className }: Props)
         alt={alt ?? `${slug} icon`}
         width={size}
         height={size}
-        className={className}
+        className={className || ''}
         onError={handleError}
         style={{ width: size, height: size }}
       />

@@ -202,11 +202,11 @@ export function HalfContentSection({
                 </p>
               )}
 
-              <div className="mt-10 max-w-xl text-base/7 text-zinc-600 lg:max-w-none dark:text-zinc-400">
+              <div className="mt-10 max-w-xl text-base/7 text-zinc-700 lg:max-w-none dark:text-zinc-300">
                 {typeof description === 'string' ? <p>{description}</p> : description}
                 
                 {features && features.length > 0 && (
-                  <ul role="list" className="mt-8 space-y-8 text-zinc-600 dark:text-zinc-400">
+                  <ul role="list" className="mt-8 space-y-8 text-zinc-700 dark:text-zinc-300">
                     {features.map((feature, index) => (
                       <li key={index} className="flex gap-x-3">
                         <span className={`mt-1 size-5 flex-none ${accentColors[accentColor]}`}>
@@ -258,11 +258,11 @@ export function HalfContentSection({
                 </p>
               )}
 
-              <div className="mt-10 max-w-xl text-base/7 text-zinc-600 lg:max-w-none dark:text-zinc-400">
+              <div className="mt-10 max-w-xl text-base/7 text-zinc-700 lg:max-w-none dark:text-zinc-300">
                 {typeof description === 'string' ? <p>{description}</p> : description}
                 
                 {features && features.length > 0 && (
-                  <ul role="list" className="mt-8 space-y-8 text-zinc-600 dark:text-zinc-400">
+                  <ul role="list" className="mt-8 space-y-8 text-zinc-700 dark:text-zinc-300">
                     {features.map((feature, index) => (
                       <li key={index} className="flex gap-x-3">
                         <span className={`mt-1 size-5 flex-none ${accentColors[accentColor]}`}>

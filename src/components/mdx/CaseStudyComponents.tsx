@@ -170,6 +170,7 @@ interface FigureProps {
   width?: number
   height?: number
   className?: string
+  imageClassName?: string
   sizes?: string
   priority?: boolean
 }
@@ -181,6 +182,7 @@ export function Figure({
   width = 800, 
   height = 400, 
   className,
+  imageClassName,
   sizes = IMAGE_SIZES.contentMax1200,
   priority = false
 }: FigureProps) {
@@ -195,7 +197,7 @@ export function Figure({
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <div className="relative overflow-hidden rounded-xl shadow-lg">
+      <div className={clsx('relative overflow-hidden rounded-xl shadow-lg', imageClassName)}>
         <Image
           src={src}
           alt={alt}
