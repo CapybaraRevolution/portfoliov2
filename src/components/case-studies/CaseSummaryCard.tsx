@@ -1,9 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Building2, ShieldAlert, Compass, TrendingUp, ChevronRight } from 'lucide-react'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
+import { trackHighlightsExpanded, trackHighlightsCollapsed } from '@/components/GoogleAnalytics'
+import { triggerHotjarEvent } from '@/components/Hotjar'
 import clsx from 'clsx'
 
 export interface CaseSummaryData {
@@ -19,6 +21,8 @@ export interface CaseSummaryData {
 
 interface CaseSummaryCardProps {
   summary: CaseSummaryData
+  /** Slug used for analytics attribution */
+  caseStudySlug?: string
   className?: string
 }
 
@@ -31,10 +35,31 @@ const fields = [
   { key: 'impact' as const, label: 'Impact', Icon: TrendingUp },
 ]
 
-export function CaseSummaryCard({ summary, className }: CaseSummaryCardProps) {
+export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSummaryCardProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [shimmerDone, setShimmerDone] = useState(false)
   const prefersReducedMotion = usePrefersReducedMotion()
+  const expandedAtRef = useRef<number | null>(null)
+
+  const handleToggle = useCallback(() => {
+    const slug = caseStudySlug || 'unknown'
+
+    if (!isExpanded) {
+      // Expanding
+      expandedAtRef.current = Date.now()
+      trackHighlightsExpanded(slug)
+      triggerHotjarEvent('highlights_expanded')
+    } else {
+      // Collapsing — calculate how long it was open
+      const timeExpanded = expandedAtRef.current
+        ? Math.round((Date.now() - expandedAtRef.current) / 1000)
+        : 0
+      trackHighlightsCollapsed(slug, timeExpanded)
+      expandedAtRef.current = null
+    }
+
+    setIsExpanded((v) => !v)
+  }, [isExpanded, caseStudySlug])
 
   // Reduced motion: render fully expanded, no animations
   if (prefersReducedMotion) {
@@ -78,7 +103,7 @@ export function CaseSummaryCard({ summary, className }: CaseSummaryCardProps) {
         {/* ── Shimmer sweep — runs once on mount when collapsed ── */}
         {!isExpanded && !shimmerDone && (
           <motion.div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent dark:via-white/[0.06]"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-emerald-500/[0.09] to-transparent dark:via-emerald-400/[0.07]"
             initial={{ x: '-100%' }}
             animate={{ x: '250%' }}
             transition={{ duration: 1.6, delay: 1, ease: 'easeInOut' }}
@@ -90,14 +115,14 @@ export function CaseSummaryCard({ summary, className }: CaseSummaryCardProps) {
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              className="pointer-events-none absolute inset-0 rounded-xl"
+              className="pointer-events-none absolute inset-0 rounded-xl bg-emerald-500/[0.04] dark:bg-emerald-500/[0.02]"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0] }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.9, ease: 'easeOut' }}
               style={{
                 boxShadow:
-                  '0 0 40px rgba(16, 185, 129, 0.12), inset 0 0 40px rgba(16, 185, 129, 0.04)',
+                  '0 0 50px rgba(16, 185, 129, 0.22), inset 0 0 40px rgba(16, 185, 129, 0.07)',
               }}
             />
           )}
@@ -105,7 +130,7 @@ export function CaseSummaryCard({ summary, className }: CaseSummaryCardProps) {
 
         {/* ── Trigger bar ── */}
         <button
-          onClick={() => setIsExpanded((v) => !v)}
+          onClick={handleToggle}
           className={clsx(
             'group relative z-10 flex w-full items-center justify-between',
             'px-5 py-3.5 sm:px-6 sm:py-4 text-left',
