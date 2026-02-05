@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useCallback, type RefObject } from 'react'
+import { useRef, useCallback } from 'react'
 
 interface SwipeHandlers {
   onSwipeLeft?: () => void
