@@ -94,7 +94,7 @@ export default function HoustonBalletCaseStudy() {
             Then I layered in Houston Ballet's brand assets. Logo, color palette, typography. The tool understood these as constraints, not suggestions. When I asked for "a ticket card," it used the purple from the brand, not some default blue.
           </p>
           <p>
-            From there, I could iterate in natural language. "Make the QR code bigger." "Add seat information below the date." "Put a hamburger menu in the header." Each prompt built on the last. The tool remembered context. It felt less like starting over and more like... directing.
+            From there, I could iterate in natural language. "Make the QR code bigger." "Add seat information below the date." "Put a hamburger menu in the header." Natural language iteration itself isn't new to me—I use it constantly in Cursor for code. But starting in Figma, in the design environment I already know, and then bridging directly into AI-powered refinement? That's different. The speed compounds. You're not context-switching between tools or translating mental models. You're just... moving faster.
           </p>
         </ProseBlock>
 
@@ -195,7 +195,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <QrCode className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">High Contrast QR Codes</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Dark purple borders on white. Scans reliably even in dim lobby lighting. (This sounds obvious until you've watched someone struggle with a low-contrast QR code at a venue entrance.)
@@ -209,7 +209,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <Armchair className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Seat Info on the QR Screen</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Ushers always ask "which section?" while scanning. Keeping seat info visible eliminates that back-and-forth. Small thing, but it matters when you're holding up a line.
@@ -223,7 +223,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <MapPin className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Planning Gets Its Own Section</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Parking, dining, venue details. Not buried in settings. For occasional theater-goers, this practical info often matters more than account preferences.
@@ -237,7 +237,7 @@ export default function HoustonBalletCaseStudy() {
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
                     <Calendar className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Date-Sorted by Default</h4>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
                       Most people check their tickets close to showtime. Soonest first makes sense. Title sort exists for the season-ticket holders managing multiple performances.
