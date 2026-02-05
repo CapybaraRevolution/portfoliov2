@@ -198,8 +198,15 @@ export function Timeline() {
   const [hasHydrated, setHasHydrated] = useState(false)
   // Track if entrance animations have completed (prevents neon from firing before cards are visible)
   const [animationsReady, setAnimationsReady] = useState(false)
-  // Track hovered card - overrides scroll-based active state
+  // Track hovered card - overrides scroll-based active state (sticky until scroll)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  
+  // Clear hovered state when scroll changes the active card
+  useEffect(() => {
+    if (activeNodeIndex !== -1) {
+      setHoveredIndex(null)
+    }
+  }, [activeNodeIndex])
 
   // Respect prefers-reduced-motion to avoid unnecessary work on low-powered devices
   useEffect(() => {
@@ -553,7 +560,6 @@ export function Timeline() {
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
               onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
             >
               {isClickable ? (
                 <Link href={node.link} className="block cursor-pointer">
