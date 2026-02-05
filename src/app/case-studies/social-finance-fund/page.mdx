@@ -161,18 +161,24 @@ export default function SocialFinanceFundCaseStudy() {
         </ProseBlock>
 
         {/* SURVEY SECTION */}
-        <div className="mt-8 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mt-8 space-y-4">
+          <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
               <Users className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Survey: Segmenting the Ecosystem</h3>
           </div>
-          
-          <p>I designed a role-branched survey to force clarity on who the Hub was actually for. Stakeholders self-identified into four paths (SPO, SFI, Investor, Other), which revealed where needs overlapped—and where they diverged.</p>
+
+          <div className="pl-[52px]">
+            <p className="leading-relaxed">I designed a role-branched survey to force clarity on who the Hub was actually for.</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+              <li>Stakeholders self-identified into <strong className="font-semibold text-zinc-700 dark:text-zinc-300">four paths</strong> — SPO, SFI, Investor, Other</li>
+              <li>Responses revealed where needs <strong className="font-semibold text-zinc-700 dark:text-zinc-300">overlapped</strong> and where they <strong className="font-semibold text-zinc-700 dark:text-zinc-300">diverged</strong></li>
+            </ul>
+          </div>
 
           <FadeIn delay={0.1}>
-            <div className="my-8">
+            <div className="my-6">
               <Figure
                 src="/images/case-studies/social-finance-fund/SFFSurveyConditionalLogic.png"
                 alt="Conditional logic flow showing role-based branching for SPOs, SFIs, investors, and other stakeholder types"
@@ -184,84 +190,102 @@ export default function SocialFinanceFundCaseStudy() {
         </div>
 
         {/* SYNTHESIS SECTION */}
-        <div className="mt-12 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mt-12 space-y-4">
+          <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300">
               <Lightbulb className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Synthesis — Turning responses into decisions</h3>
           </div>
 
-          <p>The survey responses confirmed what the Hub needed to be:</p>
-          <ul>
-            <li><strong>Directory-first product</strong> — discovery tools over generic education</li>
-            <li><strong>Role-based entry points</strong> — each audience had distinct vocabulary, goals, and success criteria</li>
-            <li><strong>Comparable profiles</strong> — stakeholders wanted to evaluate options, not just learn about social finance</li>
-          </ul>
+          <div className="pl-[52px]">
+            <p className="leading-relaxed">The survey responses confirmed what the Hub needed to be:</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Directory-first product</strong> — discovery tools over generic education</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Role-based entry points</strong> — each audience had distinct vocabulary, goals, and success criteria</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Comparable profiles</strong> — stakeholders wanted to evaluate options, not just learn about social finance</li>
+            </ul>
+          </div>
         </div>
 
         {/* IA SECTION */}
-        <div className="mt-12 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mt-12 space-y-4">
+          <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
               <Network className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Information Architecture</h3>
           </div>
 
-          <p>With the core value proposition clarified, I structured the Hub around a <strong>Directory</strong> (searchable discovery + comparable profiles), supported by a <strong>Learning Hub</strong> (resources that reduce jargon barriers), and routed via <strong>role-based entry points</strong> for Investors, SPOs, and Intermediaries.</p>
+          <div className="pl-[52px]">
+            <p className="leading-relaxed">With the core value proposition clarified, I structured the Hub around three pillars:</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Directory</strong> — searchable discovery + comparable profiles</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Learning Hub</strong> — resources that reduce jargon barriers</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Role-based entry points</strong> — tailored paths for Investors, SPOs, and Intermediaries</li>
+            </ul>
+          </div>
         </div>
 
         {/* WIREFRAMES SECTION */}
-        <div className="mt-12 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mt-12 space-y-4">
+          <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
               <FileText className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Wireframes</h3>
           </div>
 
-          <p>I created a template wireframe system that made the concept buildable:</p>
-          
-          <ul>
-            <li><strong>Directory browsing</strong> — expand/collapse rows for fast scanning without deep navigation</li>
-            <li><strong>Filters</strong> — Sector, Impact Focus, Region, Stage, with clearable filter chips</li>
-            <li><strong>Profile template</strong> — standardized fields, &quot;In the news&quot; credibility cue, space for impact evidence</li>
-          </ul>
-
-          <p>Verification standards weren&apos;t defined yet. Instead of pretending they were, I designed the structure to allow verification later (consistent fields, traceable sources) and documented governance as an open decision.</p>
+          <div className="pl-[52px]">
+            <p className="leading-relaxed">I created a template wireframe system that made the concept buildable:</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Directory browsing</strong> — expand/collapse rows for fast scanning without deep navigation</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Filters</strong> — Sector, Impact Focus, Region, Stage, with clearable filter chips</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Profile template</strong> — standardized fields, &quot;In the news&quot; credibility cue, space for impact evidence</li>
+            </ul>
+            <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-500 italic">Verification standards weren&apos;t defined yet — I designed the structure to allow verification later and documented governance as an open decision.</p>
+          </div>
         </div>
 
         {/* FUNCTIONAL REQUIREMENTS SECTION */}
-        <div className="mt-12 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mt-12 space-y-4">
+          <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300">
               <FileText className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Functional Requirements</h3>
           </div>
 
-          <p>I translated wireframes into buildable specs for the dev team—defining search, filters, data structure, and interaction patterns that made discovery fast and comparison easy.</p>
-
-          <ul>
-            <li><strong>Search &amp; filtering</strong> — multi-select filters with removable chips helped users narrow down options without losing context</li>
-            <li><strong>Expand/collapse interaction</strong> — side-by-side comparison without forced navigation kept users in flow</li>
-            <li><strong>Standardized data model</strong> — consistent profile fields (stage, location, fund size) enabled comparison and future governance</li>
-            <li><strong>Credibility scaffolding</strong> — &quot;In the news&quot; module added external validation to reduce trust friction for first-time investors</li>
-            <li><strong>Role-based routing</strong> — distinct entry points matched language and priorities to audience segments</li>
-          </ul>
+          <div className="pl-[52px]">
+            <p className="leading-relaxed">I translated wireframes into buildable specs for the dev team:</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Search &amp; filtering</strong> — multi-select filters with removable chips</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Expand/collapse interaction</strong> — side-by-side comparison without forced navigation</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Standardized data model</strong> — consistent profile fields enabling comparison and governance</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Credibility scaffolding</strong> — &quot;In the news&quot; module for external validation</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Role-based routing</strong> — entry points matched to audience language and priorities</li>
+            </ul>
+          </div>
         </div>
 
         {/* DOCUMENTATION SECTION */}
-        <div className="mt-12 space-y-6">
-          <div className="flex items-center gap-3 mb-4">
+        <div className="mt-12 space-y-4">
+          <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
               <Database className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Documentation</h3>
           </div>
 
-          <p>I documented decisions, assumptions, page templates, and terminology in Obsidian so the RFP could be written from a single source of truth—and so the team could keep moving after my engagement ended.</p>
+          <div className="pl-[52px]">
+            <p className="leading-relaxed">I documented everything in Obsidian so the RFP could be written from a single source of truth:</p>
+            <ul className="mt-2 list-disc pl-5 space-y-1.5 text-zinc-600 dark:text-zinc-400">
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Decisions &amp; assumptions</strong> — what was agreed, what was still open</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Page templates</strong> — reusable structures for each content type</li>
+              <li><strong className="font-semibold text-zinc-700 dark:text-zinc-300">Terminology</strong> — shared vocabulary across the four organizations</li>
+            </ul>
+            <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-500 italic">The team continued using this knowledge base for 6–7 months after my engagement ended.</p>
+          </div>
         </div>
       </ProseSection>
 
