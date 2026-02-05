@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 import { ChevronLeft, ChevronRight, Loader2, Users, Search, FileCheck, Handshake, Eye } from 'lucide-react'
 import { Tooltip } from '@/components/ui/tooltip-card'
 
@@ -159,6 +160,37 @@ interface JourneyWalkthroughProps {
 export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [shimmerReady, setShimmerReady] = useState(false)
+  const [shimmerDone, setShimmerDone] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Fire shimmer once after component scrolls into view + 1.5s delay
+  useEffect(() => {
+    if (prefersReducedMotion || shimmerDone) return
+
+    const el = containerRef.current
+    if (!el) return
+
+    let delayTimer: ReturnType<typeof setTimeout> | null = null
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !shimmerReady) {
+          delayTimer = setTimeout(() => setShimmerReady(true), 1500)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 },
+    )
+
+    observer.observe(el)
+
+    return () => {
+      observer.disconnect()
+      if (delayTimer) clearTimeout(delayTimer)
+    }
+  }, [prefersReducedMotion, shimmerReady, shimmerDone])
 
   // Fallback: if image hasn't loaded after 5 seconds, show it anyway
   // (handles cases where onLoadingComplete doesn't fire)
@@ -184,12 +216,26 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
   const IconComponent = iconMap[currentStepData.icon]
 
   return (
-    <div className={cn(
-      "bg-white dark:bg-zinc-800/50 overflow-hidden",
-      seamless 
-        ? "border-t border-zinc-200 dark:border-zinc-700" 
-        : "rounded-xl border border-zinc-200 dark:border-zinc-700"
-    )}>
+    <div
+      ref={containerRef}
+      className={cn(
+        "relative bg-white dark:bg-zinc-800/50 overflow-hidden",
+        seamless 
+          ? "border-t border-zinc-200 dark:border-zinc-700" 
+          : "rounded-xl border border-zinc-200 dark:border-zinc-700"
+      )}
+    >
+      {/* ── Shimmer sweep — fires once after scrolling into view ── */}
+      {shimmerReady && !shimmerDone && (
+        <motion.div
+          className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-r from-transparent via-zinc-400/30 to-transparent dark:via-white/[0.06]"
+          initial={{ x: '-100%' }}
+          animate={{ x: '250%' }}
+          transition={{ duration: 1.6, ease: 'easeInOut' }}
+          onAnimationComplete={() => setShimmerDone(true)}
+        />
+      )}
+
       {/* Header */}
       <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
         <div className="flex items-center gap-3">
