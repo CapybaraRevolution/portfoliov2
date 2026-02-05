@@ -268,14 +268,14 @@ export default function HoustonBalletCaseStudy() {
         <ProseBlock>
           <Heading id="what-happened-next" level={2} label="Refinement">What Happened Next</Heading>
           <p>
-            I spent another day turning the prototype into something developers could actually build on. Taking it from "thing that works" to "thing that's ready" meant confronting a different set of problems. Not <em>can we make this?</em> but <em>can this scale? Can someone else work on it? What happens when we don't know the answer yet?</em>
+            The Figma Make export was a starting point, not a finish line. I created a GitHub repo, pulled it into Cursor, and spent another day turning it into something developers could actually build on. Taking it from "thing that works" to "thing that's ready" meant confronting a different set of problems. Not <em>can we make this?</em> but <em>can this scale? Can someone else work on it? What happens when we don't know the answer yet?</em>
           </p>
         </ProseBlock>
 
         <ProseBlock delay={0.1} className="mt-8">
           <h3>The Gap Between Working and Ready</h3>
           <p>
-            The Figma Make export ran. You could tap through it, see the QR codes, browse the venue info. But under the hood:
+            The export ran. You could tap through it, see the QR codes, browse the venue info. But under the hood:
           </p>
           <ul>
             <li>The logo was a 40-character hash string</li>
@@ -284,23 +284,23 @@ export default function HoustonBalletCaseStudy() {
             <li>There was no concept of "this is Houston Ballet's app" vs "this could be anyone's app"</li>
           </ul>
           <p>
-            None of that matters for a demo. All of it matters when you're handing code to developers who need to build on it.
+            None of that matters for a demo. All of it matters when you're handing code to developers who need to build on it. My job was to wire up the UI side—define the data contracts, set up the component boundaries, make it modular. Their job would be connecting the pipes: middleware, auth, the actual <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura</span></Tooltip> integration.
           </p>
         </ProseBlock>
 
         <ProseBlock delay={0.15} className="mt-8">
           <h3>Designing for Questions You Can't Answer Yet</h3>
           <p>
-            Here's what I didn't know when I started the architecture work:
+            I understand <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura's</span></Tooltip> data model from previous work—I know what a constituent record looks like, how orders are structured, what fields we'd need for ticket display. But there were still open questions:
           </p>
           <ul>
             <li>How does the proprietary QR code system work? (Gary—another dev on the team—is building it, not me)</li>
-            <li>What does <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura's</span></Tooltip> API actually return? (The middleware doesn't exist yet)</li>
+            <li>What will the middleware actually return? (It doesn't exist yet)</li>
             <li>Will clients want redirect auth or embedded SSO? (Depends on the client)</li>
             <li>What content blocks will different venues want? (Nobody's asked them yet)</li>
           </ul>
           <p>
-            The temptation is to wait until you have answers. But waiting means the developers have nothing to work with. So instead, you design <em>interfaces</em> that define the contract without defining the implementation.
+            The temptation is to wait until you have answers. But waiting means the developers have nothing to work with. So instead, you design <em>interfaces</em> that define the contract without defining the implementation. I set things up with Tessitura in mind—the data shapes, the likely fields—so when the middleware team comes in, they can easily map their work to what the UI expects.
           </p>
         </ProseBlock>
 
