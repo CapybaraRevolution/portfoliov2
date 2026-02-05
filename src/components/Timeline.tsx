@@ -198,6 +198,8 @@ export function Timeline() {
   const [hasHydrated, setHasHydrated] = useState(false)
   // Track if entrance animations have completed (prevents neon from firing before cards are visible)
   const [animationsReady, setAnimationsReady] = useState(false)
+  // Track hovered card - overrides scroll-based active state
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   // Respect prefers-reduced-motion to avoid unnecessary work on low-powered devices
   useEffect(() => {
@@ -404,9 +406,14 @@ export function Timeline() {
   const timelineContent = (
     <div className="space-y-8 sm:space-y-12 md:space-y-16">
         {timelineData.map((node, index) => {
-          // Only show neon glow after entrance animations have completed
-          const isActive = animationsReady && activeNodeIndex === index
+          // Hover overrides scroll-based active state
+          const isActive = animationsReady && (
+            hoveredIndex !== null 
+              ? hoveredIndex === index 
+              : activeNodeIndex === index
+          )
           const isDisabled = !!(node.comingSoon || node.underConstruction)
+          const isClickable = !isDisabled && node.link !== '#'
           const neonColors = getNeonColors(index, isDisabled)
           const nodeContent = (
             <div className={isDisabled ? 'opacity-60' : ''}>
@@ -485,16 +492,13 @@ export function Timeline() {
 
               {/* Call-to-action and badges */}
               <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                {node.link !== '#' && !isDisabled && (
-                  <Link
-                    href={node.link}
-                    className="group inline-flex items-center text-sm font-semibold text-emerald-600 transition-all duration-300 hover:gap-2 dark:text-emerald-400"
-                  >
+                {isClickable && (
+                  <span className="group inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                     View Case Study
                     <span className="ml-1 transition-transform group-hover:translate-x-1">
                       →
                     </span>
-                  </Link>
+                  </span>
                 )}
                 {isDisabled && (
                   <span className="inline-flex items-center text-sm text-zinc-400 dark:text-zinc-500">
@@ -506,22 +510,8 @@ export function Timeline() {
             </div>
           )
 
-          return (
-            <motion.div
-              key={node.id}
-              className="relative"
-              ref={(el) => registerNodeRef(index, el)}
-              data-node-index={index}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={cardVariants}
-              transition={{
-                duration: 0.5,
-                delay: 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-            >
+          const cardElement = (
+            <>
               {/* Neon gradient card - shown when active (no transition to avoid flash) */}
               {isActive ? (
                 <NeonGradientCard
@@ -543,6 +533,34 @@ export function Timeline() {
                 <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 md:p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/30">
                   {nodeContent}
                 </div>
+              )}
+            </>
+          )
+
+          return (
+            <motion.div
+              key={node.id}
+              className="relative"
+              ref={(el) => registerNodeRef(index, el)}
+              data-node-index={index}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={cardVariants}
+              transition={{
+                duration: 0.5,
+                delay: 0.1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {isClickable ? (
+                <Link href={node.link} className="block cursor-pointer">
+                  {cardElement}
+                </Link>
+              ) : (
+                cardElement
               )}
             </motion.div>
           )
