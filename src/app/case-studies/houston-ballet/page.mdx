@@ -188,8 +188,8 @@ export default function HoustonBalletCaseStudy() {
               </p>
             </div>
 
-            {/* Design Decision Cards */}
-            <div className="space-y-4">
+            {/* Design Decision Cards - 2-up at md breakpoint */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 p-5">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-zinc-100 dark:bg-zinc-700 rounded-lg shrink-0">
@@ -245,12 +245,13 @@ export default function HoustonBalletCaseStudy() {
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-zinc-50 dark:bg-zinc-800/30 rounded-xl p-5 border border-zinc-200 dark:border-zinc-700">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                <span className="font-semibold text-zinc-900 dark:text-white">Explore:</span> Tap the hamburger menu to see different sections. Select a performance for the QR view. Hit "View Details" for the full venue guide.
-              </p>
+              {/* Explore box spans full width */}
+              <div className="md:col-span-2 bg-zinc-50 dark:bg-zinc-800/30 rounded-xl p-5 border border-zinc-200 dark:border-zinc-700">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                  <span className="font-semibold text-zinc-900 dark:text-white">Explore:</span> Tap the hamburger menu to see different sections. Select a performance for the QR view. Hit "View Details" for the full venue guide.
+                </p>
+              </div>
             </div>
           </div>
         </div>

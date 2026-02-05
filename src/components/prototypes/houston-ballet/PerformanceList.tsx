@@ -43,7 +43,7 @@ export default function PerformanceList({
   });
 
   return (
-    <div className="bg-[#F6F6F6] h-full overflow-auto pb-6">
+    <div className="bg-[#F6F6F6] h-full overflow-auto overscroll-none scrollbar-hide pb-6">
       {/* Header - Dark Purple with Logo */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}

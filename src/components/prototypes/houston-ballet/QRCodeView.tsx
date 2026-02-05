@@ -263,7 +263,7 @@ export default function QRCodeView({ performance, onBack }: QRCodeViewProps) {
       </motion.div>
 
       {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-auto bg-[#F6F6F6] relative">
+      <div className="flex-1 overflow-auto overscroll-none scrollbar-hide bg-[#F6F6F6] relative">
         {/* Ticket Carousel Container */}
         <div className="w-full px-4 py-4 relative z-10">
           <div 
@@ -445,7 +445,7 @@ export default function QRCodeView({ performance, onBack }: QRCodeViewProps) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="absolute inset-0 bg-white z-40 overflow-auto"
+            className="absolute inset-0 bg-white z-40 overflow-auto overscroll-none scrollbar-hide"
           >
             {/* Fixed Header */}
             <div 

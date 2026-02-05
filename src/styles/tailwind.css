@@ -321,6 +321,16 @@
     }
   }
 
+  /* Mobile prototype scrollbar utilities - hides scrollbar while maintaining scroll functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
   /* Line clamp utilities */
   .line-clamp-1 {
     overflow: hidden;
