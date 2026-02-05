@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline"
 import { Lens } from "@/components/ui/lens"
@@ -122,138 +123,141 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
         ))}
       </div>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm"
-            onClick={closeLightbox}
-          >
-            {/* Close Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                closeLightbox()
-              }}
-              className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-              aria-label="Close lightbox"
-            >
-              <XMarkIcon className="w-6 h-6 text-white" />
-            </button>
-
-            {/* Magnifier Status Indicator */}
-            <AnimatePresence>
-              {magnifierActive && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 backdrop-blur-sm"
-                >
-                  <MagnifyingGlassPlusIcon className="w-4 h-4 text-white" />
-                  <span className="text-xs text-white/90 font-medium">Magnifier active</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Navigation - Previous */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  goToPrevious()
-                }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Previous image"
-              >
-                <ChevronLeftIcon className="w-6 h-6 text-white" />
-              </button>
-            )}
-
-            {/* Navigation - Next */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  goToNext()
-                }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Next image"
-              >
-                <ChevronRightIcon className="w-6 h-6 text-white" />
-              </button>
-            )}
-
-            {/* Content - clicking outside the image closes lightbox */}
-            <div
-              className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
+      {/* Lightbox — portalled to body to escape stacking contexts */}
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {lightboxOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm"
               onClick={closeLightbox}
             >
-              {/* Image with Lens - only this area captures clicks for magnifier */}
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0"
-                onClick={(e) => e.stopPropagation()}
+              {/* Close Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  closeLightbox()
+                }}
+                className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                aria-label="Close lightbox"
               >
-                <Lens 
-                  zoomFactor={1.5} 
-                  lensSize={300}
-                  hoverable={false}
-                  onActiveChange={setMagnifierActive}
-                >
-                  <motion.img
-                    key={activeImage.src}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    src={activeImage.src}
-                    alt={activeImage.alt}
-                    className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
-                  />
-                </Lens>
-              </motion.div>
+                <XMarkIcon className="w-6 h-6 text-white" />
+              </button>
 
-              {/* Caption - clicking here also closes */}
-              {activeImage.caption && (
-                <div 
-                  className="w-full max-w-4xl mt-6 text-center"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <motion.p
+              {/* Magnifier Status Indicator */}
+              <AnimatePresence>
+                {magnifierActive && (
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1, duration: 0.3 }}
-                    className="text-base lg:text-lg text-white/90 leading-relaxed"
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white/10 backdrop-blur-sm"
                   >
-                    {activeImage.caption}
-                  </motion.p>
-                  
-                  {/* Image Counter */}
-                  {images.length > 1 && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="mt-3 text-sm text-white/50"
-                    >
-                      {activeIndex + 1} of {images.length}
-                    </motion.div>
-                  )}
-                </div>
+                    <MagnifyingGlassPlusIcon className="w-4 h-4 text-white" />
+                    <span className="text-xs text-white/90 font-medium">Magnifier active</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Navigation - Previous */}
+              {images.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    goToPrevious()
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeftIcon className="w-6 h-6 text-white" />
+                </button>
               )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+              {/* Navigation - Next */}
+              {images.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    goToNext()
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  aria-label="Next image"
+                >
+                  <ChevronRightIcon className="w-6 h-6 text-white" />
+                </button>
+              )}
+
+              {/* Content - clicking outside the image closes lightbox */}
+              <div
+                className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
+                onClick={closeLightbox}
+              >
+                {/* Image with Lens - only this area captures clicks for magnifier */}
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Lens 
+                    zoomFactor={1.5} 
+                    lensSize={300}
+                    hoverable={false}
+                    onActiveChange={setMagnifierActive}
+                  >
+                    <motion.img
+                      key={activeImage.src}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      src={activeImage.src}
+                      alt={activeImage.alt}
+                      className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                    />
+                  </Lens>
+                </motion.div>
+
+                {/* Caption - clicking here also closes */}
+                {activeImage.caption && (
+                  <div 
+                    className="w-full max-w-4xl mt-6 text-center"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1, duration: 0.3 }}
+                      className="text-base lg:text-lg text-white/90 leading-relaxed"
+                    >
+                      {activeImage.caption}
+                    </motion.p>
+                    
+                    {/* Image Counter */}
+                    {images.length > 1 && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="mt-3 text-sm text-white/50"
+                      >
+                        {activeIndex + 1} of {images.length}
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   )
 }

@@ -1,8 +1,14 @@
 import { CaseStudyViewer } from '@/components/CaseStudyViewer'
 import { getCaseStudyBySlug } from '@/lib/caseStudies'
-import { Figure, CaseImage, CaseMetric } from '@/components/mdx/CaseStudyComponents'
-import { ConstructionBanner } from '@/components/ui/ConstructionBanner'
+import { Figure } from '@/components/mdx/CaseStudyComponents'
+import { SplitSection } from '@/components/case-studies/SplitSection'
+import { ProseSection, ProseBlock } from '@/components/case-studies/ProseSection'
 import { Heading } from '@/components/Heading'
+import { Tooltip } from '@/components/ui/tooltip-card'
+import { LearningCard } from '@/components/case-studies/LearningCard'
+import { FadeIn } from '@/components/ui/fade-in'
+import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
+import { Layers, Filter, ArrowRightLeft, FileText, BarChart3 } from 'lucide-react'
 
 export const metadata = {
   title: 'AMFA Class Filter Redesign - Case Study',
@@ -10,14 +16,10 @@ export const metadata = {
 }
 
 export const sections = [
-  { title: 'Overview', id: 'overview' },
-  { title: 'Key Challenges', id: 'key-challenges' },
-  { title: 'My Approach', id: 'my-approach' },
-  { title: 'System Architecture', id: 'system-architecture' },
-  { title: 'Deliverables', id: 'deliverables' },
-  { title: 'Measurement Strategy', id: 'measurement-strategy' },
-  { title: 'Stakeholder Navigation', id: 'stakeholder-navigation' },
-  { title: 'Outcome', id: 'outcome' },
+  { title: 'The Problem', id: 'the-problem' },
+  { title: 'My Role', id: 'my-role' },
+  { title: 'How I Created Clarity', id: 'how-i-created-clarity' },
+  { title: 'Outcomes', id: 'outcomes' },
   { title: 'Learnings', id: 'learnings' },
 ]
 
@@ -28,164 +30,274 @@ export default function AMFAClassFilterRedesignCaseStudy() {
     return <div>Case study not found</div>
   }
 
-  // Metrics data - directional improvements from redesign
-  const metrics = [
-    {
-      label: 'Filter Completion Rate',
-      value: 92,
-      suffix: '%',
-      description: 'Users successfully complete filtering journey',
-      highlight: true,
-    },
-    {
-      label: 'Class Discovery Time',
-      value: 8.9,
-      suffix: 's',
-      description: 'Average time to find relevant class',
-      highlight: true,
-    },
-    {
-      label: 'Cart Completion',
-      value: 66,
-      suffix: '%',
-      description: 'Users who add to cart and complete checkout',
-      highlight: true,
-    }
-  ]
+  // Metrics hidden — this is a recent redesign and we're still collecting post-launch data
+  const metrics = null
 
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
-      <ConstructionBanner />
-      <CaseImage
-        src="/images/case-studies/amfa-class-filter-redesign/amfalogo.png"
-        alt="Arkansas Museum of Fine Arts logo"
-        variant="logo"
-      />
+      
+      {/* ============================================
+          THE PROBLEM
+          ============================================ */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="the-problem" level={2} label="Challenge" className="mt-0">The Problem</Heading>
+          <p>The Arkansas Museum of Fine Arts offers a wide range of community classes for youth and adults. The booking journey was fragmented across three separate platforms—marketing site, class directory, and cart—each with different UX conventions and no shared state.</p>
+          <p>Users couldn&apos;t quickly distinguish Youth vs. Adult class paths, filters didn&apos;t match how people actually thought about classes, and <strong>crossing system boundaries meant losing context</strong>. Add a class to your cart, come back, and your filters are gone. Your scroll position is gone. Start over.</p>
+        </ProseBlock>
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <Heading id="overview" level={2}>Overview</Heading>
+        <ProseBlock delay={0.1} className="mt-10">
+          <p><strong>The symptoms:</strong></p>
+          <ul>
+            <li><strong>Fragmented architecture:</strong> Three platforms, three teams, zero shared <Tooltip containerClassName="inline font-bold" content="How information, filter state, and user context are maintained as someone moves between different systems or pages.">session context</Tooltip></li>
+            <li><strong>Broken filtering UX:</strong> Users couldn&apos;t distinguish Youth vs. Adult paths or apply relevant criteria without guessing</li>
+            <li><strong>Transition friction:</strong> People crossed systems without context—state was routinely lost at handoff points</li>
+            <li><strong>High call volume:</strong> Users were calling to complete registrations they should have been able to finish online</li>
+          </ul>
+        </ProseBlock>
+      </ProseSection>
 
-        <p>The Arkansas Museum of Fine Arts (AMFA) offers a wide variety of community classes for youth and adults. The class filtering and booking journey was fragmented across platforms and unclear at decision points. Brought in via Jixaw, I unified the experience, streamlined filtering, and clarified system transitions so people can find the right class faster and check out with confidence.</p>
+      {/* ============================================
+          MY ROLE
+          ============================================ */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="my-role" level={2} label="Scope" className="mt-0">My Role</Heading>
+          <p>Brought in through <Tooltip containerClassName="inline" content="A technology consultancy I work with on ticketing, registration, and venue experience projects."><span className="font-bold">Jixaw</span></Tooltip>, I was responsible for unifying the class discovery and registration experience across all three platforms. That meant mapping the ecosystem, designing the filter architecture, specifying cross-system handoffs, and aligning three teams (marketing, operations, development) on a shared direction.</p>
+          <p>AMFA was simultaneously working on a broader website redesign. Rather than waiting for final visual direction, I built the class registration UX using <Tooltip containerClassName="inline" content="Reusable design variables (colors, fonts, spacing) that can be swapped without changing component structure—like changing an outfit without changing the skeleton."><span className="font-bold">design tokens</span></Tooltip> that could be swapped once the new brand system landed. This let us solve the actual UX problems without blocking on visual design decisions. When the redesign shipped, we slotted the new styles right in.</p>
+          <p><strong>What I owned:</strong></p>
+          <ul>
+            <li>Ecosystem mapping and <Tooltip containerClassName="inline" content="The structural design of how content and features are organized, labeled, and connected—the blueprint for where things live and how users find them."><span className="font-bold">information architecture</span></Tooltip></li>
+            <li>Filter logic and <Tooltip containerClassName="inline" content="A UX technique that reveals information gradually as needed, preventing overwhelm by showing only what's relevant at each step."><span className="font-bold">progressive disclosure</span></Tooltip> strategy</li>
+            <li>Cross-system state management spec</li>
+            <li>Wireframes, flow diagrams, and handoff documentation</li>
+            <li>Analytics instrumentation plan (GA4)</li>
+            <li>Stakeholder facilitation across all three teams</li>
+          </ul>
+        </ProseBlock>
+      </ProseSection>
 
-        <hr />
+      {/* ============================================
+          HOW I CREATED CLARITY
+          ============================================ */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="how-i-created-clarity" level={2} label="Approach">How I Created Clarity</Heading>
+          <p>I started by mapping the entire ecosystem—every platform, every handoff point, every place where users dropped off or picked up the phone instead. This gave me a shared artifact to anchor conversations across teams.</p>
+        </ProseBlock>
 
-        <Heading id="key-challenges" level={2}>Key Challenges</Heading>
+        {/* Progressive Disclosure */}
+        <div className="mt-8 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300">
+              <Filter className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Progressive Disclosure Strategy</h3>
+          </div>
+          
+          <p>Rather than overwhelming users with all filter options upfront, I designed a three-level <Tooltip containerClassName="inline" content="A UX technique that reveals information gradually as needed, preventing overwhelm by showing only what's relevant at each step."><span className="font-bold">progressive disclosure</span></Tooltip> pattern:</p>
+          
+          <FadeIn delay={0.1}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+              <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900/50 p-5">
+                <div className="text-xs font-medium text-violet-600 dark:text-violet-400 mb-2">Level 1</div>
+                <h4 className="font-semibold text-zinc-900 dark:text-white text-sm mb-1">Binary Split</h4>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Youth or Adult. One simple choice that immediately halves the cognitive load.</p>
+              </div>
+              <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900/50 p-5">
+                <div className="text-xs font-medium text-violet-600 dark:text-violet-400 mb-2">Level 2</div>
+                <h4 className="font-semibold text-zinc-900 dark:text-white text-sm mb-1">Age-Appropriate Filters</h4>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Age ranges for youth, skill levels for adults. Criteria that match how people actually think about classes.</p>
+              </div>
+              <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900/50 p-5">
+                <div className="text-xs font-medium text-violet-600 dark:text-violet-400 mb-2">Level 3</div>
+                <h4 className="font-semibold text-zinc-900 dark:text-white text-sm mb-1">Refinement</h4>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Schedule, location, instructor. Fine-tuning only after the broad strokes are set.</p>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
 
-        <ul>
-          <li><strong>Fragmented architecture:</strong> Marketing site, class directory (minisite), and cart lived on separate platforms.</li>
-          <li><strong>Broken filtering UX:</strong> Users couldn't quickly distinguish Youth vs. Adult paths or apply relevant criteria.</li>
-          <li><strong>Transition friction:</strong> People crossed systems without context; state was often lost.</li>
-          <li><strong>Stakeholder complexity:</strong> Marketing, operations, and dev teams had overlapping priorities.</li>
-        </ul>
+        {/* System Flow Map */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
+              <Layers className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">System Flow Map</h3>
+          </div>
 
-        <hr />
+          <p>I mapped the full journey across all three platforms—marketing site, class directory, and cart—identifying every transition point, every place state could be lost, and every opportunity to preserve context.</p>
 
-        <Heading id="my-approach" level={2}>My Approach</Heading>
+          <FadeIn delay={0.1}>
+            <FocusImageGallery
+              images={[
+                {
+                  src: "/images/case-studies/amfa-class-filter-redesign/AMFAFilters.png",
+                  alt: "Flow diagram mapping the new AMFA filter and registration flow across three platforms",
+                  caption: "System flow map: Youth vs. Adult filtering logic, cross-platform transitions, and the overlay return pattern that preserves state across system boundaries."
+                },
+                {
+                  src: "/images/case-studies/amfa-class-filter-redesign/class-page-annotations.png",
+                  alt: "Annotated class detail page showing Other Classes panel, navigation flow, and hover interaction documentation",
+                  caption: "Annotated wireframes: class detail page with documentation for related classes logic, navigation behavior, and hover interaction patterns — built so developers could implement without guesswork."
+                }
+              ]}
+            />
+          </FadeIn>
+        </div>
 
-        <ul>
-          <li><strong>Map the ecosystem:</strong> Identified all systems, owners, and transition points, then aligned on entry/exit rules.</li>
-          <li><strong>Clarify the IA up front:</strong> Split the experience into clear <strong>Youth</strong> vs. <strong>Adult</strong> paths to simplify choices.</li>
-          <li><strong>Design flows + wireframes:</strong> Defined filtering, detail pages, and handoffs between systems.</li>
-          <li><strong>Preserve state across systems:</strong> Spec'd an <strong>overlay return pattern</strong> so users can add to cart and return to browsing without losing context.</li>
-          <li><strong>Set up measurement:</strong> Outlined events for discovery, filter engagement, and checkout progression.</li>
-        </ul>
-      </div>
+        {/* Cross-System State Management */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
+              <ArrowRightLeft className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Cross-System State Management</h3>
+          </div>
 
-      <Figure
-        src="/images/case-studies/amfa-class-filter-redesign/AMFAFilters.png"
-        alt="Flow diagram mapping the new AMFA filter and registration flow"
-        caption="Wireframe flow mapping Youth vs. Adult filtering logic and cross-system transitions."
-      />
+          <p>The biggest friction point was the cart handoff. Users would find a class, add it to cart, and then lose all context when they wanted to keep browsing. I designed an <strong>overlay return pattern</strong> that:</p>
+          <ul>
+            <li>Preserves filter state and scroll position across the system boundary</li>
+            <li>Shows cart confirmation without a full page reload</li>
+            <li>Communicates subtotal and time remaining so users stay informed without leaving the page</li>
+            <li>Enables quick return to browsing with maintained context</li>
+          </ul>
+          <p>This single pattern addressed the most common reason users abandoned the online flow and called instead.</p>
 
-      <div className="prose prose-zinc dark:prose-invert max-w-none">
-        <Heading id="system-architecture" level={2}>System Architecture & Flow Design</Heading>
+          <FadeIn delay={0.1}>
+            <FocusImageGallery
+              images={[
+                {
+                  src: "/images/case-studies/amfa-class-filter-redesign/overlay-return-to-cart.png",
+                  alt: "Overlay UI documentation showing return-to-cart pattern in light and dark modes with subtotal, time remaining, and checkout options",
+                  caption: "Overlay return-to-cart spec: light and dark mode variants, subtotal display, countdown timer, and the in-page overlay as seen by users — designed so browsing context is never lost."
+                }
+              ]}
+            />
+          </FadeIn>
+        </div>
 
-        <p>The challenge was to create a seamless experience across three disconnected platforms. I mapped the entire ecosystem to understand where users entered, how they moved between systems, and where they dropped off.</p>
+        {/* Measurement */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+              <BarChart3 className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Measurement Strategy</h3>
+          </div>
 
-        <h3>Progressive Disclosure Strategy</h3>
-        
-        <p>Rather than overwhelming users with all filter options upfront, I implemented a progressive disclosure pattern:</p>
-        
-        <ul>
-          <li><strong>Level 1:</strong> Simple binary choice - Youth or Adult classes</li>
-          <li><strong>Level 2:</strong> Age-appropriate filters (e.g., age ranges for youth, skill levels for adults)</li>
-          <li><strong>Level 3:</strong> Refinement options (schedule, location, instructor)</li>
-        </ul>
+          <p>I defined GA4 events at every critical handoff point so we could validate the redesign and identify remaining friction:</p>
+          
+          <div className="my-4 grid grid-cols-2 md:grid-cols-3 gap-3">
+            {[
+              { event: 'filter_start', label: 'Begin filtering' },
+              { event: 'filter_apply', label: 'Filter selection' },
+              { event: 'class_detail_view', label: 'Class page opened' },
+              { event: 'add_to_cart', label: 'Added to cart' },
+              { event: 'cart_return', label: 'Return to browsing' },
+              { event: 'checkout_complete', label: 'Registration done' },
+            ].map((item) => (
+              <div key={item.event} className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/50 px-3 py-2">
+                <code className="text-xs text-emerald-600 dark:text-emerald-400">{item.event}</code>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{item.label}</div>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400 italic">These events create a funnel we can analyze iteratively—not a one-time measurement, but a feedback loop.</p>
+        </div>
 
-        <h3>Cross-System State Management</h3>
+        {/* Stakeholder Alignment */}
+        <div className="mt-12 space-y-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-300">
+              <FileText className="h-5 w-5" />
+            </div>
+            <h3 className="text-xl font-semibold text-zinc-900 dark:text-white m-0">Stakeholder Alignment</h3>
+          </div>
 
-        <p>To prevent users from losing their place when adding items to cart, I designed an overlay return pattern that:</p>
-        
-        <ul>
-          <li>Preserves filter state and scroll position</li>
-          <li>Shows cart confirmation without full page reload</li>
-          <li>Enables quick return to browsing with maintained context</li>
-        </ul>
+          <p>Three teams (marketing, operations, development) with different priorities. I facilitated alignment through:</p>
+          <ul>
+            <li><strong>Shared language:</strong> A glossary of terms all teams agreed on—so &quot;filter&quot; meant the same thing in every meeting</li>
+            <li><strong>Visual artifacts:</strong> Flow diagrams as discussion anchors (people argue less when they&apos;re pointing at the same picture)</li>
+            <li><strong>Progressive consensus:</strong> High-level goals first, then specifics—so we weren&apos;t debating button labels before agreeing on user paths</li>
+          </ul>
+        </div>
+      </ProseSection>
 
-        <hr />
+      {/* ============================================
+          OUTCOMES
+          ============================================ */}
+      <ProseSection>
+        <ProseBlock>
+          <Heading id="outcomes" level={2} label="Results">Outcomes</Heading>
+          <p>The redesigned class registration experience is <strong>live</strong> — you can <a href="https://classes.arkmfa.org/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-blue-600/30 hover:decoration-blue-500/50 dark:decoration-blue-400/30 transition-colors">try it yourself at classes.arkmfa.org</a>.</p>
+          <p>This is a recent redesign. We&apos;re still collecting post-launch data and full funnel metrics aren&apos;t available yet, but early signals are encouraging:</p>
+          <ul>
+            <li><strong>Support call volume is down an estimated 30–40%</strong> for checkout-related inquiries—people are completing registrations online instead of calling</li>
+            <li><strong>Task completion is trending upward</strong> across the filter-to-checkout funnel</li>
+            <li>Stakeholder feedback highlights clearer paths, better handoffs, and a more resilient cart flow</li>
+          </ul>
+        </ProseBlock>
 
-        <Heading id="deliverables" level={2}>Deliverables</Heading>
+        <ProseBlock delay={0.1}>
+          <h3>What Shipped</h3>
+          <ul>
+            <li>System map and flow diagrams (current → future) with platform boundaries</li>
+            <li>Mid-fidelity wireframes for directory, detail pages, and cross-system components</li>
+            <li>Overlay return spec with UX rules and edge cases</li>
+            <li>Facilitation notes summarizing goals, constraints, and decisions</li>
+            <li>Analytics instrumentation plan with specific GA4 events and parameters</li>
+          </ul>
+        </ProseBlock>
+      </ProseSection>
 
-        <ul>
-          <li><strong>System map / flow diagram</strong> (current → future) with platform boundaries</li>
-          <li><strong>Mid-fidelity wireframes</strong> for directory, detail pages, and cross-system components</li>
-          <li><strong>Overlay return spec</strong> with UX rules and edge cases</li>
-          <li><strong>Facilitation notes</strong> summarizing goals, constraints, and decisions</li>
-          <li><strong>Analytics instrumentation plan</strong> with specific GA4 events and parameters</li>
-        </ul>
+      {/* ============================================
+          LEARNINGS
+          ============================================ */}
+      <ProseSection className="mb-0">
+        <ProseBlock className="mb-8">
+          <Heading id="learnings" level={2} label="Takeaways">Learnings</Heading>
+        </ProseBlock>
 
-        <hr />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+          <LearningCard 
+            title="Systems first"
+            icon="Layers"
+            index={0}
+          >
+            Designing across platforms demands early agreement on boundaries and state. Map the ecosystem before you touch a wireframe.
+          </LearningCard>
 
-        <Heading id="measurement-strategy" level={2}>Measurement Strategy</Heading>
+          <LearningCard 
+            title="Progressive disclosure reduces cognitive load"
+            icon="Filter"
+            index={1}
+          >
+            A simple first split (Youth vs. Adult) made every downstream decision easier. Users stopped guessing and started filtering.
+          </LearningCard>
 
-        <p>To validate the redesign's impact, I defined key events to track post-launch:</p>
+          <LearningCard 
+            title="Trust the return"
+            icon="ArrowRight"
+            index={2}
+          >
+            Preserving context when people &quot;detour&quot; to the cart meaningfully improved task flow. Small UX pattern, outsized impact on completion.
+          </LearningCard>
+        </div>
+      </ProseSection>
 
-        <h3>Core Events</h3>
-        <ul>
-          <li><code>filter_start</code> - User begins filtering journey</li>
-          <li><code>filter_apply</code> - Filter selection made</li>
-          <li><code>class_detail_view</code> - Class page opened</li>
-          <li><code>add_to_cart</code> - Item added to cart</li>
-          <li><code>cart_return_to_directory</code> - Return from cart overlay</li>
-          <li><code>checkout_complete</code> - Registration completed</li>
-        </ul>
-
-        <p>These events enable funnel analysis to identify remaining friction points and optimize the experience iteratively.</p>
-
-        <hr />
-
-        <Heading id="stakeholder-navigation" level={2}>Stakeholder Navigation</Heading>
-
-        <p>With three teams (marketing, operations, development) having different priorities, alignment was crucial. I facilitated workshops using:</p>
-        
-        <ul>
-          <li><strong>Shared language:</strong> Created a glossary of terms all teams agreed on</li>
-          <li><strong>Visual artifacts:</strong> Used flow diagrams as discussion anchors</li>
-          <li><strong>Progressive consensus:</strong> Started with high-level goals, then drilled into specifics</li>
-        </ul>
-
-        <hr />
-
-        <Heading id="outcome" level={2}>Outcome</Heading>
-
-        <p>The new filter architecture is being implemented. Analytics are configured to track discovery, filter engagement, and drop-offs. Early stakeholder feedback highlights clearer paths, better handoffs, and a more resilient cart flow.</p>
-
-        <hr />
-
-        <Heading id="learnings" level={2}>Learnings</Heading>
-
-        <ul>
-          <li><strong>Systems first:</strong> Designing across platforms demands early agreement on boundaries and state.</li>
-          <li><strong>Progressive disclosure works:</strong> A simple first split (Youth vs. Adult) reduces cognitive load downstream.</li>
-          <li><strong>Trust the return:</strong> Preserving context when people "detour" to the cart meaningfully improves task flow.</li>
-        </ul>
-
-        <hr />
-
-        <h3>Credits</h3>
-
-        <p>Arkansas Museum of Fine Arts team, Jixaw agency partners, and the cross-functional stakeholders who collaborated to create a more intuitive class registration experience.</p>
-      </div>
+      {/* ============================================
+          CREDITS
+          ============================================ */}
+      <FadeIn>
+        <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <h3>Credits</h3>
+            <p>Arkansas Museum of Fine Arts team, Jixaw agency partners, and the cross-functional stakeholders who collaborated to create a more intuitive class registration experience.</p>
+          </div>
+        </section>
+      </FadeIn>
     </CaseStudyViewer>
   )
 }

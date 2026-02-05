@@ -98,13 +98,29 @@ function MobileNavigationDialog({
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={{ left: 0.2, right: 0 }}
                 onDragEnd={handleDragEnd}
-                className="fixed top-14 bottom-0 left-0 w-[85vw] max-w-sm overflow-y-auto bg-white px-4 pt-6 pb-4 shadow-2xl border-r border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 touch-pan-y"
+                className="fixed top-14 bottom-0 left-0 w-[85vw] max-w-sm flex flex-col bg-white shadow-2xl border-r border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 touch-pan-y"
               >
-                {/* Drag handle indicator */}
-                <div className="absolute top-3 right-2 flex flex-col gap-1 opacity-30">
-                  <div className="w-1 h-8 rounded-full bg-zinc-400 dark:bg-zinc-600" />
+                {/* Drag handle — vertically centered on right edge */}
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-5">
+                  <div className="w-1 h-10 rounded-full bg-zinc-300 dark:bg-zinc-600" />
                 </div>
-                <Navigation />
+
+                {/* Scrollable nav content */}
+                <div className="flex-1 overflow-y-auto px-4 pt-6 pb-4">
+                  <Navigation />
+                </div>
+
+                {/* Sticky bottom close bar — thumb-zone friendly */}
+                <div className="shrink-0 border-t border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 px-4 py-3">
+                  <button
+                    type="button"
+                    onClick={close}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700 active:bg-zinc-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700"
+                  >
+                    <XIcon className="w-2.5 stroke-current" />
+                    <span>Close Menu</span>
+                  </button>
+                </div>
               </motion.div>
             </DialogPanel>
           </>

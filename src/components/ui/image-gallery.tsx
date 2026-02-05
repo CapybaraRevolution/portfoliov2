@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MagnifyingGlassIcon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Lens } from "@/components/ui/lens";
@@ -87,104 +88,107 @@ export function ImageGallery({ images }: ImageGalleryProps) {
         ))}
       </div>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm"
-            onClick={closeLightbox}
-          >
-            {/* Close Button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-              aria-label="Close lightbox"
-            >
-              <XMarkIcon className="w-6 h-6 text-white" />
-            </button>
-
-            {/* Navigation - Previous */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goToPrevious();
-                }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Previous image"
-              >
-                <ChevronLeftIcon className="w-6 h-6 text-white" />
-              </button>
-            )}
-
-            {/* Navigation - Next */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goToNext();
-                }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Next image"
-              >
-                <ChevronRightIcon className="w-6 h-6 text-white" />
-              </button>
-            )}
-
-            {/* Content - Vertical Layout */}
+      {/* Lightbox — portalled to body to escape stacking contexts */}
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {lightboxOpen && (
             <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm"
+              onClick={closeLightbox}
             >
-              {/* Image - Full Width with Lens */}
-              <div className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0">
-                <Lens zoomFactor={1.5} lensSize={300}>
-                  <motion.img
-                    key={activeImage.src}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    src={activeImage.src}
-                    alt={activeImage.alt}
-                    className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
-                  />
-                </Lens>
-              </div>
+              {/* Close Button */}
+              <button
+                onClick={closeLightbox}
+                className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                aria-label="Close lightbox"
+              >
+                <XMarkIcon className="w-6 h-6 text-white" />
+              </button>
 
-              {/* Caption - Bottom */}
-              <div className="w-full max-w-4xl mt-6 text-center">
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.3 }}
-                  className="text-base lg:text-lg text-white/90 leading-relaxed"
+              {/* Navigation - Previous */}
+              {images.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToPrevious();
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  aria-label="Previous image"
                 >
-                  {activeImage.caption}
-                </motion.p>
-                
-                {/* Image Counter */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="mt-3 text-sm text-white/50"
+                  <ChevronLeftIcon className="w-6 h-6 text-white" />
+                </button>
+              )}
+
+              {/* Navigation - Next */}
+              {images.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToNext();
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  aria-label="Next image"
                 >
-                  {activeIndex + 1} of {images.length}
-                </motion.div>
-              </div>
+                  <ChevronRightIcon className="w-6 h-6 text-white" />
+                </button>
+              )}
+
+              {/* Content - Vertical Layout */}
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Image - Full Width with Lens */}
+                <div className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0">
+                  <Lens zoomFactor={1.5} lensSize={300}>
+                    <motion.img
+                      key={activeImage.src}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      src={activeImage.src}
+                      alt={activeImage.alt}
+                      className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                    />
+                  </Lens>
+                </div>
+
+                {/* Caption - Bottom */}
+                <div className="w-full max-w-4xl mt-6 text-center">
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1, duration: 0.3 }}
+                    className="text-base lg:text-lg text-white/90 leading-relaxed"
+                  >
+                    {activeImage.caption}
+                  </motion.p>
+                  
+                  {/* Image Counter */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-3 text-sm text-white/50"
+                  >
+                    {activeIndex + 1} of {images.length}
+                  </motion.div>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }

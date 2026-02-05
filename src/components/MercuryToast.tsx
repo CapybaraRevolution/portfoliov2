@@ -6,6 +6,7 @@ import { XMarkIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
+import { getAllCaseStudies } from '@/lib/caseStudies'
 
 const TOAST_DURATION = 8000 // 8 seconds
 
@@ -25,6 +26,7 @@ const letterContent = {
 }
 
 export function MercuryToast() {
+  const firstCaseStudy = getAllCaseStudies().find(cs => !cs.comingSoon)
   const [isVisible, setIsVisible] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -404,7 +406,7 @@ export function MercuryToast() {
                 )}
               >
                 <Link
-                  href="/case-studies/breeze-mortgage-hub"
+                  href={`/case-studies/${firstCaseStudy?.slug ?? 'houston-ballet'}`}
                   onClick={handleDismiss}
                   className={cn(
                     'flex w-full items-center justify-center gap-2',

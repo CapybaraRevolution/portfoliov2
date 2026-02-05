@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { ContactDrawer } from '@/components/ContactDrawer'
 import { Button } from '@/components/Button'
@@ -27,11 +27,6 @@ interface NavGroup {
   title: string
   hideChildren?: boolean
   links: NavLink[]
-}
-
-function useInitialValue<T>(value: T, condition = true) {
-  let initialValue = useRef(value).current
-  return condition ? initialValue : value
 }
 
 function TopLevelNavItem({
@@ -112,7 +107,7 @@ function NavLink({
     return (
       <span
         className={clsx(
-          'flex justify-between gap-2 py-2.5 lg:py-1 pr-3 text-sm cursor-not-allowed',
+          'flex justify-between gap-2 py-3 lg:py-1 pr-3 text-sm cursor-not-allowed',
           isAnchorLink ? 'pl-7' : 'pl-4 font-semibold',
           'text-zinc-400 dark:text-zinc-500',
         )}
@@ -131,7 +126,7 @@ function NavLink({
       href={href}
       aria-current={active ? 'page' : undefined}
       className={clsx(
-        'flex justify-between gap-2 py-2.5 lg:py-1 pr-3 text-sm transition-all duration-500',
+        'flex justify-between gap-2 py-3 lg:py-1 pr-3 text-sm transition-all duration-500',
         isAnchorLink ? 'pl-7' : 'pl-4 font-semibold',
         active
           ? 'text-zinc-900 dark:text-white'
@@ -172,16 +167,12 @@ function VisibleSectionHighlight({
   group: NavGroup
   pathname: string
 }) {
-  let [sections, visibleSections] = useInitialValue(
-    [
-      useSectionStore((s) => s.sections),
-      useSectionStore((s) => s.visibleSections),
-    ],
-    useIsInsideMobileNavigation(),
-  )
+  let isMobile = useIsInsideMobileNavigation()
+  let sections = useSectionStore((s) => s.sections)
+  let visibleSections = useSectionStore((s) => s.visibleSections)
 
   let isPresent = useIsPresent()
-  let itemHeight = remToPx(2)
+  let itemHeight = isMobile ? remToPx(2.75) : remToPx(2)
   
   // Filter links the same way they're filtered in render
   let filteredLinks = group.links.filter(
@@ -271,15 +262,9 @@ function ActivePageMarker({
   group: NavGroup
   pathname: string
 }) {
-  let [sections, visibleSections] = useInitialValue(
-    [
-      useSectionStore((s) => s.sections),
-      useSectionStore((s) => s.visibleSections),
-    ],
-    useIsInsideMobileNavigation(),
-  )
+  let isMobile = useIsInsideMobileNavigation()
 
-  let itemHeight = remToPx(2)
+  let itemHeight = isMobile ? remToPx(2.75) : remToPx(2)
   let offset = remToPx(0.25)
   
   // Filter links the same way they're filtered in render
@@ -291,55 +276,11 @@ function ActivePageMarker({
   
   if (activePageIndex === -1) return null
   
-  let height = remToPx(1.5) // Fixed height for the green bar - it's a pinpoint indicator
-  
-  // If hideChildren is true, only show green bar at the page link itself
-  if (group.hideChildren) {
-    let top = offset + activePageIndex * itemHeight
-    return (
-      <motion.div
-        layout
-        className="absolute left-2 w-px bg-emerald-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.2 } }}
-        exit={{ opacity: 0 }}
-        style={{ top, height }}
-      />
-    )
-  }
-  
-  // The green bar shows the PRIMARY section (closest to center-bottom of viewport)
-  // This is the first visible section in the array (prioritized by the SectionProvider)
-  let primarySectionId = visibleSections.find(id => 
-    id === '_top' || sections.some(section => section.id === id)
-  )
-  
-  // If no sections from the current page are visible, show green bar at the page link itself
-  if (!primarySectionId) {
-    let top = offset + activePageIndex * itemHeight
-    return (
-      <motion.div
-        layout
-        className="absolute left-2 w-px bg-emerald-500"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { delay: 0.2 } }}
-        exit={{ opacity: 0 }}
-        style={{ top, height }}
-      />
-    )
-  }
-  
-  let allSections = [{ id: '_top' }, ...sections]
-  let primarySectionIndex = allSections.findIndex(
-    (section) => section.id === primarySectionId
-  )
-  
-  if (primarySectionIndex === -1) primarySectionIndex = 0
-  
-  // Position the green bar at the primary section
-  let sectionOffset = primarySectionIndex * itemHeight
-  let top = offset + activePageIndex * itemHeight + sectionOffset
+  let height = remToPx(1.5)
+  let top = offset + activePageIndex * itemHeight
 
+  // Always show green bar at the PAGE level — section tracking is handled
+  // by the inline SectionActiveIndicator inside the expanded section list
   return (
     <motion.div
       layout
@@ -359,14 +300,10 @@ function NavigationGroup({
   group: NavGroup
   className?: string
 }) {
-  // If this is the mobile navigation then we always render the initial
-  // state, so that the state does not change during the close animation.
-  // The state will still update when we re-open (re-render) the navigation.
   let isInsideMobileNavigation = useIsInsideMobileNavigation()
-  let [pathname, sections] = useInitialValue(
-    [usePathname(), useSectionStore((s) => s.sections)],
-    isInsideMobileNavigation,
-  )
+  let pathname = usePathname()
+  let sections = useSectionStore((s) => s.sections)
+  let visibleSections = useSectionStore((s) => s.visibleSections)
   
   // State for showing arrow on first case study when Timeline is visible (home page only)
   let [shouldShowFirstCaseStudyArrow, setShouldShowFirstCaseStudyArrow] = useState(false)
@@ -523,15 +460,20 @@ function NavigationGroup({
             <VisibleSectionHighlight group={group} pathname={pathname} />
           )}
         </AnimatePresence>
-        <motion.div
-          layout
-          className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"
-        />
-        <AnimatePresence initial={false}>
-          {isActiveGroup && (
-            <ActivePageMarker group={group} pathname={pathname} />
-          )}
-        </AnimatePresence>
+        {/* Outer line + page marker only for groups without expandable children (About section) */}
+        {group.hideChildren && (
+          <>
+            <motion.div
+              layout
+              className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"
+            />
+            <AnimatePresence initial={false}>
+              {isActiveGroup && (
+                <ActivePageMarker group={group} pathname={pathname} />
+              )}
+            </AnimatePresence>
+          </>
+        )}
         {(() => {
           const filteredLinks = group.links.filter(
             (link) => !(link.title === 'Overview' && link.href.includes('/work/overview'))
@@ -567,6 +509,7 @@ function NavigationGroup({
                       {link.href === pathname && sections.length > 0 && (
                         <motion.ul
                           role="list"
+                          className="relative"
                           initial={{ opacity: 0 }}
                           animate={{
                             opacity: 1,
@@ -577,6 +520,36 @@ function NavigationGroup({
                             transition: { duration: 0.15 },
                           }}
                         >
+                          {/* Section hierarchy line — shows these are children of the parent page */}
+                          <div className="absolute left-4 top-0 bottom-0 w-px bg-zinc-900/[0.07] dark:bg-white/[0.07]" />
+                          
+                          {/* Section active indicator — tracks which section is in view */}
+                          {(() => {
+                            const sectionItemHeight = isInsideMobileNavigation ? remToPx(2.75) : remToPx(2)
+                            const markerHeight = remToPx(1.25)
+                            const markerOffset = (sectionItemHeight - markerHeight) / 2
+                            const primaryId = visibleSections.find((id: string) =>
+                              sections.some(s => s.id === id)
+                            )
+                            const sectionIdx = primaryId
+                              ? sections.findIndex(s => s.id === primaryId)
+                              : -1
+                            
+                            if (sectionIdx === -1) return null
+                            
+                            return (
+                              <motion.div
+                                layout
+                                className="absolute left-[calc(1rem-1px)] w-[3px] rounded-full bg-emerald-500"
+                                style={{
+                                  top: sectionIdx * sectionItemHeight + markerOffset,
+                                  height: markerHeight,
+                                }}
+                                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                              />
+                            )
+                          })()}
+
                           {sections.map((section) => (
                             <li key={section.id}>
                               <NavLink

@@ -229,12 +229,14 @@ export default function AvatarGenerationsCaseStudy() {
       </ProseSection>
 
       {/* Credits */}
-      <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
-        <div className="prose prose-zinc dark:prose-invert max-w-none">
-          <h3>Credits</h3>
-          <p>Navigator Games, Square Enix London Mobile, Paramount Pictures, and the talented cross-functional teams who brought Avatar: Generations to life.</p>
-        </div>
-      </section>
+      <FadeIn>
+        <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
+          <div className="prose prose-zinc dark:prose-invert max-w-none">
+            <h3>Credits</h3>
+            <p>Navigator Games, Square Enix London Mobile, Paramount Pictures, and the talented cross-functional teams who brought Avatar: Generations to life.</p>
+          </div>
+        </section>
+      </FadeIn>
     </CaseStudyViewer>
   )
 }
