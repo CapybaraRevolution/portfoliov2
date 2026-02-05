@@ -32,6 +32,13 @@ export default function AvatarGenerationsCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  const summary = {
+    context: 'Navigator Games / Square Enix needed a UX documentation layer to bridge art and engineering on a licensed mobile RPG (Avatar: The Last Airbender).',
+    constraints: 'Fast-moving game production with art and engineering working in parallel; licensed IP with strict brand requirements; no existing design system or documentation standard.',
+    decisions: 'Created UX documentation as the single source of truth \u2014 user flows with decision points and edge cases, component anatomy specs with state definitions, and design system foundations (button hierarchies, type, spacing).',
+    impact: '42% reduction in UI ticket cycle time*; 34% reduction in design rework*; 25% increase in onboarding completion (Delta DNA funnel analysis).',
+  }
+
   const metrics = [
     {
       label: 'UI Ticket Cycle Time*',
@@ -60,6 +67,7 @@ export default function AvatarGenerationsCaseStudy() {
     <CaseStudyViewer 
       caseStudy={caseStudy} 
       metrics={metrics}
+      summary={summary}
       heroImage={
         <FadeIn>
           <Image

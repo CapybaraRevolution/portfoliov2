@@ -30,11 +30,18 @@ export default function AMFAClassFilterRedesignCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  const summary = {
+    context: 'Arkansas Museum of Fine Arts needed to unify class discovery and registration across three disconnected platforms (marketing site, directory, cart).',
+    constraints: 'Three separate systems with no shared state; mixed audience (parents registering kids vs. adults); stakeholder alignment needed across marketing, ops, and dev.',
+    decisions: 'Designed progressive disclosure filter (Youth/Adult binary split first, then age-appropriate options); built overlay return pattern to preserve cross-system context; created GA4 instrumentation plan for measurement.',
+    impact: 'Support call volume down ~30\u201340% for checkout inquiries (metrics still being collected); task completion trending upward across the filter-to-checkout funnel.',
+  }
+
   // Metrics hidden — this is a recent redesign and we're still collecting post-launch data
   const metrics = null
 
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} summary={summary}>
       
       {/* ============================================
           THE PROBLEM
@@ -234,7 +241,7 @@ export default function AMFAClassFilterRedesignCaseStudy() {
           <p>The redesigned class registration experience is <strong>live</strong> — you can <a href="https://classes.arkmfa.org/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-blue-600/30 hover:decoration-blue-500/50 dark:decoration-blue-400/30 transition-colors">try it yourself at classes.arkmfa.org</a>.</p>
           <p>This is a recent redesign. We&apos;re still collecting post-launch data and full funnel metrics aren&apos;t available yet, but early signals are encouraging:</p>
           <ul>
-            <li><strong>Support call volume is down an estimated 30–40%</strong> for checkout-related inquiries—people are completing registrations online instead of calling</li>
+            <li><strong>Support call volume is down an estimated ~30–40%</strong> for checkout-related inquiries—people are completing registrations online instead of calling</li>
             <li><strong>Task completion is trending upward</strong> across the filter-to-checkout funnel</li>
             <li>Stakeholder feedback highlights clearer paths, better handoffs, and a more resilient cart flow</li>
           </ul>

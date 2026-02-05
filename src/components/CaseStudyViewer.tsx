@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { CaseStudyHeader } from '@/components/CaseStudyHeader'
+import { CaseSummaryCard, type CaseSummaryData } from '@/components/case-studies/CaseSummaryCard'
 import { trackCaseStudyEntry, trackCaseStudyView } from '@/components/GoogleAnalytics'
 import { useScrollDepth } from '@/hooks/useScrollDepth'
 import { useTimeOnPage } from '@/hooks/useTimeOnPage'
@@ -19,10 +20,12 @@ interface CaseStudyViewerProps {
   metrics?: ImpactMetricProps[] | null
   /** Optional hero image element to render above the goal block */
   heroImage?: React.ReactNode
+  /** Optional "At a Glance" summary for decision-makers */
+  summary?: CaseSummaryData
   children: React.ReactNode
 }
 
-export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: CaseStudyViewerProps) {
+export function CaseStudyViewer({ caseStudy, metrics, heroImage, summary, children }: CaseStudyViewerProps) {
   const [servicesExpanded, setServicesExpanded] = useState(false)
 
   // Track case study entry and view
@@ -41,7 +44,12 @@ export function CaseStudyViewer({ caseStudy, metrics, heroImage, children }: Cas
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
-      <CaseStudyHeader caseStudy={caseStudy} className="mb-12" />
+      <CaseStudyHeader caseStudy={caseStudy} className="mb-8" />
+
+      {/* At a Glance — scannable summary for decision-makers */}
+      {summary && (
+        <CaseSummaryCard summary={summary} className="mb-12" />
+      )}
       
       {/* Optional Hero Image - renders above goal */}
       {heroImage && (

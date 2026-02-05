@@ -57,7 +57,6 @@ A multi-stakeholder alignment project for a government-backed social finance ini
 
 ### Current Metrics
 
-- **Stakeholder Alignment**: 95%
 - **Users Surveyed**: 42
 - **Pages Wireframed**: 5
 
@@ -306,8 +305,6 @@ Turned a fragmented workflow into a coherent, measurable experience for Boveda's
 
 ### Current Metrics (displayed)
 
-- **Requirements Coverage**: 90%
-- **Stakeholder Alignment**: 94%
 - **User Flows Drafted**: 7
 
 ### Current Structure

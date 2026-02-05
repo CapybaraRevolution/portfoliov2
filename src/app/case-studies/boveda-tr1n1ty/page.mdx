@@ -23,22 +23,15 @@ export default function BovedaTr1n1tyCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  const summary = {
+    context: 'Boveda\u0027s Tr1n1ty product had grown organically \u2014 core flows worked but users hit friction from duplicated entry points, unclear states, and extra steps.',
+    constraints: 'Teams had different mental models of the same journey; no shared success metrics; needed iterative delivery within existing tech constraints.',
+    decisions: 'Mapped end-to-end user flows; ran task-based usability testing (5\u20137 users); simplified IA with clearer entry points and recovery paths; wrote lean PRDs for incremental delivery.',
+    impact: '7 user flows drafted covering critical journeys including recovery paths; mid-fidelity wireframes and clickable prototype shipped for stakeholder validation.',
+  }
+
   // Metrics data with measurable outcomes
   const metrics = [
-    {
-      label: 'Requirements Coverage',
-      value: 90,
-      suffix: '%',
-      description: 'Comprehensive end-to-end flow documentation',
-      highlight: true,
-    },
-    {
-      label: 'Stakeholder Alignment',
-      value: 94,
-      suffix: '%',
-      description: 'Unified mental models across teams',
-      highlight: true,
-    },
     {
       label: 'User Flows Drafted',
       value: 7,
@@ -48,7 +41,7 @@ export default function BovedaTr1n1tyCaseStudy() {
   ]
 
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} summary={summary}>
       <ConstructionBanner />
       <div className="prose prose-zinc dark:prose-invert max-w-none">
         <h2>Executive summary</h2>

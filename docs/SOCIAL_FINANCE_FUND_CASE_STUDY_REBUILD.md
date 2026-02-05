@@ -8,7 +8,7 @@ Transform the Social Finance Fund case study from a basic prose layout into a ri
 - **Current structure**: Basic prose with simple headings, includes ConstructionBanner (needs removal)
 - **Content**: Good story about stakeholder alignment, survey work, AI-assisted IA, wireframes
 - **Assets**: Logo, survey conditional logic image
-- **Metrics**: Already defined (Stakeholder Alignment 95%, Users Surveyed 42, Pages Wireframed 5)
+- **Metrics**: Already defined (Users Surveyed 42, Wireframe Templates 9+, Knowledge Bank Longevity 6–7 mo)
 
 ## Target Structure (Following Examples)
 

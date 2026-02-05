@@ -30,6 +30,13 @@ export default function HoustonBalletCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  const summary = {
+    context: 'Jixaw Technologies needed to explore whether AI-assisted design tooling (Figma Make) could accelerate product delivery — Houston Ballet\u0027s mobile ticketing as the proof case.',
+    constraints: 'One-day build constraint to test the AI-assisted workflow; designing for APIs that don\u0027t exist yet; needed multi-tenant architecture from day one.',
+    decisions: 'Designed TypeScript interfaces as API contracts before any backend existed; built multi-tenant architecture (design tokens, feature flags, service abstractions) instead of a one-off; wrote a 337-line developer handoff guide documenting open questions.',
+    impact: 'Functional React prototype built in one day; 4,900+ lines of infrastructure code; 15+ TypeScript interfaces; proved the workflow for future clients.',
+  }
+
   const metrics = [
     {
       label: 'Infrastructure Code',
@@ -55,7 +62,7 @@ export default function HoustonBalletCaseStudy() {
   ]
 
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} summary={summary}>
       
       {/* Context - lighter touch */}
       <ProseSection>

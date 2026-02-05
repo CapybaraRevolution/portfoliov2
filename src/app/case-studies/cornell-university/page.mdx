@@ -40,13 +40,20 @@ export default function CornellUniversityCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  const summary = {
+    context: 'Cornell needed to unify three business schools (Johnson, Nolan, Dyson) into one coherent digital experience — different brands, audiences, and content structures.',
+    constraints: 'Three schools with distinct identities and stakeholder groups; complex IA (programs, research, faculty, events) with overlapping content; serving prospective students, current students, alumni, and faculty.',
+    decisions: 'Anchored all decisions around 3 validated personas (not stakeholder opinions); built a library of 55 reusable page modules with clear inputs, variants, and rules; designed three-tier navigation (global, sectional, in-page) with naming conventions.',
+    impact: 'Users found program information in under 2 minutes (usability testing); 55 modules wireframed in a system-first approach; 3 core personas defined and validated.',
+  }
+
   // Results metrics - directional
   const metrics = [
     {
-      label: 'Findability Improvement',
-      value: 92,
-      suffix: '%',
-      description: 'Users successfully found program info in under 2 minutes',
+      label: 'Time to Find Programs',
+      value: 2,
+      suffix: ' min',
+      description: 'Users found program info across all three schools (usability testing)',
       highlight: true,
     },
     {
@@ -261,7 +268,7 @@ export default function CornellUniversityCaseStudy() {
   )
 
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} summary={summary}>
       {/* Context Section - 50/50 layout with orbiting circles */}
       <SplitSection
         visual={orbitingCirclesVisual}

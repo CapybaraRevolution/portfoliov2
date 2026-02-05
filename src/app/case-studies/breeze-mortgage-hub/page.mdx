@@ -40,6 +40,13 @@ export default function BreezeMortgageHubCaseStudy() {
     return <div>Case study not found</div>
   }
 
+  const summary = {
+    context: 'Early-stage fintech startup needed to design a mortgage platform from zero — no existing product, no design system, needed to prove the concept to investors.',
+    constraints: 'Greenfield product in a complex regulatory domain (mortgage); solo UX lead supporting a CEO directly; needed investor-ready prototypes alongside dev-ready specs.',
+    decisions: 'Built a 95+ component design system with interaction rules and tokens from day one; identified 4 AI integration opportunities (document classification, smart form assist, conversational guidance); designed 56 screens across 12 flows with acceptance criteria.',
+    impact: '96% reduction in feature design time (from months of iteration to alignment in a week); helped secure $2.3M Series A funding.',
+  }
+
   // Results metrics - aligned to buyer outcomes
   const metrics = [
     {
@@ -65,7 +72,7 @@ export default function BreezeMortgageHubCaseStudy() {
   ]
 
   return (
-    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics}>
+    <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} summary={summary}>
       
       {/* The Problem - 50/50 layout with icon cloud */}
       <SplitSection
