@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Loader2, Box, Layers, Users, FileText } from
 import Image from 'next/image'
 import { Lens } from '@/components/ui/lens'
 import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
+import { useSwipe } from '@/hooks/useSwipe'
 
 interface StepImage {
   src: string
@@ -232,6 +233,15 @@ export function FlowWalkthrough({ currentStep: controlledStep, onStepChange }: F
     setCurrentStep(currentStep === steps.length - 1 ? 0 : currentStep + 1)
   }
 
+  // Swipe support for mobile navigation
+  const swipeHandlers = useSwipe(
+    {
+      onSwipeLeft: goToNext,
+      onSwipeRight: goToPrevious,
+    },
+    { threshold: 40 }
+  )
+
   const currentStepData = steps[currentStep]
   const viewport = stepViewports[currentStep]
 
@@ -265,8 +275,8 @@ export function FlowWalkthrough({ currentStep: controlledStep, onStepChange }: F
         </div>
       </div>
 
-      {/* Flow Diagram Viewer - now inside the same container */}
-      <div className="relative w-full aspect-2/1 bg-zinc-100 dark:bg-zinc-900 overflow-hidden border-b border-zinc-200 dark:border-zinc-700">
+      {/* Flow Diagram Viewer — swipeable on mobile */}
+      <div className="relative w-full aspect-2/1 bg-zinc-100 dark:bg-zinc-900 overflow-hidden border-b border-zinc-200 dark:border-zinc-700" {...swipeHandlers}>
         {/* Loading state */}
         {!imageLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 z-10">
@@ -320,10 +330,11 @@ export function FlowWalkthrough({ currentStep: controlledStep, onStepChange }: F
           </div>
         </div>
 
-        {/* Hint text */}
+        {/* Hint text — adapt for mobile */}
         <div className="absolute bottom-3 right-3 z-10">
           <div className="px-2.5 py-1.5 rounded-full bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-500 dark:text-zinc-400 shadow-sm">
-            Use steps to navigate
+            <span className="hidden md:inline">Use steps to navigate</span>
+            <span className="md:hidden">Swipe or tap steps</span>
           </div>
         </div>
       </div>

@@ -1,29 +1,57 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { XMarkIcon, ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline"
 import { Lens } from "@/components/ui/lens"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
+import { useSwipe } from "@/hooks/useSwipe"
 
 interface FocusImage {
   src: string
   alt: string
   caption?: string
+  /** Explicit width for proper aspect ratio (optional — falls back to sensible default) */
+  width?: number
+  /** Explicit height for proper aspect ratio (optional — falls back to sensible default) */
+  height?: number
 }
 
 interface FocusImageGalleryProps {
   images: FocusImage[]
   className?: string
+  /** Override grid column count. Auto-selects based on image count when omitted. */
+  columns?: 1 | 2 | 3 | 4
 }
 
-export function FocusImageGallery({ images, className }: FocusImageGalleryProps) {
+/**
+ * Determines the optimal grid column count based on the number of images.
+ * - 1 image  → 1 column  (full-width showcase)
+ * - 2 images → 2 columns (side-by-side)
+ * - 3+ images → 3 columns (gallery grid)
+ */
+function getGridCols(count: number): string {
+  if (count === 1) return "grid-cols-1"
+  if (count === 2) return "grid-cols-1 sm:grid-cols-2"
+  return "grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+}
+
+export function FocusImageGallery({ images, className, columns }: FocusImageGalleryProps) {
   const [hovered, setHovered] = useState<number | null>(null)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const [magnifierActive, setMagnifierActive] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile for conditional rendering
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const openLightbox = (index: number) => {
     setActiveIndex(index)
@@ -44,6 +72,15 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
     setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
     setMagnifierActive(false)
   }, [images.length])
+
+  // Swipe handlers for the lightbox
+  const lightboxSwipe = useSwipe(
+    {
+      onSwipeLeft: goToNext,
+      onSwipeRight: goToPrevious,
+    },
+    { threshold: 40 }
+  )
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -66,10 +103,20 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
 
   const activeImage = images[activeIndex]
 
+  // Determine grid columns — explicit override or auto-select
+  const gridCols = columns
+    ? {
+        1: "grid-cols-1",
+        2: "grid-cols-1 sm:grid-cols-2",
+        3: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
+        4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-4",
+      }[columns]
+    : getGridCols(images.length)
+
   return (
     <>
       {/* Grid of focus cards */}
-      <div className={cn("grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full", className)}>
+      <div className={cn("grid gap-4 max-w-4xl mx-auto w-full", gridCols, className)}>
         {images.map((image, index) => (
           <div
             key={index}
@@ -81,14 +128,14 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
               hovered !== null && hovered !== index && "blur-sm scale-[0.98]"
             )}
           >
-            <div className="relative w-full" style={{ aspectRatio: 'auto' }}>
+            <div className="relative w-full flex items-center justify-center">
               <Image
                 src={image.src}
                 alt={image.alt}
-                width={600}
-                height={800}
+                width={image.width ?? 800}
+                height={image.height ?? 600}
                 className="w-full h-auto object-contain rounded-lg"
-                style={{ maxHeight: '400px' }}
+                sizes={images.length === 1 ? "(max-width: 768px) 100vw, 800px" : "(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"}
               />
             </div>
             
@@ -134,6 +181,7 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
               transition={{ duration: 0.2 }}
               className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm"
               onClick={closeLightbox}
+              {...lightboxSwipe}
             >
               {/* Close Button */}
               <button
@@ -163,28 +211,28 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                 )}
               </AnimatePresence>
 
-              {/* Navigation - Previous */}
+              {/* Navigation - Previous (hidden on mobile — use swipe instead) */}
               {images.length > 1 && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     goToPrevious()
                   }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-colors hidden md:flex"
                   aria-label="Previous image"
                 >
                   <ChevronLeftIcon className="w-6 h-6 text-white" />
                 </button>
               )}
 
-              {/* Navigation - Next */}
+              {/* Navigation - Next (hidden on mobile — use swipe instead) */}
               {images.length > 1 && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
                     goToNext()
                   }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 items-center justify-center transition-colors hidden md:flex"
                   aria-label="Next image"
                 >
                   <ChevronRightIcon className="w-6 h-6 text-white" />
@@ -196,7 +244,7 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                 className="h-full flex flex-col items-center justify-center p-6 lg:p-12"
                 onClick={closeLightbox}
               >
-                {/* Image with Lens - only this area captures clicks for magnifier */}
+                {/* Image with Lens on desktop, plain on mobile */}
                 <motion.div
                   key={activeIndex}
                   initial={{ opacity: 0, y: 20 }}
@@ -206,12 +254,7 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                   className="w-full max-w-6xl flex-1 flex items-center justify-center min-h-0"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <Lens 
-                    zoomFactor={1.5} 
-                    lensSize={300}
-                    hoverable={false}
-                    onActiveChange={setMagnifierActive}
-                  >
+                  {isMobile ? (
                     <motion.img
                       key={activeImage.src}
                       initial={{ opacity: 0, scale: 0.95 }}
@@ -219,17 +262,34 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                       transition={{ duration: 0.3 }}
                       src={activeImage.src}
                       alt={activeImage.alt}
-                      className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                      className="max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
                     />
-                  </Lens>
+                  ) : (
+                    <Lens 
+                      zoomFactor={1.5} 
+                      lensSize={300}
+                      hoverable={false}
+                      onActiveChange={setMagnifierActive}
+                    >
+                      <motion.img
+                        key={activeImage.src}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                        src={activeImage.src}
+                        alt={activeImage.alt}
+                        className="max-h-[60vh] lg:max-h-[70vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
+                      />
+                    </Lens>
+                  )}
                 </motion.div>
 
-                {/* Caption - clicking here also closes */}
-                {activeImage.caption && (
-                  <div 
-                    className="w-full max-w-4xl mt-6 text-center"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                {/* Caption and navigation info */}
+                <div 
+                  className="w-full max-w-4xl mt-6 text-center"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {activeImage.caption && (
                     <motion.p
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -238,20 +298,21 @@ export function FocusImageGallery({ images, className }: FocusImageGalleryProps)
                     >
                       {activeImage.caption}
                     </motion.p>
-                    
-                    {/* Image Counter */}
-                    {images.length > 1 && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-3 text-sm text-white/50"
-                      >
-                        {activeIndex + 1} of {images.length}
-                      </motion.div>
-                    )}
-                  </div>
-                )}
+                  )}
+                  
+                  {/* Image Counter + swipe hint on mobile */}
+                  {images.length > 1 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="mt-3 text-sm text-white/50"
+                    >
+                      {activeIndex + 1} of {images.length}
+                      <span className="md:hidden"> · Swipe to navigate</span>
+                    </motion.div>
+                  )}
+                </div>
               </div>
             </motion.div>
           )}

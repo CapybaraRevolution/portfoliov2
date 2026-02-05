@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 import { ChevronLeft, ChevronRight, Loader2, Users, Search, FileCheck, Handshake, Eye } from 'lucide-react'
 import { Tooltip } from '@/components/ui/tooltip-card'
+import { useSwipe } from '@/hooks/useSwipe'
+import Image from 'next/image'
 
 interface WalkthroughStep {
   id: number
@@ -132,25 +134,29 @@ const steps: WalkthroughStep[] = [
 ]
 
 // =============================================================================
-// VIEWPORT CONFIGURATION - Adjust these values to frame each section
+// VIEWPORT CONFIGURATION
 // =============================================================================
-// x: horizontal position (0 = left edge, higher = pan right)
-// y: vertical position (0 = top edge, higher = pan down)  
-// zoom: scale multiplier (1 = 100%, 1.5 = 150%, 2 = 200%, etc.)
+// x: horizontal pan (percentage of the zoomed image container)
+// y: vertical pan (percentage of the zoomed image container)
 //
-// Tips:
-// - Higher zoom = more detail visible, smaller viewport shifts needed
-// - x/y are percentages of the zoomed image size
-// - Start with zoom, then adjust x/y to frame the content
+// The image container uses a fixed zoom (width/height set once via CSS)
+// matching the FlowWalkthrough pattern for consistent cross-device behavior.
+// Only x/y positions are animated — no zoom transitions between steps.
 // =============================================================================
 const stepViewports = [
-  { x: 0,   y: 12,  zoom: 4.0 },   // Step 1: Landing Page - Start Point area
-  { x: 18,  y: 20,  zoom: 3.0 },   // Step 2: Investor Landing Page  
-  { x: 45,  y: 30,  zoom: 10.0 },  // Step 3: Directory Tool
-  { x: 58,  y: 28,  zoom: 4.0 },   // Step 4: Directory Entry
-  { x: 83,  y: 28,  zoom: 4.0 },   // Step 5: Learning Hub - right side
-  { x: 0,   y: 0,   zoom: 1.0 },   // Step 6: Full Overview - zoomed out to show entire journey
+  { x: 0,   y: 10  },   // Step 1: Landing Page - Start Point area
+  { x: 14,  y: 14  },   // Step 2: Investor Landing Page  
+  { x: 32,  y: 18  },   // Step 3: Directory Tool
+  { x: 52,  y: 14  },   // Step 4: Directory Entry
+  { x: 74,  y: 14  },   // Step 5: Learning Hub - right side
+  { x: 0,   y: 0   },   // Step 6: Full Overview - zoomed out
 ]
+
+// Step 6 shows the full journey — use a smaller zoom to fit everything
+const DETAIL_ZOOM_WIDTH = '380%'
+const DETAIL_ZOOM_HEIGHT = '280%'
+const OVERVIEW_WIDTH = '100%'
+const OVERVIEW_HEIGHT = '100%'
 
 interface JourneyWalkthroughProps {
   /** When true, removes top border and top rounded corners for seamless accordion integration */
@@ -164,6 +170,9 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
   const [shimmerDone, setShimmerDone] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
+
+  // Determine if we're on the overview step (last step)
+  const isOverview = currentStep === steps.length - 1
 
   // Fire shimmer once after component scrolls into view + 1.5s delay
   useEffect(() => {
@@ -193,7 +202,6 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
   }, [prefersReducedMotion, shimmerReady, shimmerDone])
 
   // Fallback: if image hasn't loaded after 5 seconds, show it anyway
-  // (handles cases where onLoadingComplete doesn't fire)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!imageLoaded) {
@@ -210,6 +218,15 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
   const goToNext = () => {
     setCurrentStep(currentStep === steps.length - 1 ? 0 : currentStep + 1)
   }
+
+  // Swipe support for mobile navigation
+  const swipeHandlers = useSwipe(
+    {
+      onSwipeLeft: goToNext,
+      onSwipeRight: goToPrevious,
+    },
+    { threshold: 40 }
+  )
 
   const currentStepData = steps[currentStep]
   const viewport = stepViewports[currentStep]
@@ -264,8 +281,11 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
         </div>
       </div>
 
-      {/* Journey Map Viewer */}
-      <div className="relative w-full aspect-[2/1] bg-zinc-100 dark:bg-zinc-900 overflow-hidden border-b border-zinc-200 dark:border-zinc-700">
+      {/* Journey Map Viewer — swipeable on mobile */}
+      <div
+        className="relative w-full aspect-[2/1] bg-zinc-100 dark:bg-zinc-900 overflow-hidden border-b border-zinc-200 dark:border-zinc-700"
+        {...swipeHandlers}
+      >
         {/* Loading state */}
         {!imageLoaded && (
           <div className="absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 z-10">
@@ -276,14 +296,16 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
           </div>
         )}
         
-        {/* Animated image container with zoom support */}
+        {/* Animated image container — fixed zoom, animated position (matching FlowWalkthrough pattern) */}
         <motion.div
-          className="absolute origin-top-left"
+          className="absolute"
+          style={{
+            width: isOverview ? OVERVIEW_WIDTH : DETAIL_ZOOM_WIDTH,
+            height: isOverview ? OVERVIEW_HEIGHT : DETAIL_ZOOM_HEIGHT,
+          }}
           animate={{
-            width: `${viewport.zoom * 100}%`,
-            height: `${viewport.zoom * 100}%`,
-            x: `${-viewport.x}%`,
-            y: `${-viewport.y}%`,
+            x: isOverview ? '0%' : `${-viewport.x}%`,
+            y: isOverview ? '0%' : `${-viewport.y}%`,
           }}
           transition={{
             type: "spring",
@@ -292,13 +314,17 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
             mass: 1,
           }}
         >
-          <img
+          <Image
             src="/images/case-studies/social-finance-fund/user-flow-journey-map.png"
             alt="Social Finance Hub User Journey Map"
+            fill
             className={cn(
-              "w-full h-full object-contain object-left transition-opacity duration-300",
+              "object-contain object-top-left transition-opacity duration-300",
               imageLoaded ? "opacity-100" : "opacity-0"
             )}
+            sizes="(max-width: 768px) 400vw, 380vw"
+            quality={100}
+            priority
             onLoad={() => setImageLoaded(true)}
           />
         </motion.div>
@@ -313,10 +339,11 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
           </div>
         </div>
 
-        {/* Hint text */}
+        {/* Hint text — adapt for mobile */}
         <div className="absolute bottom-3 right-3 z-10">
           <div className="px-2.5 py-1.5 rounded-full bg-white/90 dark:bg-zinc-800/90 backdrop-blur-sm border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-500 dark:text-zinc-400 shadow-sm">
-            Use steps to navigate
+            <span className="hidden md:inline">Use steps to navigate</span>
+            <span className="md:hidden">Swipe or tap steps</span>
           </div>
         </div>
       </div>
