@@ -101,17 +101,19 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
           ) : (
             <span className={`inline-flex items-center gap-x-1.5 px-2 py-1 rounded-md text-xs font-medium ${
               project.status === 'ongoing' 
-                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
             }`}>
-              <svg viewBox="0 0 6 6" aria-hidden="true" className={`size-1.5 ${
-                project.status === 'ongoing' 
-                  ? 'fill-emerald-500 animate-pulse' 
-                  : 'fill-zinc-400'
-              }`}>
-                <circle r={3} cx={3} cy={3} />
-              </svg>
-              {project.status === 'ongoing' ? 'Ongoing' : 'Completed'}
+              {project.status === 'ongoing' ? (
+                <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-blue-500 animate-pulse">
+                  <circle r={3} cx={3} cy={3} />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3 fill-emerald-500">
+                  <path d="M10.28 2.28a.75.75 0 0 0-1.06-1.06L4.5 5.94 2.78 4.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l5.25-5.25Z" />
+                </svg>
+              )}
+              {project.status === 'ongoing' ? 'Ongoing' : 'Complete'}
             </span>
           )}
         </div>

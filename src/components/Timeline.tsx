@@ -183,20 +183,7 @@ const getTimelineData = (): TimelineNode[] => {
       }
     })
 
-  // Add Future Focus entry at the top
-  const futureFocusNode: TimelineNode = {
-    id: 'node-0',
-    title: 'Future Focus: AI-Driven Workflows',
-    client: 'Innovation & Strategy',
-    period: '2024 – Present',
-    description: 'Exploring how AI tools can enhance product workflows, from automated user research synthesis to intelligent design systems and predictive analytics.',
-    link: '#', // No link for future focus
-    status: 'Ongoing',
-    aiAccelerated: true,
-    skillIds: [] // No skill chips for future focus
-  }
-
-  return [futureFocusNode, ...caseStudyNodes]
+  return caseStudyNodes
 }
 
 export function Timeline() {
@@ -440,22 +427,28 @@ export function Timeline() {
                     <span
                       className={`inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
                         node.status === 'Ongoing'
-                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                          : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                          : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
                       }`}
                     >
-                      <svg
-                        viewBox="0 0 6 6"
-                        aria-hidden="true"
-                        className={`size-1.5 ${
-                          node.status === 'Ongoing'
-                            ? 'animate-pulse fill-emerald-500'
-                            : 'fill-zinc-400'
-                        }`}
-                      >
-                        <circle r={3} cx={3} cy={3} />
-                      </svg>
-                      {node.status}
+                      {node.status === 'Ongoing' ? (
+                        <svg
+                          viewBox="0 0 6 6"
+                          aria-hidden="true"
+                          className="size-1.5 animate-pulse fill-blue-500"
+                        >
+                          <circle r={3} cx={3} cy={3} />
+                        </svg>
+                      ) : (
+                        <svg
+                          viewBox="0 0 12 12"
+                          aria-hidden="true"
+                          className="size-3 fill-emerald-500"
+                        >
+                          <path d="M10.28 2.28a.75.75 0 0 0-1.06-1.06L4.5 5.94 2.78 4.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l5.25-5.25Z" />
+                        </svg>
+                      )}
+                      {node.status === 'Completed' ? 'Complete' : node.status}
                     </span>
                   )}
                 </div>

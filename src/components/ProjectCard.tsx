@@ -103,12 +103,21 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 {project.timeline}
               </span>
             )}
-            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
+            <span className={`inline-flex items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${
               project.status === 'ongoing' 
-                ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 ring-green-600/20 dark:ring-green-400/30'
-                : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 ring-zinc-500/10 dark:ring-zinc-400/20'
+                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-blue-600/20 dark:ring-blue-400/30'
+                : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 ring-emerald-600/20 dark:ring-emerald-400/30'
             }`}>
-              {project.status === 'ongoing' ? 'Ongoing' : 'Completed'}
+              {project.status === 'ongoing' ? (
+                <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 fill-blue-500 animate-pulse">
+                  <circle r={3} cx={3} cy={3} />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3 fill-emerald-500">
+                  <path d="M10.28 2.28a.75.75 0 0 0-1.06-1.06L4.5 5.94 2.78 4.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l5.25-5.25Z" />
+                </svg>
+              )}
+              {project.status === 'ongoing' ? 'Ongoing' : 'Complete'}
             </span>
           </dd>
         </div>
