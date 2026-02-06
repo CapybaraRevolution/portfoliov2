@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { CalendarIcon, BriefcaseIcon } from '@heroicons/react/20/solid'
+import { motion, AnimatePresence, useMotionTemplate, useMotionValue, type MotionValue } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
@@ -11,6 +12,7 @@ import { AIBadge } from '@/components/ui/AIBadge'
 import { NeonGradientCard } from '@/components/ui/neon-gradient-card'
 import { SkillChip } from '@/components/SkillChip'
 import { standardizedSkills } from '@/data/standardizedSkills'
+import { GridPattern } from '@/components/GridPattern'
 import { getAllCaseStudies } from '@/lib/caseStudies'
 
 const TracingBeam = dynamic(
@@ -182,6 +184,122 @@ const getTimelineData = (): TimelineNode[] => {
     })
 
   return caseStudyNodes
+}
+
+// Mouse-tracking grid pattern adapted from RefactoredProjectCard
+function TimelineCardPattern({
+  mouseX,
+  mouseY,
+  ...gridProps
+}: {
+  mouseX: MotionValue<number>
+  mouseY: MotionValue<number>
+  y: string | number
+  squares: Array<[x: number, y: number]>
+}) {
+  const maskImage = useMotionTemplate`radial-gradient(180px at ${mouseX}px ${mouseY}px, white, transparent)`
+  const style = { maskImage, WebkitMaskImage: maskImage }
+
+  return (
+    <div className="pointer-events-none">
+      <div className="absolute inset-0 rounded-xl mask-[linear-gradient(white,transparent)] transition duration-300 group-hover/card:opacity-50">
+        <GridPattern
+          width={72}
+          height={56}
+          x="50%"
+          className="absolute inset-x-0 inset-y-[-30%] h-[160%] w-full skew-y-[-18deg] fill-black/2 stroke-black/5 dark:fill-white/1 dark:stroke-white/2.5"
+          {...gridProps}
+        />
+      </div>
+      <motion.div
+        className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#D7EDEA] to-[#F4FBDF] opacity-0 transition duration-300 group-hover/card:opacity-100 dark:from-[#202D2E] dark:to-[#303428]"
+        style={style}
+      />
+      <motion.div
+        className="absolute inset-0 rounded-xl opacity-0 mix-blend-overlay transition duration-300 group-hover/card:opacity-100"
+        style={style}
+      >
+        <GridPattern
+          width={72}
+          height={56}
+          x="50%"
+          className="absolute inset-x-0 inset-y-[-30%] h-[160%] w-full skew-y-[-18deg] fill-black/50 stroke-black/70 dark:fill-white/2.5 dark:stroke-white/10"
+          {...gridProps}
+        />
+      </motion.div>
+    </div>
+  )
+}
+
+// Extracted card wrapper to enable per-card useMotionValue hooks for mouse tracking
+function TimelineCardElement({
+  isActive,
+  isDisabled,
+  neonColors,
+  nodeContent,
+  cardFooter,
+}: {
+  isActive: boolean
+  isDisabled: boolean
+  neonColors: { firstColor: string; secondColor: string }
+  nodeContent: React.ReactNode
+  cardFooter: React.ReactNode
+}) {
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+
+  function onMouseMove({
+    currentTarget,
+    clientX,
+    clientY,
+  }: React.MouseEvent<HTMLDivElement>) {
+    const { left, top } = currentTarget.getBoundingClientRect()
+    mouseX.set(clientX - left)
+    mouseY.set(clientY - top)
+  }
+
+  const pattern = { y: 16, squares: [[0, 1], [1, 3]] as Array<[number, number]> }
+
+  return (
+    <>
+      {/* Neon gradient card - shown when active (no transition to avoid flash) */}
+      {isActive ? (
+        <NeonGradientCard
+          className={`[&>div]:p-0 ${isDisabled ? 'before:!opacity-[0.06]' : ''}`}
+          borderRadius={12}
+          borderSize={2}
+          neonColors={neonColors}
+          style={{
+            '--neon-first-color': neonColors.firstColor,
+            '--neon-second-color': neonColors.secondColor,
+          } as React.CSSProperties}
+        >
+          <div
+            className="group/card relative z-20 overflow-hidden rounded-[10px] bg-white dark:bg-zinc-800/30"
+            onMouseMove={onMouseMove}
+          >
+            {!isDisabled && <TimelineCardPattern mouseX={mouseX} mouseY={mouseY} {...pattern} />}
+            <div className="relative p-4 sm:p-5 md:p-6">
+              {nodeContent}
+            </div>
+            {cardFooter}
+          </div>
+        </NeonGradientCard>
+      ) : (
+        /* Regular card - shown when not active */
+        <div
+          className="group/card relative overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm transition-[shadow,border-color] hover:shadow-md hover:shadow-zinc-900/5 hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800/30 dark:hover:shadow-black/5 dark:hover:border-zinc-600"
+          onMouseMove={onMouseMove}
+        >
+          {!isDisabled && <TimelineCardPattern mouseX={mouseX} mouseY={mouseY} {...pattern} />}
+          <div className="relative p-4 sm:p-5 md:p-6">
+            {nodeContent}
+          </div>
+          {cardFooter}
+        </div>
+      )}
+    </>
+  )
 }
 
 export function Timeline() {
@@ -422,124 +540,121 @@ export function Timeline() {
           const neonColors = getNeonColors(index, isDisabled)
           const nodeContent = (
             <div className={isDisabled ? 'opacity-60' : ''}>
-              {/* Title header with status badge in top-right corner */}
-              <div className="relative mb-3">
+              {/* Header - Title + Status Badge */}
+              <div className="flex items-start justify-between gap-3">
                 <h3 className={`text-lg font-semibold leading-tight sm:text-xl ${isDisabled ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-900 dark:text-white'}`}>
                   {node.title}
                 </h3>
-                <div className="absolute right-0 top-0 flex items-center gap-2">
-                  {/* Coming Soon badge - small ghosted tag */}
-                  {isDisabled && (
-                    <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-medium text-zinc-400 border border-zinc-300 dark:border-zinc-600 dark:text-zinc-500">
-                      Soon
-                    </span>
-                  )}
-                  {/* Status badge - only show if not coming soon/under construction */}
-                  {!isDisabled && (
-                    <span
-                      className={`inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
-                        node.status === 'Ongoing'
-                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
-                      }`}
-                    >
-                      {node.status === 'Ongoing' ? (
-                        <svg
-                          viewBox="0 0 6 6"
-                          aria-hidden="true"
-                          className="size-1.5 animate-pulse fill-blue-500"
-                        >
-                          <circle r={3} cx={3} cy={3} />
-                        </svg>
-                      ) : (
-                        <svg
-                          viewBox="0 0 12 12"
-                          aria-hidden="true"
-                          className="size-3 fill-emerald-500"
-                        >
-                          <path d="M10.28 2.28a.75.75 0 0 0-1.06-1.06L4.5 5.94 2.78 4.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l5.25-5.25Z" />
-                        </svg>
-                      )}
-                      {node.status === 'Completed' ? 'Complete' : node.status}
-                    </span>
-                  )}
-                </div>
+                {isDisabled ? (
+                  <span className="inline-flex shrink-0 items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-600">
+                    Coming Soon
+                  </span>
+                ) : (
+                  <span
+                    className={`inline-flex shrink-0 items-center gap-x-1.5 rounded-md px-2 py-1 text-xs font-medium ${
+                      node.status === 'Ongoing'
+                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                        : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400'
+                    }`}
+                  >
+                    {node.status === 'Ongoing' ? (
+                      <svg viewBox="0 0 6 6" aria-hidden="true" className="size-1.5 animate-pulse fill-blue-500">
+                        <circle r={3} cx={3} cy={3} />
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 12 12" aria-hidden="true" className="size-3 fill-emerald-500">
+                        <path d="M10.28 2.28a.75.75 0 0 0-1.06-1.06L4.5 5.94 2.78 4.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l5.25-5.25Z" />
+                      </svg>
+                    )}
+                    {node.status === 'Completed' ? 'Complete' : node.status}
+                  </span>
+                )}
               </div>
 
-              {/* Client and period */}
-              <p className={`mb-3 text-xs font-medium sm:text-sm ${isDisabled ? 'text-zinc-400 dark:text-zinc-500' : 'text-zinc-600 dark:text-zinc-400'}`}>
-                {node.client} • {node.period}
-              </p>
-
               {/* Description */}
-              <p className={`mb-4 text-sm leading-relaxed sm:text-base ${isDisabled ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-700 dark:text-zinc-300'}`}>
+              <p className={`mt-3 text-sm leading-relaxed sm:text-base ${isDisabled ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-700 dark:text-zinc-300'}`}>
                 {node.description}
               </p>
 
-              {/* Skill chips - only show on active cards */}
-              {!isDisabled && node.skillIds.length > 0 && (
-                <div className="mb-4 flex flex-wrap gap-2">
-                  {node.skillIds.map((skillId) => {
-                    const skill = standardizedSkills[skillId]
-                    if (!skill) return null
-                    return (
-                      <SkillChip
-                        key={`${node.id}-${skillId}`}
-                        skill={skill}
-                        size="sm"
-                        variant="outline"
-                        showDropdown={true}
-                      />
-                    )
-                  })}
+              {/* Divider */}
+              <div className="mt-4 h-px bg-zinc-900/7.5 dark:bg-white/10" />
+
+              {/* Project Details */}
+              <div className="mt-4">
+                <h4 className={`text-sm font-medium mb-3 ${isDisabled ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-900 dark:text-white'}`}>Project Details</h4>
+                <div className="space-y-2">
+                  <div className={`flex items-center gap-2 text-sm ${isDisabled ? 'text-zinc-400 dark:text-zinc-500' : 'text-zinc-600 dark:text-zinc-400'}`}>
+                    <BriefcaseIcon className="h-4 w-4 shrink-0" />
+                    <span className="font-medium">Client:</span>
+                    <span className={isDisabled ? '' : 'font-bold text-emerald-600 dark:text-emerald-400'}>{node.client}</span>
+                  </div>
+                  <div className={`flex items-center gap-2 text-sm ${isDisabled ? 'text-zinc-400 dark:text-zinc-500' : 'text-zinc-600 dark:text-zinc-400'}`}>
+                    <CalendarIcon className="h-4 w-4 shrink-0" />
+                    <span className="font-medium">Timeline:</span>
+                    <span>{node.period}</span>
+                  </div>
                 </div>
+              </div>
+
+              {/* Skills */}
+              {!isDisabled && node.skillIds.length > 0 && (
+                <>
+                  <div className="mt-4 h-px bg-zinc-900/7.5 dark:bg-white/10" />
+                  <div className="mt-4">
+                    <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-3">Skills &amp; Approach</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {node.skillIds.map((skillId) => {
+                        const skill = standardizedSkills[skillId]
+                        if (!skill) return null
+                        return (
+                          <SkillChip
+                            key={`${node.id}-${skillId}`}
+                            skill={skill}
+                            size="sm"
+                            variant="outline"
+                            showDropdown={true}
+                          />
+                        )
+                      })}
+                    </div>
+                  </div>
+                </>
               )}
 
-              {/* Call-to-action and badges */}
-              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                {isClickable && (
-                  <span className="group inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                    View Case Study
-                    <span className="ml-1 transition-transform group-hover:translate-x-1">
-                      →
-                    </span>
-                  </span>
-                )}
-                {isDisabled && (
-                  <span className="inline-flex items-center text-sm text-zinc-400 dark:text-zinc-500">
-                    Case study coming soon
-                  </span>
-                )}
-                {!isDisabled && node.aiAccelerated && <AIBadge size="sm">AI-Accelerated</AIBadge>}
+              {/* AI Badge */}
+              {!isDisabled && node.aiAccelerated && (
+                <>
+                  <div className="mt-4 h-px bg-zinc-900/7.5 dark:bg-white/10" />
+                  <div className="mt-4 flex items-center gap-2">
+                    <AIBadge size="sm">AI-Accelerated</AIBadge>
+                  </div>
+                </>
+              )}
+            </div>
+          )
+
+          const cardFooter = (
+            <div className="bg-zinc-100/50 dark:bg-zinc-800/50 border-t border-zinc-900/7.5 dark:border-white/10 px-4 sm:px-5 md:px-6 py-3">
+              <div className="flex justify-center">
+                <span className={`inline-flex items-center text-sm font-medium transition-colors ${
+                  isDisabled
+                    ? 'text-zinc-400 dark:text-zinc-500'
+                    : 'text-emerald-600 dark:text-emerald-400'
+                }`}>
+                  {isDisabled ? 'Coming soon' : 'View case study →'}
+                </span>
               </div>
             </div>
           )
 
           const cardElement = (
-            <>
-              {/* Neon gradient card - shown when active (no transition to avoid flash) */}
-              {isActive ? (
-                <NeonGradientCard
-                  className={`[&>div]:p-0 ${isDisabled ? 'before:!opacity-[0.06]' : ''}`}
-                  borderRadius={12}
-                  borderSize={2}
-                  neonColors={neonColors}
-                  style={{
-                    '--neon-first-color': neonColors.firstColor,
-                    '--neon-second-color': neonColors.secondColor,
-                  } as React.CSSProperties}
-                >
-                  <div className="relative z-20 rounded-[10px] bg-white p-4 sm:p-5 md:p-6 dark:bg-zinc-800/30">
-                    {nodeContent}
-                  </div>
-                </NeonGradientCard>
-              ) : (
-                /* Regular card - shown when not active */
-                <div className="rounded-xl border border-zinc-200 bg-white p-4 sm:p-5 md:p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/30">
-                  {nodeContent}
-                </div>
-              )}
-            </>
+            <TimelineCardElement
+              isActive={isActive}
+              isDisabled={isDisabled}
+              neonColors={neonColors}
+              nodeContent={nodeContent}
+              cardFooter={cardFooter}
+            />
           )
 
           return (
