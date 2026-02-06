@@ -42,9 +42,9 @@ export default function BreezeMortgageHubCaseStudy() {
 
   const summary = {
     context: 'Early-stage fintech startup needed to design a mortgage platform from zero — no existing product, no design system, needed to prove the concept to investors.',
-    constraints: 'Greenfield product in a complex regulatory domain (mortgage); solo UX lead supporting a CEO directly; needed investor-ready prototypes alongside dev-ready specs.',
+    constraints: 'Greenfield product in a complex regulatory domain (mortgage); solo product designer supporting a CEO directly; needed investor-ready prototypes alongside dev-ready specs.',
     decisions: 'Built a 95+ component design system with interaction rules and tokens from day one; identified 4 AI integration opportunities (document classification, smart form assist, conversational guidance); designed 56 screens across 12 flows with acceptance criteria.',
-    impact: '96% reduction in feature design time (from months of iteration to alignment in a week); helped secure $2.3M Series A funding.',
+    impact: 'Compressed feature alignment from months of iteration loops to roughly a week per flow; helped secure $2.3M Series A funding.',
   }
 
   // Results metrics - aligned to buyer outcomes
@@ -63,10 +63,10 @@ export default function BreezeMortgageHubCaseStudy() {
       highlight: true,
     },
     {
-      label: 'Feature Design Time Cut',
-      value: 96,
-      suffix: '%',
-      description: 'From "six months of circling back" to alignment in a week',
+      label: 'Time to Feature Alignment',
+      value: 1,
+      suffix: ' week',
+      description: 'Down from months of iteration cycles — prototypes turned feedback loops into decisions',
       highlight: true,
     }
   ]
@@ -91,13 +91,13 @@ export default function BreezeMortgageHubCaseStudy() {
         visual={<AnimatedBeamDemo />}
       >
         <Heading id="my-role" level={2} label="Scope" className="mt-0">My Role</Heading>
-        <p>I was brought in as an independent contractor supporting the CEO as a <strong>UX lead and product strategist</strong>. My job was to turn a loose vision into a coherent system the team could build. If you&apos;ve ever been the translator between <em>&quot;founder brain&quot;</em> and <em>&quot;what engineers actually need to build,&quot;</em> you know this is less about design and more about <strong>diplomacy</strong>.</p>
+        <p>I was brought in as an independent contractor supporting the CEO as a <strong>product designer</strong>. My job was to turn a loose vision into a coherent system the team could build. If you&apos;ve ever been the translator between <em>&quot;founder brain&quot;</em> and <em>&quot;what engineers actually need to build,&quot;</em> you know this is less about design and more about <strong>diplomacy</strong>.</p>
         <p>The work helped move Breeze from &quot;we have ideas&quot; to &quot;<strong>we have a product story</strong> investors can actually experience.&quot;</p>
         <p><strong>What I optimized for:</strong></p>
         <ul>
           <li>Clear <Tooltip containerClassName="inline" content="The structural design of how content and features are organized, labeled, and connected—think of it as the blueprint for where things live and how users find them."><span className="font-bold">information architecture</span></Tooltip> and navigation (so people stop getting lost)</li>
           <li>Consistent patterns and <Tooltip containerClassName="inline" content="Reusable UI building blocks (buttons, forms, cards) that behave the same way everywhere—reducing user confusion and speeding up development."><span className="font-bold">component behavior</span></Tooltip> (so the UI has "design DNA," not vibes)</li>
-          <li>Requirements that are <Tooltip containerClassName="inline" content="Specifications detailed enough that engineers can build from them without guesswork—including edge cases, states, and expected behaviors.'"><span className="font-bold">dev-ready</span></Tooltip> (so shipping doesn't become an interpretive sport)</li>
+          <li>Requirements that are <Tooltip containerClassName="inline" content="Specifications detailed enough that engineers can build from them without guesswork—including edge cases, states, and expected behaviors."><span className="font-bold">dev-ready</span></Tooltip> (so shipping doesn't become an interpretive sport)</li>
         </ul>
       </SplitSection>
 
@@ -125,7 +125,7 @@ export default function BreezeMortgageHubCaseStudy() {
       <ProseSection>
         <ProseBlock>
           <Heading id="how-i-created-clarity" level={2} label="Before and After">How I Created Clarity</Heading>
-          <p>I began with <Tooltip containerClassName="inline" content="The research phase where you learn about users, business goals, and constraints before designing anything."><span className="font-bold">discovery</span></Tooltip>, an audit of what existed, and <Tooltip containerClassName="inline" content="Systematic review of competitor products to identify patterns, gaps, and opportunities—not to copy, but to understand industry conventions."><span className="font-bold">competitive scanning</span></Tooltip> across fintech and workflow-heavy tools. The goal wasn&apos;t to copy UI—it was to understand what <em>&quot;normal&quot;</em> looks like when complexity is handled well (spoiler: mortgage software <em>rarely</em> handles it well).</p>
+          <p>I began with <strong>discovery</strong>, an audit of what existed, and <strong>competitive scanning</strong> across fintech and workflow-heavy tools. The goal wasn&apos;t to copy UI—it was to understand what <em>&quot;normal&quot;</em> looks like when complexity is handled well (spoiler: mortgage software <em>rarely</em> handles it well).</p>
           <p>I moved quickly into prototypes because we had a classic situation: about 60% of the product was understood, and the remaining 40% was <strong>fog</strong>. Prototyping turned that fog into <em>decisions</em>. It surfaced broken assumptions early, <Tooltip containerClassName="inline" content="Reducing uncertainty by testing ideas before building—cheaper to fix a prototype than production code."><span className="font-bold">de-risked</span></Tooltip> future flows, and forced the information architecture to reveal where it would bend or break.</p>
         </ProseBlock>
 
@@ -133,8 +133,8 @@ export default function BreezeMortgageHubCaseStudy() {
           <p>From there, I designed a full system—not isolated screens:</p>
           <ul>
             <li>End-to-end critical paths (application → documents → review → payments)</li>
-            <li><Tooltip containerClassName="inline" content="Standardized rules for how UI elements look and behave—ensuring buttons, inputs, and feedback work consistently across the product."><span className="font-bold">Component patterns</span></Tooltip> for form fields, validation, status, and <Tooltip containerClassName="inline" content="A UX technique that reveals information gradually as needed, preventing overwhelm by showing only what's relevant at each step."><span className="font-bold">progressive disclosure</span></Tooltip> (so the UI stays calm even when the process isn't)</li>
-            <li><Tooltip containerClassName="inline" content="Interactive mockups that simulate real product behavior—stakeholders can click through flows instead of imagining them from static screens."><span className="font-bold">Clickable prototypes</span></Tooltip> with meaningful states and transitions (not "<Tooltip containerClassName="inline" content="The demo version of reality where WiFi is always fast, users never misclick, and edge cases don't exist."><span className="font-bold">happy path theatre</span></Tooltip>")</li>
+            <li><strong>Component patterns</strong> for form fields, validation, status, and <Tooltip containerClassName="inline" content="A UX technique that reveals information gradually as needed, preventing overwhelm by showing only what's relevant at each step."><span className="font-bold">progressive disclosure</span></Tooltip> (so the UI stays calm even when the process isn't)</li>
+            <li><strong>Clickable prototypes</strong> with meaningful states and transitions (not &quot;<Tooltip containerClassName="inline" content="The demo version of reality where WiFi is always fast, users never misclick, and edge cases don't exist."><span className="font-bold">happy path theatre</span></Tooltip>&quot;)</li>
           </ul>
         </ProseBlock>
       </ProseSection>
@@ -162,7 +162,7 @@ export default function BreezeMortgageHubCaseStudy() {
           <ul>
             <li>Interactive prototypes suitable for stakeholder and investor walkthroughs</li>
             <li>A componentized <Tooltip containerClassName="inline" content="A Figma library of reusable components—organized with design tokens (colors, fonts), interaction logic, and even bezier curves for consistent motion."><span className="font-bold">design system</span></Tooltip> foundation with interaction rules, states, and colour tokens.</li>
-            <li><Tooltip containerClassName="inline" content="Deliverables designed to empower teams—wireframes, personas, user journey maps—giving everyone shared context on user needs and product direction."><span className="font-bold">UX artefacts</span></Tooltip> (journeys, <Tooltip containerClassName="inline" content="The structural blueprint of how content and features are organized—mapping where things live and how users navigate between them."><span className="font-bold">IA maps</span></Tooltip>, decision notes) anchored to user outcomes</li>
+            <li><strong>UX artifacts</strong> (journeys, IA maps, decision notes) anchored to user outcomes</li>
             <li>Dev-friendly <Tooltip containerClassName="inline" content="Specific conditions a feature must meet to be considered 'done'—removes ambiguity about what success looks like before code is written."><span className="font-bold">acceptance criteria</span></Tooltip> and requirements for high-risk or ambiguous areas</li>
           </ul>
         </ProseBlock>
@@ -238,4 +238,3 @@ export default function BreezeMortgageHubCaseStudy() {
     </CaseStudyViewer>
   )
 }
-export const dynamic = 'error'
