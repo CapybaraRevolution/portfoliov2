@@ -74,9 +74,9 @@ export const projects: Project[] = [
     ],
     ai: true,
     href: '/case-studies/breeze-mortgage-hub',
-    client: 'Confidential',
-    timeline: '2024–Present',
-    status: 'ongoing'
+    client: 'Breeze Mortgage Solutions',
+    timeline: 'Jul 2024 – Sep 2025',
+    status: 'completed'
   },
   // Temporarily unlisted - can be restored later
   // {
@@ -113,8 +113,8 @@ export const projects: Project[] = [
     ],
     ai: true,
     href: '/case-studies/avatar-generations',
-    client: 'Navigator Games',
-    timeline: '2021–2023',
+    client: 'Navigator Games / Square Enix',
+    timeline: 'Sep 2021 – Aug 2023',
     status: 'completed'
   }
 ]
