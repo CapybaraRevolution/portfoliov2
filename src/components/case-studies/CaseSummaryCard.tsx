@@ -10,15 +10,35 @@ import { getNextCaseStudy } from '@/lib/caseStudies'
 import Link from 'next/link'
 import clsx from 'clsx'
 
+/** A field value can be a plain string or an array of strings (rendered as a bullet list). */
+type SummaryField = string | string[]
+
 export interface CaseSummaryData {
   /** What the project was about — company, product, situation */
-  context: string
+  context: SummaryField
   /** What made this hard — timeline, team size, technical limits, stakeholder complexity */
-  constraints: string
+  constraints: SummaryField
   /** 2-3 key design decisions the designer made */
-  decisions: string
+  decisions: SummaryField
   /** Concrete outcomes and metrics */
-  impact: string
+  impact: SummaryField
+}
+
+/** Render a summary field — plain text for strings, a bullet list for arrays. */
+function SummaryValue({ value }: { value: SummaryField }) {
+  if (Array.isArray(value)) {
+    return (
+      <ul className="space-y-1.5 mt-0.5">
+        {value.map((item, i) => (
+          <li key={i} className="flex gap-2">
+            <span className="text-zinc-300 dark:text-zinc-600 shrink-0 select-none leading-relaxed" aria-hidden>•</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  return <>{value}</>
 }
 
 interface CaseSummaryCardProps {
@@ -116,7 +136,7 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
                 {label}
               </dt>
               <dd className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                {summary[key]}
+                <SummaryValue value={summary[key]} />
               </dd>
             </div>
           ))}
@@ -251,7 +271,7 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
                           {label}
                         </dt>
                         <dd className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                          {summary[key]}
+                          <SummaryValue value={summary[key]} />
                         </dd>
                       </motion.div>
                     ))}

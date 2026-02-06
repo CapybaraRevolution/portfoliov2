@@ -32,8 +32,16 @@ export default function HoustonBalletCaseStudy() {
 
   const summary = {
     context: 'We\u0027re building JixTix as a multi-tenant ticketing platform for non-profits. Houston Ballet is client #1 \u2014 the proof case for whether the architecture scales. Every decision has to work for them and for clients we haven\u0027t met yet.',
-    constraints: 'One-day build window to validate the UX approach; designing for APIs that don\u0027t exist yet; multi-tenant scalability baked in from day one.',
-    decisions: 'Built a 5-layer design token system (217 CSS custom properties); defined 40 TypeScript interfaces as API contracts before any backend existed; wrote 1,100+ lines of developer documentation across 6 handoff files.',
+    constraints: [
+      'One-day build window to validate the UX approach',
+      'Designing for APIs that don\u0027t exist yet',
+      'Multi-tenant scalability baked in from day one',
+    ],
+    decisions: [
+      'Built a 5-layer design token system (217 CSS custom properties)',
+      'Defined 40 TypeScript interfaces as API contracts before any backend existed',
+      'Wrote 1,100+ lines of developer documentation across 6 handoff files',
+    ],
     impact: 'A plug-and-play system for onboarding new brands \u2014 add a theme file, set an environment variable, and the platform adapts. No rebuild required.',
   }
 

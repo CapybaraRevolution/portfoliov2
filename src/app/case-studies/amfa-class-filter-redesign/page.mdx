@@ -32,9 +32,20 @@ export default function AMFAClassFilterRedesignCaseStudy() {
 
   const summary = {
     context: 'Arkansas Museum of Fine Arts needed to unify class discovery and registration across three disconnected platforms (marketing site, directory, cart).',
-    constraints: 'Three separate systems with no shared state; mixed audience (parents registering kids vs. adults); stakeholder alignment needed across marketing, ops, and dev.',
-    decisions: 'Designed progressive disclosure filter (Youth/Adult binary split first, then age-appropriate options); built overlay return pattern to preserve cross-system context; created GA4 instrumentation plan for measurement.',
-    impact: 'Support call volume down ~30\u201340% for checkout inquiries (metrics still being collected); task completion trending upward across the filter-to-checkout funnel.',
+    constraints: [
+      'Three separate systems with no shared state',
+      'Mixed audience (parents registering kids vs. adults)',
+      'Stakeholder alignment needed across marketing, ops, and dev',
+    ],
+    decisions: [
+      'Designed progressive disclosure filter (Youth/Adult binary split first, then age-appropriate options)',
+      'Built overlay return pattern to preserve cross-system context',
+      'Created GA4 instrumentation plan for measurement',
+    ],
+    impact: [
+      'Support call volume down ~30\u201340% for checkout inquiries (metrics still being collected)',
+      'Task completion trending upward across the filter-to-checkout funnel',
+    ],
   }
 
   // Metrics hidden — this is a recent redesign and we're still collecting post-launch data

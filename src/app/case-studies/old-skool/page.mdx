@@ -18,9 +18,21 @@ export default function OldSkoolCaseStudy() {
 
   const summary = {
     context: 'Old Skool Game Studios (now MahiGaming) needed UX research and design standardization for browser-based casino games \u2014 no research practice, inconsistent patterns, i18n issues.',
-    constraints: 'Multi-language markets with no localization testing; no component library or motion standards; art, dev, and QA working from different references.',
-    decisions: 'Established lightweight research loop (stakeholder interviews \u2192 heuristic audit \u2192 analytics \u2192 usability tests); fixed i18n at container level (flexible containers, safe line-wrapping, min tap targets); built 42-component library as shared reference.',
-    impact: '+13% average session length in non-English markets; 14% reduction in design inconsistency debt; 42-component library adopted across titles.',
+    constraints: [
+      'Multi-language markets with no localization testing',
+      'No component library or motion standards',
+      'Art, dev, and QA working from different references',
+    ],
+    decisions: [
+      'Established lightweight research loop (stakeholder interviews \u2192 heuristic audit \u2192 analytics \u2192 usability tests)',
+      'Fixed i18n at container level (flexible containers, safe line-wrapping, min tap targets)',
+      'Built 42-component library as shared reference',
+    ],
+    impact: [
+      '+13% average session length in non-English markets',
+      '14% reduction in design inconsistency debt',
+      '42-component library adopted across titles',
+    ],
   }
 
   // Key outcome metrics (percent improvements only)
