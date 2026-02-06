@@ -131,8 +131,8 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
         <dl className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {fields.map(({ key, label, Icon }) => (
             <div key={key}>
-              <dt className="flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                <Icon className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+              <dt className="flex items-center gap-2 text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                <Icon className="h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
                 {label}
               </dt>
               <dd className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
@@ -266,8 +266,8 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
                           ease,
                         }}
                       >
-                        <dt className="flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                          <Icon className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+                        <dt className="flex items-center gap-2 text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                          <Icon className="h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
                           {label}
                         </dt>
                         <dd className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
