@@ -10,9 +10,8 @@ import { LearningCard } from '@/components/case-studies/LearningCard'
 import { FadeIn } from '@/components/ui/fade-in'
 import { FocusImageGallery } from '@/components/ui/focus-image-gallery'
 import { ProcessStrip } from '@/components/case-studies/sff/ProcessStrip'
-import { JourneyWalkthrough } from '@/components/case-studies/sff/JourneyWalkthrough'
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
-import { Users, DollarSign, Search, FileText, Network, Database, Lightbulb, Map } from 'lucide-react'
+import { JourneyPeekAccordion } from '@/components/case-studies/sff/JourneyPeekAccordion'
+import { Users, DollarSign, Search, FileText, Network, Database, Lightbulb } from 'lucide-react'
 
 export const metadata = {
   title: 'Social Finance Fund - Case Study',
@@ -379,26 +378,11 @@ export default function SocialFinanceFundCaseStudy() {
             />
           </FadeIn>
 
-          {/* User Journey Accordion - outer container provides consistent stroke */}
+          {/* User Journey — peek-bounce reveals content preview on scroll */}
           <FadeIn delay={0.2}>
-            <Accordion type="single" collapsible className="mt-8">
-              <AccordionItem value="user-journey" className="attention-pulse border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden bg-transparent">
-                <AccordionTrigger className="px-4 py-4 border-0 rounded-none hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
-                      <Map className="h-4 w-4" />
-                    </div>
-                    <div className="text-left">
-                      <div className="font-semibold text-zinc-900 dark:text-white">User Journey Walkthrough</div>
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400 font-normal">Interactive flow diagram with step-by-step annotations</div>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-0 border-0 [&>div]:p-0 [&>div]:border-0">
-                  <JourneyWalkthrough seamless />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <div className="mt-8">
+              <JourneyPeekAccordion />
+            </div>
           </FadeIn>
         </div>
       </ProseSection>
