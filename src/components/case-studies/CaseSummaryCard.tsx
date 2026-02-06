@@ -45,7 +45,7 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
     if (typeof window === 'undefined') return true
     try {
       const stored = sessionStorage.getItem(STORAGE_KEY)
-      return stored === null ? true : stored === '1'
+      return stored === null ? false : stored === '1'
     } catch {
       return true
     }
