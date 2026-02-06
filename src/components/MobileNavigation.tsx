@@ -74,7 +74,6 @@ function MobileNavigationDialog({
 
   return (
     <Dialog
-      static
       open={isOpen}
       onClose={close}
       className="fixed inset-0 z-50 lg:hidden"
@@ -165,6 +164,12 @@ export function MobileNavigation() {
   let { isOpen, toggle, close } = useMobileNavigationStore()
   let ToggleIcon = isOpen ? XIcon : MenuIcon
 
+  // Defer rendering the Dialog until after hydration to avoid SSR/client
+  // mismatch. Headless UI's Dialog portal renders differently on the server
+  // (<span hidden="">) vs the client (<div data-headlessui-portal="">).
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   return (
     <IsInsideMobileNavigationContext.Provider value={true}>
       <button
@@ -176,7 +181,7 @@ export function MobileNavigation() {
         <span className="absolute size-12 pointer-fine:hidden" />
         <ToggleIcon className="w-2.5 stroke-zinc-900 dark:stroke-white" />
       </button>
-      {!isInsideMobileNavigation && (
+      {mounted && !isInsideMobileNavigation && (
         <Suspense fallback={null}>
           <MobileNavigationDialog isOpen={isOpen} close={close} />
         </Suspense>
