@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Building2, ShieldAlert, Compass, TrendingUp, ArrowRight, ChevronRight } from 'lucide-react'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
@@ -28,6 +28,7 @@ interface CaseSummaryCardProps {
   className?: string
 }
 
+const STORAGE_KEY = 'case-summary-expanded'
 const ease = [0.25, 0.46, 0.45, 0.94] as const
 
 const fields = [
@@ -38,12 +39,31 @@ const fields = [
 ]
 
 export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSummaryCardProps) {
-  const [isExpanded, setIsExpanded] = useState(true)
+  // Read initial state from sessionStorage so the preference persists
+  // across case-study navigations but resets on a new browser session.
+  const [isExpanded, setIsExpanded] = useState(() => {
+    if (typeof window === 'undefined') return true
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY)
+      return stored === null ? true : stored === '1'
+    } catch {
+      return true
+    }
+  })
   const [shimmerDone, setShimmerDone] = useState(false)
   const prefersReducedMotion = usePrefersReducedMotion()
   const expandedAtRef = useRef<number | null>(null)
 
   const nextCaseStudy = caseStudySlug ? getNextCaseStudy(caseStudySlug) : undefined
+
+  // Persist expanded/collapsed preference to sessionStorage
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, isExpanded ? '1' : '0')
+    } catch {
+      // sessionStorage unavailable (e.g. private browsing quota)
+    }
+  }, [isExpanded])
 
   const handleToggle = useCallback(() => {
     const slug = caseStudySlug || 'unknown'
@@ -118,7 +138,7 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
         {/* ── Shimmer sweep — runs once on mount when collapsed ── */}
         {!isExpanded && !shimmerDone && (
           <motion.div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-zinc-400/30 to-transparent dark:via-white/[0.06]"
+            className="pointer-events-none absolute inset-0 bg-linear-to-r from-transparent via-zinc-400/30 to-transparent dark:via-white/6"
             initial={{ x: '-100%' }}
             animate={{ x: '250%' }}
             transition={{ duration: 1.6, delay: 1, ease: 'easeInOut' }}
@@ -130,7 +150,7 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
         <AnimatePresence>
           {isExpanded && (
             <motion.div
-              className="pointer-events-none absolute inset-0 rounded-xl bg-zinc-300/10 dark:bg-emerald-500/[0.02]"
+              className="pointer-events-none absolute inset-0 rounded-xl bg-zinc-300/10 dark:bg-emerald-500/2"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0, 1, 0] }}
               exit={{ opacity: 0 }}
