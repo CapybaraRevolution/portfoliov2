@@ -288,7 +288,8 @@
     .animate-\[bounce-subtle_3s_ease-in-out_infinite\],
     .animate-\[pulse-glow_3s_ease-in-out_infinite\],
     .animate-rainbow,
-    .animate-shine {
+    .animate-shine,
+    .attention-pulse {
       animation: none !important;
     }
   }
@@ -310,7 +311,8 @@
     .animate-rainbow,
     .animate-shine,
     .animate-marquee,
-    .animate-marquee-vertical {
+    .animate-marquee-vertical,
+    .attention-pulse {
       animation: none !important;
     }
 

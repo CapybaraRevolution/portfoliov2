@@ -87,7 +87,7 @@ export const caseStudies: CaseStudyMetadata[] = [
   },
   {
     title: "AMFA Class Filter Redesign",
-    descriptiveTitle: "Museum Filter/Sort Experience",
+    descriptiveTitle: "Class Filter Design",
     client: "Arkansas Museum of Fine Arts",
     description: "Improving navigation and registration through smarter filtering and cross-system user flows for the Arkansas Museum of Fine Arts",
     slug: "amfa-class-filter-redesign",

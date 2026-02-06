@@ -2,10 +2,12 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Building2, ShieldAlert, Compass, TrendingUp, ChevronRight } from 'lucide-react'
+import { Building2, ShieldAlert, Compass, TrendingUp, ArrowRight, ChevronRight } from 'lucide-react'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
 import { trackHighlightsExpanded, trackHighlightsCollapsed } from '@/components/GoogleAnalytics'
 import { triggerHotjarEvent } from '@/components/Hotjar'
+import { getNextCaseStudy } from '@/lib/caseStudies'
+import Link from 'next/link'
 import clsx from 'clsx'
 
 export interface CaseSummaryData {
@@ -36,10 +38,12 @@ const fields = [
 ]
 
 export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSummaryCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
   const [shimmerDone, setShimmerDone] = useState(false)
   const prefersReducedMotion = usePrefersReducedMotion()
   const expandedAtRef = useRef<number | null>(null)
+
+  const nextCaseStudy = caseStudySlug ? getNextCaseStudy(caseStudySlug) : undefined
 
   const handleToggle = useCallback(() => {
     const slug = caseStudySlug || 'unknown'
@@ -70,9 +74,20 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
           className,
         )}
       >
-        <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-          At a Glance
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            At a Glance
+          </h3>
+          {nextCaseStudy && (
+            <Link
+              href={`/case-studies/${nextCaseStudy.slug}`}
+              className="flex items-center gap-1.5 text-xs font-medium text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+            >
+              Next Case Study
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
+        </div>
         <dl className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {fields.map(({ key, label, Icon }) => (
             <div key={key}>
@@ -128,15 +143,18 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
           )}
         </AnimatePresence>
 
-        {/* ── Trigger bar ── */}
-        <button
+        {/* ── Trigger bar — entire bar toggles, nav links stop propagation ── */}
+        <div
+          role="button"
+          tabIndex={0}
           onClick={handleToggle}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggle() } }}
+          aria-expanded={isExpanded}
           className={clsx(
-            'group relative z-10 flex w-full items-center justify-between',
-            'px-5 py-3.5 sm:px-6 sm:py-4 text-left',
+            'group relative z-10 flex w-full items-center justify-between cursor-pointer',
+            'px-5 py-3.5 sm:px-6 sm:py-4',
             'transition-colors hover:bg-zinc-100/50 dark:hover:bg-zinc-700/20',
           )}
-          aria-expanded={isExpanded}
         >
           <div className="flex items-center gap-2.5">
             <motion.div
@@ -160,12 +178,26 @@ export function CaseSummaryCard({ summary, caseStudySlug, className }: CaseSumma
             </AnimatePresence>
           </div>
 
-          {!isExpanded && (
-            <span className="text-xs text-zinc-400 dark:text-zinc-500 transition-transform duration-200 group-hover:translate-x-0.5">
-              &rarr;
-            </span>
-          )}
-        </button>
+          <AnimatePresence>
+            {isExpanded && nextCaseStudy && (
+              <motion.div
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={{ duration: 0.25, delay: 0.1 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Link
+                  href={`/case-studies/${nextCaseStudy.slug}`}
+                  className="flex items-center gap-1.5 text-xs font-medium text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors duration-200 group/next"
+                >
+                  Next Case Study
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover/next:translate-x-0.5" />
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
         {/* ── Expandable content ── */}
         <AnimatePresence initial={false}>

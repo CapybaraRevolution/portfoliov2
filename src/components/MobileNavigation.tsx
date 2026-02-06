@@ -5,7 +5,7 @@ import {
   DialogPanel,
 } from '@headlessui/react'
 import { motion, AnimatePresence, PanInfo } from 'framer-motion'
-import { Suspense, createContext, useContext, useCallback } from 'react'
+import { Suspense, createContext, useContext, useCallback, useState, useEffect } from 'react'
 import { create } from 'zustand'
 
 import { Header } from '@/components/Header'
@@ -48,6 +48,19 @@ function MobileNavigationDialog({
   isOpen: boolean
   close: () => void
 }) {
+  // Delay enabling drag until after the entry animation settles.
+  // This prevents the user's tap on the hamburger icon from being
+  // captured as a drag gesture on the drawer as it slides in.
+  const [canDrag, setCanDrag] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => setCanDrag(true), 400)
+      return () => clearTimeout(timer)
+    }
+    setCanDrag(false)
+  }, [isOpen])
+
   // Handle swipe to close
   const handleDragEnd = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -61,6 +74,7 @@ function MobileNavigationDialog({
 
   return (
     <Dialog
+      static
       open={isOpen}
       onClose={close}
       className="fixed inset-0 z-50 lg:hidden"
@@ -94,7 +108,7 @@ function MobileNavigationDialog({
                 animate={{ x: 0 }}
                 exit={{ x: '-100%' }}
                 transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-                drag="x"
+                drag={canDrag ? 'x' : false}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={{ left: 0.2, right: 0 }}
                 onDragEnd={handleDragEnd}

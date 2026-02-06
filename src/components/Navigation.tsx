@@ -68,6 +68,7 @@ function NavLink({
   badge?: 'coming-soon' | 'under-construction'
   disabled?: boolean
 }) {
+  const { close: closeMobileNav } = useMobileNavigationStore()
   const isOverview = children === 'Overview' && href.includes('/work/overview') && !isAnchorLink
   
   // Badge content removed - we now use a header instead
@@ -77,6 +78,7 @@ function NavLink({
     return (
       <LinkRippleButton
         href={href}
+        onClick={closeMobileNav}
         aria-current={active ? 'page' : undefined}
         rippleColor={active ? "rgba(16, 185, 129, 0.2)" : "rgba(0, 0, 0, 0.1)"}
         duration="500ms"
@@ -172,7 +174,9 @@ function VisibleSectionHighlight({
   let visibleSections = useSectionStore((s) => s.visibleSections)
 
   let isPresent = useIsPresent()
-  let itemHeight = isMobile ? remToPx(2.75) : remToPx(2)
+  // Mobile: py-3 (1.5rem) + text-sm line-height (1.5rem) = 3rem
+  // Desktop: lg:py-1 (0.5rem) + text-sm line-height (1.5rem) = 2rem
+  let itemHeight = isMobile ? remToPx(3) : remToPx(2)
   
   // Filter links the same way they're filtered in render
   let filteredLinks = group.links.filter(
@@ -192,6 +196,7 @@ function VisibleSectionHighlight({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.2 } }}
         exit={{ opacity: 0 }}
+        transition={{ layout: { type: 'tween', duration: 0.15, ease: 'easeOut' } }}
         className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
         style={{ borderRadius: 8, height: itemHeight, top }}
       />
@@ -213,6 +218,7 @@ function VisibleSectionHighlight({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { delay: 0.2 } }}
         exit={{ opacity: 0 }}
+        transition={{ layout: { type: 'tween', duration: 0.15, ease: 'easeOut' } }}
         className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
         style={{ borderRadius: 8, height: itemHeight, top }}
       />
@@ -249,6 +255,7 @@ function VisibleSectionHighlight({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { delay: 0.2 } }}
       exit={{ opacity: 0 }}
+      transition={{ layout: { type: 'tween', duration: 0.15, ease: 'easeOut' } }}
       className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
       style={{ borderRadius: 8, height, top }}
     />
@@ -264,7 +271,9 @@ function ActivePageMarker({
 }) {
   let isMobile = useIsInsideMobileNavigation()
 
-  let itemHeight = isMobile ? remToPx(2.75) : remToPx(2)
+  // Mobile: py-3 (1.5rem) + text-sm line-height (1.5rem) = 3rem
+  // Desktop: lg:py-1 (0.5rem) + text-sm line-height (1.5rem) = 2rem
+  let itemHeight = isMobile ? remToPx(3) : remToPx(2)
   let offset = remToPx(0.25)
   
   // Filter links the same way they're filtered in render
@@ -525,7 +534,7 @@ function NavigationGroup({
                           
                           {/* Section active indicator — tracks which section is in view */}
                           {(() => {
-                            const sectionItemHeight = isInsideMobileNavigation ? remToPx(2.75) : remToPx(2)
+                            const sectionItemHeight = isInsideMobileNavigation ? remToPx(3) : remToPx(2)
                             const markerHeight = remToPx(1.25)
                             const markerOffset = (sectionItemHeight - markerHeight) / 2
                             const primaryId = visibleSections.find((id: string) =>
