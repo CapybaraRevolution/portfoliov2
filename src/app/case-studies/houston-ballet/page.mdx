@@ -11,15 +11,15 @@ import { QrCode, MapPin, Calendar, Armchair, Sparkles, Zap, Clock, Code, FileCod
 import PrototypeEmbed from '@/components/prototypes/houston-ballet/PrototypeEmbed'
 
 export const metadata = {
-  title: 'Houston Ballet - Case Study',
-  description: 'A reflection on how AI tooling is changing design work, told through a mobile ticketing prototype.',
+  title: 'JixTix - Case Study',
+  description: 'A scalable design system for multi-tenant mobile ticketing — design tokens, TypeScript contracts, and a developer handoff built to grow.',
 }
 
 export const sections = [
   { title: 'Context', id: 'context' },
-  { title: 'The Experiment', id: 'the-experiment' },
+  { title: 'The Approach', id: 'the-approach' },
   { title: 'Try It', id: 'try-it' },
-  { title: 'What Happened Next', id: 'what-happened-next' },
+  { title: 'Building the System', id: 'building-the-system' },
   { title: 'What This Means', id: 'what-this-means' },
 ]
 
@@ -31,32 +31,32 @@ export default function HoustonBalletCaseStudy() {
   }
 
   const summary = {
-    context: 'Jixaw Technologies needed to explore whether AI-assisted design tooling (Figma Make) could accelerate product delivery — Houston Ballet\u0027s mobile ticketing as the proof case.',
-    constraints: 'One-day build constraint to test the AI-assisted workflow; designing for APIs that don\u0027t exist yet; needed multi-tenant architecture from day one.',
-    decisions: 'Designed TypeScript interfaces as API contracts before any backend existed; built multi-tenant architecture (design tokens, feature flags, service abstractions) instead of a one-off; wrote a 337-line developer handoff guide documenting open questions.',
-    impact: 'Functional React prototype built in one day; 4,900+ lines of infrastructure code; 15+ TypeScript interfaces; proved the workflow for future clients.',
+    context: 'We\u0027re building JixTix as a multi-tenant ticketing platform for non-profits. Houston Ballet is client #1 \u2014 the proof case for whether the architecture scales. Every decision has to work for them and for clients we haven\u0027t met yet.',
+    constraints: 'One-day build window to validate the UX approach; designing for APIs that don\u0027t exist yet; multi-tenant scalability baked in from day one.',
+    decisions: 'Built a 5-layer design token system (217 CSS custom properties); defined 40 TypeScript interfaces as API contracts before any backend existed; wrote 1,100+ lines of developer documentation across 6 handoff files.',
+    impact: 'A plug-and-play system for onboarding new brands \u2014 add a theme file, set an environment variable, and the platform adapts. No rebuild required.',
   }
 
   const metrics = [
     {
-      label: 'Infrastructure Code',
-      value: 4900,
-      suffix: '+ lines',
-      description: 'Types, services, hooks, config, tokens, themes',
+      label: 'Design Tokens',
+      value: 217,
+      suffix: ' props',
+      description: '5-layer CSS token system: colours, spacing, animation, typography, shadows',
       highlight: true,
     },
     {
-      label: 'TypeScript Interfaces',
-      value: 15,
-      suffix: '+',
-      description: 'Contracts for APIs that don\'t exist yet',
+      label: 'TypeScript Contracts',
+      value: 40,
+      suffix: ' interfaces',
+      description: 'Typed domain models with Tessitura field mapping',
       highlight: true,
     },
     {
-      label: 'Developer Guide',
-      value: 337,
+      label: 'Developer Documentation',
+      value: 1111,
       suffix: ' lines',
-      description: 'Handoff documentation with open questions documented',
+      description: 'Across 6 handoff files \u2014 plus ~2,700 in-code comment lines',
       highlight: true,
     }
   ]
@@ -64,44 +64,41 @@ export default function HoustonBalletCaseStudy() {
   return (
     <CaseStudyViewer caseStudy={caseStudy} metrics={metrics} summary={summary}>
       
-      {/* Context - lighter touch */}
+      {/* Context */}
       <ProseSection>
         <ProseBlock>
           <Heading id="context" level={2} label="Background" className="mt-0">Context</Heading>
           <p>
-            I've been working with Houston Ballet through <Tooltip containerClassName="inline" content="A technology consultancy I work with on ticketing and venue experience projects."><span className="font-bold">Jixaw Technologies</span></Tooltip> for a while now. Ticketing flows, purchase paths, the usual. They're a good client. Clear feedback, realistic timelines, no drama. If you've freelanced, you know how rare that is.
+            I&apos;ve been working with Houston Ballet through <Tooltip containerClassName="inline" content="A technology consultancy I work with on ticketing and venue experience projects."><span className="font-bold">Jixaw Technologies</span></Tooltip> for a while now &mdash; ticketing flows, purchase paths, venue experiences. They&apos;re a good client. Clear feedback, realistic timelines, no drama. If you&apos;ve freelanced, you know how rare that is.
           </p>
           <p>
-            This case study is a little different. There's no dramatic problem statement here. No "the system was broken and we fixed it" arc. Instead, this is a reflection on something I've been thinking about a lot lately: <strong>how AI tooling is actually changing the work.</strong>
+            But this project was different from the usual feature work. We&apos;re building <strong>JixTix</strong> &mdash; a multi-tenant ticketing platform for non-profits where each venue gets its own brand, its own feature set, its own identity, all running on shared infrastructure. Houston Ballet is client #1. The UX architecture has to work for clients we haven&apos;t met yet.
           </p>
           <p>
-            The prototype below started as a quick exploration, a way to show what a mobile ticketing experience <em>could</em> feel like. But the process of making it turned into something more interesting than the artifact itself.
+            That&apos;s a design systems problem. Not &quot;make it look nice for one client&quot; &mdash; but <strong>build a structure that adapts without breaking.</strong> Tokens, theme overrides, component boundaries, developer contracts. The kind of foundational work that either saves you hundreds of hours later or costs you them.
           </p>
         </ProseBlock>
       </ProseSection>
 
-      {/* The Experiment - Figma Make */}
+      {/* The Approach */}
       <ProseSection>
         <ProseBlock>
-          <Heading id="the-experiment" level={2} label="Process">The Experiment</Heading>
+          <Heading id="the-approach" level={2} label="Process">The Approach</Heading>
           <p>
-            Look, I'll be honest: natural language prompting has been pretty rough for a while. I've tried the "describe what you want and watch it appear" tools. Most of them produce something that looks like a website from 2008 had a fever dream. The gap between "what I imagined" and "what appeared" was usually big enough to make the whole exercise feel pointless.
+            The smart move for a multi-tenant platform is to start with the specific and extract the general. Houston Ballet&apos;s mobile ticketing experience gave me a real client, real brand constraints, and real user scenarios to design against. But every decision had to answer two questions: <em>Does this work for Houston Ballet?</em> and <em>Will this structure hold when the next client shows up?</em>
           </p>
           <p>
-            <Tooltip containerClassName="inline" content="A tool that converts Figma designs into production-ready code using AI, part of the emerging 'design-to-code' workflow."><span className="font-bold">Figma Make</span></Tooltip> is different. Not perfect (I'll get to that), but different enough that it changed how I approached this project.
+            I started with the UX architecture &mdash; grey-box wireframes mapping the <Tooltip containerClassName="inline" content="The structural blueprint of how screens, content, and features are organized. The skeleton before the skin."><span className="font-bold">information architecture</span></Tooltip>. Header, ticket list, navigation, QR codes, venue info. No colours, no polish. Just structure. The kind of skeleton that looks boring but defines whether the product is navigable.
           </p>
         </ProseBlock>
 
         <ProseBlock delay={0.1} className="mt-8">
-          <h3>The Workflow That Actually Worked</h3>
+          <h3>From Structure to Branded Prototype</h3>
           <p>
-            Here's what I did: I started with grey boxes. Literal rectangles representing the <Tooltip containerClassName="inline" content="The structural blueprint of how screens, content, and features are organized. The skeleton before the skin."><span className="font-bold">information architecture</span></Tooltip>. Header here, list of tickets there, navigation at the bottom. No colors, no polish. Just structure.
+            Once the IA was solid, I used <Tooltip containerClassName="inline" content="A tool that converts Figma designs into production-ready code using AI, part of the emerging &apos;design-to-code&apos; workflow."><span className="font-bold">Figma Make</span></Tooltip> to rapidly translate those wireframes into a branded prototype. Houston Ballet&apos;s assets &mdash; logo, colour palette, typography &mdash; became the first &quot;theme&quot; applied to the system. The tool understood these as constraints, not suggestions. When I asked for &quot;a ticket card,&quot; it used the purple from the brand, not some default blue.
           </p>
           <p>
-            Then I layered in Houston Ballet's brand assets. Logo, color palette, typography. The tool understood these as constraints, not suggestions. When I asked for "a ticket card," it used the purple from the brand, not some default blue.
-          </p>
-          <p>
-            From there, I could iterate in natural language. "Make the QR code bigger." "Add seat information below the date." "Put a hamburger menu in the header." Natural language iteration itself isn't new to me—I use it constantly in Cursor for code. But this felt different. I could rough something out in low fidelity, select it, and watch the tool dial up the fidelity spectrum. Grey boxes became styled components. Placeholder text became real UI. The speed comes from staying in a tool I already know while AI handles the jump from rough to refined.
+            The speed here mattered. AI tooling like Figma Make is mature enough now to be part of the workflow &mdash; not a separate experiment. The muscle memory is there. I can move from concept to high-fidelity prototype without switching contexts or losing momentum. Getting to a functional prototype in a day meant I could spend the second day on what actually differentiates this work: <strong>the multi-tenant architecture underneath.</strong>
           </p>
         </ProseBlock>
 
@@ -115,7 +112,7 @@ export default function HoustonBalletCaseStudy() {
                 <h4 className="text-zinc-900 dark:text-white font-semibold text-sm">Morning</h4>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Grey-box wireframes. IA skeleton. Basic screen flow mapped out.
+                UX architecture. Information hierarchy. Screen flow and component boundaries mapped.
               </p>
             </div>
 
@@ -127,7 +124,7 @@ export default function HoustonBalletCaseStudy() {
                 <h4 className="text-zinc-900 dark:text-white font-semibold text-sm">Afternoon</h4>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Brand assets in. Natural language iteration. Real components taking shape.
+                First theme applied (Houston Ballet). Rapid iteration on interaction patterns and component structure.
               </p>
             </div>
 
@@ -139,7 +136,7 @@ export default function HoustonBalletCaseStudy() {
                 <h4 className="text-zinc-900 dark:text-white font-semibold text-sm">Evening</h4>
               </div>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Functional React prototype. Exported, cleaned up, deployed.
+                Functional React prototype. Exported, cleaned up, ready for system work.
               </p>
             </div>
           </div>
@@ -147,7 +144,7 @@ export default function HoustonBalletCaseStudy() {
 
         <ProseBlock delay={0.2}>
           <p>
-            With my core loop focused in Figma Make, I had everything in one place—sketch, refine, iterate, repeat. No switching contexts, no exporting and re-importing. That tight feedback cycle let me focus on the decisions that actually matter: interaction patterns, information hierarchy, the stuff that makes a prototype <em>useful</em> instead of just pretty.
+            The AI tooling isn&apos;t the story here &mdash; it&apos;s the accelerant. These tools are mature enough now that they&apos;re just part of how I work. The tight feedback cycle let me focus on the decisions that actually matter: interaction patterns, information hierarchy, component boundaries. The stuff that makes a prototype <em>useful for systems work</em>, not just visually polished.
           </p>
         </ProseBlock>
       </ProseSection>
@@ -170,7 +167,7 @@ export default function HoustonBalletCaseStudy() {
         <div className="prose prose-zinc dark:prose-invert max-w-none mb-8">
           <Heading id="try-it" level={2} label="Prototype">Try It</Heading>
           <p>
-            Here's the prototype. Tap around, explore the ticket list, view QR codes, check account settings, browse venue info. It's a real React app, not a clickable mockup. That distinction matters when you're trying to communicate <em>how something feels</em>, not just how it looks.
+            Here&apos;s the prototype &mdash; Houston Ballet&apos;s theme applied to the JixTix platform. Tap around, explore the ticket list, view QR codes, check account settings, browse venue info. It&apos;s a real React app, not a clickable mockup. That distinction matters when you&apos;re trying to communicate <em>how something feels</em>, not just how it looks.
           </p>
         </div>
 
@@ -265,61 +262,88 @@ export default function HoustonBalletCaseStudy() {
         {/* Bridge to next section */}
         <div className="prose prose-zinc dark:prose-invert max-w-none mt-12">
           <p>
-            The prototype did its job. Houston Ballet could tap through it, feel the interactions, point at things and say "more like this" or "less like that." But showing what something <em>could</em> feel like is only half the work. And the exported code had rough edges—inconsistent naming, over-nested components, hardcoded values everywhere.
+            The prototype did its job. Houston Ballet could tap through it, feel the interactions, point at things and say &quot;more like this&quot; or &quot;less like that.&quot; But showing what something <em>could</em> feel like is only half the work. A prototype for one client isn&apos;t a system. The next step was turning one-off decisions into scalable patterns &mdash; the work that makes client #2 possible without starting over.
           </p>
         </div>
       </section>
 
-      {/* What Happened Next */}
+      {/* Building the System */}
       <ProseSection>
         <ProseBlock>
-          <Heading id="what-happened-next" level={2} label="Refinement">What Happened Next</Heading>
+          <Heading id="building-the-system" level={2} label="Systems">Building the System</Heading>
           <p>
-            The Figma Make export was a starting point, not a finish line. I created a GitHub repo, pulled it into Cursor, and spent another day turning it into something developers could actually build on. Taking it from "thing that works" to "thing that's ready" meant confronting a different set of problems. Not <em>can we make this?</em> but <em>can this scale? Can someone else work on it? What happens when we don't know the answer yet?</em>
+            The Figma Make export was a starting point, not a finish line. I created a GitHub repo, pulled it into Cursor, and spent another day turning it into something developers could actually build on. Taking it from &quot;prototype for one client&quot; to &quot;foundation for a platform&quot; meant confronting a different set of problems. Not <em>can we make this?</em> but <em>can this scale? Can someone else work on it? What happens when we don&apos;t know the answer yet?</em>
           </p>
         </ProseBlock>
 
-        <ProseBlock delay={0.1} className="mt-8">
-          <h3>The Gap Between Working and Ready</h3>
+        {/* Architecture Diagram */}
+        <FadeIn delay={0.1}>
+          <div className="my-8 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-700/50 border-b border-zinc-200 dark:border-zinc-700">
+              <Code className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">Architecture</span>
+            </div>
+            <pre className="p-4 text-sm overflow-x-auto">
+              <code className="text-zinc-700 dark:text-zinc-300 font-mono">
+{`┌─────────────┐     ┌──────────────┐     ┌──────────────┐
+│   App       │ --> │  Middleware   │ --> │  Tessitura   │
+│  (this!)    │ <-- │  (Node.js)   │ <-- │  (REST API)  │
+└─────────────┘     └──────────────┘     └──────────────┘`}
+              </code>
+            </pre>
+            <div className="px-4 py-3 bg-zinc-100/50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-700">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                My work is the left box. I defined the contracts so the middleware team can connect the pipes without guessing what the UI expects.
+              </p>
+            </div>
+          </div>
+        </FadeIn>
+
+        <ProseBlock delay={0.15} className="mt-8">
+          <h3>The Gap Between Working and Scalable</h3>
           <p>
             The export ran. You could tap through it, see the QR codes, browse the venue info. But under the hood:
           </p>
           <ul>
             <li>The logo was a 40-character hash string</li>
             <li>Mock data lived directly in the main component</li>
-            <li>Colors were hardcoded hex values scattered across files</li>
-            <li>There was no concept of "this is Houston Ballet's app" vs "this could be anyone's app"</li>
+            <li>Colours were hardcoded hex values scattered across files</li>
+            <li>No responsive layout &mdash; fixed dimensions everywhere, no flexbox, no consideration for different screen sizes</li>
+            <li>There was no concept of &quot;this is Houston Ballet&apos;s app&quot; vs &quot;this could be anyone&apos;s app&quot;</li>
           </ul>
           <p>
-            None of that matters for a demo. All of it matters when you're handing code to developers who need to build on it. My job was to wire up the UI side—define the data contracts, set up the component boundaries, make it modular. Their job would be connecting the pipes: middleware, auth, the actual <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura</span></Tooltip> integration.
+            That last point about responsiveness is worth calling out. Figma Make doesn&apos;t export responsive layouts &mdash; and honestly, most AI tools still don&apos;t. That&apos;s where close to a decade of building auto-layout specs and flexbox systems by hand pays off. I rebuilt the layout layer from scratch so the UI adapts properly across screen sizes. It&apos;s the kind of thing that&apos;s invisible when it works and immediately obvious when it doesn&apos;t.
+          </p>
+          <p>
+            None of that matters for a demo. All of it matters when you&apos;re handing code to developers who need to build on it. My job was to wire up the UX side &mdash; define the data contracts, set up the component boundaries, parameterise the branding, make it modular. Their job would be connecting the pipes: middleware, auth, the actual <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura</span></Tooltip> integration. I know where my work ends and theirs begins &mdash; so roughly 25&ndash;30% of the codebase is documentation. Not filler &mdash; comments that explain <em>why</em> decisions were made, flag open questions explicitly, and address specific team members by name with actionable next steps. That way nobody&apos;s guessing.
           </p>
         </ProseBlock>
 
         <ProseBlock delay={0.15} className="mt-8">
-          <h3>Designing for Questions You Can't Answer Yet</h3>
+          <h3>Designing for Questions You Can&apos;t Answer Yet</h3>
           <p>
-            I understand <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura's</span></Tooltip> data model from previous work—I know what a constituent record looks like, how orders are structured, what fields we'd need for ticket display. But there were still open questions:
+            I understand <Tooltip containerClassName="inline" content="A ticketing and CRM platform used by performing arts organizations worldwide."><span className="font-bold">Tessitura&apos;s</span></Tooltip> data model from previous work &mdash; I know what a constituent record looks like, how orders are structured, what fields we&apos;d need for ticket display. But there were still open questions:
           </p>
           <ul>
-            <li>How does the proprietary QR code system work? (Gary—another dev on the team—is building it, not me)</li>
-            <li>What will the middleware actually return? (It doesn't exist yet)</li>
+            <li>How does the proprietary QR code system work? (Gary &mdash; another dev on the team &mdash; is building it, not me)</li>
+            <li>What will the middleware actually return? (It doesn&apos;t exist yet)</li>
             <li>Will clients want redirect auth or embedded SSO? (Depends on the client)</li>
-            <li>What content blocks will different venues want? (Nobody's asked them yet)</li>
+            <li>What content blocks will different venues want? (Nobody&apos;s asked them yet)</li>
           </ul>
           <p>
-            The temptation is to wait until you have answers. But waiting means the developers have nothing to work with. So instead, you design <em>interfaces</em> that define the contract without defining the implementation. I set things up with Tessitura in mind—the data shapes, the likely fields—so when the middleware team comes in, they can easily map their work to what the UI expects.
+            The temptation is to wait until you have answers. But waiting means the developers have nothing to work with. So instead, you design <em>interfaces</em> that define the contract without defining the implementation. I wrote 40 TypeScript interfaces &mdash; fully typed domain models for performances, tickets, venues, content blocks, auth flows &mdash; with inline comments mapping each field to the Tessitura property it likely corresponds to. When the middleware team comes in, they can map their work directly to what the UI expects. That&apos;s UX at the systems level: defining boundaries that let teams work in parallel.
           </p>
         </ProseBlock>
 
         {/* Code Snippet - Interface Design */}
-        <FadeIn delay={0.2}>
-          <div className="my-8 bg-zinc-900 dark:bg-zinc-800/50 rounded-xl border border-zinc-700 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-800 dark:bg-zinc-700/50 border-b border-zinc-700">
-              <Code className="h-4 w-4 text-zinc-400" />
-              <span className="text-xs text-zinc-400 font-mono">QRCodeDisplayProps.ts</span>
+        <FadeIn delay={0.25}>
+          <div className="my-8 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+            <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-700/50 border-b border-zinc-200 dark:border-zinc-700">
+              <Code className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">QRCodeDisplayProps.ts</span>
             </div>
             <pre className="p-4 text-sm overflow-x-auto">
-              <code className="text-zinc-300 font-mono">
+              <code className="text-zinc-700 dark:text-zinc-300 font-mono">
 {`// I don't know how Gary's QR code works.
 // But I know what it needs to accept.
 export interface QRCodeDisplayProps {
@@ -329,8 +353,8 @@ export interface QRCodeDisplayProps {
 }`}
               </code>
             </pre>
-            <div className="px-4 py-3 bg-zinc-800/50 border-t border-zinc-700">
-              <p className="text-xs text-zinc-400">
+            <div className="px-4 py-3 bg-zinc-100/50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-700">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Gary can implement whatever he wants behind that interface. The rest of the app doesn't care.
               </p>
             </div>
@@ -340,7 +364,7 @@ export interface QRCodeDisplayProps {
         <ProseBlock delay={0.25} className="mt-8">
           <h3>Multi-Tenancy from Day One</h3>
           <p>
-            Gary's QR code interface was one piece. The bigger architectural decision was treating Houston Ballet as client #1—not the only client. The architecture assumes client #2 exists.
+            Gary&apos;s QR code interface was one piece. The bigger architectural decision was treating Houston Ballet as client #1 &mdash; not the only client. Components are organized in three tiers: primitives (the atoms), semantic components (buttons, cards, layouts with barrel exports), and feature-level views. Every design token, every component boundary, every config flag was built with the assumption that client #2 exists.
           </p>
         </ProseBlock>
 
@@ -353,9 +377,9 @@ export interface QRCodeDisplayProps {
                   <FileCode className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                 </div>
                 <div>
-                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Isolated Brand Assets</h4>
+                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Tenant Architecture</h4>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Each tenant gets their own folder. Houston Ballet's logo isn't scattered—it lives in one place.
+                    Each tenant gets isolated assets, a <code className="text-xs">[data-tenant]</code> CSS selector for theme cascade, and a <code className="text-xs">useTenant()</code> hook with sub-hooks for logo, colour, and feature access.
                   </p>
                 </div>
               </div>
@@ -367,9 +391,9 @@ export interface QRCodeDisplayProps {
                   <Palette className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                 </div>
                 <div>
-                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Theme Overrides</h4>
+                    <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">5-Layer Design Token System</h4>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Colors, fonts, spacing—all parameterized. Change one CSS file and the whole app rebrands.
+                    217 CSS custom properties across colours, spacing, animation, typography, and shadows. Palette-level values separated from semantic aliases &mdash; change one theme file and the whole app rebrands.
                   </p>
                 </div>
               </div>
@@ -381,9 +405,9 @@ export interface QRCodeDisplayProps {
                   <Code className="h-4 w-4 text-zinc-600 dark:text-zinc-300" />
                 </div>
                 <div>
-                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Feature Flags</h4>
+                  <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Feature Flags &amp; Auth Strategies</h4>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Not every venue needs ticket transfers or venue guides. Config controls what shows up.
+                    7 feature flags and 4 auth strategies (redirect, embedded SSO, magic link, none). Not every venue needs the same features &mdash; config controls what shows up.
                   </p>
                 </div>
               </div>
@@ -397,7 +421,7 @@ export interface QRCodeDisplayProps {
                 <div>
                   <h4 className="text-zinc-900 dark:text-white font-semibold text-sm mb-1">Developer Handoff</h4>
                   <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                    337-line guide for the dev team with open questions documented, not assumed.
+                    1,100+ lines across 6 Markdown files including a full API contract with endpoint specs, Tessitura field mapping, and error codes. Open questions documented, not assumed.
                   </p>
                 </div>
               </div>
@@ -407,10 +431,10 @@ export interface QRCodeDisplayProps {
 
         <ProseBlock delay={0.35}>
           <p>
-            This might seem like overkill for a single client. But the cost of building it now is low. The cost of retrofitting it later—when you have production code, real users, and tight deadlines—is high.
+            This might seem like overkill for a single client. But that&apos;s exactly the point of systems thinking &mdash; the cost of building structure now is low. The cost of retrofitting it later, when you have production code, real users, and tight deadlines, is high.
           </p>
           <p>
-            When client #2 shows up, the path is clear: add a folder, add a theme file, set an environment variable.
+            When client #2 shows up, the path is clear: add a folder, add a theme file, set an environment variable. That&apos;s the payoff of designing a system instead of a screen.
           </p>
         </ProseBlock>
 
@@ -421,45 +445,45 @@ export interface QRCodeDisplayProps {
         <ProseBlock>
           <Heading id="what-this-means" level={2} label="Takeaways">What This Means</Heading>
           <p>
-            I've been thinking about this a lot. AI isn't replacing designers—at least not yet. What it's doing is shifting where we spend our time.
+            Design systems work is often invisible. Nobody celebrates the design token file or the TypeScript interface that saved three weeks of integration time. But it&apos;s the difference between &quot;we need to rebuild for the next client&quot; and &quot;we need to add a theme file and set an environment variable.&quot;
           </p>
           <p>
-            Before tools like this, a significant chunk of my energy went into production: translating decisions into pixels, wiring up interactions. That work still matters, but the tools are getting better at handling it. What they can't do is make the decisions—or, as it turns out, the architecture decisions that make prototypes actually usable.
+            The work here wasn&apos;t about Houston Ballet specifically &mdash; it was about proving that the UX architecture scales. Every decision was made twice: once for the immediate need, and once for the pattern it establishes. Tokens instead of hardcoded values. Interfaces instead of assumptions. Documentation instead of tribal knowledge.
           </p>
           <p>
-            The prototype took a day. The architecture took another. That second day—the multi-tenant setup, the TypeScript interfaces for APIs that don't exist yet, the documentation written for the developers who'd inherit this—that's what makes the prototype matter. The tools didn't just make the first day faster. They made room for the second day to exist.
+            AI tooling accelerated the prototyping, no question. But the compounding value comes from the system decisions &mdash; the things the tools can&apos;t make for you. How to structure theme overrides so they&apos;re ergonomic for developers. Where to draw component boundaries so they&apos;re meaningful, not arbitrary. What to document and what to leave flexible. That&apos;s UX craft at the systems level, and it&apos;s where I spend most of my energy.
           </p>
         </ProseBlock>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
           <LearningCard 
-            title="The value is shifting"
-            icon="ArrowRight"
+            title="Systems compound"
+            icon="Layers"
             index={0}
           >
-            Production time compresses. Decision time stays the same (or expands). The designers who thrive will be the ones who are good at decisions, not just execution.
+            Multi-tenancy, design tokens, service abstractions &mdash; each decision makes the next client cheaper. Architecture is about making future work easier, not just solving today&apos;s problem.
           </LearningCard>
 
           <LearningCard 
-            title="I'm cautiously optimistic"
-            icon="Eye"
+            title="AI is the accelerant"
+            icon="Zap"
             index={1}
           >
-            The hype cycle is real. Not every AI tool is worth the breathless LinkedIn posts. But this one actually changed how I worked. That's worth paying attention to.
+            The tools are mature enough to be part of the workflow now &mdash; the muscle memory is there. That speed frees time for the structural decisions that actually differentiate the product.
           </LearningCard>
 
           <LearningCard 
-            title="Compound decisions"
-            icon="Layers"
+            title="Document the boundaries"
+            icon="FileText"
             index={2}
           >
-            Multi-tenancy, design tokens, service abstractions—these feel like overkill for one client. But each decision makes the next client easier. Architecture is about making future work cheaper.
+            1,100+ lines of handoff documentation isn&apos;t overhead &mdash; it&apos;s the bridge between &quot;designer&apos;s prototype&quot; and &quot;developer&apos;s production code.&quot; Open questions documented, not assumed.
           </LearningCard>
         </div>
 
         <ProseBlock delay={0.1}>
           <p>
-            I don't know where this goes. Maybe these tools plateau. Maybe they get dramatically better. Either way, I'd rather be experimenting with them now than catching up later. This was one experiment. There will be more.
+            I&apos;m not here to write an essay about AI speeding things up. But it is changing how we work &mdash; and I&apos;d rather be honest about that than pretend it&apos;s not happening. The tools are good enough now that they&apos;re just part of the process. What matters is what you do with the time they free up. For me, that&apos;s the systems work &mdash; the stuff that makes a product hold together when more people start building on it.
           </p>
         </ProseBlock>
       </ProseSection>
@@ -469,7 +493,7 @@ export interface QRCodeDisplayProps {
         <section className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-700">
           <div className="prose prose-zinc dark:prose-invert max-w-none">
             <h3>Credits</h3>
-            <p>Houston Ballet, Jixaw Technologies, Gary &amp; Sunny on the dev team, and everyone working to make the patron experience seamless from purchase to performance.</p>
+            <p>Houston Ballet, Jixaw Technologies, Gary &amp; Sunny on the dev team, and everyone working on the JixTix platform to make the patron experience seamless from purchase to performance.</p>
           </div>
         </section>
       </FadeIn>

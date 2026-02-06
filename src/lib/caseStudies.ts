@@ -48,10 +48,10 @@ export const caseStudies: CaseStudyMetadata[] = [
   //   goal: "Design internal tools that let researchers and business leaders analyze budgets, track outcomes, and manage cross-system data with confidence."
   // },
   {
-    title: "Houston Ballet",
+    title: "JixTix",
     descriptiveTitle: "Ticketing App",
-    client: "Jixaw Technologies",
-    description: "A reflection on how AI tooling is changing design work, told through a mobile ticketing prototype built in a day.",
+    client: "Houston Ballet",
+    description: "A scalable design system for multi-tenant mobile ticketing — 217 design tokens, 40 TypeScript contracts, and plug-and-play theming for new brands.",
     slug: "houston-ballet",
     category: "UX",
     aiAccelerated: true,
@@ -60,11 +60,11 @@ export const caseStudies: CaseStudyMetadata[] = [
     location: "Remote",
     timeline: "2025 – Present",
     status: "Ongoing",
-    tools: ["Figma", "Figma Make", "React", "Tailwind CSS"],
-    services: ["Product Vision", "Information Architecture", "Prototyping", "Visual Design", "Interaction Design"],
+    tools: ["Figma", "Figma Make", "React", "TypeScript", "Tailwind CSS"],
+    services: ["Design Systems", "Product Vision", "Information Architecture", "Prototyping", "Visual Design", "Interaction Design"],
     order: 1,
-    goal: "Explore what happens when AI tools actually work.",
-    goalDetail: "A functional React prototype, built in a day with Figma Make. Less about the output, more about what it says about where design is headed."
+    goal: "One client's prototype, built to scale to many.",
+    goalDetail: "Design tokens, TypeScript contracts, and a multi-tenant architecture \u2014 all from day one."
   },
   {
     title: "Breeze Mortgage Hub",
