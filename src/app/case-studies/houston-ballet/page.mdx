@@ -276,8 +276,14 @@ export default function HoustonBalletCaseStudy() {
           </p>
         </ProseBlock>
 
+        <ProseBlock delay={0.1} className="mt-8">
+          <p>
+            Before I could build anything, I had to define how the pieces fit together. There was no architecture doc, no system diagram, no shared understanding of how the app would talk to Tessitura or what would sit between them. I knew the domain from previous work &mdash; how Tessitura structures its data, what a middleware layer would need to handle, where the boundaries should fall. So I drew it out and put it directly in the codebase. Not as documentation after the fact &mdash; as a proposal. <em>Here&apos;s how I think this should work.</em>
+          </p>
+        </ProseBlock>
+
         {/* Architecture Diagram */}
-        <FadeIn delay={0.1}>
+        <FadeIn delay={0.15}>
           <div className="my-8 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-700/50 border-b border-zinc-200 dark:border-zinc-700">
               <Code className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
@@ -293,7 +299,7 @@ export default function HoustonBalletCaseStudy() {
             </pre>
             <div className="px-4 py-3 bg-zinc-100/50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-700">
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                My work is the left box. I defined the contracts so the middleware team can connect the pipes without guessing what the UI expects.
+                This lived in the code from day one. I defined the system architecture and wrote 40 TypeScript interfaces as the contracts between these boxes &mdash; so the middleware team could build their piece without guessing what the UI expects, and I could build mine without waiting for their APIs to exist.
               </p>
             </div>
           </div>

@@ -634,7 +634,7 @@ export function Timeline() {
           )
 
           const cardFooter = (
-            <div className="bg-zinc-100/50 dark:bg-zinc-800/50 border-t border-zinc-900/7.5 dark:border-white/10 px-4 sm:px-5 md:px-6 py-3">
+            <div className="relative bg-zinc-100/50 dark:bg-zinc-800/50 border-t border-zinc-900/7.5 dark:border-white/10 px-4 sm:px-5 md:px-6 py-3">
               <div className="flex justify-center">
                 <span className={`inline-flex items-center text-sm font-medium transition-colors ${
                   isDisabled

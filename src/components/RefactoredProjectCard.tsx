@@ -194,7 +194,7 @@ export function RefactoredProjectCard({ project }: RefactoredProjectCardProps) {
 
 
       {/* Footer - Utility Zone */}
-      <div className="relative mt-auto bg-zinc-100/50 dark:bg-zinc-800/50 p-6 border-t border-zinc-900/7.5 dark:border-white/10">
+      <div className="relative mt-auto rounded-b-2xl bg-zinc-100/50 dark:bg-zinc-800/50 p-6 border-t border-zinc-900/7.5 dark:border-white/10">
         <div className="flex justify-center">
           <span className={`inline-flex items-center text-sm font-medium transition-colors ${
             isDisabled 

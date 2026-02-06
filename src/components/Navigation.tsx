@@ -139,18 +139,24 @@ function NavLink({
       <span className="truncate flex items-center gap-1.5">
         {children}
         {shouldPulse && (
-          <motion.span
-            initial={{ opacity: 0, x: 4 }}
-            animate={{ opacity: [0, 1, 0], x: [4, 0, 4] }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-            className="text-emerald-500"
-          >
-            ←
-          </motion.span>
+          <span className="inline-flex items-center gap-[3px]">
+            <motion.span
+              initial={{ opacity: 0, x: -3 }}
+              animate={{ opacity: [0.4, 1, 0.4], x: [-2, 0, -2] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              className="text-emerald-500"
+            >
+              ←
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.85 }}
+              transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+              className="text-[10px] font-semibold tracking-tight text-emerald-600 dark:text-emerald-400"
+            >
+              Up next
+            </motion.span>
+          </span>
         )}
       </span>
       {tag && (
@@ -329,11 +335,14 @@ function NavigationGroup({
   const isCaseStudyPage = pathname?.includes('/case-studies/') && pathname !== '/case-studies/'
   
   // Detect when user scrolls to bottom of case study page, show arrow for next case study
+  // Stays connected so scrolling back up clears the highlight
   useEffect(() => {
     if (!isCaseStudyPage || !isWorkGroup) {
       setNextCaseStudyToHighlight(null)
       return
     }
+    
+    let observer: IntersectionObserver | null = null
     
     // Small delay to ensure DOM is ready
     const initTimeout = setTimeout(() => {
@@ -343,7 +352,7 @@ function NavigationGroup({
         return
       }
       
-      const observer = new IntersectionObserver(
+      observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -351,9 +360,10 @@ function NavigationGroup({
               const nextHref = footerNav.getAttribute('data-next-case-study')
               if (nextHref) {
                 setNextCaseStudyToHighlight(nextHref)
-                // Once set, disconnect - it stays highlighted
-                observer.disconnect()
               }
+            } else {
+              // User scrolled away from footer — clear the highlight
+              setNextCaseStudyToHighlight(null)
             }
           })
         },
@@ -368,6 +378,9 @@ function NavigationGroup({
     
     return () => {
       clearTimeout(initTimeout)
+      if (observer) {
+        observer.disconnect()
+      }
       setNextCaseStudyToHighlight(null)
     }
   }, [isCaseStudyPage, isWorkGroup, pathname])

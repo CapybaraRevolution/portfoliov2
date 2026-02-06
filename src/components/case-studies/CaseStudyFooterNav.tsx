@@ -18,18 +18,14 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
   const [shouldPulse, setShouldPulse] = useState(false)
   const navRef = useRef<HTMLElement>(null)
 
-  // Pulse when footer becomes visible - once triggered, stays pulsing
+  // Pulse when footer becomes visible - stops when user scrolls away
   useEffect(() => {
     if (!navRef.current || !nextCase) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShouldPulse(true)
-            // Once pulsing starts, it stays - disconnect observer
-            observer.disconnect()
-          }
+          setShouldPulse(entry.isIntersecting)
         })
       },
       {
@@ -115,35 +111,19 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
             )}
             <Link
               href={`/case-studies/${nextCase.slug}`}
-              className={`group relative flex items-center gap-2 text-sm transition-all duration-300 text-right ${
+              className={`group relative flex items-center gap-2 text-sm transition-all duration-300 text-right rounded-lg px-3 py-2 -mx-3 -my-2 ${
                 shouldPulse 
-                  ? 'text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300' 
+                  ? 'text-emerald-600 dark:text-emerald-400 bg-white dark:bg-zinc-900' 
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
               data-next-case-study-link
               onClick={() => trackNavigationClick(nextCase.title, `/case-studies/${nextCase.slug}`, 'case_study_footer_next')}
             >
-              <motion.div 
-                className="flex flex-col items-end sm:flex-row sm:items-center sm:gap-1"
-                variants={shouldPulse ? {
-                  initial: { scale: 1 },
-                  hover: { scale: 1.02 },
-                } : undefined}
-                transition={{ duration: 0.2 }}
-              >
+              <div className="flex flex-col items-end sm:flex-row sm:items-center sm:gap-1">
                 <span className="sm:hidden font-medium text-zinc-900 dark:text-white">Next</span>
                 <span className="hidden sm:inline font-medium truncate">{nextCase.title}</span>
-                <motion.span 
-                  className="hidden sm:inline text-zinc-400 dark:text-zinc-500 shrink-0"
-                  variants={shouldPulse ? {
-                    initial: { color: 'rgb(161, 161, 170)' },
-                    hover: { color: 'rgb(52, 211, 153)' },
-                  } : undefined}
-                  transition={{ duration: 0.3 }}
-                >
-                  Next
-                </motion.span>
-              </motion.div>
+                <span className="hidden sm:inline text-zinc-400 dark:text-zinc-500 shrink-0">Next</span>
+              </div>
               {shouldPulse ? (
                 <motion.span
                   initial={{ opacity: 0, x: -4 }}
@@ -163,6 +143,27 @@ export function CaseStudyFooterNav({ currentSlug, className = '' }: CaseStudyFoo
                 <ArrowRightIcon className="w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0" />
               )}
             </Link>
+            {/* Stroke border — matches Link bg boundary exactly, only appears on hover */}
+            {shouldPulse && (
+              <motion.div
+                className="absolute -inset-x-3 -inset-y-2 rounded-lg pointer-events-none"
+                variants={{
+                  initial: { 
+                    opacity: 0,
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
+                    borderColor: 'rgba(161, 161, 170, 0)',
+                  },
+                  hover: { 
+                    opacity: 1,
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
+                    borderColor: 'rgba(161, 161, 170, 0.35)',
+                  },
+                }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              />
+            )}
           </motion.div>
         ) : (
           <div />
