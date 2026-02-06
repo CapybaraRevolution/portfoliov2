@@ -134,29 +134,25 @@ const steps: WalkthroughStep[] = [
 ]
 
 // =============================================================================
-// VIEWPORT CONFIGURATION
+// VIEWPORT CONFIGURATION - Adjust these values to frame each section
 // =============================================================================
-// x: horizontal pan (percentage of the zoomed image container)
-// y: vertical pan (percentage of the zoomed image container)
+// x: horizontal position (0 = left edge, higher = pan right)
+// y: vertical position (0 = top edge, higher = pan down)  
+// zoom: scale multiplier (1 = 100%, 1.5 = 150%, 2 = 200%, etc.)
 //
-// The image container uses a fixed zoom (width/height set once via CSS)
-// matching the FlowWalkthrough pattern for consistent cross-device behavior.
-// Only x/y positions are animated — no zoom transitions between steps.
+// Tips:
+// - Higher zoom = more detail visible, smaller viewport shifts needed
+// - x/y are percentages of the zoomed image size
+// - Start with zoom, then adjust x/y to frame the content
 // =============================================================================
 const stepViewports = [
-  { x: 0,   y: 10  },   // Step 1: Landing Page - Start Point area
-  { x: 14,  y: 14  },   // Step 2: Investor Landing Page  
-  { x: 32,  y: 18  },   // Step 3: Directory Tool
-  { x: 52,  y: 14  },   // Step 4: Directory Entry
-  { x: 74,  y: 14  },   // Step 5: Learning Hub - right side
-  { x: 0,   y: 0   },   // Step 6: Full Overview - zoomed out
+  { x: 0,   y: 7,  zoom: 4.0 },   // Step 1: Landing Page - Start Point area
+  { x: 18,  y: 17,  zoom: 3.0 },   // Step 2: Investor Landing Page  
+  { x: 48,  y: 19,  zoom: 8.0 },  // Step 3: Directory Tool
+  { x: 58,  y: 17,  zoom: 4.0 },   // Step 4: Directory Entry
+  { x: 70,  y: 18,  zoom: 2.0 },   // Step 5: Learning Hub - right side
+  { x: 0,   y: 0,   zoom: 1.0 },   // Step 6: Full Overview - zoomed out to show entire journey
 ]
-
-// Step 6 shows the full journey — use a smaller zoom to fit everything
-const DETAIL_ZOOM_WIDTH = '380%'
-const DETAIL_ZOOM_HEIGHT = '280%'
-const OVERVIEW_WIDTH = '100%'
-const OVERVIEW_HEIGHT = '100%'
 
 interface JourneyWalkthroughProps {
   /** When true, removes top border and top rounded corners for seamless accordion integration */
@@ -170,9 +166,6 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
   const [shimmerDone, setShimmerDone] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = usePrefersReducedMotion()
-
-  // Determine if we're on the overview step (last step)
-  const isOverview = currentStep === steps.length - 1
 
   // Fire shimmer once after component scrolls into view + 1.5s delay
   useEffect(() => {
@@ -296,16 +289,14 @@ export function JourneyWalkthrough({ seamless = false }: JourneyWalkthroughProps
           </div>
         )}
         
-        {/* Animated image container — fixed zoom, animated position (matching FlowWalkthrough pattern) */}
+        {/* Animated image container with zoom support */}
         <motion.div
-          className="absolute"
-          style={{
-            width: isOverview ? OVERVIEW_WIDTH : DETAIL_ZOOM_WIDTH,
-            height: isOverview ? OVERVIEW_HEIGHT : DETAIL_ZOOM_HEIGHT,
-          }}
+          className="absolute origin-top-left"
           animate={{
-            x: isOverview ? '0%' : `${-viewport.x}%`,
-            y: isOverview ? '0%' : `${-viewport.y}%`,
+            width: `${viewport.zoom * 100}%`,
+            height: `${viewport.zoom * 100}%`,
+            x: `${-viewport.x}%`,
+            y: `${-viewport.y}%`,
           }}
           transition={{
             type: "spring",
