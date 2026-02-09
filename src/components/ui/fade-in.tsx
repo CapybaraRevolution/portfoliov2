@@ -1,9 +1,12 @@
 "use client"
 
 import { motion, type Variants, useReducedMotion } from 'motion/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { usePrefersReducedMotion } from '@/contexts/ReducedMotionContext'
+
+// Use useLayoutEffect on client (runs before paint), useEffect on server (avoids SSR warning)
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 type AnimationVariant = 'fadeUp' | 'fadeDown' | 'fadeLeft' | 'fadeRight' | 'fade' | 'scale'
 
@@ -16,7 +19,7 @@ interface FadeInProps {
   delay?: number
   /** Duration of the animation (in seconds) */
   duration?: number
-  /** Margin for viewport detection (negative values trigger earlier) */
+  /** Margin for viewport detection (negative values trigger later, when element is deeper in viewport) */
   viewportMargin?: string
   /** Whether to apply animation once or every time element enters view */
   once?: boolean
@@ -51,13 +54,19 @@ const variants: Record<AnimationVariant, Variants> = {
 
 /**
  * A wrapper component that animates its children when they enter the viewport.
- * 
+ *
+ * Uses a progressive enhancement approach:
+ * - During SSR and initial page load, content renders VISIBLE to prevent the
+ *   "blank page" issue where content was invisible (opacity: 0) until JS loaded.
+ * - After hydration, elements above the fold stay visible (no animation needed).
+ * - Elements below the fold are hidden and animate in when scrolled into view.
+ *
  * @example
  * // Simple fade up
  * <FadeIn>
  *   <p>This content fades up on scroll</p>
  * </FadeIn>
- * 
+ *
  * @example
  * // With delay for staggered effect
  * <FadeIn delay={0.1}>
@@ -73,39 +82,79 @@ export function FadeIn({
   variant = 'fadeUp',
   delay = 0,
   duration = 0.5,
-  viewportMargin = '-80px',
+  viewportMargin = '-60px',
   once = true,
 }: FadeInProps) {
   const prefersReducedMotion = usePrefersReducedMotion()
   const shouldReduceMotion = useReducedMotion()
-  const [hasMounted, setHasMounted] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  // 'pending' = SSR/initial render (visible)
+  // 'above'   = in/near viewport on mount (stays visible, no animation)
+  // 'below'   = below viewport (hidden, waiting for scroll)
+  // 'reveal'  = scrolled into view (animating to visible)
+  const [placement, setPlacement] = useState<'pending' | 'above' | 'below' | 'reveal'>('pending')
 
-  // Ensure content becomes visible after mount as a fallback
-  // This handles cases where whileInView doesn't trigger on mobile
+  // Before first browser paint: determine if element is above or below the fold.
+  // useLayoutEffect ensures below-fold elements are hidden before the browser
+  // paints, preventing a flash of visible content that then disappears.
+  // setState in useLayoutEffect triggers a synchronous re-render before paint.
+  useIsomorphicLayoutEffect(() => {
+    if (!ref.current || placement !== 'pending') return
+    const rect = ref.current.getBoundingClientRect()
+    // Elements within the viewport + 100px buffer are considered "above fold"
+    // and render immediately visible without any animation
+    setPlacement(rect.top < window.innerHeight + 100 ? 'above' : 'below')
+  }, [placement])
+
+  // Set up IntersectionObserver for below-fold elements to trigger reveal on scroll
   useEffect(() => {
-    // Small delay to allow whileInView to work first, then force visibility
-    const timer = setTimeout(() => {
-      setHasMounted(true)
-    }, 100 + (delay * 1000))
-    return () => clearTimeout(timer)
-  }, [delay])
+    if (placement !== 'below' || !ref.current) return
 
-  // Skip animation entirely if reduced motion is preferred
+    const el = ref.current
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPlacement('reveal')
+          if (once) observer.disconnect()
+        }
+      },
+      { rootMargin: viewportMargin, threshold: 0.01 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [placement, viewportMargin, once])
+
+  // Skip animations entirely for users who prefer reduced motion
   if (prefersReducedMotion || shouldReduceMotion) {
     return <div className={cn(className)}>{children}</div>
   }
 
+  // SSR, initial hydration, or above-fold: render visible immediately.
+  // This is the key fix — content is never invisible before JS loads.
+  if (placement === 'pending' || placement === 'above') {
+    return (
+      <div ref={ref} className={cn(className)}>
+        {children}
+      </div>
+    )
+  }
+
+  // Below fold: use motion.div for scroll-triggered animation.
+  // - When placement='below': initial="hidden" keeps element invisible,
+  //   no animate prop means it stays at the hidden state.
+  // - When placement='reveal': animate="visible" triggers the entry animation
+  //   from the hidden state to visible.
   return (
     <motion.div
+      ref={ref}
       className={cn(className)}
       initial="hidden"
-      whileInView="visible"
-      animate={hasMounted ? "visible" : undefined}
-      viewport={{ once, margin: viewportMargin, amount: 0.01 }}
+      animate={placement === 'reveal' ? 'visible' : undefined}
       variants={variants[variant]}
       transition={{
         duration,
-        delay: hasMounted ? 0 : delay,
+        delay,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
